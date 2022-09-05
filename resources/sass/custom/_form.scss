@@ -1,0 +1,29 @@
+.form-control {
+    display: block;
+    width: 100%;
+    height: 36px;
+    font-size: 14px;
+    line-height: 1.42857;
+    color: rgb(85, 85, 85);
+    background-color: rgb(255, 255, 255);
+    background-image: none;
+    padding: 6px 12px;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-radius: 2px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
+
+.form-control:focus {
+    background-color: rgb(255, 255, 255);
+}
+
+.form-control-label {
+    text-align: left;
+    text-align: right;
+}
+
+.btn-action {
+    padding: 2px 4px;
+}
