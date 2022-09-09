@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
+use Illuminate\Support\Facades\App;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,10 +20,14 @@ use App\Http\Controllers\CartController;
 |
 */
 
-Route::get('/', [StoreController::class, 'home'])->name('store.home');
+Route::get('/', \App\Http\Livewire\Home::class)->name('store.home');
+//Route::get('/', [StoreController::class, 'home'])->name('store.home');
 Route::get('/home-products', [StoreController::class, 'homeProducts'])->name('store.home.products');
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::get('/cart', \App\Http\Livewire\Cart\CartIndex::class)->name('cart');
+
+Route::get('/order', [OrderController::class, 'index'])->name('order');
+Route::post('/order', [OrderController::class, 'create']);
 
 Route::prefix('admin')->group(function () {
 

@@ -8,6 +8,8 @@ class Counter extends Component
 {
     public $count = 1;
 
+    // protected $listeners = ['cartItemUpdate' => '$refresh' ];
+    
     public function increment()
     {
         $this->count += 1;
@@ -19,6 +21,7 @@ class Counter extends Component
 
     public function render()
     {
+        dd("Working");
         return view('store.product.single_product');
     }
 }

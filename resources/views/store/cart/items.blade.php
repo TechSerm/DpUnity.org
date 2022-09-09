@@ -16,7 +16,7 @@
     </table>
 
     <center>
-        <button class="btn btn-primary">অর্ডার করুন {{$totalCartPrice}}</button>
+        @livewire('cart.cart-order-button')
     </center>
 
 </div>

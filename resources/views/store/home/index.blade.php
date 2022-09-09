@@ -1,4 +1,3 @@
-@extends('store.layout.layout')
 
 @section('content')
 
@@ -22,40 +21,14 @@
 
 @push('scripts')
     <script>
-        let page = 2;
-        let pageStop = false;
-        let pageLoading = false;
-        $(window).scroll(function() {
-
-            // if ($(this).scrollTop() + 10 >= $('body').height() - $(window).height() && pageStop === false) {
-            //     page++;
-            //     $("#loader-area").show();
-
-            // }
-        });
-
+        
         $(document.body).on('touchmove', onScroll); // for mobile
         $(window).on('scroll', onScroll);
 
         function onScroll() {
             if ($(window).scrollTop() + window.innerHeight + 10 >= document.body.scrollHeight) {
-                load_contents();
+                Store.home.loadHomeProduct("{{ route('store.home.products') }}");
             }
-        }
-
-        function load_contents() {
-            if(pageLoading === true || pageStop === true)return;
-            page ++;
-            pageLoading = true;
-            $("#loader-area").show();
-            //alert("new page load " + page);
-            $.get("{{ route('store.home.products') }}" + "?page=" + page, function(response) {
-                $("#product-list").append(response);
-                $("#loader-area").hide();
-                pageStop = response == "" ? true : false;
-                pageLoading = false;
-                window.livewire.rescan();
-            });
         }
     </script>
 @endpush

@@ -2,6 +2,6 @@
 
 @section('content')
 
-@livewire('cart.cart-items')
-    
+    @livewire('cart.cart-items')
+
 @stop

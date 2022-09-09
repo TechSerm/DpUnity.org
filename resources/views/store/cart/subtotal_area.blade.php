@@ -1,0 +1,1 @@
+<a href="{{route('order')}}" class="btn btn-primary">অর্ডার করুন {{$totalCartPrice}}</a>

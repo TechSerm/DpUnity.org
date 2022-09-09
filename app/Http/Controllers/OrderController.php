@@ -17,7 +17,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('order.index');
+        return view('store.order.index');
     }
 
     public function getData(Request $request)

@@ -5,20 +5,19 @@ namespace App\Http\Livewire\Cart;
 use App\Cart\Cart;
 use Livewire\Component;
 
-class CartItems extends Component
+class CartOrderButton extends Component
 {
-    public $items = [];
     public $totalCartPrice;
+    protected $listeners = ['cartSubtotalUpdate' => '$refresh'];
 
     public function mount()
     {
-        $this->items = Cart::items();
         $this->totalCartPrice = Cart::totalPrice();
     }
 
     public function render()
     {
-        $this->items = Cart::items();
-        return view('store.cart.items');
+        $this->totalCartPrice = Cart::totalPrice();
+        return view('store.cart.subtotal_area');
     }
 }

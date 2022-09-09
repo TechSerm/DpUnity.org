@@ -37,8 +37,9 @@ class CartItem extends Component
     public function updateCart(){
         $this->product->cartUpdate($this->totalQuantity);
         $this->totalPrice = $this->item->price * $this->totalQuantity;
+      //  $this->emit('cartItemUpdate');
         $this->emit('cartUpdate');
-        $this->emit('cartItemUpdate');
+        $this->emit('cartSubtotalUpdate');
     }
 
     public function render()
