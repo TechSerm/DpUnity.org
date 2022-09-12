@@ -20,8 +20,10 @@
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"
         data-turbolinks-eval="false"></script>
     <script src="{{ mix('js/store.js') }}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
+        
         window.livewire.rescan();
         $(document).on('turbolinks:visit', function() {
            $("#loadBody").append($("#pageLoader").html());
@@ -39,6 +41,7 @@
     <div class="container" style="margin-top: 70px;" id="loadBody">
         @yield('content')
     </div>
+    @include('store.layout.footer')
 </body>
 @stack('scripts')
 </html>

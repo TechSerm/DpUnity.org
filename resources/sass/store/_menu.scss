@@ -1,10 +1,11 @@
  /*=============== GOOGLE FONTS ===============*/
  
  @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
+ @import url('https://fonts.maateen.me/solaiman-lipi/font.css');
  /*=============== VARIABLES CSS ===============*/
  
  :root {
-     --header-height: 3rem;
+     --header-height: 60px;
      /*========== Colors ==========*/
      --hue: 174;
      --sat: 63%;
@@ -58,27 +59,26 @@
          height: 100vh;
      }
      /*=============== LAYOUT ===============*/
-     .container {
-         max-width: 968px;
-         margin-left: 1rem;
-         margin-right: 1rem;
-     }
      /*=============== HEADER ===============*/
      .header {
          position: fixed;
          top: 0;
          left: 0;
          width: 100%;
-         background-color: var(--container-color);
+         background-color: #ffffff;
          z-index: var(--z-fixed);
          transition: .4s;
+         box-shadow: 0 -1px 12px hsla(var(--hue), var(--sat), 15%, 0.15);
      }
      /*=============== NAV ===============*/
-     .nav {
-         height: var(--header-height);
-         display: flex;
+     .cnav {
+         height: 60px;
+         padding: 5px;
          justify-content: space-between;
-         align-items: center;
+         box-shadow: -2px 2px 15px -4px #aaaaaa;
+     }
+     .nav__logo img {
+         height: 45px;
      }
      .nav__img {
          width: 32px;
@@ -88,22 +88,6 @@
          color: var(--title-color);
          font-weight: 600;
      }
-     @media screen and (max-width: 767px) {
-         .nav__menu {
-             position: fixed;
-             bottom: 0;
-             left: 0;
-             background-color: var(--container-color);
-             box-shadow: 0 -1px 12px hsla(var(--hue), var(--sat), 15%, 0.15);
-             width: 100%;
-             height: 4rem;
-             padding: 0 1rem;
-             display: grid;
-             align-content: center;
-             border-radius: 1.25rem 1.25rem 0 0;
-             transition: .4s;
-         }
-     }
      .nav__list,
      .nav__link {
          display: flex;
@@ -111,7 +95,7 @@
      .nav__link {
          flex-direction: column;
          align-items: center;
-         row-gap: 4px;
+         row-gap: 2px;
          color: var(--title-color);
          font-weight: 600;
      }
@@ -119,7 +103,7 @@
          justify-content: space-around;
      }
      .nav__name {
-         font-size: var(--tiny-font-size);
+         font-size: 10px;
          /* display: none;*/
          /* Minimalist design, hidden labels */
      }
@@ -136,9 +120,41 @@
      .scroll-header {
          box-shadow: 0 1px 12px hsla(var(--hue), var(--sat), 15%, 0.15);
      }
-     /*=============== MEDIA QUERIES ===============*/
-     /* For small devices */
-     /* Remove if you choose, the minimalist design */
+     .nav-mobile-footer-menu {
+         display: none;
+     }
+     @media screen and (max-width: 767px) {
+         .nav__menu {
+             padding-top: 2px;
+             justify-content: center;
+         }
+         .nav__item {
+             margin-right: 5px;
+             color: #ffffff;
+             border-radius: 10px;
+             height: 45px;
+             width: 50px;
+             border: 1px solid #f5f5f5;
+             padding: 3px 4px 2px 4px;
+         }
+         .nav-mobile-footer-menu {
+             position: fixed;
+             bottom: 0;
+             left: 0;
+             background-color: #BF3325;
+             box-shadow: -2px 6px 15px -4px rgba(0, 0, 0, 0.75);
+             width: 100%;
+             height: 60px;
+             padding: 0px;
+             display: grid;
+             align-content: center;
+             border-radius: 0;
+             transition: .4s;
+         }
+         .nav__logo img {
+             height: 50px;
+         }
+     }
      @media screen and (max-width: 320px) {
          .nav__name {
              display: none;
@@ -148,19 +164,15 @@
      @media screen and (min-width: 576px) {
          .nav__list {
              justify-content: center;
-             column-gap: 3rem;
+             column-gap: 1px;
          }
      }
      @media screen and (min-width: 767px) {
-         body {
-             margin: 0;
-         }
          .section {
              padding: 7rem 0 2rem;
          }
          .nav {
              height: calc(var(--header-height) + 1.5rem);
-             /* 4.5rem */
          }
          .nav__img {
              display: none;
@@ -196,17 +208,39 @@
      .cart {
          background-color: #6c5ce7;
          color: #ffffff;
-         padding: 12px 5px 10px 5px;
-         border-radius: 5px;
+         height: 60px;
+         border-radius: 0px;
+         border-radius: 0px;
          min-width: 150px;
+         vertical-align: center;
          text-align: center;
-         vertical-align: middle;
+     }
+     .cart a {
+         color: #ffffff;
+     }
+     .cart a:hover {
+         background: rgba(0, 0, 0, 0.7)
+     }
+     .status-area {
+         padding: 15px;
+         color: #fff;
+         display: inline-block;
+         height: 60px;
+         font-weight: bold;
+         text-align: center;
+         font-size: 18px;
+         font-family: 'SolaimanLipi', Arial, sans-serif;
      }
      .cart .amount {
-         background-color: #302586;
-         padding: 7px;
-         border-radius: 5px;
+         padding-top: 5px;
+         color: #ffffff;
+         display: inline-block;
+         height: 60px;
          font-weight: bold;
-         margin-left: 15px;
+         text-align: center;
+         font-family: 'SolaimanLipi', Arial, sans-serif;
+     }
+     .cart .amount hr {
+         background-color: #ccc;
      }
  }

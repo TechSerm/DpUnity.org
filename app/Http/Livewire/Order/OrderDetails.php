@@ -27,7 +27,6 @@ class OrderDetails extends Component
     public function render()
     {
         $this->autoSave();
-        sleep(3);
         return view('store.order.details');
     }
 }

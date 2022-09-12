@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\App;
 |
 */
 
-Route::get('/', \App\Http\Livewire\Home::class)->name('store.home');
+Route::get('/', \App\Http\Livewire\Home::class)->name('home');
 //Route::get('/', [StoreController::class, 'home'])->name('store.home');
 Route::get('/home-products', [StoreController::class, 'homeProducts'])->name('store.home.products');
 
@@ -32,7 +32,7 @@ Route::post('/order', [OrderController::class, 'create']);
 Route::prefix('admin')->group(function () {
 
     Route::middleware(['auth'])->group(function () {
-        Route::get('/', [HomeController::class, 'index'])->name('home');
+        Route::get('/', [HomeController::class, 'index'])->name('admin.home');
 
         //product routes
         Route::get('/products/data', [ProductController::class, 'getData'])->name('products.data');

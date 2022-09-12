@@ -1,7 +1,7 @@
 <style>
     .loading {
         content="Loading";
-        background-color: black;
+        background-color: #ffffff;
         opacity: 0.8;
         font-family: PT Sans Narrow;
 
