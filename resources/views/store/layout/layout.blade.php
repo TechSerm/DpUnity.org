@@ -28,6 +28,13 @@
         $(document).on('turbolinks:visit', function() {
            $("#loadBody").append($("#pageLoader").html());
         });
+
+        window.addEventListener('change-cart-animation', event => {
+            $("#mobile-cart-area").addClass("cart-animation");
+            setTimeout(function () {
+                $('#mobile-cart-area').removeClass('cart-animation');
+            }, 5000);
+        })
     </script>
 
     @livewireStyles
@@ -35,6 +42,7 @@
 
 <body>
     @livewire('shop-footer')
+    {{-- @include('store.layout.nav_test') --}}
     <div id="pageLoader" style="display: none">
         @include('store.layout.loader')
     </div>

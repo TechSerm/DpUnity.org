@@ -20,12 +20,14 @@ class ShopProduct extends Component
         $this->count += 1;
         $this->product->cartUpdate($this->count);
         $this->emit('cartUpdate');
+        $this->dispatchBrowserEvent('change-cart-animation');
     }
 
     public function decrement(){
         $this->count -= 1;
         $this->product->cartUpdate($this->count);
         $this->emit('cartUpdate');
+        $this->dispatchBrowserEvent('change-cart-animation');
     }
 
     public function render()
