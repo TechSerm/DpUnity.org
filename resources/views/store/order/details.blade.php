@@ -1,48 +1,107 @@
 <div>
-  <style>.input-group {
-    position: relative;
-}
+    <style>
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
 
-.input-group .input-area {
-    outline: none;
-    border: 2px solid #dadce0;
-    padding: 16px 13px;
-    font-size: 18px;
-    border-radius: 5px;
-}
+        .input-group .input-area {
+            outline: none;
+            border: 1px solid #aaaaaa;
+            padding: 16px 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            width: 100%;
+        }
 
-.input-group .input-area:valid + .label {
-    top: -8px;
-    padding: 0 3px;
-    font-size: 14px;
-    color: #8d8d8d;
-}
+        .input-group .input-area:valid+.label {
+            top: -8px;
+            padding: 0 3px;
+            font-size: 14px;
+            color: #595858;
+        }
 
-.input-group .input-area:focus {
-    border: 2px solid royalblue;
-}
+        .input-group .input-area:focus {
+            border: 1px solid royalblue;
+            box-shadow: 1px 5px 7px -2px rgba(170,170,170,0.74);
+        }
 
-.input-group .label {
-    color: #8d8d8d;
-    position: absolute;
-    top: 20px;
-    left: 13px;
-    background: #ffffff;
-}
+        .input-group .label {
+            color: #595858;
+            position: absolute;
+            font-weight: bold;
+            left: 13px;
+            background: #ffffff;
+            top: -8px;
+            padding: 0 3px;
+            font-size: 14px;
+        }
 
-.input-group .input-area:focus + .label {
-    top: -8px;
-    padding: 0 3px;
-    font-size: 14px;
-    color: royalblue;
-}</style>
-    <div class="form-group">
-      <label for="exampleInputEmail1">Full Name</label>
-      <input type="text" wire:model.debounce.500ms="fullName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        .input-group .input-area:focus+.label {
+            top: -8px;
+            padding: 0 3px;
+            font-size: 14px;
+            color: royalblue;
+            font-weight: bold;
+        }
+        .checkout-details{
+            padding: 5px;
+            border: 1px solid #eeeeee;
+            
+            border-radius: 5px;
+        }
+        .checkout-details .details-header{
+            background-color: #8e44ad;
+            color: #ffffff;
+            text-align: center;
+            padding: 5px;
+            margin-bottom: 15px;
+            border-radius: 5px 5px 0px 0px;
+        }
+        .form-text{
+            margin-left: 5px;
+        }
+        .details-body{
+            padding: 5px;
+        }
+    </style>
+
+    <div class="checkout-details">
+        <div class="details-header">
+            আপনার অর্ডার করা পণ্য আপনার কাছে পৌঁছানোর জন্য আপনি নিচের তথ্য গুলা পূরণ করেন !
+        </div>
+        <div class="details-body">
+        <div class="input-group">
+            <input type="text" class="input-area" required id="inputField" />
+            <label for="inputField" class="label">নাম <font color="red">*</font></label>
+        </div>
+
+        <div class="input-group">
+            <select name=""  class="input-area" id="" style="background: #ffffff">
+                <option value="">Hello BD</option>
+                <option value="">Ok This</option>
+                <option value="">Test Ok</option>
+            </select>
+            <label for="inputField" class="label">আপনার এরিয়া <font color="red">*</font></label>
+            <small id="emailHelp" class="form-text text-muted">অর্ডার টি যেই এলাকায় পৌচাবে সেই এলাকা সিলেক্ট করুন </small>
+            
+        </div>
+
+        <div class="input-group">
+            <input type="text" class="input-area" required id="inputField" />
+            <label for="inputField" class="label">বাড়ির ঠিকানা </label>
+            <small id="emailHelp" class="form-text text-muted">বাড়ির ঠিকানা হিসেবে আপনি আপনার বাড়ির নম্বর অথবা বাড়ির পাশের স্কুল , মশিদ, মাদ্রাসা , কবরস্থ , দুকান যেকুনু টি বেবহার করতে পারেন। তাহলে আমাদের ডেলিভারি দিতে সুবিধা হব।</small>
+        </div>
+
+        <div class="input-group">
+            <input type="text" class="input-area" required id="inputField" />
+            <label for="inputField" class="label">ফোন নম্বর <font color="red">*</font></label>
+            <small id="emailHelp" class="form-text text-muted">মোবাইল নম্বর টি অবসসই বাংলাদেশী মোবাইল নম্বর হতে হবে। ডেলিভারি এর সময় আমরা এই নম্বর টিতে যুগাযুগ করবো </small>
+        </div>
     </div>
-    <div class="input-group">
-      <input type="text" class="input-area" required id="inputField"/>
-      <label for="inputField" class="label">Field</label>
-  </div>
+    </div>
+
+
+
+
 </div>

@@ -9606,3 +9606,7 @@ h3 {
 .modal-fullscreen-xl .modal-body {
   overflow-y: auto;
 }
+
+body {
+  font-family: "SolaimanLipi", Arial, sans-serif;
+}
