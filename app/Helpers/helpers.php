@@ -1,16 +1,16 @@
 <?php
 
-use Rakibhstu\Banglanumber\NumberToBangla;
+use App\Helpers\BnConvert;
 
 /**
- * Bangla Digit Convert
+ * Bangla Convert
  *
  * @return string
  */
 if (!function_exists('bnConvert')) {
     function bnConvert()
     {
-        return new NumberToBangla();
+        return new BnConvert();
     }
 }
 

@@ -1,7 +1,12 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.maateen.me/solaiman-lipi/font.css');
 // Variables
 @import 'variables';
+body {
+    font-family: 'SolaimanLipi', Arial, sans-serif;
+}
+
 // // Bootstrap
 // @import 'bootstrap/scss/bootstrap';
 @import 'custom/form';

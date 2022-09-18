@@ -1,6 +1,6 @@
 <style>
     footer{
-        margin-top: 70px;
+        margin-top: 100px;
     }
 </style>
 <footer class="">

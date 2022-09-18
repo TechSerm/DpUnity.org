@@ -14,7 +14,7 @@ class Cart
         $cart = CartAction::get();
         $response = [];
         foreach ($cart as $productId => $quantity) {
-            $product = Product::where(['id' => $productId])->select(['id', 'name', 'image', 'price'])->first();
+            $product = Product::where(['id' => $productId])->select(['id', 'name', 'image_id', 'price', 'unit', 'quantity'])->first();
             if ($product) {
                 $product->cart_quantity = $quantity;
                 $product->cart_total_price = $quantity * $product->price;

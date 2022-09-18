@@ -188,12 +188,12 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
-    'logout_url' => 'logout',
-    'login_url' => 'login',
-    'register_url' => 'register',
-    'password_reset_url' => 'password/reset',
-    'password_email_url' => 'password/email',
+    'dashboard_url' => 'admin/home',
+    'logout_url' => 'admin/logout',
+    'login_url' => 'admin/login',
+    'register_url' => 'admin/register',
+    'password_reset_url' => 'admin/password/reset',
+    'password_email_url' => 'admin/password/email',
     'profile_url' => false,
 
     /*
@@ -262,6 +262,12 @@ return [
         [
             'text'        => 'Orders',
             'url'         => '/admin/orders',
+            'icon'        => 'fas fa-paperclip',
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Shippings',
+            'url'         => '/admin/shippings',
             'icon'        => 'fas fa-paperclip',
             'label_color' => 'success',
         ],

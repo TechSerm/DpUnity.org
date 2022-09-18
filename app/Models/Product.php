@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Cart\Cart;
+use App\Services\Image\ImageService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Woo\Models\WooProduct;
@@ -19,7 +20,7 @@ class Product extends Model
         'quantity',
         'unit',
         'price',
-        'image',
+        'image_id',
         'wholesale_price',
         'market_sale_price',
         'wholesale_price_last_update',
@@ -29,9 +30,14 @@ class Product extends Model
         'status'
     ];
 
-    public function getImageAttribute($value)
+    public function getImageAttribute()
     {
-        return $value ?? "https://bibisena.tserm.com/wp-content/uploads/woocommerce-placeholder.png";
+        return $this->imageSrv()->src();
+    }
+
+    public function imageSrv()
+    {
+        return new ImageService($this->image_id);
     }
 
     public function categories()
@@ -39,11 +45,13 @@ class Product extends Model
         return $this->belongsToMany(Category::class, 'product_category');
     }
 
-    public function cartQuantity(){
+    public function cartQuantity()
+    {
         return Cart::quantity($this->id);
     }
 
-    public function cartUpdate($quantity){
+    public function cartUpdate($quantity)
+    {
         Cart::update($this->id, $quantity);
     }
 
@@ -57,6 +65,5 @@ class Product extends Model
         return LogOptions::defaults()
             ->logOnly($this->fillable)
             ->logOnlyDirty($this->fillable);
-
     }
 }

@@ -1,19 +1,22 @@
 @php
 $menuLinkList = [
     route('home') => route('cart'),
-    route('cart') => route('order'),
+    route('search') => route('cart'),
+    route('cart') => route('store.order'),
 ];
 
 $menuTextList = [
     route('home') => 'বাজার',
+    route('search') => 'বাজার',
     route('cart') => 'অর্ডার পেইজে যান',
-    route('order') => 'অর্ডার করুন',
+    route('store.order') => 'অর্ডার করুন',
 ];
 
 $menuColorList = [
     route('home') => '#6c5ce7',
+    route('search') => '#6c5ce7',
     route('cart') => '#1C8D73',
-    route('order') => '#E03B8B',
+    route('store.order') => '#E03B8B',
 ];
 
 $menuLinkUrl = isset($menuLinkList[$currentUrl]) ? $menuLinkList[$currentUrl] : '';

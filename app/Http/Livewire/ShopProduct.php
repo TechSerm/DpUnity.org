@@ -32,6 +32,7 @@ class ShopProduct extends Component
 
     public function render()
     {
+       // sleep(1);
         return view('store.product.single_product');
     }
 }

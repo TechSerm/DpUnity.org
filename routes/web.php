@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ShippingController;
 use Illuminate\Support\Facades\App;
 
 /*
@@ -20,13 +22,15 @@ use Illuminate\Support\Facades\App;
 |
 */
 
-Route::get('/', \App\Http\Livewire\Home::class)->name('home');
+Route::get('/',  [StoreController::class, 'home'])->name('home');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
+Route::get('/search-product', [SearchController::class, 'getSearchProduct'])->name('search.products');
 //Route::get('/', [StoreController::class, 'home'])->name('store.home');
 Route::get('/home-products', [StoreController::class, 'homeProducts'])->name('store.home.products');
 
 Route::get('/cart', \App\Http\Livewire\Cart\CartIndex::class)->name('cart');
 
-Route::get('/order', [OrderController::class, 'index'])->name('order');
+Route::get('/order', [OrderController::class, 'index'])->name('store.order');
 Route::post('/order', [OrderController::class, 'create']);
 
 Route::prefix('admin')->group(function () {
@@ -50,6 +54,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/orders/{order}/update_customer_details', [OrderController::class, 'showUpdateCustomer'])->name('orders.customer.update');
         Route::put('/orders/{order}/update_customer_details', [OrderController::class, 'updateCustomer']);
         Route::resource('orders', OrderController::class);
+
+        Route::get('/shippings/data', [ShippingController::class, 'getData'])->name('shippings.data');
+        Route::resource('shippings', ShippingController::class);
     });
 
 

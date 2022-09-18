@@ -11,14 +11,14 @@ class StoreController extends Controller
 {
     public function home()
     {
-        $products = Product::all();
+        $products = Product::paginate(6);
         return view('store.home.index', ['products' => $products]);
     }
 
     public function homeProducts()
     {
         $page = request()->page;
-        $products = Product::all();
+        $products = Product::paginate(6);
         return view('store.product.single_product_page', ['products' => $products]);
     }
 

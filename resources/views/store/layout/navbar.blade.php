@@ -9,6 +9,7 @@
 
             <a href="/" style="float: left" class=""><img src="https://bibisena.com/wp-content/uploads/2022/08/Test-8-1.png"
                     height="45px" alt=""> </a>
+            
             <div class="nav-mobile-footer-menu" id="nav-menu">
                 @include('store.layout.mobile_menu')
             </div>
@@ -22,7 +23,7 @@
                     </li>
 
                     <li class="nav__item">
-                        <a href="#about" class="nav__link">
+                        <a href="{{route('search')}}" class="nav__link">
                             <i class='fa fa-search nav__icon'></i>
                             <span class="nav__name">খুজুন</span>
                         </a>

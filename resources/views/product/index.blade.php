@@ -4,7 +4,7 @@
 @stop
 @section('content')
 
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <div class="row">
 
@@ -20,8 +20,9 @@
                     </style>
                     <div class="row">
                         <div class="align-self-end ml-auto mb-4">
-                            <button class="btn btn-primary " data-url="{{ route('products.create') }}" data-modal-title="Create Product"
-                        data-modal-size="650" data-toggle="modal">Create Product</button>
+                            <button class="btn btn-primary " data-url="{{ route('products.create') }}"
+                                data-modal-title="Create Product" data-modal-size="650" data-toggle="modal">Create
+                                Product</button>
                         </div>
                     </div>
                     <table class="table table-bordered table-responsive-md" style="width: 100%" id="myTable">
@@ -47,7 +48,6 @@
     </div>
 @endsection
 @push('scripts')
-
     <script>
         if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
             localStorage.clear();
@@ -69,7 +69,7 @@
                 },
                 ajax: "{{ route('products.data') }}",
                 columns: [{
-                        data: 'woo_id'
+                        data: 'id'
                     },
                     {
                         data: 'image'
@@ -106,7 +106,7 @@
 
         });
 
-        function createProduct(e){
+        function createProduct(e) {
             let form = Helper.form(e);
             form.submit({
                 success: {
@@ -118,7 +118,7 @@
             });
         }
 
-        function reloadProductDatatable(){
+        function reloadProductDatatable() {
             $('#myTable').DataTable().ajax.reload(null, false);
         }
 
@@ -152,12 +152,12 @@
         }
 
         $('#categories').select2({
-            
+
             placeholder: 'Select an Categories',
             allowClear: true,
             minimumInputLength: 1,
             ajax: {
-                url: "{{route('categories.select2_data')}}",
+                url: "{{ route('categories.select2_data') }}",
                 dataType: 'json',
                 delay: 250,
                 processResults: function(response) {
@@ -167,5 +167,15 @@
             }
         });
 
+        function previewFile(event) {
+
+            var output = document.getElementById('image-preview');
+            if (!event.target.files[0]) {
+                // output.src = $('#img-preview-default').attr('src');
+            } else output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        }
     </script>
 @endpush

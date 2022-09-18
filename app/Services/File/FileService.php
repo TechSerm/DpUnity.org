@@ -4,6 +4,7 @@ namespace App\Services\File;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
 class FileService
@@ -25,16 +26,18 @@ class FileService
             $font->angle(10);
         });
 
-        $path = Storage::put($imageName, $image->stream());
-        $url = Storage::url($imageName);
+        //$file-> move(public_path('public/Image'), $filename);
+        //$path = Storage::put($imageName, $image->stream());
+        //$url = Storage::url($imageName);
+        File::put("images/".$imageName, $image->stream());
 
-        return $url;
+        return $imageName;
     }
 
     public function getImageName($imageFile)
     {
         $extension = pathinfo($imageFile->getClientOriginalName(), PATHINFO_EXTENSION);
-        $imageName = "images/" . Str::random(40) . ".jpg";
+        $imageName = Str::random(40) . ".jpg";
         return $imageName;
     }
 }

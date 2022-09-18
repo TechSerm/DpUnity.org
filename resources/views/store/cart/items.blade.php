@@ -9,8 +9,6 @@
     
         @foreach ($items as $key => $item)
             @livewire('cart.cart-item', ['item' => $item])
-            @livewire('cart.cart-item', ['item' => $item])
-            @livewire('cart.cart-item', ['item' => $item])
         @endforeach
 
     </table>
