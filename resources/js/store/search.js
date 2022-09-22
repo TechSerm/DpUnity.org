@@ -11,7 +11,11 @@ const Search = {
         console.log("page init success");
     },
     setSearchQuery: function(searchQuery) {
-        this.searchQuery = searchQuery
+        if (window.location.href.indexOf("search") == -1) return;
+        this.searchQuery = searchQuery;
+        let pageUrl = new URL(window.location.href);
+        pageUrl.searchParams.set('q', searchQuery ? searchQuery : '');
+        history.replaceState({}, '', pageUrl);
     },
     delay: function(callback, ms) {
         var timer = 0;
@@ -25,9 +29,10 @@ const Search = {
         };
     },
     loadInitPage: function() {
+        if (window.location.href.indexOf("search") == -1) return;
         Store.home.pageStop = false;
         this.pageNo = 1;
-        $("#product-list").html("");
+        $("#searchResultProductList").html("");
         // console.log("congratulations page start " + Store.home.pageNo);
         this.getProductPage();
     },
@@ -43,19 +48,20 @@ const Search = {
     },
     getProductPage: function() {
         this.pageLoading = true;
-        $("#loader-area").show();
+        $("#search-loader-area").show();
         $.get(this.searchUrl, {
             page: this.pageNo,
             q: this.searchQuery
         }, function(response) {
-            $("#product-list").append(response);
-            $("#loader-area").hide();
+            $("#searchResultProductList").append(response);
+            $("#search-loader-area").hide();
             Store.search.pageStop = response == "" ? true : false;
             Store.search.pageLoading = false;
             window.livewire.rescan();
         });
     },
     onSearchScroll: function() {
+        if (window.location.href.indexOf("search") == -1) return;
         if ($(window).scrollTop() + window.innerHeight + 10 >= document.body.scrollHeight) {
             if ($("#search").val() !== Store.search.searchQuery) return;
             Store.search.loadProductPage();

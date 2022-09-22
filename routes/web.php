@@ -8,7 +8,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SearchKeywordController;
 use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\StoreOrderController;
 use Illuminate\Support\Facades\App;
 
 /*
@@ -30,8 +32,8 @@ Route::get('/home-products', [StoreController::class, 'homeProducts'])->name('st
 
 Route::get('/cart', \App\Http\Livewire\Cart\CartIndex::class)->name('cart');
 
-Route::get('/order', [OrderController::class, 'index'])->name('store.order');
-Route::post('/order', [OrderController::class, 'create']);
+Route::get('/order', [StoreOrderController::class, 'index'])->name('store.order');
+Route::post('/order', [StoreOrderController::class, 'create']);
 
 Route::prefix('admin')->group(function () {
 
@@ -54,6 +56,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/orders/{order}/update_customer_details', [OrderController::class, 'showUpdateCustomer'])->name('orders.customer.update');
         Route::put('/orders/{order}/update_customer_details', [OrderController::class, 'updateCustomer']);
         Route::resource('orders', OrderController::class);
+
+        Route::get('/search-keywords/data', [SearchKeywordController::class, 'getData'])->name('search-keywords.data');
+        Route::resource('search-keywords', SearchKeywordController::class);
 
         Route::get('/shippings/data', [ShippingController::class, 'getData'])->name('shippings.data');
         Route::resource('shippings', ShippingController::class);

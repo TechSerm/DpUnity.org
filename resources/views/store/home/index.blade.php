@@ -41,5 +41,6 @@
                 Store.home.loadHomeProduct("{{ route('store.home.products') }}");
             }
         }
+
     </script>
 @endpush

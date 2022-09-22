@@ -145,6 +145,7 @@ class ProductController extends Controller
         ]);
 
         $product->categories()->sync($request->categories);
+        $product->keyWordUpdate();
 
         return response()->json([
             'message' => 'Product Successfully Updated'

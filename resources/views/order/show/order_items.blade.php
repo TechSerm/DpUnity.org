@@ -26,26 +26,28 @@
                 @else
                     {{$item->name}}
                 @endif
+                <br/>
+                {{bnConvert()->number($item->price)}} ৳
                 
             </td>
             <td style="width: 100px">
-                <span class="mb-1"> {{bnConvert()->bnNum($item->quantity)}}</span>
+                <span class="mb-1"> {{bnConvert()->number($item->quantity)}}</span>
             </td>
-            <td style="width: 100px">{{bnConvert()->bnNum($item->price)}} ৳</td>
-            <td style="width: 150px">{{bnConvert()->bnNum($item->wholesale_price)}} ৳</td>
-            <td style="width: 100px">{{bnConvert()->bnNum($item->profit)}} ৳</td>
-            <td style="width: 100px">{{bnConvert()->bnNum($item->total)}} ৳</td>
+            <td style="width: 100px">{{bnConvert()->number($item->price)}} ৳</td>
+            <td style="width: 150px">{{bnConvert()->number($item->wholesale_price)}} ৳</td>
+            <td style="width: 100px">{{bnConvert()->number($item->profit)}} ৳</td>
+            <td style="width: 100px">{{bnConvert()->number($item->total)}} ৳</td>
         </tr>
     @endforeach
         <tr>
             <td colspan="3"></td>
             <td colspan="2">Sub Total</td>
-            <td colspan="2">{{$order->subtotal}}</td>
+            <td colspan="2">{{bnConvert()->number($order->subtotal)}} ৳</td>
         </tr>
         <tr>
             <td colspan="3"></td>
             <td colspan="2">Delivery Fee</td>
-            <td colspan="2">{{$order->shipping_total}}</td>
+            <td colspan="2">{{bnConvert()->number(19)}}</td>
         </tr>
         <tr>
             <td colspan="3"></td>

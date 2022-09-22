@@ -1,0 +1,8 @@
+$colorList: ( '1': '#34495e', '2':'#3498db', '3':'#9b59b6', '4':'#e67e22', '5':'#f1c40f', '6':'#22a6b3');
+@each $key,
+$val in $colorList {
+    .tag-color-#{$key} {
+        background-color: #{$val};
+        color: #ffffff;
+    }
+}

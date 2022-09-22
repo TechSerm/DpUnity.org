@@ -35,18 +35,18 @@ $color = isset($menuColorList[$currentUrl]) ? $menuColorList[$currentUrl] : '';
     @keyframes jump {
         33% {
             /* text-shadow: 0 5px #f37121, 0 5px #f2aaaa; */
-            font-size: 18px;
+            font-size: 15px;
         }
 
         50% {
             /* transform: translate(0, 0) rotate(-4deg); */
             /* text-shadow: 0 0px #8fc0a9, 0 0px #84a9ac; */
-            font-size: 18px;
+            font-size: 15px;
         }
 
         66.67% {
             /* text-shadow: 0 -5px #d54062, 0 -5px #8fc0a9; */
-            font-size: 18px;
+            font-size: 15px;
         }
     }
 </style>
@@ -55,8 +55,8 @@ $color = isset($menuColorList[$currentUrl]) ? $menuColorList[$currentUrl] : '';
     <a href="{{ $menuLinkUrl }}">
         <div style="float: right; background: rgba(0,0,0,0.5); min-width: 30%">
             <div class="amount" style="width: 100%">
-                <span style="display: block;" id="mobile-cart-area" class="">
-                    ৳ {{ convertBanglaNumber($totalCartPrice) }}
+                <span style="display: block; font-size: 14px" id="mobile-cart-area" class="">
+                    ৳ {{ bnConvert()->number($totalCartPrice) }}
                     <hr>
                     {{ convertBanglaNumber($totalCart) }} টি পণ্য
                 </span>

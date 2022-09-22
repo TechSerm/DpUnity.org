@@ -271,6 +271,12 @@ return [
             'icon'        => 'fas fa-paperclip',
             'label_color' => 'success',
         ],
+        [
+            'text'        => 'Search Keywords',
+            'url'         => '/admin/search-keywords',
+            'icon'        => 'fas fa-search',
+            'label_color' => 'success',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

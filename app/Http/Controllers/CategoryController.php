@@ -99,8 +99,6 @@ class CategoryController extends Controller
             'image' => $this->getImageUrl($request, $category->image)
         ]);
 
-        $category->woo()->update();
-
         return response()->json([
             'message' => 'Category Successfully Updated'
         ]);

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Cart\Cart;
 use App\Services\Image\ImageService;
+use App\Services\Search\SearchService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Woo\Models\WooProduct;
@@ -53,6 +54,11 @@ class Product extends Model
     public function cartUpdate($quantity)
     {
         Cart::update($this->id, $quantity);
+    }
+
+    public function keyWordUpdate()
+    {
+        SearchService::createSearchKeyword($this->name);
     }
 
     public function woo()
