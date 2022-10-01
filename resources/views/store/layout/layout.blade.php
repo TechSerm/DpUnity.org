@@ -34,6 +34,12 @@
                 $('#mobile-cart-area').removeClass('cart-animation');
             }, 5000);
         })
+
+        window.addEventListener('order-confirm-modal', event => {
+            //alert("Working");
+            $('#orderDetailsModal').addClass("show").css("display","block");
+            // $('#orderDetailsModal').modal('toggle');
+        })
     </script>
 
     @livewireStyles
@@ -41,7 +47,6 @@
 
 <body>
     @livewire('shop-footer')
-    {{-- @include('store.layout.nav_test') --}}
     <div id="pageLoader" style="display: none">
         @include('store.layout.loader')
     </div>

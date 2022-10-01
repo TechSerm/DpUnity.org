@@ -30,7 +30,7 @@ class ProductObserver
 
     public function deleting(Product $product)
     {
-        $product->woo()->delete();
+        
     }
 
     /**

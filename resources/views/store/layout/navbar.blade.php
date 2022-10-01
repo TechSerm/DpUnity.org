@@ -7,7 +7,7 @@
             <a href="/" style="float: left" class=""><img src="https://bibisena.com/wp-content/uploads/2022/08/Test-8-1.png"
                     height="45px" alt=""> </a>
             
-            <div class="nav-mobile-footer-menu" id="nav-menu">
+            <div class="nav-mobile-footer-menu" style="{{ $totalCart > 0 ? '' : 'display: none' }}" id="nav-menu">
                 @include('store.layout.mobile_menu')
             </div>
             <div class="nav__menu" style="float: right" id="nav-menu">
@@ -35,8 +35,6 @@
                     </li>
                 </ul>
             </div>
-
-            <img src="assets/img/perfil.png" alt="" class="nav__img">
         </nav>
     </header>
 </div>

@@ -33,22 +33,23 @@
         }
     </style>
     <div class="searchArea sticky-top">
-        <input type="text" id="search" value="{{$searchQuery}}" placeholder="পণ্য খুঁজুন (যেমন, ডিম, দুধ, আলু)" autofocus>
+        <input type="text" id="search" value="{{ $searchQuery }}" placeholder="পণ্য খুঁজুন (যেমন, ডিম, দুধ, আলু)"
+            autofocus>
     </div>
     <div class="row no-gutters" style="margin: 15px -15px 0px -5px;" id="searchResultProductList">
-        @include("store.product.single_product_page", ['products' => $products])
+        @include('store.product.single_product_page', ['products' => $products])
     </div>
     <div class="loader-area" id="search-loader-area">
-        <img src="https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif" height="70px" width="70px" alt="">
+        <img src="{{ asset('assets/img/loader.gif') }}" height="70px" width="70px" alt="">
     </div>
-    
+
 @stop
 
 @push('scripts')
     <script>
         Store.search.init({
             searchUrl: "{{ route('search.products') }}",
-            searchQuery: "{{$searchQuery}}"
+            searchQuery: "{{ $searchQuery }}"
         });
     </script>
 @endpush

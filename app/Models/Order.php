@@ -11,6 +11,7 @@ class Order extends Model
 
     protected $fillable = [
         'woo_id',
+        'uuid',
         'customer_name',
         'customer_phone',
         'customer_address',

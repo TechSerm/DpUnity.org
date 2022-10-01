@@ -58,7 +58,7 @@
                 },
                 ajax: "{{ route('orders.data') }}",
                 columns: [{
-                        data: 'woo_id'
+                        data: 'id'
                     },
 
                     {

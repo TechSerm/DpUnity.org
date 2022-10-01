@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SearchKeywordController;
 use App\Http\Controllers\ShippingController;
@@ -24,16 +25,22 @@ use Illuminate\Support\Facades\App;
 |
 */
 
-Route::get('/',  [StoreController::class, 'home'])->name('home');
-Route::get('/search', [SearchController::class, 'index'])->name('search');
-Route::get('/search-product', [SearchController::class, 'getSearchProduct'])->name('search.products');
-//Route::get('/', [StoreController::class, 'home'])->name('store.home');
-Route::get('/home-products', [StoreController::class, 'homeProducts'])->name('store.home.products');
+Route::middleware(['device_token_check'])->group(function () {
+    Route::get('/',  [StoreController::class, 'home'])->name('home');
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
+    Route::get('/search-product', [SearchController::class, 'getSearchProduct'])->name('search.products');
+    //Route::get('/', [StoreController::class, 'home'])->name('store.home');
+    Route::get('/home-products', [StoreController::class, 'homeProducts'])->name('store.home.products');
+    Route::get('/product/{product}', [StoreController::class, 'showProduct'])->name('store.product.show');
 
-Route::get('/cart', \App\Http\Livewire\Cart\CartIndex::class)->name('cart');
+    Route::get('/cart', \App\Http\Livewire\Cart\CartIndex::class)->name('cart');
 
-Route::get('/order', [StoreOrderController::class, 'index'])->name('store.order');
-Route::post('/order', [StoreOrderController::class, 'create']);
+    Route::get('/order', [StoreOrderController::class, 'index'])->name('store.order');
+    Route::post('/order', [StoreOrderController::class, 'create']);
+    Route::get('/order/{uuid}', [StoreOrderController::class, 'show'])->name('store.order.show');
+    
+});
+
 
 Route::prefix('admin')->group(function () {
 
@@ -62,6 +69,9 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/shippings/data', [ShippingController::class, 'getData'])->name('shippings.data');
         Route::resource('shippings', ShippingController::class);
+
+        Route::resource('push_notifications', PushNotificationController::class);
+        Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
     });
 
 

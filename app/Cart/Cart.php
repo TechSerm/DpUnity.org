@@ -24,10 +24,26 @@ class Cart
         return $response;
     }
 
+    public static function isEmpty()
+    {
+        $products = self::items();
+        return empty($products);
+    }
+
     public static function totalPrice()
     {
         $items = collect(self::items());
         return $items->sum('cart_total_price');
+    }
+
+    public static function getDeliveryFee()
+    {
+        return 19;
+    }
+
+    public static function getTotalWithDeliveryFee()
+    {
+        return self::totalPrice() + self::getDeliveryFee();
     }
 
     public static function clear()
@@ -46,7 +62,7 @@ class Cart
     {
         $cart = CartAction::get();
         $cart[$productId] = isset($cart[$productId]) ? $quantity : $quantity;
-    //    dd($cart);
+        //    dd($cart);
         CartAction::save($cart);
     }
 

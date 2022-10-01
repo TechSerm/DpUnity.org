@@ -8,12 +8,14 @@ use Livewire\Component;
 class ShopProduct extends Component
 {
     public $product;
+    public $isShowPage;
     public $count = 1;
 
-    public function mount($product)
+    public function mount($product, $isShowPage = false)
     {
         $this->product = $product;
         $this->count = $product->cartQuantity();
+        $this->isShowPage = $isShowPage;
     }
 
     public function increment(){

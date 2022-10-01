@@ -4,10 +4,11 @@
 
     <div class="row">
         <div class="col-md-6">
-            @livewire('order.order-details')
+            @include('store.order.summery')
         </div>
+
         <div class="col-md-6">
-            {{-- @livewire('cart.cart-items') --}}
+            @include("store.order.confirm")
         </div>
     </div>
 

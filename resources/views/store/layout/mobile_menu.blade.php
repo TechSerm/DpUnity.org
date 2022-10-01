@@ -1,27 +1,29 @@
 @php
 $menuLinkList = [
-    route('home') => route('cart'),
-    route('search') => route('cart'),
-    route('cart') => route('store.order'),
+    route('home') => route('store.order'),
+    route('search') => route('store.order'),
+    route('cart') => route('cart'),
 ];
 
 $menuTextList = [
-    route('home') => 'বাজার',
-    route('search') => 'বাজার',
-    route('cart') => 'অর্ডার পেইজে যান',
+    route('home') => 'অর্ডার পেইজে যান',
+    route('search') => 'অর্ডার পেইজে যান',
+    route('cart') => 'অর্ডার করুন',
     route('store.order') => 'অর্ডার করুন',
 ];
 
 $menuColorList = [
-    route('home') => '#6c5ce7',
-    route('search') => '#6c5ce7',
-    route('cart') => '#1C8D73',
+    route('home') => '#1C8D73',
+    route('search') => '#1C8D73',
+    route('cart') => '#E03B8B',
     route('store.order') => '#E03B8B',
 ];
 
-$menuLinkUrl = isset($menuLinkList[$currentUrl]) ? $menuLinkList[$currentUrl] : '';
-$menuText = isset($menuTextList[$currentUrl]) ? $menuTextList[$currentUrl] : '';
-$color = isset($menuColorList[$currentUrl]) ? $menuColorList[$currentUrl] : '';
+$isOrderPage = route('store.order') == $currentUrl;
+
+$menuLinkUrl = isset($menuLinkList[$currentUrl]) ? $menuLinkList[$currentUrl] : route('store.order');
+$menuText = isset($menuTextList[$currentUrl]) ? $menuTextList[$currentUrl] : 'অর্ডার পেইজে যান';
+$color = isset($menuColorList[$currentUrl]) ? $menuColorList[$currentUrl] : '#1C8D73';
 
 @endphp
 
@@ -50,22 +52,27 @@ $color = isset($menuColorList[$currentUrl]) ? $menuColorList[$currentUrl] : '';
         }
     }
 </style>
-
-<div class="cart" style="background-color: {{ $color }}">
-    <a href="{{ $menuLinkUrl }}">
-        <div style="float: right; background: rgba(0,0,0,0.5); min-width: 30%">
-            <div class="amount" style="width: 100%">
-                <span style="display: block; font-size: 14px" id="mobile-cart-area" class="">
-                    ৳ {{ bnConvert()->number($totalCartPrice) }}
-                    <hr>
-                    {{ convertBanglaNumber($totalCart) }} টি পণ্য
-                </span>
+@if ($totalCart > 0)
+    @php
+        $cartPage;
+    @endphp
+    <div class="cart" style="background-color: {{ $color }}">
+        <a href="{{ $menuLinkUrl }}" data-toggle="{{ $isOrderPage ? 'modal' : '' }}"
+            data-target="{{ $isOrderPage ? '#orderDetailsModal' : '' }}">
+            <div style="float: right; background: rgba(0,0,0,0.5); min-width: 30%">
+                <div class="amount" style="width: 100%">
+                    <span style="display: block; font-size: 14px" id="mobile-cart-area" class="">
+                        ৳ {{ bnConvert()->number($totalCartPrice) }}
+                        <hr>
+                        {{ bnConvert()->number($totalCart) }} টি পণ্য
+                    </span>
+                </div>
             </div>
-        </div>
-        <div style="">
-            <div class="status-area" style="background: rgba(0,0,0,0.1); min-width: 70%">
-                {{ $menuText }}
+            <div style="">
+                <div class="status-area" style="background: rgba(0,0,0,0.1); min-width: 70%">
+                    {{ $menuText }}
+                </div>
             </div>
-        </div>
-    </a>
-</div>
+        </a>
+    </div>
+@endif

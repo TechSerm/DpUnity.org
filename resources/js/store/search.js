@@ -72,7 +72,6 @@ const Search = {
 $(window).keyup('#search', Search.delay(function() {
     $("#product-list").html("working " + $("#search").val());
     Search.setSearchQuery($("#search").val());
-    console.log("key success");
     Search.loadInitPage();
 }, 500));
 

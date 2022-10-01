@@ -6,6 +6,9 @@ window._ = _;
 import 'bootstrap';
 window.$ = window.jQuery = require('jquery')
 
+// require('jquery-viewer');
+// require('viewerjs/dist/viewer.css');
+
 var Turbolinks = require("turbolinks")
 Turbolinks.start()
 

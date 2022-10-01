@@ -58,7 +58,7 @@
         .checkout-details {
             padding: 2px;
             border: 1px solid #eeeeee;
-
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             border-radius: 5px;
         }
 
@@ -66,7 +66,9 @@
             background-color: #8e44ad;
             color: #ffffff;
             text-align: center;
-            padding: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 5px 10px 5px;
             margin-bottom: 15px;
             border-radius: 5px;
         }
@@ -80,11 +82,14 @@
         }
     </style>
 
-    <div class="checkout-details">
-        <div class="details-header">
-            আপনার অর্ডার করা পণ্য আপনার কাছে পৌঁছানোর জন্য আপনি নিচের তথ্য গুলা পূরণ করেন !
-        </div>
-        <div class="details-body">
+    <div class="checkout-detailss">
+        {{-- <div class="details-header">
+            আপনার তথ্য
+        </div> --}}
+        <div class="details-bodyy" >
+            <div style="text-align: center;margin-bottom: 15px;margin-top: -5px; font-weight: bold; color: #484646">
+                আপনার অর্ডার করা পণ্য আপনার কাছে পৌঁছানোর জন্য আপনি নিচের তথ্য গুলা পূরণ করেন !
+            </div>
             <div class="input-group">
                 <input type="text" class="input-area @error('fullName') is-invalid @enderror"
                     wire:model.debounce.500ms="fullName" required id="inputField" />
@@ -97,7 +102,8 @@
             </div>
 
             <div class="input-group">
-                <input type="text" class="input-area @error('address') is-invalid @enderror" wire:model.debounce.500ms="address" required id="address" />
+                <input type="text" class="input-area @error('address') is-invalid @enderror"
+                    wire:model.debounce.500ms="address" required id="address" />
                 @error('address')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -122,8 +128,6 @@
                     ডেলিভারি এর সময় আমরা এই নম্বর টিতে যুগাযুগ করবো </small>
 
             </div>
-
-            <div wire:loading>Searching users...</div>
         </div>
     </div>
 

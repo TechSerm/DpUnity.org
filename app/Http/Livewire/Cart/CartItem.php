@@ -40,6 +40,7 @@ class CartItem extends Component
       //  $this->emit('cartItemUpdate');
         $this->emit('cartUpdate');
         $this->emit('cartSubtotalUpdate');
+        $this->emit('updateCartSubtotalArea');
         $this->dispatchBrowserEvent('change-cart-animation');
     }
 

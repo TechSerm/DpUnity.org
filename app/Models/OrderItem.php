@@ -19,6 +19,8 @@ class OrderItem extends Model
         'wholesale_price_last_update',
         'profit',
         'total',
+        'unit_quantity',
+        'unit'
     ];
 
     public function product(){

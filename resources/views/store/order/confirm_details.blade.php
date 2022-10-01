@@ -1,0 +1,1 @@
+@livewire('order.order-details', ['checkValidate' => $checkValidate ?? false])
