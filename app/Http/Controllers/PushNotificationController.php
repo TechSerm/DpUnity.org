@@ -7,6 +7,7 @@ use App\Models\PushNotification;
 use App\Services\PushNotification\PushNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Yajra\DataTables\Facades\DataTables;
 
 class PushNotificationController extends Controller
 {
@@ -23,6 +24,40 @@ class PushNotificationController extends Controller
         ]);
     }
 
+    public function getData(Request $request)
+    {
+        $pushNotificationQuery = PushNotification::with('clicks');
+
+        if (!request()->get('order')) {
+            $pushNotificationQuery = $pushNotificationQuery->orderBy('id', 'desc');
+        }
+        return Datatables::of($pushNotificationQuery)
+            ->filter(function ($query) use ($request) {
+            })
+            ->editColumn('image', function ($model) {
+                return "<img src='" . $model->image . "' height='50px' width='50px' class='img-fluid img-thumbnail'>";
+            })
+            ->editColumn('url', function ($model) {
+                return "<a href=" . $model->url . ">" . $model->url . "</a>";
+            })
+            ->editColumn('created_at', function ($model) {
+                return $model->created_at->diffForHumans();
+            })
+            ->addColumn('total_clicks', function ($model) {
+                return $model->clicks->count();
+            })
+            ->orderColumn('total_clicks', function ($query, $order) use ($pushNotificationQuery) {
+               // dd($pushNotificationQuery->orderBy('ip', $order)->toSql());
+                //$query->clicks()->orderBy('order_notification_clicks.ip', $order);
+            })
+            ->addColumn('action', function ($model) {
+                
+                return "";
+            })
+            ->make(true);
+    }
+
+
     public function create()
     {
         return view('push_notification.create');
@@ -38,8 +73,14 @@ class PushNotificationController extends Controller
             'image' => $request->image,
         ]);
 
-        $this->pushNotificationService->notifyAll($pushNotification);
+        $totalSuccessfullySend = $this->pushNotificationService->notifyAll($pushNotification);
+
+        return response()->json([
+            'message' => 'Notification Successfully Send ' . $totalSuccessfullySend . ' Device'
+        ]);
     }
+
+    
 
     public function show()
     {
@@ -59,47 +100,5 @@ class PushNotificationController extends Controller
     public function delete()
     {
         return view('category.create');
-    }
-
-    public function sendPushNotification()
-    {
-    }
-
-    public function sendTestPushNotification(Request $request)
-    {
-        $firebaseToken = NotificationDevice::whereNotNull('token')->pluck('token')->all();
-
-        $SERVER_API_KEY = 'AAAAGN5kMhY:APA91bHq8R97jpbd3wQ31WCPNbDs0sV0tgLyApM7ZmRivwH_td4UuDfYvH_Nw89ngF76VyVdJz5hgY9i-puudFksGcMlTUmSj3QsYyzNsoZWYFOc11zv4a0IARmXPNYl0NQAjVNmKu7-';
-
-        $data = [
-            "registration_ids" => $firebaseToken,
-            "notification" => [
-                "title" => "বিবিসিনার বিশেষ অফার",
-                "body" => "মাত্র 38 টাকা ✌️ কেজি তে পেঁয়াজ কিনুন",
-            ],
-            "data" => [
-                "url" => "http://192.168.31.7:8080/order?notification_id=123456",
-                "image" => "https://chaldn.com/_mpimage/paka-pape-50-gm-1-kg?src=https%3A%2F%2Feggyolk.chaldal.com%2Fapi%2FPicture%2FRaw%3FpictureId%3D23193&q=low&v=1"
-            ]
-        ];
-        $dataString = json_encode($data);
-
-        $headers = [
-            'Authorization: key=' . $SERVER_API_KEY,
-            'Content-Type: application/json',
-        ];
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-
-        $response = curl_exec($ch);
-
-        return $response;
     }
 }

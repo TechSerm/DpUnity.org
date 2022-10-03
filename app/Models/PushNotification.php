@@ -13,6 +13,6 @@ class PushNotification extends Model
 
     public function clicks()
     {
-        return $this->hasMany(PushNotification::class);
+        return $this->hasMany(PushNotificationClick::class);
     }
 }

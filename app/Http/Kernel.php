@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'cors'          => \App\Http\Middleware\Cors::class,
         'device_token_check'          => \App\Http\Middleware\Notification\NotificationDeviceTokenCheck::class,
+        'check_push_notification_click'          => \App\Http\Middleware\Notification\CheckNotificationClick::class,
         
     ];
 }

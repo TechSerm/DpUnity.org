@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\App;
 |
 */
 
-Route::middleware(['device_token_check'])->group(function () {
+Route::middleware(['device_token_check','check_push_notification_click'])->group(function () {
     Route::get('/',  [StoreController::class, 'home'])->name('home');
     Route::get('/search', [SearchController::class, 'index'])->name('search');
     Route::get('/search-product', [SearchController::class, 'getSearchProduct'])->name('search.products');
@@ -69,7 +69,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/shippings/data', [ShippingController::class, 'getData'])->name('shippings.data');
         Route::resource('shippings', ShippingController::class);
-
+        
+        Route::get('/push_notifications/data', [PushNotificationController::class, 'getData'])->name('push_notifications.data');
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
     });

@@ -8,36 +8,68 @@ use App\Models\PushNotification;
 
 class PushNotificationService
 {
-    public function notify(PushNotification $pushNotification){
+    public function notify(PushNotification $pushNotification)
+    {
         dd($pushNotification);
-        
     }
 
-    public function notifyAll(PushNotification $pushNotification){
-        $firebaseTokens = NotificationDevice::whereNotNull('token')->pluck('token')->chunk(1);
+    public function notifyAll(PushNotification $pushNotification)
+    {
+        //fcm support max 1000 device per request so need to make group
+        $firebaseTokens = NotificationDevice::whereNotNull('token')->pluck('token')->chunk(999);
+        $totalSuccessfullySend = 0;
+
         foreach ($firebaseTokens as $firebaseToken) {
-            $this->sendNotification($firebaseToken, [
+            $response = $this->sendNotification(array_values($firebaseToken->toArray()), [
                 "title" => $pushNotification->title,
                 "body" => $pushNotification->body,
-                "url" => $pushNotification->url,
-                "largeIcon"=> "https://png.pngtree.com/png-vector/20210703/ourlarge/pngtree-dhamaka-offer-bengali-label-english-meaning-of-blast-png-image_3534938.jpg",
-                "bodyImage"=> $pushNotification->image
+                "url" => $this->getNotificationUrl($pushNotification),
+                "largeIcon" => "",
+                "bodyImage" => $pushNotification->image
             ]);
+
+            $totalSuccessfullySend += $response['success'] ?? 0;
         }
+
+        $pushNotification->update([
+            'total_sends' => $totalSuccessfullySend
+        ]);
+
+        return $totalSuccessfullySend;
     }
 
-    public function notifyTest(){
-        
+    private function getNotificationUrl(PushNotification $pushNotification)
+    {
+        $url = $pushNotification->url == '' ? url('/') : $pushNotification->url;
+
+        $query = 'push_notification_id=' . $pushNotification->id;
+
+        $parsedUrl = parse_url($url);
+    
+        if ($parsedUrl['path'] == null) {
+            $url .= '/';
+        }
+        $parsedUrl['query'] = $parsedUrl['query'] ?? NULL;
+        $separator = ($parsedUrl['query'] == NULL) ? '?' : '&';
+        $url .= $separator . $query;
+
+        return $url;
     }
 
-    public function notifyByIp($ip, $data){
+    public function notifyTest()
+    {
+    }
+
+    public function notifyByIp($ip, $data)
+    {
         $firebaseToken = NotificationDevice::where(['last_visit_ip' => $ip])->whereNotNull('token')->pluck('token');
         return $this->sendNotification($firebaseToken, $data);
     }
 
-    public function sendNotification($deviceTokens, $data){
+    public function sendNotification($deviceTokens, $data)
+    {
         $SERVER_API_KEY = 'AAAAGN5kMhY:APA91bHq8R97jpbd3wQ31WCPNbDs0sV0tgLyApM7ZmRivwH_td4UuDfYvH_Nw89ngF76VyVdJz5hgY9i-puudFksGcMlTUmSj3QsYyzNsoZWYFOc11zv4a0IARmXPNYl0NQAjVNmKu7-';
-        
+
         $data = array_merge([
             'title' => '',
             'body' => '',
@@ -69,7 +101,6 @@ class PushNotificationService
 
         $response = curl_exec($ch);
 
-        return $response;
+        return json_decode($response, true);
     }
 }
-
