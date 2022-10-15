@@ -6,69 +6,62 @@
 
 @section('content')
 
+    @php
+        $startDate = \Carbon\Carbon::create(request()->start_date);
+        $endDate = \Carbon\Carbon::create(request()->end_date);
+    @endphp
 
-    <div class="row">
-        <div class="col-md-3 col-sm-6">
-            <x-adminlte-small-box title="424" text="Total Products" icon="fas fa-eye text-dark" theme="teal" url="#"
-                url-text="View details" />
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <x-adminlte-small-box title="424" text="Views" icon="fas fa-eye text-dark" theme="teal" url="#"
-                url-text="View details" />
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <x-adminlte-small-box title="424" text="Views" icon="fas fa-eye text-dark" theme="teal" url="#"
-                url-text="View details" />
-        </div>
-        <div class="col-md-3 col-sm-6">
-            <x-adminlte-small-box title="424" text="Views" icon="fas fa-eye text-dark" theme="teal" url="#"
-                url-text="View details" />
-        </div>
-        <div class="col-md-6 card">
-            <canvas id="myChart" width="400" height="200"></canvas>
 
+    <div class="card">
+        <div class="card-header"><b>Product Snapshot</b></div>
+        <div class="card-body">
+            @include('dashboard.product_area')
         </div>
     </div>
-@endsection
 
-
-@push('scripts')
-<script>
-    const ctx = document.getElementById('myChart').getContext('2d');
-const myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
+    <div class="card">
+        <div class="card-header"><b>Order Report</b></div>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="date" id="startDate" value="{{ $startDate->format('Y-m-d') }}" class="form-control mb-1">
+                </div>
+                <div class="col-md-3">
+                    <input type="date" id="endDate" value="{{ $endDate->format('Y-m-d') }}" class="form-control mb-1">
+                </div>
+                <div class="col-md-3">
+                    <select name="" class="form-control mb-1" id="vendorSelect">
+                        <option value="">All Vendor</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary" onclick="filterDashboardOrder()">Filter</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-header">
+            <b>{{ $startDate->format('d M, Y') }}</b> - <b>{{ $endDate->format('d M, Y') }}</b>
+        </div>
+        <div class="card-body">
+            @include('dashboard.order_area')
+        </div>
+    </div>
+    <script>
+        function filterDashboardOrder() {
+            startDate = $("#startDate").val();
+            endDate = $("#endDate").val();
+            vendorId = $("#vendorSelect").val();
+            if (startDate == "" || endDate == "") {
+                alert("Please select date");
+                return;
             }
+            var url = new URL(window.location.href);
+            url.searchParams.set('start_date', startDate);
+            url.searchParams.set('end_date', endDate);
+            url.searchParams.set('vendor', vendorId);
+
+            window.location.href = url;
         }
-    }
-});
-</script>
-    
-@endpush
+    </script>
+
+@endsection

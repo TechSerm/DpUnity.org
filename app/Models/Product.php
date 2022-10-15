@@ -36,9 +36,14 @@ class Product extends Model
         return $this->imageSrv()->src();
     }
 
+    public function imageTable()
+    {
+        return $this->belongsTo(Image::class,'image_id');
+    }
+
     public function imageSrv()
     {
-        return new ImageService($this->image_id);
+        return new ImageService($this->imageTable);
     }
 
     public function categories()

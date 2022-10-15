@@ -4,8 +4,10 @@
 <tr style="{{ $totalQuantity <= 0 ? 'display: none' : '' }}" class="cartTr">
     <style>
         .cartTr{
-            box-shadow: 0px 0px 5px rgba(0,0,0,0.3); 
-            margin-bottom: 4px; 
+            /* box-shadow: 0px 0px 5px rgba(70, 8, 86, 0.3);  */
+            border:1px dashed #eeeeee;
+            border-width: 0px 0px 1px 0px!important;
+            margin-bottom: 6px; 
             display:table-row;
             width: 100%;
         }
@@ -30,6 +32,6 @@
         </div>
     </td>
     <td class="align-middle" style="text-align: center; width: 20px;">
-        <span class="badge badge-info">৳ {{ bnConvert()->number($totalPrice) }}</span> 
+        <span class="badge badge-info" style="min-width: 40px">৳ {{ bnConvert()->number($totalPrice) }}</span> 
     </td>
 </tr>

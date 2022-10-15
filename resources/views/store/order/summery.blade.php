@@ -1,5 +1,5 @@
 <div class="checkout-details">
-    <div class="details-header" style="background: #2980b9">
+    <div class="details-header" style="background: #e67e22">
         আপনার বাজার করা পণ্য
     </div>
     <div class="details-body" style="padding: 0px">

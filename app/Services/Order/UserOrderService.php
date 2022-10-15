@@ -29,7 +29,7 @@ class UserOrderService
     private function userOrderQuery()
     {
         $orderIds = $this->getOrderCookie();
-        return Order::where(['customer_ip_address' => request()->ip()])->OrWhereIn('id', $orderIds);
+        return Order::where(['ip_address' => request()->ip()])->OrWhereIn('id', $orderIds);
     }
 
     public function all()
@@ -38,6 +38,6 @@ class UserOrderService
 
     public function active()
     {
-        return $this->userOrderQuery()->where('order_status', '!=', '"delivered"')->get();
+        return $this->userOrderQuery()->where(['is_delivery_complete' => false])->get();
     }
 }

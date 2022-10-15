@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content_header')
-    <h1>Order #{{ $order->woo_id }}</h1>
+    <h1>Order #{{ $order->id }}</h1>
 @endsection
 
 @section('content')
@@ -16,13 +16,16 @@
 
         <div class="col-md-12">
             <div class="card">
+                
                 <div class="card-body pb-5">
-                    @include('order.show.status_bar')
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body pb-5">
-                    @include('order.show.details', ['order', $order])
+                    <div class="row">
+                        <div class="col-md-6">
+                            @include('order.show.details', ['order', $order])
+                        </div>
+                        <div class="col-md-6">
+                            @include('order.show.status_bar')
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card">

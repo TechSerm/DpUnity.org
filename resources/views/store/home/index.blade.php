@@ -7,14 +7,37 @@
             text-align: center;
         }
 
-        .orderArea {
+        .orderArea a{
+            text-decoration: none;
+        }
+
+        .orderAreaCard {
             margin-bottom: 10px;
             border-radius: 5px;
             padding: 5px;
             width: 100%;
-            background: #f8bbd0;
             color: #000000;
-            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+            box-shadow: 0 2px 4px 0 #0d87a9, 0 3px 10px 0 #f8bbd0;
+        }
+
+        .orderArea .pending{
+            background: #ffeaa7;
+        }
+
+        .orderArea .canceled{
+            background: #fab1a0;
+        }
+
+        .orderArea .progressing{
+            background: #a0b9e9;
+        }
+
+        .orderArea .complete{
+            background: #7bed9f;
+        }
+
+        .orderAreaCard:hover {
+            box-shadow: 0 2px 4px 0 #b11771, 0 3px 10px 0 #f8bbd0;
         }
 
         .searchArea {
@@ -31,19 +54,20 @@
             width: 80%;
         }
     </style>
+    <div class="row orderArea">
     @foreach ($activeOrders as $order)
+    <div class="col-md-6">
         <a href="{{ route('store.order.show', ['uuid' => $order->uuid]) }}">
-            <div class="orderArea">
-                2 minute age আপনি একটি অর্ডার করেছেন।<br />
+            <div class="orderAreaCard pending">
+                ২ মিনিট আগে আপনি একটি অর্ডার করেছেন। আপনার অর্ডারটির প্রস্তুতি চলছে।<br />
                 অর্ডার নম্বর: {{ bnConvert()->number($order->id, false) }}<br />
                 সর্বমোট: ৳ {{ bnConvert()->number($order->total) }}<br />
             </div>
         </a>
-    @endforeach
-
-    <div class="orderArea" style="background: #9980FA">
-        আপনার সবগুলো অর্ডার দেখুন
     </div>
+    @endforeach
+    </div>
+    
 
     <div class="row no-gutters" style="margin: 15px -15px 0px -5px;" id="product-list">
 

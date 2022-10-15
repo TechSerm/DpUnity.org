@@ -29,7 +29,7 @@ class StoreOrderController extends Controller
 
     public function create()
     {
-        return OrderFacade::create();
+        return OrderFacade::newOrder()->create();
     }
 
     public function show($uuid)

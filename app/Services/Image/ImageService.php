@@ -12,9 +12,9 @@ class ImageService
 {
     private $image;
 
-    public function __construct($imageId = null)
+    public function __construct(Image $image = null)
     {
-        $this->image = $imageId ? Image::find($imageId) : null;
+        $this->image = $image;
     }
 
     public function src()

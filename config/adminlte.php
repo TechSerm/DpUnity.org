@@ -246,6 +246,7 @@ return [
             'url'         => '/admin',
             'icon'        => 'far fa-fw fa-file',
             'label_color' => 'success',
+            'can' => 'show-dashboard'
         ],
         [
             'text'        => 'Products',

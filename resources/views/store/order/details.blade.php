@@ -21,8 +21,6 @@
             color: #595858;
         }
 
-
-
         .input-group .input-area:focus {
             border: 1px solid royalblue;
             box-shadow: 1px 5px 7px -2px rgba(170, 170, 170, 0.74);
@@ -68,9 +66,8 @@
             text-align: center;
             font-size: 18px;
             font-weight: bold;
-            padding: 10px 5px 10px 5px;
-            margin-bottom: 15px;
-            border-radius: 5px;
+            padding: 15px 5px 15px 5px;
+            border-radius: 5px 5px 5px 5px;
         }
 
         .form-text {
@@ -78,7 +75,7 @@
         }
 
         .details-body {
-            padding: 7px;
+            padding: 0px;
         }
     </style>
 

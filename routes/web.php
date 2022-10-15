@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -60,6 +61,7 @@ Route::prefix('admin')->group(function () {
 
         //order routes
         Route::get('/orders/data', [OrderController::class, 'getData'])->name('orders.data');
+        Route::post('/orders/{order}/change_order_status/{order_status}', [OrderController::class, 'changeOrderStatus'])->name('orders.status.change');
         Route::get('/orders/{order}/update_customer_details', [OrderController::class, 'showUpdateCustomer'])->name('orders.customer.update');
         Route::put('/orders/{order}/update_customer_details', [OrderController::class, 'updateCustomer']);
         Route::resource('orders', OrderController::class);
@@ -73,6 +75,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/push_notifications/data', [PushNotificationController::class, 'getData'])->name('push_notifications.data');
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
+    
+        
+        Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
     });
 
 

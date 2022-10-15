@@ -26,7 +26,6 @@
                         </a>
                     </li>
 
-
                     <li class="nav__item">
                         <a href="{{route('search')}}" class="nav__link">
                             <i class='fa fa-search nav__icon'></i>

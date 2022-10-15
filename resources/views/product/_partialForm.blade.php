@@ -83,17 +83,6 @@ $inputWidth = 6;
 </div>
 
 <div class="mb-3 row">
-    <label for="keywords" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">কীওয়ার্ড</label>
-    <div class="col-sm-{{ $inputWidth }}">
-        <select class="form-control" id="keywords" name="keywords[]" multiple="multiple">
-            
-        </select>
-
-    </div>
-</div>
-
-
-<div class="mb-3 row">
     <label for="categories" class="col-sm-{{ $labelWidth }} col-form-label form-control-label"
         for="image">ক্যাটাগরি</label>
     <div class="col-sm-{{ $inputWidth }}">

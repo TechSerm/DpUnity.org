@@ -77,6 +77,7 @@ const FormBuild = {
         let title = btn.data('title') ? btn.data('title') : "Are you sure?";
         let subTitle = btn.data('subtitle') ? btn.data('subtitle') : "You want be confirm this request!";
         let btnText = btn.data('button-text') ? btn.data('button-text') : "Yes, confirm it!";
+        let cancelBtnText = btn.data('cancel-button-text') ? btn.data('cancel-button-text') : "Close";
 
         Swal.fire({
             title: title,
@@ -86,6 +87,7 @@ const FormBuild = {
             confirmButtonColor: '#27ae60',
             cancelButtonColor: '#d33',
             confirmButtonText: btnText,
+            cancelButtonText: cancelBtnText,
             showLoaderOnConfirm: true,
             preConfirm: function() {
                 return new Promise(function(resolve) {
@@ -94,7 +96,7 @@ const FormBuild = {
                         data: Helper.config.setToken(),
                         type: 'post',
                         success: (response) => {
-                            Helper.url.load();
+                            window.location.reload();
                             Swal.fire({
                                 title: 'Success!',
                                 text: response.message,

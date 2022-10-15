@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->uuid('uuid')->nullable();
+        Schema::create('home_page_products', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->integer('serial_no')->default(0);
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('uuid');
-        });
+        Schema::dropIfExists('home_page_products');
     }
 };

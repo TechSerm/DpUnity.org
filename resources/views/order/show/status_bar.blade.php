@@ -1,22 +1,89 @@
+
+<table class="table table-bordered">
+    @php
+        $totalPendingStatus = 0;
+        $orderStatusList = $order->statusList;
+        $alreadyCanceled = false;
+    @endphp
+    @foreach ($orderStatusList as $status)
+    @php
+        $totalPendingStatus += $status->status == 'pending' ? 1 : 0;
+        if($status->status == 'cancelled')$alreadyCanceled = true;
+    @endphp
+    <tr>
+        <td style="text-align: right; max-width: 400px">
+            {{$status->bn_name}}
+        </td>
+        <td>
+            @if ($totalPendingStatus == 1 && $alreadyCanceled == false)
+                <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order, 'order_status' => $status->uuid])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?" data-subtitle="অর্ডারটি {{$status->bn_name}}?" data-button-text="হ্যা, আমি নিশ্চিত!" data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
+                <button class="btn btn-danger" data-url="{{route('orders.status.change', ['order' => $order, 'order_status' => $status->uuid, 'cancelled' => 'true'])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?" data-subtitle="অর্ডারটি বাতিল করতে চাচ্ছেন?" data-button-text="হ্যা, আমি বাতিল করতে চাচ্ছি!" data-cancel-button-text="বন্ধ করুন">বাতিল করুন</button>
+            @endif
+            @if ($status->status == 'approved')
+                <i class="fa fa-check" style="color: green" aria-hidden="true"></i>
+            @elseif ($status->status == 'cancelled')
+                <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
+            @endif
+            
+        </td>
+    </tr>
+    @endforeach
+</table>
+{{-- 
 <div class="track">
     <div class="step step1 active">
         <span class="icon">
             <i class="fa fa-check"></i>
         </span>
-        <span class="text">Order Verified</span>
-        <button class="btn btn-sm btn-success mr-2">Verified</button>
+        <span class="text">Varification</span>
+
+    </div>
+    <div class="step step1 active">
+        <span class="icon">
+            <i class="fa fa-check"></i>
+        </span>
+        <span class="text">Assign Store</span>
+
+    </div>
+    <div class="step step1 active">
+        <span class="icon">
+            <i class="fa fa-check"></i>
+        </span>
+        <span class="text">Store Received</span>
+
+    </div>
+    <div class="step step1 active">
+        <span class="icon">
+            <i class="fa fa-check"></i>
+        </span>
+        <span class="text">Pack Complete</span>
+        <button class="btn btn-sm btn-success mr-1">Yes</button>
         <button class="btn btn-sm btn-danger">Cancel</button>
     </div>
-    <div class="step step1 non_active t_progress"> 
-        <span class="icon"> 
+    <div class="step step1 active">
+        <span class="icon">
+            <i class="fa fa-check"></i>
+        </span>
+        <span class="text">Start Delivery</span>
+        <button class="btn btn-sm btn-success mr-1">Yes</button>
+        <button class="btn btn-sm btn-danger">Cancel</button>
+    </div>
+    <div class="step step1 non_active t_progress">
+        <span class="icon">
             <i class="fas fa-spinner fa-spin"></i>
-        </span> 
-        <span class="text">Order Packed and Ready</span> 
-        <button class="btn btn-sm btn-success mr-2">Pack Complete</button>
+        </span>
+        <span class="text">Delivery Complete</span>
+        <button class="btn btn-sm btn-success mr-1">Yes</button>
         <button class="btn btn-sm btn-danger">Cancel</button>
     </div>
-    <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text">Order Delivery
-            Complete</span> </div>
+    <div class="step step1 non_active">
+        <span class="icon"><i class="fa fa-user"></i> </span>
+        <span class="text">Payment Send</span>
+    </div>
+    <div class="step">
+        <span class="icon"><i class="fa fa-user"></i> </span>
+        <span class="text">Payment Received</span>
+    </div>
 </div>
 <style>
     .track {
@@ -28,7 +95,6 @@
         display: flex;
         margin-bottom: 60px;
         margin-top: 50px
-        
     }
 
     .track .step {
@@ -95,7 +161,7 @@
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
-        font-size: 18px;
+        font-size: 14px;
         margin-top: 7px
     }
-</style>
+</style> --}}

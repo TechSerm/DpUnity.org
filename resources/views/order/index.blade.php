@@ -19,15 +19,17 @@
                     <table class="table table-bordered table-responsive-md" style="width: 100%" id="myTable">
                         <thead>
                             <tr>
-                                <th>Order No</th>
-                                <th>Status</th>
-                                <th>Total Price</th>
-                                <th>Total Whole Sale Price</th>
-                                <th>Delivery Fee</th>
-                                <th>Total</th>
-                                <th>Total Profit</th>
-                                <th>Last Update</th>
-                                <th style="width: 10%">Action</th>
+                                <th>অর্ডার নম্বর</th>
+                                <th>নাম</th>
+                                <th>মোবাইল</th>
+                                <th>স্টেটাস</th>
+                                <th>পণ্যের দাম </th>
+                                <th>ডেলিভারি ফি</th>
+                                <th>সর্বমোট</th>
+                                <th>সর্বমোট পাইকারি দাম</th>
+                                <th>পণ্যে লাভ</th>
+                                <th>অর্ডার করা হয়েছে</th>
+                                <th style="width: 10%"></th>
                             </tr>
                         </thead>
                     </table>
@@ -60,27 +62,32 @@
                 columns: [{
                         data: 'id'
                     },
-
                     {
-                        data: 'order_status'
+                        data: 'name'
+                    },
+                    {
+                        data: 'phone'
+                    },
+                    {
+                        data: 'status'
                     },
                     {
                         data: 'subtotal'
                     },
                     {
-                        data: 'wholesale_total'
-                    },
-                    {
-                        data: 'shipping_total'
+                        data: 'delivery_fee'
                     },
                     {
                         data: 'total'
                     },
                     {
-                        data: 'profit'
+                        data: 'wholesale_total'
+                    },  
+                    {
+                        data: 'products_profit'
                     },
                     {
-                        data: 'updated_at'
+                        data: 'created_at'
                     },
                     {
                         data: 'action'

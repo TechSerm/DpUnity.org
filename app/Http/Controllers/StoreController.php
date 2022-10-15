@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cart\Cart;
+use App\Facades\HomePageProduct\HomePageProductFacade;
 use App\Facades\Order\OrderFacade;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class StoreController extends Controller
 {
     public function home()
     {
-        $products = Product::paginate(6);
+        $products = HomePageProductFacade::get();
         $activeOrders = OrderFacade::userOrder()->active();
         return view('store.home.index', [
             'products' => $products,
@@ -24,7 +25,7 @@ class StoreController extends Controller
     public function homeProducts()
     {
         $page = request()->page;
-        $products = Product::paginate(6);
+        $products = HomePageProductFacade::get();
         return view('store.product.single_product_page', ['products' => $products]);
     }
 

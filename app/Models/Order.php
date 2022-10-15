@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatusEnum;
+use App\Facades\Order\OrderFacade;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,27 +12,50 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'woo_id',
         'uuid',
-        'customer_name',
-        'customer_phone',
-        'customer_address',
-        'customer_area',
-        'customer_ip_address',
-        'customer_user_agent',
-        'order_date',
+
+        'name',
+        'phone',
+        'address',
+        'area',
+        'ip_address',
+        'user_agent',
+
         'discount_total',
-        'shipping_total',
-        'total',
+        'delivery_fee',
         'subtotal',
+        'total',
         'wholesale_total',
-        'profit',
-        'order_status',
-        'shop_id',
+        'products_profit',
+        'total_profit',
+
+        'status',
+        'is_approved',
+        'is_delivery_complete',
+        'is_vendor_payment_complete',
+        'is_cancelled',
+
+        'vendor_id',
         'delivery_man_id'
     ];
 
-    public function items(){
+    public function items()
+    {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function statusList()
+    {
+        return $this->hasMany(OrderStatus::class);
+    }
+
+    public function updateTotalCalculation()
+    {
+        return OrderFacade::updateTotalCalculation($this);
+    }
+
+    public function getStatusBnNameAttribute()
+    {
+        return OrderStatusEnum::hasValue($this->status) ? OrderStatusEnum::fromValue($this->status)->bnName() : $this->status;
     }
 }

@@ -4,6 +4,10 @@
         .orderTotalArea {
             background-color: #f7f7f7;
             padding: 15px;
+            border: 1px solid #eeeeee;
+            box-shadow: -1px -2px 18px -5px rgba(170,170,170,1);
+
+            border-radius: 5px;
         }
 
         .orderTotalTable {
@@ -42,7 +46,7 @@
         
     </style>
     <div class="">
-        <table class="table orderSummeryTable">
+        <table class="table table-borderless orderSummeryTable">
             @foreach ($items as $key => $item)
                 @livewire('cart.cart-item', ['item' => $item])
             @endforeach

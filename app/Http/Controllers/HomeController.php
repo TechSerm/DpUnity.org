@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Dashboard\DashboardFacade;
+use App\Service\Dashboard\DashboardService;
 use App\Services\File\FileService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -29,10 +31,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $this->setStartEndDate();
+        return view('home', DashboardFacade::getDashboardData());
     }
 
-    public function log(){
+    private function setStartEndDate()
+    {
+        request()->start_date = request()->start_date ?? Carbon::now()->startOfMonth();
+        request()->end_date = request()->end_date ?? Carbon::now();
+    }
+
+    public function log()
+    {
         Log::info([
             'time' => Carbon::now()->format('M d Y H:i:s'),
             'ip' => request()->ip(),
@@ -41,11 +51,5 @@ class HomeController extends Controller
             'lat' => request()->lat ?? '',
             'lon' => request()->lon ?? ''
         ]);
-    }
-
-    public function upload(Request $request)
-    {
-        $url = (new FileService())->imageStore('image');
-        return $url . "<br/><img src='$url'>";
     }
 }
