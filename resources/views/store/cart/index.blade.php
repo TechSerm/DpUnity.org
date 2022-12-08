@@ -1,6 +1,12 @@
 @extends('store.layout.layout')
 
 @section('content')
-    @livewire('cart.cart-items')
-    @include('store.order.confirm')
+<div class="row">
+    <div class="col-md-6">
+        @livewire('cart.cart-items')
+    </div>
+    <div class="col-md-6">
+        @include('store.order.confirm')
+    </div>
+</div>
 @stop

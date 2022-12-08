@@ -48,7 +48,7 @@ class NewOrderService
     {
         if (OrderShippingDetails::isValidateFails()) {
             return [
-                'body' => view("store.order.confirm_details", ['checkValidate' => true])->render(),
+                'body' => view("store.order.checkout.body_livewire", ['checkValidate' => true])->render(),
             ];
         }
 

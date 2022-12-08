@@ -44,13 +44,14 @@
 
     @livewireStyles
 </head>
-
+@include('store.layout.sidebar')
 <body>
     @livewire('shop-footer')
     <div id="pageLoader" style="display: none">
         @include('store.layout.loader')
     </div>
-    <div class="container" style="margin-top: 70px;" id="loadBody">
+    
+    <div class="containerr storeContent" style="margin-top: 60px; padding: 15px;" id="loadBody">
         @yield('content')
     </div>
     @include('store.layout.footer')

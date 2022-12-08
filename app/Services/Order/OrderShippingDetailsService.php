@@ -21,7 +21,8 @@ class OrderShippingDetailsService
 
     public function get($isArray = false)
     {
-        return json_decode(Cookie::get($this->orderKey), $isArray);
+        $data = Cookie::get($this->orderKey);
+        return $data == null ? [] : json_decode($data, $isArray);
     }
 
     public function isValidateFails()

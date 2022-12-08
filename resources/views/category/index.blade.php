@@ -18,8 +18,9 @@
                     </style>
                     <div class="row">
                         <div class="align-self-end ml-auto mb-4">
-                            <button class="btn btn-primary " data-url="{{ route('categories.create') }}" data-modal-title="Create Product"
-                        data-modal-size="650" data-toggle="modal">Create Category</button>
+                            <button class="btn btn-primary " data-url="{{ route('categories.create') }}"
+                                data-modal-title="Create Product" data-modal-size="650" data-toggle="modal">Create
+                                Category</button>
                         </div>
                     </div>
                     <table class="table table-bordered table-responsive-md" style="width: 100%" id="myTable">
@@ -60,7 +61,7 @@
                 },
                 ajax: "{{ route('categories.data') }}",
                 columns: [{
-                        data: 'woo_id'
+                        data: 'id'
                     },
                     {
                         data: 'image'
@@ -79,7 +80,7 @@
 
         });
 
-        function createProduct(e){
+        function createProduct(e) {
             let form = Helper.form(e);
             form.submit({
                 success: {
@@ -91,7 +92,7 @@
             });
         }
 
-        function reloadProductDatatable(){
+        function reloadProductDatatable() {
             $('#myTable').DataTable().ajax.reload(null, false);
         }
 
@@ -106,5 +107,15 @@
             });
         }
 
+        function previewFile(event) {
+
+            var output = document.getElementById('image-preview');
+            if (!event.target.files[0]) {
+                // output.src = $('#img-preview-default').attr('src');
+            } else output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        }
     </script>
 @endpush

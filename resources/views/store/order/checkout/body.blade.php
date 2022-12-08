@@ -83,7 +83,7 @@
         {{-- <div class="details-header">
             আপনার তথ্য
         </div> --}}
-        <div class="details-bodyy" >
+        <div class="details-bodyy">
             <div style="text-align: center;margin-bottom: 15px;margin-top: -5px; font-weight: bold; color: #484646">
                 আপনার অর্ডার করা পণ্য আপনার কাছে পৌঁছানোর জন্য আপনি নিচের তথ্য গুলা পূরণ করেন !
             </div>

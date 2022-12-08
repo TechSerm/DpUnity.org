@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body" id="orderConfirmBody">
-                @include('store.order.confirm_details')
+                @include('store.order.checkout.body_livewire')
             </div>
             <div class="modal-footer" style="background: #f5f5f5">
                 <span class="invalid-feedback" style="display: block" id="" role="alert">

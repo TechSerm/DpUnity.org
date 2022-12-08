@@ -11,11 +11,13 @@ class DashboardService
 {
     public function getDashboardData()
     {
+        $orderService = new OrderCalculationService();
+        
         return [
             'totalProduct' => $this->getTotalProduct(),
             'totalActiveProduct' => $this->getTotalPublishProduct(),
             'totalCategory' => $this->getTotalCategory(),
-            'totalOrder' => $this->getTotalOrder()
+            'totalOrder' => $orderService->getTotalOrder()
         ];
     }
 
@@ -32,24 +34,5 @@ class DashboardService
     public function getTotalCategory()
     {
         return Category::count();
-    }
-
-    public function getTotalOrder()
-    {
-        return $this->getOrderShowFormat(
-            Order::select(
-                $this->getOrderSelectQuery("total")
-            )->first()
-        );
-    }
-
-    public function getOrderSelectQuery($key)
-    {
-        return DB::raw("SUM($key) as amount, COUNT(id) as count");
-    }
-
-    public function getOrderShowFormat($order)
-    {
-        return $order->amount . " (" . $order->count . ")";
     }
 }

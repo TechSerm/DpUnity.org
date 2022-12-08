@@ -14,7 +14,7 @@ class CategoryObserver
      */
     public function created(Category $category)
     {
-        $category->woo()->create();
+        
     }
 
     /**
@@ -36,7 +36,7 @@ class CategoryObserver
      */
     public function deleting(Category $category)
     {
-        $category->woo()->delete();
+        
     }
 
     /**

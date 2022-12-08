@@ -123,14 +123,14 @@
 
     <div class="card product" style="height: {{ $isShowPage == true ? '500' : '300' }}px">
         @if (!$isShowPage)
-        <a href="{{ route('store.product.show', ['product' => $product->id]) }}" class="">
+        <span href="#" wire:click="increment" class="">
         @endif
             <span class="ct-image-container">
                 <img width="100%" id="productImage" height="{{ $isShowPage == true ? '350' : '150' }}px" src="{{ $product->image }}"
                     class="" alt="">
             </span>
         @if (!$isShowPage)
-        </a>
+        </span>
         @endif
         <div class="body">
             <div class="title">{{ $product->name }}</div>
@@ -146,7 +146,7 @@
                 @php
                     $cartQuantity = isset($count) ? $count : 0;
                 @endphp
-                @if ($cartQuantity == 0)
+                @if ($cartQuantity <= 0)
                     <button wire:click="increment" class="btn btn-sm add-bag"><i class="fa fa-shopping-bag"></i> ব্যাগে
                         রাখুন</button>
                 @else

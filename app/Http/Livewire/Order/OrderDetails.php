@@ -55,6 +55,6 @@ class OrderDetails extends Component
 
     public function render()
     {
-        return view('store.order.details');
+        return view('store.order.checkout.body');
     }
 }

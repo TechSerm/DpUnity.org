@@ -15,8 +15,8 @@
 <div class="mb-3 row">
     <label for="image" class="col-sm-{{$labelWidth}} col-form-label form-control-label" for="image">Image</label>
     <div class="col-sm-{{$inputWidth}}">
-        {!! Form::file('image', null, ['class' => 'form-control ', 'id' => 'image']) !!}
-        <img src="{{ isset($category) ? $category->image : 'https://catalogue.bticino.com/app/webroot/img/img_not_found_prod_it.jpg' }}" id="image-preview" height="180px" width="180px" class="img-thumbnail mt-2" alt="">
+        <input type="file" name="image" id="image" onchange="previewFile(event)">
+        <img src="{{ isset($category) ? $category->image : url('images/default.png') }}" id="image-preview" height="180px" width="180px" class="img-thumbnail mt-2" alt="">
     </div>
 </div>
 

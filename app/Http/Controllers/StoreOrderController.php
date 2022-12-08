@@ -35,6 +35,6 @@ class StoreOrderController extends Controller
     public function show($uuid)
     {
         $order = Order::where(['uuid' => request()->uuid])->firstOrFail();
-        return view('store.order.show', ['order' => $order]);
+        return view('store.order.show.index', ['order' => $order]);
     }
 }

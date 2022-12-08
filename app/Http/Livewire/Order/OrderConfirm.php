@@ -17,6 +17,6 @@ class OrderConfirm extends Component
 
     public function render()
     {
-        return view('store.order.confirm');
+        return view('store.order.checkout.modal');
     }
 }

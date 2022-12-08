@@ -8,10 +8,12 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\HomePageProductController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SearchKeywordController;
 use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
 use Illuminate\Support\Facades\App;
 
@@ -39,6 +41,9 @@ Route::middleware(['device_token_check','check_push_notification_click'])->group
     Route::get('/order', [StoreOrderController::class, 'index'])->name('store.order');
     Route::post('/order', [StoreOrderController::class, 'create']);
     Route::get('/order/{uuid}', [StoreOrderController::class, 'show'])->name('store.order.show');
+
+    Route::get('/categories', [StoreCategoryController::class, 'index'])->name('store.categories');
+    Route::get('/categories/{category}', [StoreCategoryController::class, 'show'])->name('store.categories.show');
     
 });
 
@@ -78,6 +83,8 @@ Route::prefix('admin')->group(function () {
     
         
         Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
+
+        Route::get('/home_page_product', [HomePageProductController::class, 'index'])->name('admin.home_page_product.index');
     });
 
 

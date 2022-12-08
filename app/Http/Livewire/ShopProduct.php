@@ -26,7 +26,7 @@ class ShopProduct extends Component
     }
 
     public function decrement(){
-        $this->count -= 1;
+        $this->count -= $this->count <= 0 ? 0 : 1;
         $this->product->cartUpdate($this->count);
         $this->emit('cartUpdate');
         $this->dispatchBrowserEvent('change-cart-animation');

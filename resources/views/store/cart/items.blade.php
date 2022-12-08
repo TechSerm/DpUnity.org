@@ -51,7 +51,7 @@
                 @livewire('cart.cart-item', ['item' => $item])
             @endforeach
         </table>
-        @livewire('cart.cart-subtotal-area')
+        
     </div>
     
 </div>
