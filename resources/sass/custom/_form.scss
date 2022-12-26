@@ -24,6 +24,12 @@
     text-align: right;
 }
 
+@media screen and (max-width: 767px) {
+    .form-control-label {
+        text-align: left;
+    }
+}
+
 .btn-action {
     padding: 2px 4px;
 }

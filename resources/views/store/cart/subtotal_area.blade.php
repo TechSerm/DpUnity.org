@@ -1,7 +1,7 @@
 <div class="orderTotalArea">
     <table class="orderTotalTable">
         <tr class="orderSummeryTableTotalTr">
-            <td colspan="2"><span>সর্বমোট বাজার:</span>
+            <td colspan="2"><span>পণ্যের মূল্য:</span>
             </td>
             <td>৳ <b>{{ bnConvert()->number($totalCartPrice) }}</b></td>
         </tr>

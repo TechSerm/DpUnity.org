@@ -21,7 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'phone'
+        'phone',
+        'role_name',
+        'device_token'
     ];
 
     /**
@@ -42,4 +44,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isVendor()
+    {
+        return $this->role_name == 'vendor';
+    }
+
+    public function isAdmin()
+    {
+        return $this->role_name == 'admin' || $this->role_name == 'super_admin';
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->role_name == 'super_admin';
+    }
 }

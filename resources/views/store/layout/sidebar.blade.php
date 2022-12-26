@@ -58,13 +58,16 @@
         background: #f5f5f5;
     }
 
+    .sidebar .active{
+        background: #eeeeee;
+    }
+
 </style>
 
-
 <div class="sidebar" id="shopSidebar">
-    <a href="/" class="link"><i class="fa fa-home" aria-hidden="true"></i> হোম</a>
-    <a href="/categories" class="link"><i class="fa fa-list-alt" aria-hidden="true"></i> ক্যাটেগরি</a>
-    <a href="" class="link"><i class="fa fa-shopping-cart" aria-hidden="true"></i> অর্ডার</a>
+    <a href="/" class="link {{request()->segment(1) == '' ? 'active' : ''}}"><i class="fa fa-home" aria-hidden="true"></i> হোম</a>
+    <a href="/categories" class="link {{request()->segment(1) == 'categories' ? 'active' : ''}}"><i class="fa fa-list-alt" aria-hidden="true"></i> ক্যাটেগরি</a>
+    <a href="{{route('store.order.list')}}" class="link {{request()->segment(1) == 'order' ? 'active' : ''}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i> অর্ডার</a>
     <a href="/admin" data-turbolinks="false" class="link"><i class="fa fa-user" aria-hidden="true"></i> অ্যাডমিন প্যানেল</a>
 </div>
 

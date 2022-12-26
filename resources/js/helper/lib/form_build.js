@@ -104,9 +104,10 @@ const FormBuild = {
                             });
                         }
                     }).fail(function(error) {
+                        let errorMessage = error.responseJSON && error.responseJSON.message ? error.responseJSON.message : error.status + " - " + error.statusText;
                         Swal.fire({
                             title: "Oops!!!",
-                            text: error.status + " - " + error.statusText,
+                            text: errorMessage,
                             icon: 'error',
                         });
                     });

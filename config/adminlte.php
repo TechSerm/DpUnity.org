@@ -188,7 +188,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'admin/home',
+    'dashboard_url' => 'admin/',
     'logout_url' => 'admin/logout',
     'login_url' => 'admin/login',
     'register_url' => 'admin/register',
@@ -237,27 +237,29 @@ return [
         ],
         
         [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
-        [
             'text'        => 'Dashboard',
             'url'         => '/admin',
             'icon'        => 'far fa-fw fa-file',
             'label_color' => 'success',
-            'can' => 'show-dashboard'
         ],
         [
             'text'        => 'Products',
             'url'         => '/admin/products',
             'icon'        => 'fas fa-egg',
             'label_color' => 'success',
+            'can' => 'products.index'
         ],
         [
             'text'        => 'Categories',
             'url'         => '/admin/categories',
             'icon'        => 'fas fa-dice-d6',
+            'label_color' => 'success',
+            'can' => 'categories.index'
+        ],
+        [
+            'text'        => 'Active Orders',
+            'url'         => '/admin/orders/active',
+            'icon'        => 'fas fa-paperclip',
             'label_color' => 'success',
         ],
         [
@@ -267,14 +269,14 @@ return [
             'label_color' => 'success',
         ],
         [
-            'text'        => 'Shippings',
-            'url'         => '/admin/shippings',
-            'icon'        => 'fas fa-paperclip',
+            'text'        => 'Search Keywords',
+            'url'         => '/admin/search-keywords',
+            'icon'        => 'fas fa-search',
             'label_color' => 'success',
         ],
         [
-            'text'        => 'Search Keywords',
-            'url'         => '/admin/search-keywords',
+            'text'        => 'Push Notifications',
+            'url'         => '/admin/push_notifications',
             'icon'        => 'fas fa-search',
             'label_color' => 'success',
         ],

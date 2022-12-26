@@ -13,6 +13,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
+        $this->authorize('categories.index');
         $categories = Category::all();
         return view('category.index', [
             'categories' => $categories
@@ -21,6 +22,7 @@ class CategoryController extends Controller
 
     public function getData(Request $request)
     {
+        $this->authorize('categories.index');
         $productQuery = Category::where([]);
 
         if (!request()->get('order')) {
@@ -37,13 +39,17 @@ class CategoryController extends Controller
                 return $model->updated_at->diffForHumans();
             })
             ->addColumn('action', function ($model) {
-
-                $content = "<button data-url='" . route('categories.edit', ['category' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update Category <b>#" . $model->woo_id . "</b>'
-                data-modal-size='650' data-toggle='modal'><i class='fa fa-edit'></i></button>";
-                $content .= "<button data-url='" . route('categories.history', ['category' => $model->id]) . "' class='btn btn-primary btn-action btn-sm mr-1' data-modal-title='Update Category <b>#" . $model->woo_id . "</b>'
-                data-modal-size='1200' data-toggle='modal'><i class='fa fa-history'></i></button>";
-                $content .= "<button data-url='" . route('categories.destroy', ['category' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadProductDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";
-
+                if (request()->user()->can('categories.edit')) {
+                    $content = "<button data-url='" . route('categories.edit', ['category' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update Category <b>#" . $model->id . "</b>'
+                    data-modal-size='650' data-toggle='modal'><i class='fa fa-edit'></i></button>";
+                }
+                if (request()->user()->can('categories.history')) {
+                    $content .= "<button data-url='" . route('categories.history', ['category' => $model->id]) . "' class='btn btn-primary btn-action btn-sm mr-1' data-modal-title='Update Category <b>#" . $model->id . "</b>'
+                    data-modal-size='1200' data-toggle='modal'><i class='fa fa-history'></i></button>";
+                }
+                if (request()->user()->can('categories.delete')) {
+                    $content .= "<button data-url='" . route('categories.destroy', ['category' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadProductDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";
+                }
                 return $content;
             })
             ->make(true);
@@ -67,11 +73,13 @@ class CategoryController extends Controller
 
     public function create()
     {
+        $this->authorize('categories.create');
         return view('category.create');
     }
 
     public function store(CategoryRequest $request)
     {
+        $this->authorize('categories.create');
         $imageId = null;
 
         if ($request->hasFile('image')) {
@@ -89,17 +97,20 @@ class CategoryController extends Controller
 
     public function show($id)
     {
+        $this->authorize('categories.show');
         return view('order.index');
     }
 
     public function edit($id)
     {
+        $this->authorize('categories.edit');
         $category = Category::findOrFail($id);
         return view('category.edit', ['category' => $category]);
     }
 
     public function update(CategoryRequest $request, $id)
     {
+        $this->authorize('categories.edit');
         $category = Category::findOrFail($id);
         $imageId = $category->image_id;
 
@@ -121,12 +132,14 @@ class CategoryController extends Controller
 
     public function history($id)
     {
+        $this->authorize('categories.history');
         $category = Category::findOrFail($id);
         return view('product.history', ['activities' => $category->activities()->orderBy('id', 'desc')->get()]);
     }
 
     public function destroy($id)
     {
+        $this->authorize('categories.delete');
         $category = Category::findOrFail($id);
         $category->delete();
     }

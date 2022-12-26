@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomePageProductController;
+use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SearchKeywordController;
@@ -38,6 +39,8 @@ Route::middleware(['device_token_check','check_push_notification_click'])->group
 
     Route::get('/cart', \App\Http\Livewire\Cart\CartIndex::class)->name('cart');
 
+    Route::get('/order/list', [StoreOrderController::class, 'orderList'])->name('store.order.list');
+
     Route::get('/order', [StoreOrderController::class, 'index'])->name('store.order');
     Route::post('/order', [StoreOrderController::class, 'create']);
     Route::get('/order/{uuid}', [StoreOrderController::class, 'show'])->name('store.order.show');
@@ -50,7 +53,7 @@ Route::middleware(['device_token_check','check_push_notification_click'])->group
 
 Route::prefix('admin')->group(function () {
 
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth','device_token_check','check_push_notification_click'])->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('admin.home');
 
         //product routes
@@ -66,10 +69,19 @@ Route::prefix('admin')->group(function () {
 
         //order routes
         Route::get('/orders/data', [OrderController::class, 'getData'])->name('orders.data');
+        Route::get('/orders/active', [OrderController::class, 'activeOrders']);
         Route::post('/orders/{order}/change_order_status/{order_status}', [OrderController::class, 'changeOrderStatus'])->name('orders.status.change');
         Route::get('/orders/{order}/update_customer_details', [OrderController::class, 'showUpdateCustomer'])->name('orders.customer.update');
         Route::put('/orders/{order}/update_customer_details', [OrderController::class, 'updateCustomer']);
+        Route::prefix('orders/{order}')->group(function () {
+            Route::get('/update_vendor', [OrderController::class, 'showVendor'])->name('orders.vendor.update');
+            Route::put('/update_vendor', [OrderController::class, 'updateVendor']);
+            Route::get('/product_select2_data', [OrderItemController::class, 'getProductSelect2Data'])->name('orders.order_items.product_select2_data');
+            Route::get('/product_create_form', [OrderItemController::class, 'productCreateForm'])->name('orders.order_items.create_form');
+            Route::resource('order_items', OrderItemController::class);
+        });
         Route::resource('orders', OrderController::class);
+        
 
         Route::get('/search-keywords/data', [SearchKeywordController::class, 'getData'])->name('search-keywords.data');
         Route::resource('search-keywords', SearchKeywordController::class);

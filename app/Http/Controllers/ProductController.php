@@ -10,6 +10,7 @@ use App\Services\File\FileService;
 use App\Services\Image\ImageService;
 use Illuminate\Http\Request;
 use App\Services\Product\ProductService;
+use App\Services\Search\SearchService;
 use App\Services\WooCommerce\WooCommerceService;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -24,6 +25,7 @@ class ProductController extends Controller
 
     public function index()
     {
+        $this->authorize('products.index');
         $products = Product::all();
         return view('product.index', [
             'products' => $products
@@ -32,7 +34,19 @@ class ProductController extends Controller
 
     public function getData(Request $request)
     {
-        $productQuery = Product::where([]);
+        $this->authorize('products.index');
+        $productQuery = Product::with(['imageTable']);
+
+        if(isset($request->search) && is_array($request->search) && $request->search['value'] != ''){
+            $searchValue = strtolower($request->search['value']);
+            $suggestionWords = SearchService::getSearchKeyword($searchValue);
+            $productQuery->where(function($query) use($suggestionWords, $searchValue){
+                $query->orWhere('name', 'LIKE', "%{$searchValue}%");
+                foreach ($suggestionWords as $word) {
+                    $query->orWhereRaw('`name` LIKE ?', ['%'.trim(strtolower($word)).'%']);
+                }
+            });
+        }
 
         if (!request()->get('order')) {
             $productQuery = $productQuery->orderBy('updated_at', 'desc');
@@ -41,11 +55,26 @@ class ProductController extends Controller
         return Datatables::of($productQuery)
             ->filter(function ($query) use ($request) {
             })
+            ->editColumn('profit', function ($model) {
+                return $this->addPriceLabel($model->profit);
+            })
+            ->editColumn('wholesale_price', function ($model) {
+                return $this->addPriceLabel($model->wholesale_price);
+            })
+            ->editColumn('market_sale_price', function ($model) {
+                return $this->addPriceLabel($model->market_sale_price);
+            })
+            ->editColumn('delivery_fee', function ($model) {
+                return $this->addPriceLabel($model->delivery_fee == '' ? 19 : $model->delivery_fee);
+            })
+            ->editColumn('price', function ($model) {
+                return $this->addPriceLabel($model->price);
+            })
             ->editColumn('image', function ($model) {
                 return "<img src='" . $model->image . "' height='50px' width='50px' class='img-fluid img-thumbnail'>";
             })
             ->editColumn('updated_at', function ($model) {
-                return $model->updated_at->diffForHumans();
+                return bnConvert()->date($model->updated_at->diffForHumans());
             })
             ->editColumn('status', function ($model) {
                 $statusColor = $model->status == 'private' ? 'danger' : 'success';
@@ -61,20 +90,31 @@ class ProductController extends Controller
                 return $content;
             })
             ->addColumn('action', function ($model) {
-
-                $content = "<button data-url='" . route('products.edit', ['product' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update Product <b>#" . $model->woo_id . "</b>'
+                $content = '';
+                if (request()->user()->can('products.edit')) {
+                    $content = "<button data-url='" . route('products.edit', ['product' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update Product <b>#" . $model->id . "</b>'
                 data-modal-size='650' data-toggle='modal'><i class='fa fa-edit'></i></button>";
-                $content .= "<button data-url='" . route('products.history', ['product' => $model->id]) . "' class='btn btn-primary btn-action btn-sm mr-1' data-modal-title='Update Product <b>#" . $model->woo_id . "</b>'
+                }
+                if (request()->user()->can('products.history')) {
+                    $content .= "<button data-url='" . route('products.history', ['product' => $model->id]) . "' class='btn btn-primary btn-action btn-sm mr-1' data-modal-title='Update Product <b>#" . $model->id . "</b>'
                 data-modal-size='1200' data-toggle='modal'><i class='fa fa-history'></i></button>";
-                $content .= "<button data-url='" . route('products.destroy', ['product' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadProductDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";
-
+                }
+                if (request()->user()->can('products.delete')) {
+                    $content .= "<button data-url='" . route('products.destroy', ['product' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadProductDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";
+                }
                 return $content;
             })
             ->make(true);
     }
 
+    private function addPriceLabel($price)
+    {
+        return '<span class="badge"><span style="font-size: 14px;">' . bnConvert()->number($price) . '</span><span style="color:#636e72;"> ৳ </span></span>';
+    }
+
     public function create()
     {
+        $this->authorize('products.create');
         return view('product.create', [
             'units' => Constant::UNITS
         ]);
@@ -82,10 +122,11 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
+        $this->authorize('products.create');
         $imageId = null;
 
         if ($request->hasFile('image')) {
-            $image = (New ImageService())->create('image');
+            $image = (new ImageService())->create('image');
             $imageId = $image ? $image->id : $imageId;
         }
         $product = Product::create([
@@ -97,23 +138,27 @@ class ProductController extends Controller
             'profit' => $request->profit,
             'price' => $request->price,
             'status' => $request->status,
+            'delivery_fee' => $request->delivery_fee,
             'image_id' => $imageId,
             'temp_categories_id' => json_encode($request->categories)
         ]);
-        
+
         $product->categories()->sync($request->categories);
-        
+
         return back()->with('success', 'Product create successfully!');
     }
 
 
     public function show($id)
     {
-        return view('order.index');
+        $this->authorize('products.show');
+        $product = Product::findOrFail($id);
+        return view('product.show', ['product' => $product]);
     }
 
     public function edit($id)
     {
+        $this->authorize('products.edit');
         $product = Product::findOrFail($id);
         return view('product.edit', [
             'product' => $product,
@@ -123,6 +168,7 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, $id)
     {
+        $this->authorize('products.edit');
         $product = Product::findOrFail($id);
         $imageId = $product->image_id;
 
@@ -140,6 +186,7 @@ class ProductController extends Controller
             'profit' => $request->profit,
             'price' => $request->price,
             'status' => $request->status,
+            'delivery_fee' => $request->delivery_fee,
             'image_id' => $imageId,
             'temp_categories_id' => json_encode($request->categories)
         ]);
@@ -154,18 +201,14 @@ class ProductController extends Controller
 
     public function history($id)
     {
+        $this->authorize('products.history');
         $product = Product::findOrFail($id);
         return view('product.history', ['activities' => $product->activities()->orderBy('id', 'desc')->get()]);
     }
 
-    public function sync($id)
-    {
-        $product = Product::findOrFail($id);
-        return back()->with('success', 'Product Sync successfully!');
-    }
-
     public function destroy($id)
     {
+        $this->authorize('products.delete');
         $product = Product::findOrFail($id);
         $product->delete();
     }

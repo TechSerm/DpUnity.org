@@ -10,7 +10,7 @@ use App\Observers\CategoryObserver;
 use App\Observers\OrderItemObserver;
 use App\Observers\OrderObserver;
 use App\Observers\OrderStatusObserver;
-
+use App\Services\Permission\PermissionService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -38,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
         OrderItem::observe(OrderItemObserver::class);
         OrderStatus::observe(OrderStatusObserver::class);
         
+
         Gate::define('show-dashboard', function ($user) {
             // if ($user->priv_admin == 'Y') {
             //     return true;
@@ -45,5 +46,9 @@ class AppServiceProvider extends ServiceProvider
             
             return false;
         });
+
+        (new PermissionService())->initGatePermission();
+
+        
     }
 }

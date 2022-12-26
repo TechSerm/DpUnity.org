@@ -20,23 +20,28 @@
                     </style>
                     <div class="row">
                         <div class="align-self-end ml-auto mb-4">
+                            @can('products.create')
                             <button class="btn btn-primary " data-url="{{ route('products.create') }}"
                                 data-modal-title="Create Product" data-modal-size="650" data-toggle="modal">Create
                                 Product</button>
+                            @endcan
                         </div>
                     </div>
                     <table class="table table-bordered table-responsive-md" style="width: 100%" id="myTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Photo</th>
-                                <th>Product Name</th>
-                                <th>Categories</th>
-                                <th>Status</th>
-                                <th>Wholesale Price</th>
-                                <th>Market Sale Price</th>
-                                <th>Price</th>
-                                <th>Profit</th>
+                                <th>পণ্যের ছবি</th>
+                                <th>পণ্যের নাম</th>
+                                <th>ক্যাটাগরি</th>
+                                <th>অবস্থা</th>
+                                <th>পাইকারি মূল্য</th>
+                                <th>বাজার দর</th>
+                                <th>ডেলিভারি ফী</th>
+                                @if (auth()->user()->isAdmin())
+                                <th>লাভ</th>
+                                <th>বিবিসিনা মূল্য</th>
+                                @endif
                                 <th>Last Update</th>
                                 <th style="width: 10%">Action</th>
                             </tr>
@@ -90,11 +95,16 @@
                         data: 'market_sale_price'
                     },
                     {
-                        data: 'price'
+                        data: 'delivery_fee'
                     },
+                    @if (auth()->user()->isAdmin())
                     {
                         data: 'profit'
                     },
+                    {
+                        data: 'price'
+                    },
+                    @endif
                     {
                         data: 'updated_at'
                     },

@@ -36,12 +36,20 @@ class Order extends Model
         'is_cancelled',
 
         'vendor_id',
-        'delivery_man_id'
+        'delivery_man_id',
+        
+        'device_token',
+        'app_version'
     ];
 
     public function items()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class)->with('product');
+    }
+
+    public function addCookie()
+    {
+        OrderFacade::userOrder()->addOrderCookie($this);
     }
 
     public function statusList()
@@ -57,5 +65,25 @@ class Order extends Model
     public function getStatusBnNameAttribute()
     {
         return OrderStatusEnum::hasValue($this->status) ? OrderStatusEnum::fromValue($this->status)->bnName() : $this->status;
+    }
+
+    public function getCustomerStatusAttribute()
+    {
+        return OrderStatusEnum::hasValue($this->status) ? OrderStatusEnum::fromValue($this->status)->customerStatus() : $this->status;
+    }
+
+    public function getNotificationMessageAttribute()
+    {
+        return OrderStatusEnum::hasValue($this->status) ? OrderStatusEnum::fromValue($this->status)->notificationMessage() : $this->status;
+    }
+
+    public function isEditable()
+    {
+        return !($this->is_delivery_complete == true || $this->is_cancelled || auth()->user()->isVendor());
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(User::class, 'vendor_id');
     }
 }

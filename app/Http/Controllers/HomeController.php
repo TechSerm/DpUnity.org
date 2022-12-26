@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Facades\Dashboard\DashboardFacade;
+use App\Models\User;
 use App\Service\Dashboard\DashboardService;
 use App\Services\File\FileService;
 use Carbon\Carbon;
@@ -32,7 +33,16 @@ class HomeController extends Controller
     public function index()
     {
         $this->setStartEndDate();
-        return view('home', DashboardFacade::getDashboardData());
+        $vendors = User::where(['role_name' => 'vendor'])->get();
+
+        if(auth()->user()->isVendor()){
+            request()->order_type = 'wholesale_total';
+            request()->vendor = auth()->user()->id;
+        }
+        
+        return view('home', array_merge(DashboardFacade::getDashboardData(), [
+            'vendors' => $vendors
+        ]));
     }
 
     private function setStartEndDate()

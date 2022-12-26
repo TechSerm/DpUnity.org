@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\OrderStatusEnum;
+use App\Facades\Order\OrderFacade;
 use App\Facades\PushNotification\PushNotificationFacade;
+use App\Http\Requests\OrderCustomerUpdateRequest;
 use App\Models\Order;
+use App\Models\User;
+use App\Services\Order\OrderService;
 use Illuminate\Http\Request;
 
 use Woo\Order\OrderSync;
@@ -22,9 +26,21 @@ class OrderController extends Controller
         return view('order.index');
     }
 
+    public function activeOrders()
+    {
+        $orders = Order::where(['is_cancelled' => false, 'is_vendor_payment_complete' => false]);
+        if (auth()->user()->isVendor()) {
+            $orders->where(['vendor_id' => auth()->user()->id]);
+        }
+        return view('order.active_orders', ['orders' => $orders->orderBy('id', 'desc')->get()]);
+    }
+
     public function getData(Request $request)
     {
         $orderQuery = Order::where([]);
+        if (auth()->user()->role_name == "vendor") {
+            $orderQuery->where(['vendor_id' => auth()->user()->id]);
+        }
 
         if (!request()->get('order')) {
             $orderQuery = $orderQuery->orderBy('id', 'desc');
@@ -97,7 +113,7 @@ class OrderController extends Controller
         //$test = 'ADMIN';
         // dd(OrderStatusEnum::PENDING);
         // dd(OrderStatusEnum::fromValue('pending')->bnName());
-        $order = Order::findOrFail($id);
+        $order = Order::with(['items'])->findOrFail($id);
         return view('order.show', ['order' => $order]);
     }
 
@@ -122,13 +138,26 @@ class OrderController extends Controller
     public function showUpdateCustomer($id)
     {
         $order = Order::findOrFail($id);
+        if(!$order->isEditable()){
+            return response()->json([
+                'message' => 'Invalid Action'
+            ], 401);
+        }
         return view('order.show.update_customer', ['order' => $order]);
     }
 
-    public function showUpdateCustomerDetails($id, Request $request)
+    public function updateCustomer(OrderCustomerUpdateRequest $request, $orderId)
     {
-        $order = Order::findOrFail($id);
-        return view('order.show.update_customer', ['order' => $order]);
+        $order = Order::findOrFail($orderId);
+        if(!$order->isEditable()){
+            return response()->json([
+                'message' => 'Invalid Action'
+            ], 401);
+        }
+        $order->update($request->all());
+        return response()->json([
+            'message' => 'Customer Update Successfully'
+        ]);
     }
 
     public function changeOrderStatus($orderId, $orderStatusId)
@@ -149,11 +178,15 @@ class OrderController extends Controller
             $order->is_cancelled = true;
             $order->status = OrderStatusEnum::CANCELED;
             $order->save();
-
         } else {
-            $orderStatus->update([
-                'status' => 'approved'
-            ]);
+
+            if ($orderStatus->name == OrderStatusEnum::ASSIGN_STORE) {
+                if ($order->vendor_id == '') {
+                    return response()->json([
+                        'message' => 'Vendor id not selected'
+                    ], 400);
+                }
+            }
 
             if ($orderStatus->name == OrderStatusEnum::APPROVED) {
                 $order->is_approved = true;
@@ -168,7 +201,105 @@ class OrderController extends Controller
             }
 
             $order->status = $orderStatus->name;
+
+            $this->notificationMessageSend($order);
             $order->save();
+
+
+            $orderStatus->update([
+                'status' => 'approved'
+            ]);
+        }
+    }
+
+    public function showVendor($orderId){
+        $order = Order::findOrFail($orderId);
+        if(!$order->isEditable()){
+            return response()->json([
+                'message' => 'Invalid Action'
+            ], 401);
+        }
+
+        $vendors = User::where(['role_name' => 'vendor'])->get()->pluck('name','id')->toArray();
+        
+        return view('order.show.vendor_add_form', [
+            'order' => $order,
+            'vendors' => $vendors
+        ]);
+    }
+
+    public function updateVendor(Request $request, $orderId){
+        $order = Order::findOrFail($orderId);
+        if(!$order->isEditable()){
+            return response()->json([
+                'message' => 'Invalid Action'
+            ], 401);
+        }
+
+        $vendor = User::where(['id' => $request->vendor_id])->first();
+        $order->update([
+            'vendor_id' => $vendor->id ?? null
+        ]);
+
+        return response()->json([
+            'message' => 'Vendor Update Successfully'
+        ]);
+    }
+
+    private function notificationMessageSend($order){
+        $notificationMessage = $order->notification_message;
+        if(isset($notificationMessage['admin'])){
+            $tokens = OrderFacade::getManagerDeviceToken();
+            if(!empty($tokens)){
+                $body = $notificationMessage['admin']."\n";
+                $body .= "🔖 অর্ডার নম্বর : " . bnConvert()->number($order->id);
+                $body .= "\n🛒 পণ্যের মূল্য: ৳ " . bnConvert()->number($order->subtotal);
+                $body .= "\n🚑 ডেলিভারি ফী: ৳ " . bnConvert()->number($order->delivery_fee);
+                $body .= "\n💵 সর্বমোট: ৳ " . bnConvert()->number($order->total);
+                $body .= "\n⏰ সময় : " . bnConvert()->date($order->created_at->format('d M Y, h:i a'));
+
+                PushNotificationFacade::sendNotification($tokens, [
+                    'title' => "অর্ডার #" . $order->id . "\n",
+                    'body' => $body,
+                    "url" => route('orders.show', ['order' => $order->id]),
+                ]);
+            }
+        }
+
+        if(isset($notificationMessage['vendor']) && !is_null($order->vendor_id)){
+            $tokens = OrderFacade::getVendorDeviceToken($order->vendor_id);
+            if(!empty($tokens)){
+                $body = $notificationMessage['vendor']."\n";
+                $body .= "🔖 অর্ডার নম্বর : " . bnConvert()->number($order->id);
+                $body .= "\n⏰ সময় : " . bnConvert()->date($order->created_at->format('d M Y, h:i a'));
+                PushNotificationFacade::sendNotification($tokens, [
+                    'title' => "অর্ডার #" . $order->id . "\n",
+                    'body' => $body,
+                    "url" => route('orders.show', ['order' => $order->id]),
+                ]);
+            }
+        }
+
+        if(isset($notificationMessage['customer'])){
+            $tokens = [];
+            if($order->device_token){
+                $tokens[] = $order->device_token;
+            }
+
+            if(!empty($tokens)){
+                $body = $notificationMessage['customer']."\n";
+                $body .= "🔖 অর্ডার নম্বর : " . bnConvert()->number($order->id);
+                $body .= "\n🛒 পণ্যের মূল্য: ৳ " . bnConvert()->number($order->subtotal);
+                $body .= "\n🚑 ডেলিভারি ফী: ৳ " . bnConvert()->number($order->delivery_fee);
+                $body .= "\n💵 সর্বমোট: ৳ " . bnConvert()->number($order->total);
+                $body .= "\n⏰ সময় : " . bnConvert()->date($order->created_at->format('d M Y, h:i a'));
+
+                PushNotificationFacade::sendNotification($tokens, [
+                    'title' => "অর্ডার #" . $order->id . "\n",
+                    'body' => $body,
+                    "url" => route('store.order.show', ['uuid' => $order->uuid]),
+                ]);
+            }
         }
     }
 }

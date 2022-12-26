@@ -9,19 +9,25 @@ use Cookie;
 
 class Cart
 {
+    public static $cartProductItems;
     public static function items()
     {
+        if(!empty(self::$cartProductItems))return self::$cartProductItems;
         $cart = CartAction::get();
+        $products = Product::with('imageTable')->whereIn('id', array_keys($cart))->select(['id', 'name', 'image_id', 'price', 'unit', 'quantity','delivery_fee'])->get();
+
         $response = [];
-        foreach ($cart as $productId => $quantity) {
-            $product = Product::where(['id' => $productId])->select(['id', 'name', 'image_id', 'price', 'unit', 'quantity'])->first();
-            if ($product) {
-                $product->cart_quantity = $quantity;
-                $product->cart_total_price = $quantity * $product->price;
-                array_push($response, (object)$product);
-            }
+        foreach ($products as $product) {
+            if(!isset($cart[$product->id]))continue;
+            
+            $quantity = $cart[$product->id];
+            $product->cart_quantity = $quantity;
+            $product->cart_total_price = $quantity * $product->price;
+            $product->delivery_fee = is_null($product->delivery_fee) ? config('bibisena.default_delivery_fee') : $product->delivery_fee;
+            array_push($response, (object)$product);
+            
         }
-        return $response;
+        return self::$cartProductItems = $response;
     }
 
     public static function isEmpty()
@@ -38,7 +44,8 @@ class Cart
 
     public static function getDeliveryFee()
     {
-        return 19;
+        $items = collect(self::items());
+        return (int)$items->max('delivery_fee');
     }
 
     public static function getTotalWithDeliveryFee()

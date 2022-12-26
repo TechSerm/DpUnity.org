@@ -107,9 +107,7 @@
                     </span>
                 @enderror
                 <label for="address" class="label">বাড়ির ঠিকানা <font color="red">*</font></label>
-                <small id="addressHelp" class="form-text text-muted">বাড়ির ঠিকানা হিসেবে আপনি আপনার বাড়ির নম্বর অথবা
-                    বাড়ির পাশের স্কুল , মশিদ, মাদ্রাসা , কবরস্থ , দুকান যেকুনু টি বেবহার করতে পারেন। তাহলে আমাদের
-                    ডেলিভারি দিতে সুবিধা হব।</small>
+                <small id="addressHelp" class="form-text text-muted">বাড়ির ঠিকানা হিসেবে আপনি আপনার বাড়ির নাম্বার / মসজিদ / মাদ্রাসা / কবরস্থান / দোকানের নাম যেকোনোটি ব্যাবহার করতে পারেন। ডেলিভারির সময় আমাদের ডেলিভারি ম্যান উক্ত ঠিকানায় গিয়ে আপনার সাথে যোগাযোগ করবে।</small>
             </div>
 
             <div class="input-group">
@@ -120,9 +118,8 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-                <label for="phone" class="label">ফোন নম্বর <font color="red">*</font></label>
-                <small id="phoneHelp" class="form-text text-muted">মোবাইল নম্বর টি অবসসই বাংলাদেশী মোবাইল নম্বর হতে হবে।
-                    ডেলিভারি এর সময় আমরা এই নম্বর টিতে যুগাযুগ করবো </small>
+                <label for="phone" class="label">মোবাইল নাম্বার <font color="red">*</font></label>
+                <small id="phoneHelp" class="form-text text-muted">মোবাইল নাম্বার টি অবশ্যই বাংলাদেশী মোবাইল নাম্বার হতে হবে। ডেলিভারির সময় এই নাম্বারটিতে যোগাযোগ করা হবে। </small>
 
             </div>
         </div>

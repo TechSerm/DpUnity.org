@@ -15,7 +15,7 @@ class StoreController extends Controller
     public function home()
     {
         $products = HomePageProductFacade::get();
-        $activeOrders = OrderFacade::userOrder()->active();
+        $activeOrders = OrderFacade::userOrder()->activeOrToday();
         return view('store.home.index', [
             'products' => $products,
             'activeOrders' => $activeOrders

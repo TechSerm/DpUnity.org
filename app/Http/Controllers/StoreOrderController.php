@@ -14,16 +14,20 @@ class StoreOrderController extends Controller
 {
     public function index()
     {
-        if (request()->notification_id) {
-            Log::info("success notification clicked: " . request()->notification_id . " from : " . request()->ip());
-        }
-        
         if (Cart::isEmpty()) {
             return view('store.order.no_product');
         }
 
         return view('store.order.index', [
             'items' => Cart::items()
+        ]);
+    }
+
+    public function orderList()
+    {
+        $orders = OrderFacade::userOrder()->all();
+        return view('store.order.list', [
+            'orders' => $orders
         ]);
     }
 

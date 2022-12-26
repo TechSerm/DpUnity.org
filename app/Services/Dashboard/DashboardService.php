@@ -11,13 +11,15 @@ class DashboardService
 {
     public function getDashboardData()
     {
-        $orderService = new OrderCalculationService();
+        $orderCalculationService = new OrderCalculationService();
+        $orderProfitCalculationService = new ProfitCalculationService();
         
         return [
             'totalProduct' => $this->getTotalProduct(),
             'totalActiveProduct' => $this->getTotalPublishProduct(),
             'totalCategory' => $this->getTotalCategory(),
-            'totalOrder' => $orderService->getTotalOrder()
+            'order' => $orderCalculationService->getOrderData(),
+            'profit' => $orderProfitCalculationService->getOrderProfitData(),
         ];
     }
 

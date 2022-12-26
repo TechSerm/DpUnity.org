@@ -64,47 +64,59 @@
             outline: 0px;
         }
     </style>
-    {{-- <div class="row orderArea">
+
+    <div style="">
+        <img class=""
+            src="https://tajabajar.s3.ap-south-1.amazonaws.com/uploads/all/esjU7Qqs5Uq2ehUvzMPJZlGaNnG4pKKR1mexvyBm.jpg"
+            style="width: 100%;border-radius: 5px" alt="">
+        <div class="row mt-3">
+            @if (!deviceInfo()->hasDeviceToken() || (deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config("bibisena.android_app_version")))
+            
+            <div class="col-md-4 col-sm-4 col-12">
+                <div class="card hotline-card mb-3" style="text-align: center; font-size: 20px; height: 130px">
+                    <div style="height: 80px">
+                        বিবিসিনা অ্যান্ড্রয়েড অ্যাপ<br />
+                        @php
+                            $needUpdate = false;
+                        @endphp
+                        @if ((deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config("bibisena.android_app_version")))
+                            @php
+                                $needUpdate = true;
+                            @endphp
+                            <div style="color: red; font-size: 14px">আপনি এপটির পুরাতন ভার্সন ব্যবহার করছেন।  সর্বোচ্চ পারফরমেন্স পেতে এপটির নতুন ভার্সন আপডেট করুন। </div>
+                        @endif
+                    </div>
+                    
+                    <a class="btn btn-info mt-1" href="https://play.google.com/store/apps/details?id=com.amirhamza.bibisena"><i class="fa fa-download" aria-hidden="true"></i> {{$needUpdate ? "নতুন ভার্সন আপডেট" : "ডাউনলোড"}} করুন </a>
+                </div>
+                </a>
+            </div>
+            @endif
+            <div class="col-md-4 col-sm-4 col-12">
+
+                <div class="card hotline-card" style="text-align: center; font-size: 20px;">
+                    <div style="height: 80px">
+                        যেকোনো প্রয়োজনে যোগাযোগ করুন আমাদের হটলাইন নাম্বারে
+                    </div>
+                    <a class="btn btn-success mt-1" href="tel:01777564786"><i class="fa fa-phone" aria-hidden="true"></i>
+                        01777564786</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row orderArea mt-3">
         @foreach ($activeOrders as $order)
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <a href="{{ route('store.order.show', ['uuid' => $order->uuid]) }}">
-                    <div class="orderAreaCard pending">
-                        ২ মিনিট আগে আপনি একটি অর্ডার করেছেন। আপনার অর্ডারটির প্রস্তুতি চলছে।<br />
+                    <div class="orderAreaCard" style="background: {{$order->customer_status['color']}}">
+                        {{bnConvert()->date($order->created_at->diffForHumans())}}, আপনি একটি অর্ডার করেছেন। {{$order->customer_status['name']}}।<br />
                         অর্ডার নম্বর: {{ bnConvert()->number($order->id, false) }}<br />
                         সর্বমোট: ৳ {{ bnConvert()->number($order->total) }}<br />
                     </div>
                 </a>
             </div>
         @endforeach
-    </div> --}}
-
-
-    <div style="">
-        <img class=""
-            src="https://tajabajar.s3.ap-south-1.amazonaws.com/uploads/all/esjU7Qqs5Uq2ehUvzMPJZlGaNnG4pKKR1mexvyBm.jpg"
-            style="width: 100%;border-radius: 5px" alt="">
-        <div class="row mt-2">
-            <div class="col-md-4 col-sm-4 col-12">
-                <a href="https://play.google.com/store/apps/details?id=com.amirhamza.bibisena">
-                    <div class="card hotline-card" style="text-align: center;">
-                        ডাউনলোড করুন বিবিসিনা অ্যান্ড্রয়েড অ্যাপ<br />
-                        <center>
-                            <img src="https://i1.wp.com/9to5google.com/wp-content/uploads/sites/4/2022/07/current-google-play-icon.jpg?ssl=1"
-                                height="50px" width="50px" alt="">
-                        </center>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4 col-sm-4 col-12 mt-2">
-                <a href="tel:8665562570">
-                    <div class="card hotline-card" style="text-align: center">
-                        <div style=""></div> যেকোনো প্রয়োজনে যোগাযোগ করুন<br />
-                        <i class="fa fa-phone" aria-hidden="true"></i>
-                        01777564786
-                    </div>
-                </a>
-            </div>
-        </div>
     </div>
     <div class="row no-gutters" style="margin: 15px -15px 0px -5px;" id="product-list">
 

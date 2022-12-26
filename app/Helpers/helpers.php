@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\BnConvert;
+use App\Helpers\DeviceInfo;
 
 /**
  * Bangla Convert
@@ -21,5 +22,12 @@ if (!function_exists('convertBanglaNumber')) {
         $number = number_format($number, 0, '.', ',');
         $number = strtr($number, $numbers);
         return $number;
+    }
+}
+
+if (!function_exists('deviceInfo')) {
+    function deviceInfo()
+    {
+        return new DeviceInfo();
     }
 }

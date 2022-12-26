@@ -1,6 +1,6 @@
 @php
-$labelWidth = 4;
-$inputWidth = 6;
+    $labelWidth = 4;
+    $inputWidth = 6;
 @endphp
 <style>
     .select2-selection__choice__display {
@@ -17,17 +17,25 @@ $inputWidth = 6;
     }
 </style>
 
+@php
+$isVendor = auth()
+        ->user()
+        ->isVendor();
+    $displayNone = $isVendor ? 'display: none': '';
+    
+@endphp
+
 <div class="mb-3 row ">
     <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পণ্যের নাম</label>
     <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::text('name', null, ['class' => 'form-control ', 'id' => 'name']) !!}
+        {!! Form::text('name', null, ['class' => 'form-control ', 'id' => 'name', 'readonly' => $isVendor]) !!}
     </div>
 </div>
 
 <div class="mb-3 row ">
     <label for="quantity" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পরিমান</label>
     <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::number('quantity', null, ['class' => 'form-control ', 'id' => 'quantity', 'step' => '0.01']) !!}
+        {!! Form::number('quantity', null, ['class' => 'form-control ', 'id' => 'quantity', 'step' => '0.01', 'readonly' => $isVendor]) !!}
     </div>
 </div>
 
@@ -35,9 +43,10 @@ $inputWidth = 6;
     <label for="unit" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">একক</label>
     <div class="col-sm-{{ $inputWidth }}">
         {!! Form::select('unit', $units, null, [
-            'placeholder' => 'Select Status',
+            'placeholder' => 'Select Unit',
             'class' => 'form-control ',
             'id' => 'status',
+            'disabled' => $isVendor
         ]) !!}
     </div>
 </div>
@@ -56,52 +65,64 @@ $inputWidth = 6;
         {!! Form::number('market_sale_price', null, ['class' => 'form-control ', 'id' => 'market_sale_price']) !!}
     </div>
 </div>
+<div style="{{ $displayNone }}">
+    <div class="mb-3 row">
+        <label for="profit" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">লাভ</label>
+        <div class="col-sm-{{ $inputWidth }}">
+            {!! Form::number('profit', null, ['class' => 'form-control ', 'id' => 'profit']) !!}
+        </div>
+    </div>
 
-<div class="mb-3 row">
-    <label for="profit" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">লাভ</label>
-    <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::number('profit', null, ['class' => 'form-control ', 'id' => 'profit']) !!}
+    <div class="mb-3 row">
+        <label for="price" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">বিবিসিনা
+            মূল্য</label>
+        <div class="col-sm-{{ $inputWidth }}">
+            {!! Form::number('price', null, ['class' => 'form-control ', 'id' => 'price']) !!}
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="delivery_fee" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">ডেলিভারি
+            ফী</label>
+        <div class="col-sm-{{ $inputWidth }}">
+            {!! Form::number('delivery_fee', null, ['class' => 'form-control ', 'id' => 'delivery_fee']) !!}
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="status" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">অবস্থা</label>
+        <div class="col-sm-{{ $inputWidth }}">
+            {!! Form::select('status', ['private' => 'Private', 'publish' => 'Publish'], null, [
+                'placeholder' => 'Select Status',
+                'class' => 'form-control ',
+                'id' => 'status',
+            ]) !!}
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="categories" class="col-sm-{{ $labelWidth }} col-form-label form-control-label"
+            for="image">ক্যাটাগরি</label>
+        <div class="col-sm-{{ $inputWidth }}">
+            <select class="form-control" id="categories" name="categories[]" multiple="multiple">
+                @php
+                    $categories = isset($product) ? $product->categories : [];
+                @endphp
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
 </div>
 
 <div class="mb-3 row">
-    <label for="price" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">বিবিসিনা মূল্য</label>
-    <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::number('price', null, ['class' => 'form-control ', 'id' => 'price']) !!}
-    </div>
-</div>
-
-<div class="mb-3 row">
-    <label for="status" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">অবস্থা</label>
-    <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::select('status', ['private' => 'Private', 'publish' => 'Publish'], null, [
-            'placeholder' => 'Select Status',
-            'class' => 'form-control ',
-            'id' => 'status',
-        ]) !!}
-    </div>
-</div>
-
-<div class="mb-3 row">
-    <label for="categories" class="col-sm-{{ $labelWidth }} col-form-label form-control-label"
-        for="image">ক্যাটাগরি</label>
-    <div class="col-sm-{{ $inputWidth }}">
-        <select class="form-control" id="categories" name="categories[]" multiple="multiple">
-            @php
-                $categories = isset($product) ? $product->categories : [];
-            @endphp
-            @foreach ($categories as $category)
-                <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
-            @endforeach
-        </select>
-    </div>
-</div>
-
-<div class="mb-3 row">
-    <label for="image" class="col-sm-{{ $labelWidth }} col-form-label form-control-label" for="image">পণ্যের
+    <label for="image1" class="col-sm-{{ $labelWidth }} col-form-label form-control-label" for="image">পণ্যের
         ছবি</label>
     <div class="col-sm-{{ $inputWidth }}">
-        <input type="file" name="image" id="image" onchange="previewFile(event)">
+        <div style="{{$displayNone}}">
+            <input type="file" name="image" id="image" onchange="previewFile(event)">
+        </div>
         <img src="{{ isset($product) ? $product->image : url('images/default.png') }}" id="image-preview"
             height="180px" width="180px" class="img-thumbnail mt-2" alt="">
     </div>

@@ -34,4 +34,14 @@ final class OrderStatusEnum extends Enum
   {
     return OrderStatusEnumData::getStatusData($this->key, 'name');
   }
+
+  public function customerStatus()
+  {
+    return OrderStatusEnumData::getStatusData($this->key, 'customerStatus');
+  }
+
+  public function notificationMessage()
+  {
+    return OrderStatusEnumData::getStatusData($this->key, 'notificationMessage');
+  }
 }

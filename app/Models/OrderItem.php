@@ -23,6 +23,7 @@ class OrderItem extends Model
         'wholesale_price_update_time',
         'profit',
         'total',
+        'delivery_fee'
     ];
 
     public function order()
@@ -32,6 +33,6 @@ class OrderItem extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class)->with(['imageTable']);
     }
 }

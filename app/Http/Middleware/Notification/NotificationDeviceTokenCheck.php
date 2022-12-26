@@ -19,13 +19,24 @@ class NotificationDeviceTokenCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->device_token) {
-            $deviceToken = base64_decode(request()->device_token);
+        if (deviceInfo()->hasDeviceToken()) {
+            $deviceToken = deviceInfo()->getDeviceToken();
             $notificationDevice = NotificationDevice::where(['token' => $deviceToken, 'last_visit_ip' => $request->ip()])->first();
-            if ($notificationDevice) {
-                $notificationDevice->update([
-                    'last_visit_time' => Carbon::now(),
+            
+            if(auth()->check() && auth()->user()->device_token != $deviceToken){
+                
+                auth()->user()->update([
+                    'device_token' => $deviceToken
                 ]);
+            }
+            
+            if ($notificationDevice ) {
+                if((new Carbon($notificationDevice->last_visit_time))->diffInMinutes(Carbon::now()) > 60){
+                    $notificationDevice->update([
+                        'last_visit_time' => Carbon::now(),
+                    ]);
+                }
+                
             } else {
                 NotificationDevice::create([
                     'token' => $deviceToken,

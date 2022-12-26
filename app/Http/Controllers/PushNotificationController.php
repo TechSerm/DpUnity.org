@@ -80,8 +80,6 @@ class PushNotificationController extends Controller
         ]);
     }
 
-    
-
     public function show()
     {
         return view('category.create');

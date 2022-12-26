@@ -28,6 +28,7 @@ class Product extends Model
         'profit',
         'temp_categories_id',
         'keyword',
+        'delivery_fee',
         'status'
     ];
 
@@ -38,7 +39,7 @@ class Product extends Model
 
     public function imageTable()
     {
-        return $this->belongsTo(Image::class,'image_id');
+        return $this->belongsTo(Image::class, 'image_id');
     }
 
     public function imageSrv()
