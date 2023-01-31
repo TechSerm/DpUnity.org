@@ -28,14 +28,14 @@ $isVendor = auth()
 <div class="mb-3 row ">
     <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পণ্যের নাম</label>
     <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::text('name', null, ['class' => 'form-control ', 'id' => 'name', 'readonly' => $isVendor]) !!}
+        {!! Form::text('name', null, ['class' => 'form-control ', 'id' => 'name']) !!}
     </div>
 </div>
 
 <div class="mb-3 row ">
     <label for="quantity" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পরিমান</label>
     <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::number('quantity', null, ['class' => 'form-control ', 'id' => 'quantity', 'step' => '0.01', 'readonly' => $isVendor]) !!}
+        {!! Form::number('quantity', null, ['class' => 'form-control ', 'id' => 'quantity', 'step' => '0.01']) !!}
     </div>
 </div>
 
@@ -46,7 +46,6 @@ $isVendor = auth()
             'placeholder' => 'Select Unit',
             'class' => 'form-control ',
             'id' => 'status',
-            'disabled' => $isVendor
         ]) !!}
     </div>
 </div>
@@ -69,7 +68,7 @@ $isVendor = auth()
     <div class="mb-3 row">
         <label for="profit" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">লাভ</label>
         <div class="col-sm-{{ $inputWidth }}">
-            {!! Form::number('profit', null, ['class' => 'form-control ', 'id' => 'profit']) !!}
+            {!! Form::number('profit', isset($product) ? $product->profit : 0, ['class' => 'form-control ', 'id' => 'profit']) !!}
         </div>
     </div>
 
@@ -92,7 +91,7 @@ $isVendor = auth()
     <div class="mb-3 row">
         <label for="status" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">অবস্থা</label>
         <div class="col-sm-{{ $inputWidth }}">
-            {!! Form::select('status', ['private' => 'Private', 'publish' => 'Publish'], null, [
+            {!! Form::select('status', ['private' => 'Private', 'publish' => 'Publish'], isset($product) ? $product->status : 'private', [
                 'placeholder' => 'Select Status',
                 'class' => 'form-control ',
                 'id' => 'status',
@@ -120,7 +119,7 @@ $isVendor = auth()
     <label for="image1" class="col-sm-{{ $labelWidth }} col-form-label form-control-label" for="image">পণ্যের
         ছবি</label>
     <div class="col-sm-{{ $inputWidth }}">
-        <div style="{{$displayNone}}">
+        <div style="">
             <input type="file" name="image" id="image" onchange="previewFile(event)">
         </div>
         <img src="{{ isset($product) ? $product->image : url('images/default.png') }}" id="image-preview"

@@ -55,6 +55,9 @@ class ProductController extends Controller
         return Datatables::of($productQuery)
             ->filter(function ($query) use ($request) {
             })
+            ->editColumn('name', function ($model) {
+                return $model->name ." - <b>(". bnConvert()->number($model->quantity) . " " . bnConvert()->unit($model->unit). ")</b>";
+            })
             ->editColumn('profit', function ($model) {
                 return $this->addPriceLabel($model->profit);
             })
@@ -144,6 +147,7 @@ class ProductController extends Controller
         ]);
 
         $product->categories()->sync($request->categories);
+        $product->keyWordUpdate();
 
         return back()->with('success', 'Product create successfully!');
     }
