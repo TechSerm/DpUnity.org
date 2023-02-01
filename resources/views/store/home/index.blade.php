@@ -67,7 +67,7 @@
 
     <div style="">
         <img class=""
-            src="https://tajabajar.s3.ap-south-1.amazonaws.com/uploads/all/esjU7Qqs5Uq2ehUvzMPJZlGaNnG4pKKR1mexvyBm.jpg"
+            src="{{ asset('assets/img/welcome_banner.jpg') }}"
             style="width: 100%;border-radius: 5px" alt="">
         <div class="row mt-3">
             @if (!deviceInfo()->hasDeviceToken() || (deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config("bibisena.android_app_version")))
