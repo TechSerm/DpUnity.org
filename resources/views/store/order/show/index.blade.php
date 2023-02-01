@@ -57,7 +57,7 @@
 
                     <div class="totalMessageArea">
                         অর্ডারটির কোনোকিছু পরিবর্তন করতে চাইলে আমাদের হটলাইনে যোগাযোগ করুন। আমাদের হটলাইন নাম্বার 
-                        <a class="btn btn-success mt-1" href="tel:01777564786"><i class="fa fa-phone" aria-hidden="true"></i> 01777564786</a>
+                        <a class="btn btn-success mt-1" href="tel:01603169395"><i class="fa fa-phone" aria-hidden="true"></i> 01603169395</a>
                     </div>
                 </div>
 
