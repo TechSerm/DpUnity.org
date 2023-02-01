@@ -29,7 +29,7 @@ class SearchController extends Controller
         $searchQuery = request()->q;
         if($searchQuery == "")return [];
   
-        $products = SearchService::getSearchProduct($searchQuery)->paginate(5);
+        $products = SearchService::getSearchProduct($searchQuery)->where(['status' => 'publish'])->paginate(5);
         
         return $products;
     }
