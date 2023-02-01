@@ -44,7 +44,7 @@
                 <a href="{{ route('store.categories.show', $category) }}">
                     <div class="card category" style="height: 210px">
                         <img src="{{ $category->image }}" alt="">
-                        <div class="title">{{ $category->name }} ({{ $category->products()->count() }})</div>
+                        <div class="title">{{ $category->name }} ({{ $category->products()->where(['status' => 'publish'])->count() }})</div>
                     </div>
                 </a>
             </div>
