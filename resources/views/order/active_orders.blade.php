@@ -55,8 +55,18 @@
                     <div class="body">
                         <table class="table table-bordered">
                             <tr>
-                                <td class="infoTd" style="width: 150px;">অর্ডার নাম্বার </td>
-                                <td style="font-weight: bold; font-size: 16px;">{{ $order->id }}</td>
+                                <td class="infoTd" style="width: 150px;">কাস্টমারের নাম </td>
+                                <td style="">{{ $order->name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="infoTd" style="width: 150px;">কাস্টমারের ঠিকানা </td>
+                                <td style="">
+                                    @if (strlen($order->address) >= 150)
+                                        {!! substr($order->address, 0, 150). "..." !!}
+                                    @else
+                                        {{ $order->address }}
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <td>অর্ডারটি করা হয়েছে</td>
