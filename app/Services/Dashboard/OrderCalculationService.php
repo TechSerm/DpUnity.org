@@ -51,7 +51,7 @@ class OrderCalculationService {
     public function getTotalPending(){
         $orders = $this->getOrderQuery();
         return $this->getOrderShowFormat(
-            $orders->where(['is_approved' =>  false])->select(
+            $orders->where(['is_approved' =>  false, 'is_cancelled' =>  false])->select(
                 $this->getOrderSelectQuery("total")
             )->first()
         );
@@ -60,7 +60,7 @@ class OrderCalculationService {
     public function getTotalProcessing(){
         $orders = $this->getOrderQuery();
         return $this->getOrderShowFormat(
-            $orders->where(['is_approved' => true, 'is_delivery_complete' =>  false])->select(
+            $orders->where(['is_approved' => true, 'is_cancelled' =>  false,  'is_delivery_complete' =>  false])->select(
                 $this->getOrderSelectQuery("total")
             )->first()
         );
