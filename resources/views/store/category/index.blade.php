@@ -40,14 +40,19 @@
     </style>
     <div class="row categories">
         @foreach ($categories as $category)
+            @php
+                $totalProducts = $category->products()->where(['status' => 'publish'])->count();
+            @endphp
+            @if ($totalProducts > 0)
             <div class="col-md-2 col-sm-6 col-lg-2 col-6">
                 <a href="{{ route('store.categories.show', $category) }}">
                     <div class="card category" style="height: 210px">
                         <img src="{{ $category->image }}" alt="">
-                        <div class="title">{{ $category->name }} ({{ $category->products()->where(['status' => 'publish'])->count() }})</div>
+                        <div class="title">{{ $category->name }} ({{ $totalProducts }})</div>
                     </div>
                 </a>
             </div>
+            @endif
         @endforeach
     </div>
 
