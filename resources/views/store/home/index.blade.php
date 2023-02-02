@@ -66,31 +66,36 @@
     </style>
 
     <div style="">
-        <img class=""
-            src="{{ asset('assets/img/welcome_banner.jpg') }}"
-            style="width: 100%;border-radius: 5px" alt="">
+        <img class="" src="{{ asset('assets/img/welcome_banner.jpg') }}" style="width: 100%;border-radius: 5px"
+            alt="">
         <div class="row mt-3">
-            @if (!deviceInfo()->hasDeviceToken() || (deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config("bibisena.android_app_version")))
-            
-            <div class="col-md-4 col-sm-4 col-12">
-                <div class="card hotline-card mb-3" style="text-align: center; font-size: 20px; height: 130px">
-                    <div style="height: 80px">
-                        বিবিসিনা অ্যান্ড্রয়েড অ্যাপ<br />
-                        @php
-                            $needUpdate = false;
-                        @endphp
-                        @if ((deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config("bibisena.android_app_version")))
+            @if (
+                !deviceInfo()->hasDeviceToken() ||
+                    (deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config('bibisena.android_app_version')))
+
+                <div class="col-md-4 col-sm-4 col-12">
+                    <div class="card hotline-card mb-3" style="text-align: center; font-size: 20px; height: 130px">
+                        <div style="height: 80px">
+                            বিবিসিনা অ্যান্ড্রয়েড অ্যাপ<br />
                             @php
-                                $needUpdate = true;
+                                $needUpdate = false;
                             @endphp
-                            <div style="color: red; font-size: 14px">আপনি এপটির পুরাতন ভার্সন ব্যবহার করছেন।  সর্বোচ্চ পারফরমেন্স পেতে এপটির নতুন ভার্সন আপডেট করুন। </div>
-                        @endif
+                            @if (deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config('bibisena.android_app_version'))
+                                @php
+                                    $needUpdate = true;
+                                @endphp
+                                <div style="color: red; font-size: 14px">আপনি এপটির পুরাতন ভার্সন ব্যবহার করছেন। সর্বোচ্চ
+                                    পারফরমেন্স পেতে এপটির নতুন ভার্সন আপডেট করুন। </div>
+                            @endif
+                        </div>
+
+                        <a class="btn btn-info mt-1"
+                            href="https://play.google.com/store/apps/details?id=com.amirhamza.bibisena"><i
+                                class="fa fa-download" aria-hidden="true"></i>
+                            {{ $needUpdate ? 'নতুন ভার্সন আপডেট' : 'ডাউনলোড' }} করুন </a>
                     </div>
-                    
-                    <a class="btn btn-info mt-1" href="https://play.google.com/store/apps/details?id=com.amirhamza.bibisena"><i class="fa fa-download" aria-hidden="true"></i> {{$needUpdate ? "নতুন ভার্সন আপডেট" : "ডাউনলোড"}} করুন </a>
+                    </a>
                 </div>
-                </a>
-            </div>
             @endif
             <div class="col-md-4 col-sm-4 col-12">
 
@@ -109,8 +114,9 @@
         @foreach ($activeOrders as $order)
             <div class="col-md-4">
                 <a href="{{ route('store.order.show', ['uuid' => $order->uuid]) }}">
-                    <div class="orderAreaCard" style="background: {{$order->customer_status['color']}}">
-                        {{bnConvert()->date($order->created_at->diffForHumans())}}, আপনি একটি অর্ডার করেছেন। {{$order->customer_status['name']}}।<br />
+                    <div class="orderAreaCard" style="background: {{ $order->customer_status['color'] }}">
+                        {{ bnConvert()->date($order->created_at->diffForHumans()) }}, আপনি একটি অর্ডার করেছেন।
+                        {{ $order->customer_status['name'] }}।<br />
                         অর্ডার নম্বর: {{ bnConvert()->number($order->id, false) }}<br />
                         সর্বমোট: ৳ {{ bnConvert()->number($order->total) }}<br />
                     </div>
@@ -118,12 +124,58 @@
             </div>
         @endforeach
     </div>
-    <div class="row no-gutters" style="margin: 15px -15px 0px -5px;" id="product-list">
 
-        @include('store.product.single_product_page')
+    <style>
+        .home-list {
+            margin: 15px -5px 0px -5px;
+            border: 1px solid #f6f6f6;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .home-list-header {
+            border: 1px solid #eeeeee;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 10px;
+            margin: -2px -2px 10px -2px;
+        }
+    </style>
+
+    <div class="home-list" style="background: #caf0e9">
+        <div class="home-list-header" style="background: #16a085; color: #ffffff">ক্যাটেগরি</div>
+        <div class="row categories">
+            @foreach ($categories as $category)
+                @php
+                    $totalProducts = $category
+                        ->products()
+                        ->where(['status' => 'publish'])
+                        ->count();
+                @endphp
+                @if ($totalProducts > 0)
+                    <div class="col-md-2 col-sm-6 col-lg-2 col-6">
+                        <a href="{{ route('store.categories.show', $category) }}">
+                            <div class="card product" style="height: 210px">
+                                <img src="{{ $category->image }}" alt="">
+                                <div class="title">{{ $category->name }} ({{ $totalProducts }})</div>
+                            </div>
+                        </a>
+                    </div>
+                @endif
+            @endforeach
+        </div>
     </div>
-    <div class="loader-area" id="loader-area">
-        <img src="{{ asset('assets/img/loader.gif') }}" height="70px" width="70px" alt="">
+    <div class="home-list" style="background: #d5ddf2">
+        <div class="home-list-header" style="background: #3d579c; color: #ffffff" >পণ্যের তালিকা</div>
+        <div class="row no-gutters" style="" id="product-list">
+
+            @include('store.product.single_product_page')
+        </div>
+        <div class="loader-area" id="loader-area">
+            <img src="{{ asset('assets/img/loader.gif') }}" height="70px" width="70px" alt="">
+        </div>
+    </div>
     </div>
 
 @stop

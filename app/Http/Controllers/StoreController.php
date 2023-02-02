@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Cart\Cart;
 use App\Facades\HomePageProduct\HomePageProductFacade;
 use App\Facades\Order\OrderFacade;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,6 +19,7 @@ class StoreController extends Controller
         $activeOrders = OrderFacade::userOrder()->activeOrToday();
         return view('store.home.index', [
             'products' => $products,
+            'categories' => Category::with('imageTable')->get(),
             'activeOrders' => $activeOrders
         ]);
     }
