@@ -127,10 +127,14 @@
 
     <style>
         .home-list {
-            margin: 15px -5px 0px -5px;
-            border: 1px solid #f6f6f6;
+            margin: 15px -7px 0px -7px;
+            border: 1px solid #eeeeee;
             padding: 5px;
             border-radius: 5px;
+        }
+
+        .home-list-body{
+            
         }
 
         .home-list-header {
@@ -143,8 +147,9 @@
         }
     </style>
 
-    <div class="home-list" style="background: #caf0e9">
+    <div class="home-list" style="background: #edfffc">
         <div class="home-list-header" style="background: #16a085; color: #ffffff">ক্যাটেগরি</div>
+        <div class="home-list-body" style="margin-right: -10px;">
         <div class="row categories">
             @foreach ($categories as $category)
                 @php
@@ -156,24 +161,28 @@
                 @if ($totalProducts > 0)
                     <div class="col-md-2 col-sm-6 col-lg-2 col-6">
                         <a href="{{ route('store.categories.show', $category) }}">
-                            <div class="card product" style="height: 210px">
+                            <div class="card product" style="height: 210px; border-radius: 15px">
                                 <img src="{{ $category->image }}" alt="">
-                                <div class="title">{{ $category->name }} ({{ $totalProducts }})</div>
+                                <div class="title">{{ $category->name }} ({{ bnConvert()->number($totalProducts) }})
+                                </div>
                             </div>
                         </a>
                     </div>
                 @endif
             @endforeach
         </div>
-    </div>
-    <div class="home-list" style="background: #d5ddf2">
-        <div class="home-list-header" style="background: #3d579c; color: #ffffff" >পণ্যের তালিকা</div>
-        <div class="row no-gutters" style="" id="product-list">
-
-            @include('store.product.single_product_page')
         </div>
-        <div class="loader-area" id="loader-area">
-            <img src="{{ asset('assets/img/loader.gif') }}" height="70px" width="70px" alt="">
+    </div>
+    <div class="home-list mt-4" style="background: #e9efff">
+        <div class="home-list-header" style="background: #3d579c; color: #ffffff">পণ্যের তালিকা</div>
+        <div class="home-list-body" style="margin-right: -10px;">
+            <div class="row no-gutters" style="" id="product-list">
+
+                @include('store.product.single_product_page')
+            </div>
+            <div class="loader-area" id="loader-area">
+                <img src="{{ asset('assets/img/loader.gif') }}" height="70px" width="70px" alt="">
+            </div>
         </div>
     </div>
     </div>

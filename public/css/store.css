@@ -9511,6 +9511,106 @@ h3 {
 }
 
 .product {
+  background-color: #fff;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-right: 10px;
+  padding: 2px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+.product img {
+  border-radius: 5px;
+}
+.product .body {
+  /* background: black; */
+  padding: 2px;
+  font-size: 15px;
+  text-align: center;
+  height: 100%;
+}
+.product .title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0px 0px 3px 0px;
+  padding-top: 5px;
+  color: black;
+  height: 50px;
+  /* background: red; */
+  overflow: hidden;
+  line-height: 15px;
+}
+.product .quantity-area {
+  height: 20px;
+  /* background: blue; */
+  font-size: 13px;
+  color: #2c3e50;
+}
+.product .price-area {
+  height: 20px;
+  /* background: green; */
+  margin-bottom: 3px;
+  color: red;
+}
+.product .price {
+  color: #e43215;
+  font-weight: 700;
+  font-size: 18px;
+}
+.product .button-area {
+  text-align: center;
+  height: 40px;
+  margin-top: 10px;
+  vertical-align: middle;
+}
+.product button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.product .add-bag {
+  width: 100%;
+  border-radius: 5px;
+  height: 100%;
+  background-color: #8e44ad;
+  font-size: 16px;
+  color: #fff;
+}
+.product .bag-count-area {
+  background: #3498db;
+  height: 100%;
+  border-radius: 5px;
+  color: #fff;
+}
+.product .minus-quantity {
+  float: left;
+  border-right: 1px solid #d55f5f;
+  border-radius: 5px 0 0 5px;
+  width: 30px;
+  height: 100%;
+}
+.product .QuantityTextContainer {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 36px;
+  padding-top: 2px;
+  vertical-align: middle;
+  overflow: hidden;
+}
+.product .plusQuantity {
+  border: none;
+  width: 30px;
+  background: #2ecc71;
+  border-radius: 0px 5px 5px 0px;
+  height: 100%;
+  font-weight: 700;
+  color: #fff;
+  float: right;
+}
+
+.product {
   border-radius: 10px;
 }
 
