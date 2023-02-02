@@ -127,7 +127,7 @@
 
     <style>
         .home-list {
-            margin: 15px -7px 0px -7px;
+            margin: 15px -5px 0px -5px;
             border: 1px solid #eeeeee;
             padding: 5px;
             border-radius: 5px;
@@ -135,6 +135,10 @@
 
         .home-list-body{
             
+        }
+
+        .product:nth-child(3) {
+            background: red;
         }
 
         .home-list-header {
@@ -149,7 +153,6 @@
 
     <div class="home-list" style="background: #edfffc">
         <div class="home-list-header" style="background: #16a085; color: #ffffff">ক্যাটেগরি</div>
-        <div class="home-list-body" style="margin-right: -10px;">
         <div class="row categories">
             @foreach ($categories as $category)
                 @php
@@ -171,9 +174,8 @@
                 @endif
             @endforeach
         </div>
-        </div>
     </div>
-    <div class="home-list mt-4" style="background: #e9efff">
+    <div class="home-list" style="background: #eaeffc">
         <div class="home-list-header" style="background: #3d579c; color: #ffffff">পণ্যের তালিকা</div>
         <div class="home-list-body" style="margin-right: -10px;">
             <div class="row no-gutters" style="" id="product-list">
