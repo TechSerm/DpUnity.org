@@ -160,7 +160,16 @@
         <div class="orderMobileVersion">
 
             <table class="table table-borderless orderSummeryTable">
-                @foreach ($items as $item)
+                @foreach ($items as $key => $item)
+                    @php
+                        $product = $item->product;
+                        $attr = array_merge(
+                            request()
+                                ->route()
+                                ->parameters(),
+                            ['order_item' => $item->uuid],
+                        );
+                    @endphp
                     <tr class="cartTr">
                         <style>
                             .cartTr {
