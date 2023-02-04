@@ -250,6 +250,13 @@ return [
             'can' => 'products.index'
         ],
         [
+            'text'        => 'Update Products Price',
+            'url'         => '/admin/product_price',
+            'icon'        => 'fas fa-egg',
+            'label_color' => 'success',
+            'can' => 'products.index'
+        ],
+        [
             'text'        => 'Categories',
             'url'         => '/admin/categories',
             'icon'        => 'fas fa-dice-d6',
