@@ -220,7 +220,7 @@ class ProductController extends Controller
 
     public function productPrice()
     {
-        $products = Product::paginate(20)->onEachSide(2);
+        $products = Product::paginate(20)->onEachSide(5);
         return view('product_price.index', [
             'products' => $products
         ]);
