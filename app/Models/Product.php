@@ -32,6 +32,10 @@ class Product extends Model
         'status'
     ];
 
+    protected $casts = [
+        'wholesale_price_last_update' => 'datetime',
+    ];
+
     public function getImageAttribute()
     {
         return $this->imageSrv()->src();

@@ -11,6 +11,7 @@ use App\Observers\OrderItemObserver;
 use App\Observers\OrderObserver;
 use App\Observers\OrderStatusObserver;
 use App\Services\Permission\PermissionService;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -37,18 +38,11 @@ class AppServiceProvider extends ServiceProvider
         Order::observe(OrderObserver::class);
         OrderItem::observe(OrderItemObserver::class);
         OrderStatus::observe(OrderStatusObserver::class);
-        
-
-        Gate::define('show-dashboard', function ($user) {
-            // if ($user->priv_admin == 'Y') {
-            //     return true;
-            // }
-            
-            return false;
-        });
 
         (new PermissionService())->initGatePermission();
 
-        
+        //default pagination style
+        Paginator::defaultView('vendor.pagination.bootstrap-4');
+        Paginator::defaultSimpleView('vendor.pagination.simple-bootstrap-4');
     }
 }

@@ -81,7 +81,9 @@ Route::prefix('admin')->group(function () {
             Route::resource('order_items', OrderItemController::class);
         });
         Route::resource('orders', OrderController::class);
-        
+
+        Route::get('/product_price', [ProductController::class, 'productPrice'])->name('product_price.index');
+        Route::post('/product_price', [ProductController::class, 'productPriceUpdate']);
 
         Route::get('/search-keywords/data', [SearchKeywordController::class, 'getData'])->name('search-keywords.data');
         Route::resource('search-keywords', SearchKeywordController::class);

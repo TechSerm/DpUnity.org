@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Services\Product\ProductService;
 use App\Services\Search\SearchService;
 use App\Services\WooCommerce\WooCommerceService;
+use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
@@ -37,13 +38,13 @@ class ProductController extends Controller
         $this->authorize('products.index');
         $productQuery = Product::with(['imageTable']);
 
-        if(isset($request->search) && is_array($request->search) && $request->search['value'] != ''){
+        if (isset($request->search) && is_array($request->search) && $request->search['value'] != '') {
             $searchValue = strtolower($request->search['value']);
             $suggestionWords = SearchService::getSearchKeyword($searchValue);
-            $productQuery->where(function($query) use($suggestionWords, $searchValue){
+            $productQuery->where(function ($query) use ($suggestionWords, $searchValue) {
                 $query->orWhere('name', 'LIKE', "%{$searchValue}%");
                 foreach ($suggestionWords as $word) {
-                    $query->orWhereRaw('`name` LIKE ?', ['%'.trim(strtolower($word)).'%']);
+                    $query->orWhereRaw('`name` LIKE ?', ['%' . trim(strtolower($word)) . '%']);
                 }
             });
         }
@@ -56,7 +57,7 @@ class ProductController extends Controller
             ->filter(function ($query) use ($request) {
             })
             ->editColumn('name', function ($model) {
-                return $model->name ." - <b>(". bnConvert()->number($model->quantity) . " " . bnConvert()->unit($model->unit). ")</b>";
+                return $model->name . " - <b>(" . bnConvert()->number($model->quantity) . " " . bnConvert()->unit($model->unit) . ")</b>";
             })
             ->editColumn('profit', function ($model) {
                 return $this->addPriceLabel($model->profit);
@@ -215,5 +216,40 @@ class ProductController extends Controller
         $this->authorize('products.delete');
         $product = Product::findOrFail($id);
         $product->delete();
+    }
+
+    public function productPrice()
+    {
+        $products = Product::paginate(15);
+        return view('product_price.index', [
+            'products' => $products
+        ]);
+    }
+
+    public function productPriceUpdate(Request $request)
+    {
+        $products = Product::whereIn('id', $request->product_id)->get();
+
+        foreach ($products as $key => $product) {
+            $wholeSalePrice = $request->wholesale_price[$key] ?? 0;
+            $marketSalePrice = $request->market_sale_price[$key] ?? 0;
+
+            if ($wholeSalePrice < 0 || $marketSalePrice < 0) continue;
+            if ($product->wholesale_price == $wholeSalePrice && $product->market_sale_price == $marketSalePrice) continue;
+
+            $profit = $marketSalePrice - $wholeSalePrice;
+
+            $product->update([
+                'wholesale_price' => $wholeSalePrice,
+                'market_sale_price' => $marketSalePrice,
+                'profit' => $profit,
+                'price' => $marketSalePrice,
+                'wholesale_price_last_update' => Carbon::now()
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Successfully Price Update'
+        ]);
     }
 }
