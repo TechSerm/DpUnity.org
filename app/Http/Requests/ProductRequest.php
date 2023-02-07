@@ -27,7 +27,7 @@ class ProductRequest extends FormRequest
             'name' => 'required',
             'market_sale_price' => 'required|min:0',
             'wholesale_price' => 'required|integer|min:0',
-            'profit' => 'required|integer|min:0',
+            'profit' => 'required|integer',
             'price' => 'required|integer|min:0',
             'image' => 'image|mimes:jpg,png,jpeg,webp',
             'status' => 'required'
