@@ -220,7 +220,7 @@ class ProductController extends Controller
 
     public function productPrice()
     {
-        $products = Product::paginate(20)->onEachSide(5);
+        $products = Product::paginate(20)->onEachSide(1);
         return view('product_price.index', [
             'products' => $products
         ]);
@@ -228,24 +228,40 @@ class ProductController extends Controller
 
     public function productPriceUpdate(Request $request)
     {
+       // dd($request->all());
         $products = Product::whereIn('id', $request->product_id)->get();
 
         foreach ($products as $key => $product) {
             $wholeSalePrice = $request->wholesale_price[$key] ?? 0;
             $marketSalePrice = $request->market_sale_price[$key] ?? 0;
-
-            if ($wholeSalePrice < 0 || $marketSalePrice < 0) continue;
-            if ($product->wholesale_price == $wholeSalePrice && $product->market_sale_price == $marketSalePrice) continue;
-
             $profit = $marketSalePrice - $wholeSalePrice;
 
-            $product->update([
-                'wholesale_price' => $wholeSalePrice,
-                'market_sale_price' => $marketSalePrice,
-                'profit' => $profit,
-                'price' => $marketSalePrice,
-                'wholesale_price_last_update' => Carbon::now()
-            ]);
+            $isPriceUpdate = !(($wholeSalePrice < 0 || $marketSalePrice < 0) || ($product->wholesale_price == $wholeSalePrice && $product->market_sale_price == $marketSalePrice));
+
+            $updatedData = [];
+
+            if($isPriceUpdate){
+                $updatedData = [
+                    'wholesale_price' => $wholeSalePrice,
+                    'market_sale_price' => $marketSalePrice,
+                    'profit' => $profit,
+                    'price' => $marketSalePrice,
+                ];
+            }
+
+            if($product->status == 'publish' && !isset($request->productStatus[$product->id])){
+                $updatedData['status'] = 'private';
+            }
+
+            if($product->status == 'private' && isset($request->productStatus[$product->id])){
+                $updatedData['status'] = 'publish';
+            }
+            
+            if(!empty($updatedData)){
+                $updatedData['wholesale_price_last_update'] = Carbon::now();
+                $product->update($updatedData);
+            }
+            
         }
 
         return response()->json([
