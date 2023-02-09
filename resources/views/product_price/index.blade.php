@@ -299,7 +299,7 @@
             let productName = $("#product_name").val();
             let category = $("#category").val();
 
-            var url = new URL(window.location.href);
+            var url = new URL("{{route('product_price.index')}}");
             url.searchParams.set('product_name', productName);
             url.searchParams.set('category', category);
 
