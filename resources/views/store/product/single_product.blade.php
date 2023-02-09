@@ -13,14 +13,14 @@
     
 
     <div class="card product" style="height: {{ $isShowPage == true ? '500' : '300' }}px; {{!$hasStock ? 'opacity: 0.6' : ''}};">
-        @if (!$isShowPage)
+        @if (!$isShowPage && $hasStock)
         <span href="#" wire:click="increment" class="">
         @endif
             <span class="ct-image-container">
                 <img width="100%" id="productImage" height="{{ $isShowPage == true ? '350' : '150' }}px" src="{{ $product->image }}"
                     class="" alt="">
             </span>
-        @if (!$isShowPage)
+        @if (!$isShowPage && $hasStock)
         </span>
         @endif
         <div class="body">
