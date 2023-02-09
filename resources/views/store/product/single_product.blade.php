@@ -1,6 +1,5 @@
 <div>
     <style>
-        
     </style>
     @if ($isShowPage)
         <div class="row">
@@ -8,7 +7,12 @@
             <div class="col-md-6">
     @endif
 
-    <div class="card product" style="height: {{ $isShowPage == true ? '500' : '300' }}px">
+    @php
+        $hasStock = $product->has_stock;
+    @endphp
+    
+
+    <div class="card product" style="height: {{ $isShowPage == true ? '500' : '300' }}px; {{!$hasStock ? 'opacity: 0.6' : ''}};">
         @if (!$isShowPage)
         <span href="#" wire:click="increment" class="">
         @endif
@@ -28,7 +32,7 @@
             <div class="price-area">
                 ৳ <span class="price">{{ bnConvert()->number($product->price) }}</span>
             </div>
-
+            @if ($hasStock)
             <div class="button-area">
                 @php
                     $cartQuantity = isset($count) ? $count : 0;
@@ -62,6 +66,11 @@
                     </div>
                 @endif
             </div>
+            @else
+            <div class="button-area">
+                <button class="btn btn-sm add-bag disabled" disabled style="background: #d35400"><i class="fa fa-exclamation-triangle"></i> পণ্যটি স্টকে নেই </button>
+            </div>
+            @endif
         </div>
     </div>
 @if ($isShowPage)

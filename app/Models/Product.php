@@ -29,7 +29,8 @@ class Product extends Model
         'temp_categories_id',
         'keyword',
         'delivery_fee',
-        'status'
+        'status',
+        'has_stock'
     ];
 
     protected $casts = [

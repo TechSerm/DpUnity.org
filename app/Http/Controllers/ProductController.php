@@ -81,6 +81,10 @@ class ProductController extends Controller
             ->editColumn('updated_at', function ($model) {
                 return bnConvert()->date($model->updated_at->diffForHumans());
             })
+            ->editColumn('has_stock', function ($model) {
+                $statusColor = $model->has_stock ? 'primary' : 'warning';
+                return "<span class = 'badge badge-{$statusColor}'>" . ($model->has_stock ? '<i class="fa fa-check"></i> আছে':'<i class="fa fa-times"></i> নেই') . "</span>";
+            })
             ->editColumn('status', function ($model) {
                 $statusColor = $model->status == 'private' ? 'danger' : 'success';
                 return "<span class = 'badge badge-{$statusColor}'>" . $model->status . "</span>";
@@ -279,12 +283,12 @@ class ProductController extends Controller
                 ];
             }
 
-            if ($product->status == 'publish' && !isset($request->productStatus[$product->id])) {
-                $updatedData['status'] = 'private';
+            if ($product->has_stock && !isset($request->productHasStock[$product->id])) {
+                $updatedData['has_stock'] = false;
             }
 
-            if ($product->status == 'private' && isset($request->productStatus[$product->id])) {
-                $updatedData['status'] = 'publish';
+            if (!$product->has_stock && isset($request->productHasStock[$product->id])) {
+                $updatedData['has_stock'] = true;
             }
 
             if (!empty($updatedData)) {

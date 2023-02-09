@@ -13,7 +13,7 @@
         }
 
         .productPriceCard {
-            padding: 0px 10px 10px 10px;
+            padding: 5px 10px 10px 10px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
@@ -48,65 +48,100 @@
         }
 
         /* toggle */
-        .switch {
+        .toggle {
+            --width: 70px;
+            --height: calc(var(--width) / 3);
+
             position: relative;
             display: inline-block;
-            width: 35px;
-            height: 20px;
+            width: var(--width);
+            height: var(--height);
+            border-radius: var(--height);
+            cursor: pointer;
             margin-top: 5px;
         }
 
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
+        .toggle input {
+            display: none;
         }
 
-        .slider {
+        .toggle .slider {
             position: absolute;
-            cursor: pointer;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #e74c3c;
-            -webkit-transition: .4s;
-            transition: .4s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 16px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            -webkit-transition: .2s;
-            transition: .2s;
-        }
-
-        input:checked+.slider {
-            background-color: #27ae60;
-        }
-
-        input:focus+.slider {
-            box-shadow: 0 0 1px #27ae60;
-        }
-
-        input:checked+.slider:before {
-            -webkit-transform: translateX(13px);
-            -ms-transform: translateX(13px);
-            transform: translateX(13px);
-        }
-
-        /* Rounded sliders */
-        .slider.round {
+            width: 100%;
+            height: 100%;
             border-radius: 5px;
+            background: #e74c3c;
+            border: 1px solid #c0392b;
+            transition: all 0.4s ease-in-out;
         }
 
-        .slider.round:before {
-            border-radius: 30%;
+        
+
+        .toggle .slider::before {
+            content: "";
+            position: absolute;
+            top: 3.5px;
+            left: 3px;
+            width: calc(var(--height)*0.6);
+            height: calc(var(--height)*0.6);
+            border-radius: 5px;
+            border: 1px solid #eeeeee;
+            background-color: #ffffff;
+            transition: all 0.4s ease-in-out;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .toggle input:checked+.slider {
+            border-color: #23a258;
+            background: #27ae60;
+        }
+
+        .toggle input:checked+.slider::before {
+            border-color: #eeeeee;
+            background-color: #ffffff;
+            left: 6px;
+            transform: translateX(calc(var(--width) - var(--height)));
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .toggle .labels {
+            position: absolute;
+            top: 4px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: #4d4d4d;
+            font-size: 11px;
+            color: #ffffff;
+            transition: all 0.4s ease-in-out;
+        }
+
+        .toggle .labels::after {
+            content: attr(data-off);
+            position: absolute;
+            right: 5px;
+            opacity: 1;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease-in-out;
+        }
+
+        .toggle .labels::before {
+            content: attr(data-on);
+            position: absolute;
+            left: 5px;
+            opacity: 0;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+            transition: all 0.4s ease-in-out;
+        }
+
+        .toggle input:checked~.labels::after {
+            opacity: 0;
+        }
+
+        .toggle input:checked~.labels::before {
+            opacity: 1;
         }
     </style>
 
@@ -151,17 +186,23 @@
                                 </td>
                                 <td class="align-middle" style="text-align: left">
                                     <div class="" style="font-size: 13px;font-weight: bold">
-                                        {{ $product->name }}
+                                        {{$product->id}} - {{ $product->name }}
                                     </div>
                                     <div style="font-size: 11px;font-weight: bold; color: #767575">
                                         {{ bnConvert()->number($product->quantity) }}
-                                        {{ bnConvert()->unit($product->unit) }}<br />
-                                        <label class="switch">
+                                        {{ bnConvert()->unit($product->unit) }}
+
+                                        <span class="badge {{$product->status == 'private' ? 'badge-danger' : 'badge-success'}}">{{$product->status}}</span>
+                                        
+                                        <br />
+                                        
+                                        <label class="toggle">
                                             <input type="checkbox" data-product_id="{{ $product->id }}"
-                                                data-default-value="{{ $product->status }}"
-                                                name="productStatus[{{ $product->id }}]"
-                                                {{ $product->status == 'publish' ? 'checked' : '' }}>
-                                            <span class="slider round"></span>
+                                                data-default-value="{{ $product->has_stock }}"
+                                                name="productHasStock[{{ $product->id }}]"
+                                                {{ $product->has_stock ? 'checked' : '' }}>
+                                            <span class="slider"></span>
+                                            <span class="labels" data-on="স্টকে আছে" data-off="স্টকে নাই"></span>
                                         </label>
                                     </div>
                                 </td>
@@ -206,7 +247,7 @@
         var mismatchPrice = {
             wholesalePrice: [],
             marketSalePrice: [],
-            status: []
+            hasStock: []
         };
         $(document).ready(function() {
             $("input[name^='wholesale_price']").keyup(function(e) {
@@ -219,10 +260,9 @@
                     this).val());
             });
 
-            $("input[name^='productStatus']").change(function(e) {
+            $("input[name^='productHasStock']").change(function(e) {
                 let isChecked = $(this).prop("checked");
-                togglePrice("status", $(this).data('product_id'), $(this).data('default-value'), isChecked ?
-                    "publish" : "private");
+                togglePrice("hasStock", $(this).data('product_id'), $(this).data('default-value'), isChecked);
             });
         });
 
@@ -237,7 +277,7 @@
             }
 
             activeButton = mismatchPrice['wholesalePrice'].length === 0 && mismatchPrice['marketSalePrice'].length === 0 &&
-                mismatchPrice['status'].length === 0 ?
+                mismatchPrice['hasStock'].length === 0 ?
                 false : true;
 
             if (activeButton == true) $("#priceSubmitBtn").prop("disabled", false);
@@ -271,8 +311,10 @@
             minChars: 1,
             source: function(term, response) {
                 let productName = $('#product_name').val();
-                $.getJSON('{{route('product.name_suggestions')}}', {query: productName}, function(data) {
-                        response(data);
+                $.getJSON('{{ route('product.name_suggestions') }}', {
+                    query: productName
+                }, function(data) {
+                    response(data);
                 });
             }
         });

@@ -34,6 +34,7 @@
                                 <th>পণ্যের ছবি</th>
                                 <th>পণ্যের নাম</th>
                                 <th>ক্যাটাগরি</th>
+                                <th>স্টক</th>
                                 <th>অবস্থা</th>
                                 <th>পাইকারি মূল্য</th>
                                 <th>বাজার দর</th>
@@ -84,6 +85,9 @@
                     },
                     {
                         data: 'categories'
+                    },
+                    {
+                        data: 'has_stock'
                     },
                     {
                         data: 'status'
