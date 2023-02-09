@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Constant;
 use App\Http\Requests\ProductRequest;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\WooQueue;
 use App\Services\File\FileService;
@@ -218,17 +219,46 @@ class ProductController extends Controller
         $product->delete();
     }
 
-    public function productPrice()
+    public function getSuggestionsProductName(Request $request)
     {
-        $products = Product::paginate(20)->onEachSide(1);
+        $suggestionWords = SearchService::getSearchKeyword($request->input('query'));
+
+        return response()->json($suggestionWords);
+    }
+
+    public function productPrice(Request $request)
+    {
+        $categories = Category::all();
+
+        $category = Category::where(['id' => request()->category])->first();
+        if ($category) {
+            $productQuery = $category->products()->with(['imageTable']);
+        } else {
+            $productQuery = Product::with(['imageTable']);
+        }
+
+        if (isset($request->product_name)) {
+            $searchValue = strtolower($request->product_name);
+            $suggestionWords = SearchService::getSearchKeyword($searchValue);
+            $productQuery->where(function ($query) use ($suggestionWords, $searchValue) {
+                $query->orWhere('name', 'LIKE', "%{$searchValue}%");
+                foreach ($suggestionWords as $word) {
+                    $query->orWhereRaw('`name` LIKE ?', ['%' . trim(strtolower($word)) . '%']);
+                }
+            });
+        }
+
+        $products = $productQuery->paginate(20);
+
         return view('product_price.index', [
-            'products' => $products
+            'products' => $products,
+            'categories' => $categories
         ]);
     }
 
     public function productPriceUpdate(Request $request)
     {
-       // dd($request->all());
+        // dd($request->all());
         $products = Product::whereIn('id', $request->product_id)->get();
 
         foreach ($products as $key => $product) {
@@ -240,7 +270,7 @@ class ProductController extends Controller
 
             $updatedData = [];
 
-            if($isPriceUpdate){
+            if ($isPriceUpdate) {
                 $updatedData = [
                     'wholesale_price' => $wholeSalePrice,
                     'market_sale_price' => $marketSalePrice,
@@ -249,19 +279,18 @@ class ProductController extends Controller
                 ];
             }
 
-            if($product->status == 'publish' && !isset($request->productStatus[$product->id])){
+            if ($product->status == 'publish' && !isset($request->productStatus[$product->id])) {
                 $updatedData['status'] = 'private';
             }
 
-            if($product->status == 'private' && isset($request->productStatus[$product->id])){
+            if ($product->status == 'private' && isset($request->productStatus[$product->id])) {
                 $updatedData['status'] = 'publish';
             }
-            
-            if(!empty($updatedData)){
+
+            if (!empty($updatedData)) {
                 $updatedData['wholesale_price_last_update'] = Carbon::now();
                 $product->update($updatedData);
             }
-            
         }
 
         return response()->json([

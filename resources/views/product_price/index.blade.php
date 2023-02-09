@@ -3,6 +3,8 @@
     <h1>Products Price Update</h1>
 @stop
 @section('content')
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css">
     <style>
         .productPriceInput {
             font-weight: bold;
@@ -108,10 +110,37 @@
         }
     </style>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card productPriceCard" style="padding: 15px;">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>পণ্যের নাম</label>
+                        <input type="text"
+                            value="{{ isset(request()->product_name) && request()->product_name ? request()->product_name : '' }}"
+                            placeholder="পণ্যের নাম লিখুন" class="form-control mb-1" id="product_name" id="">
+                    </div>
+                    <div class="col-md-3">
+                        <label>ক্যাটেগরি</label>
+                        <select name="category_id" class="form-control mb-1" id="category">
+                            <option value="">ক্যাটেগরি নির্বাচন করুন</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ isset(request()->category) && request()->category == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary mt-2" onclick="filterProduct()" type="submit">ফিল্টার করুন</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <form method="post" data-function="updateProductPrice(form)">
         @csrf
         <div class="row">
-
             @foreach ($products as $product)
                 <div class="col-md-3">
                     <div class="card productPriceCard">
@@ -129,7 +158,8 @@
                                         {{ bnConvert()->unit($product->unit) }}<br />
                                         <label class="switch">
                                             <input type="checkbox" data-product_id="{{ $product->id }}"
-                                            data-default-value="{{ $product->status }}" name="productStatus[{{ $product->id }}]"
+                                                data-default-value="{{ $product->status }}"
+                                                name="productStatus[{{ $product->id }}]"
                                                 {{ $product->status == 'publish' ? 'checked' : '' }}>
                                             <span class="slider round"></span>
                                         </label>
@@ -162,7 +192,7 @@
 
         </div>
         <div style="overflow: hidden; font-size: 10px;">
-            {{ $products->links() }}
+            {{ $products->onEachSide(1)->links() }}
         </div>
         <div style="margin-bottom: 150px; "></div>
         <footer class="fixed-bottom"><button type="submit" id="priceSubmitBtn" style="width: 100%"
@@ -170,6 +200,7 @@
     </form>
 @endsection
 @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js"></script>
     <script>
         var activeButton = false;
         var mismatchPrice = {
@@ -190,7 +221,8 @@
 
             $("input[name^='productStatus']").change(function(e) {
                 let isChecked = $(this).prop("checked");
-                togglePrice("status", $(this).data('product_id'), $(this).data('default-value'), isChecked ? "publish" : "private");
+                togglePrice("status", $(this).data('product_id'), $(this).data('default-value'), isChecked ?
+                    "publish" : "private");
             });
         });
 
@@ -204,7 +236,8 @@
                 if (index !== -1) mismatchPrice[type].splice(index, 1);
             }
 
-            activeButton = mismatchPrice['wholesalePrice'].length === 0 && mismatchPrice['marketSalePrice'].length === 0 && mismatchPrice['status'].length === 0 ?
+            activeButton = mismatchPrice['wholesalePrice'].length === 0 && mismatchPrice['marketSalePrice'].length === 0 &&
+                mismatchPrice['status'].length === 0 ?
                 false : true;
 
             if (activeButton == true) $("#priceSubmitBtn").prop("disabled", false);
@@ -221,5 +254,27 @@
                 }
             });
         }
+
+        function filterProduct() {
+            let productName = $("#product_name").val();
+            let category = $("#category").val();
+
+            var url = new URL(window.location.href);
+            url.searchParams.set('product_name', productName);
+            url.searchParams.set('category', category);
+
+            window.location.href = url;
+        }
+
+        $('#product_name').autoComplete({
+            cache: false,
+            minChars: 1,
+            source: function(term, response) {
+                let productName = $('#product_name').val();
+                $.getJSON('{{route('product.name_suggestions')}}', {query: productName}, function(data) {
+                        response(data);
+                });
+            }
+        });
     </script>
 @endpush

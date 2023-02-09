@@ -2693,6 +2693,11 @@ $(document).ready(function () {
    */
 
   $('body').on('submit', 'form', function (e) {
+    //if form method is get then its not call submit function
+    if ($(this).attr('method').toLowerCase() === "get") {
+      return;
+    }
+
     e.preventDefault();
 
     (__webpack_require__(/*! ./form_build.js */ "./resources/js/helper/lib/form_build.js").FormBuild.submit)($(this));

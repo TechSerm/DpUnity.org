@@ -83,6 +83,11 @@ $(document).ready(function() {
      * Form submit action
      */
     $('body').on('submit', 'form', function(e) {
+        //if form method is get then its not call submit function
+        if ($(this).attr('method').toLowerCase() === "get") {
+
+            return;
+        }
         e.preventDefault();
         require('./form_build.js').FormBuild.submit($(this));
     });

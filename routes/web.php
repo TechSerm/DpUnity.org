@@ -82,6 +82,8 @@ Route::prefix('admin')->group(function () {
         });
         Route::resource('orders', OrderController::class);
 
+        Route::get('/product_name_suggestions', [ProductController::class, 'getSuggestionsProductName'])->name('product.name_suggestions');
+        
         Route::get('/product_price', [ProductController::class, 'productPrice'])->name('product_price.index');
         Route::post('/product_price', [ProductController::class, 'productPriceUpdate']);
 
