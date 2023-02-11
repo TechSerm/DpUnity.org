@@ -138,7 +138,7 @@ class OrderController extends Controller
     public function showUpdateCustomer($id)
     {
         $order = Order::findOrFail($id);
-        if(!$order->isEditable()){
+        if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
@@ -149,7 +149,7 @@ class OrderController extends Controller
     public function updateCustomer(OrderCustomerUpdateRequest $request, $orderId)
     {
         $order = Order::findOrFail($orderId);
-        if(!$order->isEditable()){
+        if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
@@ -212,25 +212,33 @@ class OrderController extends Controller
         }
     }
 
-    public function showVendor($orderId){
+    public function showVendor($orderId)
+    {
         $order = Order::findOrFail($orderId);
-        if(!$order->isEditable()){
+        if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
         }
 
-        $vendors = User::where(['role_name' => 'vendor'])->get()->pluck('name','id')->toArray();
-        
+        $vendors = User::where(['role_name' => 'vendor'])->get()->pluck('name', 'id')->toArray();
+
         return view('order.show.vendor_add_form', [
             'order' => $order,
             'vendors' => $vendors
         ]);
     }
 
-    public function updateVendor(Request $request, $orderId){
+    public function printOrder($orderId)
+    {
         $order = Order::findOrFail($orderId);
-        if(!$order->isEditable()){
+        return view('order.show.print_order', ['order' => $order]);
+    }
+
+    public function updateVendor(Request $request, $orderId)
+    {
+        $order = Order::findOrFail($orderId);
+        if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
@@ -246,12 +254,13 @@ class OrderController extends Controller
         ]);
     }
 
-    private function notificationMessageSend($order){
+    private function notificationMessageSend($order)
+    {
         $notificationMessage = $order->notification_message;
-        if(isset($notificationMessage['admin'])){
+        if (isset($notificationMessage['admin'])) {
             $tokens = OrderFacade::getManagerDeviceToken();
-            if(!empty($tokens)){
-                $body = $notificationMessage['admin']."\n";
+            if (!empty($tokens)) {
+                $body = $notificationMessage['admin'] . "\n";
                 $body .= "🔖 অর্ডার নম্বর : " . bnConvert()->number($order->id);
                 $body .= "\n🛒 পণ্যের মূল্য: ৳ " . bnConvert()->number($order->subtotal);
                 $body .= "\n🚑 ডেলিভারি ফী: ৳ " . bnConvert()->number($order->delivery_fee);
@@ -266,10 +275,10 @@ class OrderController extends Controller
             }
         }
 
-        if(isset($notificationMessage['vendor']) && !is_null($order->vendor_id)){
+        if (isset($notificationMessage['vendor']) && !is_null($order->vendor_id)) {
             $tokens = OrderFacade::getVendorDeviceToken($order->vendor_id);
-            if(!empty($tokens)){
-                $body = $notificationMessage['vendor']."\n";
+            if (!empty($tokens)) {
+                $body = $notificationMessage['vendor'] . "\n";
                 $body .= "🔖 অর্ডার নম্বর : " . bnConvert()->number($order->id);
                 $body .= "\n⏰ সময় : " . bnConvert()->date($order->created_at->format('d M Y, h:i a'));
                 PushNotificationFacade::sendNotification($tokens, [
@@ -280,14 +289,14 @@ class OrderController extends Controller
             }
         }
 
-        if(isset($notificationMessage['customer'])){
+        if (isset($notificationMessage['customer'])) {
             $tokens = [];
-            if($order->device_token){
+            if ($order->device_token) {
                 $tokens[] = $order->device_token;
             }
 
-            if(!empty($tokens)){
-                $body = $notificationMessage['customer']."\n";
+            if (!empty($tokens)) {
+                $body = $notificationMessage['customer'] . "\n";
                 $body .= "🔖 অর্ডার নম্বর : " . bnConvert()->number($order->id);
                 $body .= "\n🛒 পণ্যের মূল্য: ৳ " . bnConvert()->number($order->subtotal);
                 $body .= "\n🚑 ডেলিভারি ফী: ৳ " . bnConvert()->number($order->delivery_fee);

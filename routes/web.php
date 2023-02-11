@@ -80,6 +80,8 @@ Route::prefix('admin')->group(function () {
             Route::get('/product_create_form', [OrderItemController::class, 'productCreateForm'])->name('orders.order_items.create_form');
             Route::resource('order_items', OrderItemController::class);
         });
+
+        Route::get('/orders/{order}/print', [OrderController::class, 'printOrder'])->name('orders.print');
         Route::resource('orders', OrderController::class);
 
         Route::get('/product_name_suggestions', [ProductController::class, 'getSuggestionsProductName'])->name('product.name_suggestions');
