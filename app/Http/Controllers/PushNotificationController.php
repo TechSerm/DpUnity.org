@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\NotificationDevice;
 use App\Models\PushNotification;
+use App\Services\DeviceToken\DeviceTokenService;
 use App\Services\PushNotification\PushNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -47,11 +48,11 @@ class PushNotificationController extends Controller
                 return $model->clicks->count();
             })
             ->orderColumn('total_clicks', function ($query, $order) use ($pushNotificationQuery) {
-               // dd($pushNotificationQuery->orderBy('ip', $order)->toSql());
+                // dd($pushNotificationQuery->orderBy('ip', $order)->toSql());
                 //$query->clicks()->orderBy('order_notification_clicks.ip', $order);
             })
             ->addColumn('action', function ($model) {
-                
+
                 return "";
             })
             ->make(true);
@@ -99,4 +100,6 @@ class PushNotificationController extends Controller
     {
         return view('category.create');
     }
+
+    
 }

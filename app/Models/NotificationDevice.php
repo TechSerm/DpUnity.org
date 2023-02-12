@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class NotificationDevice extends Model
 {
     protected $fillable = [
-        'token', 'last_visit_ip', 'last_visit_time'
+        'token', 'last_visit_ip', 'last_visit_time','hits','last_visit_page'
     ];
 
 }

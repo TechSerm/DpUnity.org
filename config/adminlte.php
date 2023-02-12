@@ -287,6 +287,12 @@ return [
             'icon'        => 'fas fa-search',
             'label_color' => 'success',
         ],
+        [
+            'text'        => 'Notifications Device',
+            'url'         => '/admin/notification_device',
+            'icon'        => 'fas fa-search',
+            'label_color' => 'success',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

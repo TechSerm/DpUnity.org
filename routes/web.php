@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomePageProductController;
+use App\Http\Controllers\NotificationDeviceController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SearchController;
@@ -95,6 +96,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/shippings/data', [ShippingController::class, 'getData'])->name('shippings.data');
         Route::resource('shippings', ShippingController::class);
         
+        Route::get('/notification_device', [NotificationDeviceController::class, 'deviceDashboard'])->name('notification_device.dashboard');
+        Route::get('/notification_device/data', [NotificationDeviceController::class, 'getData'])->name('notification_device.data');
+
         Route::get('/push_notifications/data', [PushNotificationController::class, 'getData'])->name('push_notifications.data');
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
