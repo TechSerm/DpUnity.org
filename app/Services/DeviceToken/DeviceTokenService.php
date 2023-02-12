@@ -31,7 +31,7 @@ class DeviceTokenService
                 'token' => $deviceToken,
                 'last_visit_ip' => request()->ip(),
                 'last_visit_time' => Carbon::now(),
-                'last_visit_page' => url()->current()
+                'last_visit_page' => request()->fullUrl()
             ]);
         }
 
@@ -41,12 +41,12 @@ class DeviceTokenService
 
         $this->updateLoginUserDeviceToken($deviceToken);
 
-        if ((new Carbon($notificationDevice->last_visit_time))->diffInMinutes(Carbon::now()) > 1) {
+        if ((new Carbon($notificationDevice->last_visit_time))->diffInMinutes(Carbon::now()) >= 1) {
             $notificationDevice->update([
                 'last_visit_time' => Carbon::now(),
                 'last_visit_ip' => request()->ip(),
                 'hits' => $notificationDevice->hits + 1,
-                'last_visit_page' => url()->current()
+                'last_visit_page' => request()->fullUrl()
             ]);
         }
 
