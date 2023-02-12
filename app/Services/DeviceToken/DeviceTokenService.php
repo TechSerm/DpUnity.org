@@ -41,7 +41,7 @@ class DeviceTokenService
 
         $this->updateLoginUserDeviceToken($deviceToken);
 
-        if ((new Carbon($notificationDevice->last_visit_time))->diffInMinutes(Carbon::now()) > 30) {
+        if ((new Carbon($notificationDevice->last_visit_time))->diffInMinutes(Carbon::now()) > 1) {
             $notificationDevice->update([
                 'last_visit_time' => Carbon::now(),
                 'last_visit_ip' => request()->ip(),
