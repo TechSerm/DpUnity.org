@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('notification_devices', function (Blueprint $table) {
-            $table->integer('hits')->default(1);
-            $table->longText('last_visit_page')->nullable();
+        Schema::table('products', function (Blueprint $table) {
+            $table->foreignId('vendor_id')->nullable();
+            $table->foreign('vendor_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -26,9 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('notification_devices', function (Blueprint $table) {
-            $table->dropColumn('hits');
-            $table->dropColumn('last_visit_page');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('vendor_id');
         });
     }
 };
