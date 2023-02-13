@@ -2,6 +2,7 @@
 
 namespace App\Services\DeviceToken;
 
+use App\Cart\Cart;
 use App\Models\NotificationDevice;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cookie;
@@ -41,7 +42,7 @@ class DeviceTokenService
 
         $this->updateLoginUserDeviceToken($deviceToken);
 
-        if ((new Carbon($notificationDevice->last_visit_time))->diffInMinutes(Carbon::now()) >= 1) {
+        if ((new Carbon($notificationDevice->last_visit_time))->diffInMinutes(Carbon::now()) > 3) {
             $notificationDevice->update([
                 'last_visit_time' => Carbon::now(),
                 'last_visit_ip' => request()->ip(),
@@ -56,6 +57,10 @@ class DeviceTokenService
                 'last_visit_ip' => request()->ip(),
             ]);
         }
+    }
+
+    private function getCartData(){
+        return collect(Cart::items())->map->only(['id','name', 'price', 'unit', 'quantity', 'delivery_fee','cart_quantity','cart_total_price'])->toJson();
     }
 
     private function updateLoginUserDeviceToken($deviceToken)
