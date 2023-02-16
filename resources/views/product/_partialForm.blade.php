@@ -113,7 +113,19 @@ $isVendor = auth()
             </select>
         </div>
     </div>
+    <div class="mb-3 row">
+        <label for="vendor_id" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Vendor</label>
+        <div class="col-sm-{{ $inputWidth }}">
+            {!! Form::select('vendor_id', $vendors, null, [
+                'placeholder' => 'Select Vendor',
+                'class' => 'form-control ',
+                'id' => 'vendor_id',
+            ]) !!}
+        </div>
+    </div>
 </div>
+
+
 
 <div class="mb-3 row">
     <label for="image1" class="col-sm-{{ $labelWidth }} col-form-label form-control-label" for="image">পণ্যের
