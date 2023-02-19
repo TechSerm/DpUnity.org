@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->boolean('is_vendor_assign')->default(false);
+        Schema::table('order_vendors', function (Blueprint $table) {
+            $table->boolean('is_received')->default(false);
             $table->boolean('is_pack_complete')->default(false);
-            $table->boolean('is_delivery_start')->default(false);
+            $table->boolean('is_vendor_payment_complete')->default(false);
         });
     }
 
@@ -27,10 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('is_vendor_assign');
-            $table->dropColumn('is_ready_for_delivery');
-            $table->dropColumn('is_delivery_start');
+        Schema::table('order_vendors', function (Blueprint $table) {
+            //
         });
     }
 };

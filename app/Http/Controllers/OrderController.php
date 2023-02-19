@@ -5,17 +5,23 @@ namespace App\Http\Controllers;
 use App\Enums\OrderStatusEnum;
 use App\Facades\Order\OrderFacade;
 use App\Facades\PushNotification\PushNotificationFacade;
+use App\Http\Requests\AssignProductVendorRequest;
 use App\Http\Requests\OrderCustomerUpdateRequest;
 use App\Models\Order;
 use App\Models\User;
 use App\Services\Order\OrderService;
+use App\Services\Vendor\VendorService;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use Woo\Order\OrderSync;
 use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('order_show_page_check', ['only' => ['show']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -38,9 +44,18 @@ class OrderController extends Controller
     public function getData(Request $request)
     {
         $orderQuery = Order::where([]);
-        if (auth()->user()->role_name == "vendor") {
-            $orderQuery->where(['vendor_id' => auth()->user()->id]);
+        if (auth()->user()->isVendor()) {
+            $orderQuery->leftJoin('order_vendors', 'orders.id', '=', 'order_vendors.order_id');
+            $orderQuery->where(['order_vendors.vendor_id' => auth()->user()->id]);
         }
+
+
+        if (auth()->user()->isVendor()) {
+            $orderQuery->select(DB::raw('orders.*, order_vendors.is_received, order_vendors.is_pack_complete as vendor_is_pack_complete, order_vendors.wholesale_total as vendor_wholesale_total'));
+        } else {
+            $orderQuery->select(DB::raw('orders.*'));
+        }
+
 
         if (!request()->get('order')) {
             $orderQuery = $orderQuery->orderBy('id', 'desc');
@@ -68,7 +83,8 @@ class OrderController extends Controller
                 return $this->addPriceLabel($model->total);
             })
             ->editColumn('wholesale_total', function ($model) {
-                return $this->addPriceLabel($model->wholesale_total);
+                $total = auth()->user()->isVendor() ? $model->vendor_wholesale_total : $model->wholesale_total;
+                return $this->addPriceLabel($total);
             })
             ->editColumn('delivery_fee', function ($model) {
                 return $this->addPriceLabel($model->delivery_fee);
@@ -80,8 +96,8 @@ class OrderController extends Controller
                 return "<span style='font-size: 12px'>" . $model->created_at->format('d M Y H:i:s') . " (" . $model->created_at->diffForHumans() . ")</span>";
             })
             ->editColumn('status', function ($model) {
-                $statusColor = $model->status == 'pending' ? 'danger' : 'warning';
-                return "<span class = 'badge badge-{$statusColor}'>" . $model->status_bn_name . "</span>";
+                $statusColor = $model->status_color;
+                return "<span class = 'badge' style='background-color: $statusColor; color: #ffffff'>" . $model->status_bn_name . "</span>";
             })
 
             ->addColumn('action', function ($model) {
@@ -110,9 +126,6 @@ class OrderController extends Controller
 
     public function show($id)
     {
-        //$test = 'ADMIN';
-        // dd(OrderStatusEnum::PENDING);
-        // dd(OrderStatusEnum::fromValue('pending')->bnName());
         $order = Order::with(['items'])->findOrFail($id);
         return view('order.show', ['order' => $order]);
     }
@@ -160,56 +173,66 @@ class OrderController extends Controller
         ]);
     }
 
-    public function changeOrderStatus($orderId, $orderStatusId)
+    public function changeOrderStatus($orderId, $status)
     {
         $order = Order::where(['id' => $orderId])->firstOrFail();
-        $orderStatus = $order->statusList()->where(['uuid' => $orderStatusId])->firstOrFail();
 
-        if ($orderStatus->status != "pending") {
+        if ($order->is_cancelled) {
             return response()->json([
-                'message' => 'You already change this status'
+                'message' => 'Order Already Cancelled'
             ], 400);
         }
 
-        if (isset(request()->cancelled) && request()->cancelled == 'true') {
-            $orderStatus->update([
-                'status' => 'cancelled'
-            ]);
-            $order->is_cancelled = true;
-            $order->status = OrderStatusEnum::CANCELED;
-            $order->save();
-        } else {
-
-            if ($orderStatus->name == OrderStatusEnum::ASSIGN_STORE) {
-                if ($order->vendor_id == '') {
-                    return response()->json([
-                        'message' => 'Vendor id not selected'
-                    ], 400);
-                }
-            }
-
-            if ($orderStatus->name == OrderStatusEnum::APPROVED) {
-                $order->is_approved = true;
-            }
-
-            if ($orderStatus->name == OrderStatusEnum::DELIVERY_COMPLETED) {
-                $order->is_delivery_complete = true;
-            }
-
-            if ($orderStatus->name == OrderStatusEnum::VENDOR_PAYMENT_RECEIVED) {
-                $order->is_vendor_payment_complete = true;
-            }
-
-            $order->status = $orderStatus->name;
-
-            $this->notificationMessageSend($order);
-            $order->save();
-
-
-            $orderStatus->update([
-                'status' => 'approved'
+        if ($status == 'approved') {
+            $order->update([
+                'is_approved' => true,
+                'status' => OrderStatusEnum::APPROVED
             ]);
         }
+
+        if ($status == 'pack_complete') {
+            $order->update([
+                'is_pack_complete' => true,
+                'status' => OrderStatusEnum::PACK_COMPLETE
+            ]);
+        }
+
+        if ($status == 'start_delivery') {
+            $order->update([
+                'is_delivery_start' => true,
+                'status' => OrderStatusEnum::START_DELIVERY
+            ]);
+        }
+
+        if ($status == 'delivery_complete') {
+            $order->update([
+                'is_delivery_complete' => true,
+                'status' => OrderStatusEnum::DELIVERY_COMPLETED
+            ]);
+        }
+
+        if ($status == 'canceled') {
+            $order->update([
+                'is_cancelled' => true,
+                'status' => OrderStatusEnum::CANCELED
+            ]);
+        }
+
+        if (isset(request()->vendor)) {
+            $orderVendor = $order->vendors()->where(['uuid' => request()->vendor])->first();
+            if ($orderVendor) {
+                $orderVendorData = [];
+
+                if ($status == 'vendor_received') $orderVendorData['is_received'] = true;
+                if ($status == 'vendor_pack_complete') $orderVendorData['is_pack_complete'] = true;
+
+                $orderVendor->update($orderVendorData);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Successfully Change Status'
+        ]);
     }
 
     public function showVendor($orderId)
@@ -233,6 +256,54 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($orderId);
         return view('order.show.print_order', ['order' => $order]);
+    }
+
+    public function assignProductVendorList($orderId)
+    {
+        $order = Order::findOrFail($orderId);
+        $vendors = (new VendorService())->getList();
+        return view('order.show.product_vendor_list', [
+            'order' => $order,
+            'vendors' => $vendors
+        ]);
+    }
+
+    public function updateAssignProductVendorList(AssignProductVendorRequest $request, $orderId)
+    {
+        $productVendor = $request->product_vendor;
+        $order = Order::findOrFail($orderId);
+
+        if ($order->is_cancelled) {
+            return response()->json([
+                'message' => 'Order Already Cancelled'
+            ], 400);
+        }
+
+        $orderItems = $order->items()->whereIn('uuid', array_keys($productVendor))->get();
+
+        if (count($order->items) != count($orderItems)) {
+            return response()->json([
+                'message' => 'Invalid Action'
+            ], 401);
+        }
+
+        foreach ($orderItems as $orderItem) {
+            $orderItem->update([
+                'vendor_id' => $productVendor[$orderItem->uuid] ?? null
+            ]);
+        }
+
+        $order->update([
+            'is_vendor_assign' => true,
+            'status' => OrderStatusEnum::ASSIGN_STORE
+        ]);
+
+        $order->updateVendor();
+
+
+        return response()->json([
+            'message' => 'Successfully Vendor Assign'
+        ]);
     }
 
     public function updateVendor(Request $request, $orderId)

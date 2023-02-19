@@ -7,6 +7,7 @@ use App\Facades\Order\OrderShippingDetails;
 use App\Facades\PushNotification\PushNotificationFacade;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\OrderVendor;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\Order\NewOrderService;
@@ -27,7 +28,7 @@ class OrderService
             DB::raw("sum(profit) as products_profit"),
             DB::raw("max(delivery_fee) as delivery_fee"),
         ])->first();
-        
+
         $order->delivery_fee = $orderTotalCalculations->delivery_fee == 0 ? config('bibisena.default_delivery_fee') : $orderTotalCalculations->delivery_fee;
         $order->subtotal = $orderTotalCalculations->subtotal;
         $order->wholesale_total = $orderTotalCalculations->wholesale_total;
@@ -47,7 +48,7 @@ class OrderService
 
     public function getManagerDeviceToken()
     {
-        $users = User::whereIn('id', [1,2,4])->whereNotNull('device_token')->get()->pluck(['device_token'])->toArray();
+        $users = User::whereIn('id', [1, 2, 4])->whereNotNull('device_token')->get()->pluck(['device_token'])->toArray();
         return $users;
     }
 
@@ -55,5 +56,54 @@ class OrderService
     {
         $users = User::whereIn('id', [$vendorId])->whereNotNull('device_token')->get()->pluck(['device_token'])->toArray();
         return $users;
+    }
+
+    public function updateOrderVendor(Order $order)
+    {
+        $items = $order->items()->get();
+
+        $vendorData = [];
+
+
+        foreach ($items as $item) {
+            if (!isset($vendorData[$item->vendor_id])) {
+                $vendorData[$item->vendor_id] = [
+                    'total' => 0,
+                    'wholesale_total' => 0,
+                    'profit' => 0
+                ];
+            }
+
+            $vendorData[$item->vendor_id]['total'] += $item->total;
+            $vendorData[$item->vendor_id]['wholesale_total'] += $item->wholesale_price_total;
+            $vendorData[$item->vendor_id]['profit'] += $item->profit;
+        }
+
+        foreach ($vendorData as $key => $data) {
+            $vendor = $order->vendors()->where(['vendor_id' => $key])->first();
+            if (!$vendor) {
+                OrderVendor::create([
+                    'order_id' => $order->id,
+                    'vendor_id' => $key,
+                    'total' => $data['total'],
+                    'wholesale_total' => $data['wholesale_total'],
+                    'profit' => $data['profit']
+                ]);
+            } else {
+                if ($vendor->total != $data['total'] || $vendor->wholesale_total != $data['wholesale_total'] || $vendor->profit != $data['profit']) {
+                    $vendor->update([
+                        'total' => $data['total'],
+                        'wholesale_total' => $data['wholesale_total'],
+                        'profit' => $data['profit']
+                    ]);
+                }
+            }
+        }
+
+        $extraVendor = $order->vendors()->whereNotIn('vendor_id', array_keys($vendorData))->get();
+
+        foreach ($extraVendor as $key => $vendor) {
+            $vendor->delete();
+        }
     }
 }

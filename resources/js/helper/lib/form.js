@@ -59,6 +59,8 @@ const Form = class {
                     <strong>${error}</strong>
                 </span>
                 `;
+                fieldName = _this.dotArrayToJs(fieldName)
+                console.log(fieldName, error);
                 let inputPos = _this.form.find('input[name="' + fieldName + '"], select[name="' + fieldName + '"], textarea[name="' + fieldName + '"]');
                 inputPos.parent().append(msg);
                 inputPos.addClass('is-invalid');
@@ -76,6 +78,11 @@ const Form = class {
             });
             _this.btn.on().endLoading();
         });
+    }
+    dotArrayToJs = (str) => {
+        var splittedStr = str.split('.');
+
+        return splittedStr.length == 1 ? str : (splittedStr[0] + '[' + splittedStr.splice(1).join('][') + ']');
     }
     resetErrors = () => {
         this.form.find('input, select, textarea').removeClass('is-invalid');

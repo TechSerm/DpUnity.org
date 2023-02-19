@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'BibiSena Admin',
+    'title' => 'বিবিসেনা কন্ট্রোল প্যানেল',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'logo' => '<b>BibiSena</b> Admin',
+    'logo' => '<b>বিবিসেনা কন্ট্রোল প্যানেল</b>',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -237,40 +237,40 @@ return [
         ],
         
         [
-            'text'        => 'Dashboard',
+            'text'        => 'ড্যাশবোর্ড',
             'url'         => '/admin',
             'icon'        => 'far fa-fw fa-file',
             'label_color' => 'success',
         ],
         [
-            'text'        => 'Products',
+            'text'        => 'পণ্যের তালিকা',
             'url'         => '/admin/products',
             'icon'        => 'fas fa-egg',
             'label_color' => 'success',
             'can' => 'products.index'
         ],
         [
-            'text'        => 'Update Products Price',
+            'text'        => 'পণ্যের দাম আপডেট',
             'url'         => '/admin/product_price',
             'icon'        => 'fas fa-egg',
             'label_color' => 'success',
             'can' => 'products.index'
         ],
         [
-            'text'        => 'Categories',
+            'text'        => 'ক্যাটেগরি',
             'url'         => '/admin/categories',
             'icon'        => 'fas fa-dice-d6',
             'label_color' => 'success',
             'can' => 'categories.index'
         ],
         [
-            'text'        => 'Active Orders',
+            'text'        => 'চলমান অর্ডার সমুখ',
             'url'         => '/admin/orders/active',
             'icon'        => 'fas fa-paperclip',
             'label_color' => 'success',
         ],
         [
-            'text'        => 'Orders',
+            'text'        => 'অর্ডার সমুখ',
             'url'         => '/admin/orders',
             'icon'        => 'fas fa-paperclip',
             'label_color' => 'success',
@@ -280,18 +280,21 @@ return [
             'url'         => '/admin/search-keywords',
             'icon'        => 'fas fa-search',
             'label_color' => 'success',
+            'can' => 'categories.index'
         ],
         [
             'text'        => 'Push Notifications',
             'url'         => '/admin/push_notifications',
             'icon'        => 'fas fa-search',
             'label_color' => 'success',
+            'can' => 'categories.index'
         ],
         [
             'text'        => 'Notifications Device',
             'url'         => '/admin/notification_device',
             'icon'        => 'fas fa-search',
             'label_color' => 'success',
+            'can' => 'categories.index'
         ],
         ['header' => 'account_settings'],
         [

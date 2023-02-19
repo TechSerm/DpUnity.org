@@ -3035,6 +3035,11 @@ var Form = /*#__PURE__*/function () {
 
     _classCallCheck(this, Form);
 
+    _defineProperty(this, "dotArrayToJs", function (str) {
+      var splittedStr = str.split('.');
+      return splittedStr.length == 1 ? str : splittedStr[0] + '[' + splittedStr.splice(1).join('][') + ']';
+    });
+
     _defineProperty(this, "resetErrors", function () {
       _this2.form.find('input, select, textarea').removeClass('is-invalid');
 
@@ -3111,6 +3116,8 @@ var Form = /*#__PURE__*/function () {
         resp = error['errors'];
         $.each(resp, function (fieldName, error) {
           var msg = "\n                <span class=\"invalid-feedback\" for=\"".concat(fieldName, "\">\n                    <strong>").concat(error, "</strong>\n                </span>\n                ");
+          fieldName = _this.dotArrayToJs(fieldName);
+          console.log(fieldName, error);
 
           var inputPos = _this.form.find('input[name="' + fieldName + '"], select[name="' + fieldName + '"], textarea[name="' + fieldName + '"]');
 

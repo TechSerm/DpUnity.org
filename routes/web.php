@@ -71,15 +71,17 @@ Route::prefix('admin')->group(function () {
         //order routes
         Route::get('/orders/data', [OrderController::class, 'getData'])->name('orders.data');
         Route::get('/orders/active', [OrderController::class, 'activeOrders']);
-        Route::post('/orders/{order}/change_order_status/{order_status}', [OrderController::class, 'changeOrderStatus'])->name('orders.status.change');
+        Route::post('/orders/{order}/change_order_status/{status}', [OrderController::class, 'changeOrderStatus'])->name('orders.status.change');
         Route::get('/orders/{order}/update_customer_details', [OrderController::class, 'showUpdateCustomer'])->name('orders.customer.update');
         Route::put('/orders/{order}/update_customer_details', [OrderController::class, 'updateCustomer']);
-        Route::prefix('orders/{order}')->group(function () {
+        Route::prefix('orders/{order}')->middleware(['order_show_page_check'])->group(function () {
             Route::get('/update_vendor', [OrderController::class, 'showVendor'])->name('orders.vendor.update');
             Route::put('/update_vendor', [OrderController::class, 'updateVendor']);
             Route::get('/product_select2_data', [OrderItemController::class, 'getProductSelect2Data'])->name('orders.order_items.product_select2_data');
             Route::get('/product_create_form', [OrderItemController::class, 'productCreateForm'])->name('orders.order_items.create_form');
             Route::resource('order_items', OrderItemController::class);
+            Route::get('/assign_product_vendor_list', [OrderController::class, 'assignProductVendorList'])->name('orders.vendor.assign_product_vendor_list');
+            Route::post('/assign_product_vendor_list', [OrderController::class, 'updateAssignProductVendorList']);
         });
 
         Route::get('/orders/{order}/print', [OrderController::class, 'printOrder'])->name('orders.print');

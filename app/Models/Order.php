@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\OrderStatusEnum;
 use App\Facades\Order\OrderFacade;
+use App\Services\Order\OrderService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,14 +38,18 @@ class Order extends Model
 
         'vendor_id',
         'delivery_man_id',
-        
+
         'device_token',
-        'app_version'
+        'app_version',
+        
+        'is_vendor_assign',
+        'is_pack_complete',
+        'is_delivery_start'
     ];
 
     public function items()
     {
-        return $this->hasMany(OrderItem::class)->with('product');
+        return $this->hasMany(OrderItem::class)->with(['product','vendor']);
     }
 
     public function addCookie()
@@ -55,6 +60,11 @@ class Order extends Model
     public function statusList()
     {
         return $this->hasMany(OrderStatus::class);
+    }
+
+    public function vendors()
+    {
+        return $this->hasMany(OrderVendor::class)->with('user');
     }
 
     public function updateTotalCalculation()
@@ -72,10 +82,16 @@ class Order extends Model
         return OrderStatusEnum::hasValue($this->status) ? OrderStatusEnum::fromValue($this->status)->customerStatus() : $this->status;
     }
 
+    public function getStatusColorAttribute()
+    {
+        return OrderStatusEnum::hasValue($this->status) ? OrderStatusEnum::fromValue($this->status)->color() : '#000000';
+    }
+
     public function getNotificationMessageAttribute()
     {
         return OrderStatusEnum::hasValue($this->status) ? OrderStatusEnum::fromValue($this->status)->notificationMessage() : $this->status;
     }
+
 
     public function isEditable()
     {
@@ -85,5 +101,10 @@ class Order extends Model
     public function vendor()
     {
         return $this->belongsTo(User::class, 'vendor_id');
+    }
+
+    public function updateVendor()
+    {
+        return OrderFacade::updateOrderVendor($this);
     }
 }

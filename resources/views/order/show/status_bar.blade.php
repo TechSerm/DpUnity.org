@@ -4,198 +4,144 @@
     </div>
     <div class="body">
         <table class="table table-bordered">
+            <tr>
+                <td style="text-align: right; max-width: 400px">
+                    গ্রহণ করা হয়েছে
+                </td>
+                <td>
+                    @if ($order->is_approved == false && $order->is_cancelled == false && auth()->user()->isAdmin())
+                        <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'approved'])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
+                        data-subtitle="অর্ডারটি গ্রহণ করা হয়েছে?" data-button-text="হ্যা, আমি নিশ্চিত!"
+                        data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
+                    @endif
+                    @if ($order->is_approved)
+                        <i class="fa fa-check" style="color: green" aria-hidden="true"></i>
+                    @elseif ($order->is_cancelled)
+                        <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; max-width: 400px">
+                    বিক্রেতার কাছে পাঠানো হয়েছে	
+                </td>
+                <td>
+                    @if ($order->is_vendor_assign == false && $order->is_approved == true && $order->is_cancelled == false && auth()->user()->isAdmin())
+                        <button class="btn btn-success" data-url="{{route('orders.vendor.assign_product_vendor_list', request()->route()->parameters())}}" data-modal-size="md" data-toggle="modal" data-modal-title="আপনি কি নিশ্চিত?">হ্যা!</button>
+                    @endif
+                    @if ($order->is_vendor_assign)
+                        <i class="fa fa-check" style="color: green" aria-hidden="true"></i>
+                    @elseif ($order->is_cancelled)
+                        <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
+                    @endif
+                </td>
+            </tr>
+        @php
+            $allVendorPackReady = true;
+            $vendors = $order->vendors();
+            if(auth()->user()->isVendor())$vendors->where(['vendor_id' => auth()->user()->id]);
+            $vendors = $vendors->get();
+            $orderTotal = $order->total;
+            if (auth()->user()->isVendor()) {
+                $orderTotal = $vendors[0]->wholesale_total;
+            }
+        @endphp
+            @foreach ($vendors as $vendor)
             @php
-                $totalPendingStatus = 0;
-                $orderStatusList = $order->statusList;
-                $alreadyCanceled = false;
-
+                if (!$vendor->is_pack_complete) {
+                    $allVendorPackReady = false;
+                }
+                if(auth()->user()->isVendor() && $vendor->vendor_id != auth()->user()->id)continue;
                 
             @endphp
-            @foreach ($orderStatusList as $status)
-                @php
-                    $totalPendingStatus += $status->status == 'pending' ? 1 : 0;
-
-                    $isVisibleYesButton = false;
-
-                    if(auth()->user()->isAdmin())$isVisibleYesButton = true;
-                    else {
-                        if(in_array($status->name, ['vendor_payment_received', 'received_by_store', 'pack_complete', 'start_delivery', 'delivery_completed'])){
-                            $isVisibleYesButton = true;
-                        }
-                    }
-
-                    if ($status->status == 'cancelled') {
-                        $alreadyCanceled = true;
-                    }
-                @endphp
-                <tr>
-                    <td style="text-align: right; max-width: 400px">
-                        {{ $status->bn_name }}
-                    </td>
-                    <td>
-                        @if ($totalPendingStatus == 1 && $alreadyCanceled == false)
-                            @if($isVisibleYesButton)
-                            <button class="btn btn-success"
-                                data-url="{{ route('orders.status.change', ['order' => $order, 'order_status' => $status->uuid]) }}"
-                                data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
-                                data-subtitle="অর্ডারটি {{ $status->bn_name }}?" data-button-text="হ্যা, আমি নিশ্চিত!"
-                                data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
-                            @endif
-                            @if (auth()->user()->isAdmin() && $status->name != 'vendor_payment_send' && $status->name != 'vendor_payment_received')
-                                <button class="btn btn-danger"
-                                data-url="{{ route('orders.status.change', ['order' => $order, 'order_status' => $status->uuid, 'cancelled' => 'true']) }}"
-                                data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
-                                data-subtitle="অর্ডারটি বাতিল করতে চাচ্ছেন?"
-                                data-button-text="হ্যা, আমি বাতিল করতে চাচ্ছি!"
-                                data-cancel-button-text="বন্ধ করুন">বাতিল করুন</button>
-
-                            @endif
-                        @endif
-                        @if ($status->status == 'approved')
-                            <i class="fa fa-check" style="color: green" aria-hidden="true"></i>
-                        @elseif ($status->status == 'cancelled')
-                            <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
-                        @endif
-
-                    </td>
-                </tr>
+            <tr style="background: {{$vendor->user->color}}; color: #ffffff">
+                <td style="text-align: right; max-width: 400px">
+                    {{$vendor->user->name}} কর্তৃক গ্রহণ করা হয়েছে
+                </td>
+                <td>
+                    @if ($vendor->is_received == false && $order->is_cancelled == false)
+                    <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'vendor_received', 'vendor' => $vendor->uuid])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
+                        data-subtitle="অর্ডারটি ডেলিভারির জন্য প্রস্তুতি সম্পন্ন হয়েছে?" data-button-text="হ্যা, আমি নিশ্চিত!"
+                        data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
+                    @endif
+                    @if ($vendor->is_received)
+                        <i class="fa fa-check" style="color: green" aria-hidden="true"></i>
+                    @elseif ($order->is_cancelled)
+                        <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
+                    @endif
+                </td>
+            </tr>
+            <tr style="background: {{$vendor->user->color}}; color: #ffffff">
+                <td style="text-align: right; max-width: 400px">
+                    {{$vendor->user->name}} এর প্রস্তুতি সম্পন্ন হয়েছে
+                </td>
+                <td>
+                    @if ($vendor->is_pack_complete == false && $vendor->is_received == true && $order->is_cancelled == false)
+                    <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'vendor_pack_complete', 'vendor' => $vendor->uuid])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
+                        data-subtitle="অর্ডারটি ডেলিভারির জন্য প্রস্তুতি সম্পন্ন হয়েছে?" data-button-text="হ্যা, আমি নিশ্চিত!"
+                        data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
+                    @endif
+                    @if ($vendor->is_pack_complete)
+                        <i class="fa fa-check" style="color: green" aria-hidden="true"></i>
+                    @elseif ($order->is_cancelled)
+                        <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
+                    @endif
+                </td>
+            </tr>
             @endforeach
+            
+
+            <tr>
+                <td style="text-align: right; max-width: 400px">
+                    ডেলিভারির জন্য প্রস্তুতি সম্পন্ন হয়েছে
+                </td>
+                <td>
+                    @if ($order->is_pack_complete == false && $allVendorPackReady == true && $order->is_vendor_assign == true && $order->is_cancelled == false && auth()->user()->isAdmin())
+                        <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'pack_complete'])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
+                        data-subtitle="অর্ডারটি ডেলিভারির জন্য প্রস্তুতি সম্পন্ন হয়েছে?" data-button-text="হ্যা, আমি নিশ্চিত!"
+                        data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
+                    @endif
+                    @if ($order->is_pack_complete)
+                        <i class="fa fa-check" style="color: green" aria-hidden="true"></i>
+                    @elseif ($order->is_cancelled)
+                        <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; max-width: 400px">
+                    ডেলিভারির জন্য রওনা হয়েছে
+                </td>
+                <td>
+                    @if ($order->is_delivery_start == false && $order->is_pack_complete == true && $order->is_cancelled == false && auth()->user()->isAdmin())
+                        <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'start_delivery'])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
+                        data-subtitle="অর্ডারটি ডেলিভারির জন্য রওনা হয়েছে?" data-button-text="হ্যা, আমি নিশ্চিত!"
+                        data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
+                    @endif
+                    @if ($order->is_delivery_start)
+                        <i class="fa fa-check" style="color: green" aria-hidden="true"></i>
+                    @elseif ($order->is_cancelled)
+                        <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; max-width: 400px">
+                    ডেলিভারি টি সম্পন্ন হয়েছে
+                </td>
+                <td>
+                    @if ($order->is_delivery_complete == false && $order->is_delivery_start == true && $order->is_cancelled == false && auth()->user()->isAdmin())
+                        <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'delivery_complete'])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
+                        data-subtitle="অর্ডারটি ডেলিভারি টি সম্পন্ন হয়েছে?" data-button-text="হ্যা, আমি নিশ্চিত!"
+                        data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
+                    @endif
+                    @if ($order->is_delivery_complete)
+                        <i class="fa fa-check" style="color: green" aria-hidden="true"></i>
+                    @elseif ($order->is_cancelled)
+                        <i class="fa fa-times" style="color: red" aria-hidden="true"></i>
+                    @endif
+                </td>
+            </tr>
         </table>
     </div>
 </div>
-{{-- 
-<div class="track">
-    <div class="step step1 active">
-        <span class="icon">
-            <i class="fa fa-check"></i>
-        </span>
-        <span class="text">Varification</span>
-
-    </div>
-    <div class="step step1 active">
-        <span class="icon">
-            <i class="fa fa-check"></i>
-        </span>
-        <span class="text">Assign Store</span>
-
-    </div>
-    <div class="step step1 active">
-        <span class="icon">
-            <i class="fa fa-check"></i>
-        </span>
-        <span class="text">Store Received</span>
-
-    </div>
-    <div class="step step1 active">
-        <span class="icon">
-            <i class="fa fa-check"></i>
-        </span>
-        <span class="text">Pack Complete</span>
-        <button class="btn btn-sm btn-success mr-1">Yes</button>
-        <button class="btn btn-sm btn-danger">Cancel</button>
-    </div>
-    <div class="step step1 active">
-        <span class="icon">
-            <i class="fa fa-check"></i>
-        </span>
-        <span class="text">Start Delivery</span>
-        <button class="btn btn-sm btn-success mr-1">Yes</button>
-        <button class="btn btn-sm btn-danger">Cancel</button>
-    </div>
-    <div class="step step1 non_active t_progress">
-        <span class="icon">
-            <i class="fas fa-spinner fa-spin"></i>
-        </span>
-        <span class="text">Delivery Complete</span>
-        <button class="btn btn-sm btn-success mr-1">Yes</button>
-        <button class="btn btn-sm btn-danger">Cancel</button>
-    </div>
-    <div class="step step1 non_active">
-        <span class="icon"><i class="fa fa-user"></i> </span>
-        <span class="text">Payment Send</span>
-    </div>
-    <div class="step">
-        <span class="icon"><i class="fa fa-user"></i> </span>
-        <span class="text">Payment Received</span>
-    </div>
-</div>
-<style>
-    .track {
-        position: relative;
-        background-color: #ffffff;
-        height: 7px;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        margin-bottom: 60px;
-        margin-top: 50px
-    }
-
-    .track .step {
-        -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
-        flex-grow: 1;
-        width: 25%;
-        margin-top: -18px;
-        text-align: center;
-        position: relative
-    }
-
-    .track .step.active:before {
-        background: #017c3d
-    }
-
-    .track .step.non_active:before {
-        background: #ddd
-    }
-
-    .track .step::before {
-        height: 7px;
-        position: absolute;
-        content: "";
-        width: 50%;
-        left: 50%;
-        top: 18px
-    }
-
-    .track .step1::before {
-        height: 7px;
-        position: absolute;
-        content: "";
-        width: 100%;
-        left: 50%;
-        top: 18px
-    }
-
-    .track .step.active .icon {
-        background: #017c3d;
-        color: #fff
-    }
-
-    .track .step.t_progress .icon {
-        background: #060445;
-        color: #fff
-    }
-
-    .track .icon {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        position: relative;
-        border-radius: 100%;
-        background: #ddd
-    }
-
-    .track .step.active .text {
-        color: #000
-    }
-
-    .track .text {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
-        font-size: 14px;
-        margin-top: 7px
-    }
-</style> --}}
