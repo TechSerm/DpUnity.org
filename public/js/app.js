@@ -3187,13 +3187,15 @@ var FormBuild = {
       modalClose: form.data('modal-close'),
       resetForm: form.data('reset'),
       pageReload: form.data('page-reload'),
-      pageRedirect: form.data('page-redirect')
+      pageRedirect: form.data('page-redirect'),
+      pageDivLoad: form.data('div-load')
     };
     var defaultFormSetting = {
       modalClose: true,
       resetForm: true,
       pageReload: true,
-      pageRedirect: false
+      pageRedirect: false,
+      pageDivLoad: false
     };
     formSetting = $.extend({}, defaultFormSetting, formSetting);
     Helper.form(form).submit({
@@ -3205,7 +3207,7 @@ var FormBuild = {
             if (currModal != null) currModal.close();
           }
 
-          if (formSetting.pageRedirect == true) Helper.url.load(response.url);else if (formSetting.pageReload == true) Helper.url.load();
+          if (formSetting.pageRedirect == true) Helper.url.load(response.url);else if (formSetting.pageReload == true) Helper.url.reload();else if (formSetting.pageDivLoad == true) Helper.url.load();
         }
       }
     });

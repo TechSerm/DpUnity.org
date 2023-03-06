@@ -93,6 +93,10 @@ class OrderItemController extends Controller
 
         $order->updateVendor();
 
+        // activity()
+        // ->performedOn($order)
+        // ->log('New product added');
+
         if ($order->is_vendor_assign) {
             $order->updateVendor();
         }

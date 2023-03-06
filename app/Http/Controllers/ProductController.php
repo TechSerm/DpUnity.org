@@ -254,6 +254,10 @@ class ProductController extends Controller
             $productQuery = Product::with(['imageTable']);
         }
 
+        if(auth()->user()->isVendor()){
+            $productQuery->where(['vendor_id' => auth()->user()->id]);
+        }
+
         if (isset($request->product_name)) {
             $searchValue = strtolower($request->product_name);
             $suggestionWords = SearchService::getSearchKeyword($searchValue);

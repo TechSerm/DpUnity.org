@@ -23,14 +23,18 @@ class ProfitCalculationService {
             'total_profit' => $this->getTotalProfit(),
             'product_profit' => $this->getTotalProductProfit(),
             'delivery_profit' => $this->getTotalDeliveryFee(),
+            'profit_percent' => $this->getTotalProfitPercent()
         ];
     }
 
     private function getOrderProfitQuery(){
-        $query = Order::whereBetween('created_at', [$this->startDate->format('Y-m-d 00:00:00'), $this->endDate->format('Y-m-d 23:59:00')]);
-        if(isset(request()->vendor) && request()->vendor != ""){
-            $query->where(['vendor_id' => request()->vendor]);
+        $query = Order::where([]);
+        if (isset(request()->vendor) && request()->vendor != "") {
+            $query->leftJoin('order_vendors', 'orders.id', '=', 'order_vendors.order_id');
+            $query->where(['order_vendors.vendor_id' => request()->vendor]);
         }
+        $query->whereBetween('orders.created_at', [$this->startDate->format('Y-m-d 00:00:00'), $this->endDate->format('Y-m-d 23:59:00')]);
+
 
         return $query;
     }
@@ -44,9 +48,10 @@ class ProfitCalculationService {
     }
 
     public function getTotalProductProfit(){
+        $hasVendor = isset(request()->vendor) && request()->vendor != "";
         return $this->getOrderProfitShowFormat(
             $this->getOrderProfitQuery()->where(['is_delivery_complete' =>  true])->select(
-                $this->getOrderSelectQuery("products_profit")
+                $this->getOrderSelectQuery($hasVendor ? "profit":"products_profit")
             )->first()
         );
     }
@@ -57,6 +62,21 @@ class ProfitCalculationService {
                 $this->getOrderSelectQuery("delivery_fee")
             )->first()
         );
+    }
+
+    public function getTotalProfitPercent(){
+        $hasVendor = isset(request()->vendor) && request()->vendor != "";
+        $productProfit = $this->getOrderProfitQuery()->where(['is_delivery_complete' =>  true])->select(
+            $this->getOrderSelectQuery($hasVendor ? "profit":"products_profit")
+        )->first();
+
+        $totalWholeSale = $this->getOrderProfitQuery()->where(['is_delivery_complete' =>  true])->select(
+            $this->getOrderSelectQuery($hasVendor ? "order_vendors.wholesale_total" : "wholesale_total")
+        )->first();
+        
+        $percent = ($productProfit->amount * 100 )/($totalWholeSale->amount == 0 ? 1 : $totalWholeSale->amount);
+
+        return bnConvert()->floatNumber($percent, 1) . '%';
     }
 
     private function getOrderProfitShowFormat($order)

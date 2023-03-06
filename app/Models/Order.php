@@ -4,13 +4,17 @@ namespace App\Models;
 
 use App\Enums\OrderStatusEnum;
 use App\Facades\Order\OrderFacade;
+use App\Services\Order\OrderNotificationService;
 use App\Services\Order\OrderService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Order extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $fillable = [
         'uuid',
@@ -41,7 +45,7 @@ class Order extends Model
 
         'device_token',
         'app_version',
-        
+
         'is_vendor_assign',
         'is_pack_complete',
         'is_delivery_start'
@@ -49,7 +53,7 @@ class Order extends Model
 
     public function items()
     {
-        return $this->hasMany(OrderItem::class)->with(['product','vendor']);
+        return $this->hasMany(OrderItem::class)->with(['product', 'vendor']);
     }
 
     public function addCookie()
@@ -106,5 +110,16 @@ class Order extends Model
     public function updateVendor()
     {
         return OrderFacade::updateOrderVendor($this);
+    }
+
+    public function notify()
+    {
+        return new OrderNotificationService($this);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([]);
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Requests\AssignProductVendorRequest;
 use App\Http\Requests\OrderCustomerUpdateRequest;
 use App\Models\Order;
 use App\Models\User;
+use App\Services\Order\OrderNotificationService;
 use App\Services\Order\OrderService;
 use App\Services\Vendor\VendorService;
 use Illuminate\Http\Request;
@@ -34,10 +35,21 @@ class OrderController extends Controller
 
     public function activeOrders()
     {
-        $orders = Order::where(['is_cancelled' => false, 'is_vendor_payment_complete' => false]);
+        $orders = Order::where(['is_cancelled' => false]);
         if (auth()->user()->isVendor()) {
-            $orders->where(['vendor_id' => auth()->user()->id]);
+            $orders->leftJoin('order_vendors', 'orders.id', '=', 'order_vendors.order_id');
+            $orders->where(['order_vendors.vendor_id' => auth()->user()->id]);
+            $orders->where(['order_vendors.is_vendor_payment_complete' => false]);
+        } else {
+            $orders->where(['is_vendor_payment_complete' => false]);
         }
+
+        if (auth()->user()->isVendor()) {
+            $orders->select(DB::raw('orders.*, order_vendors.is_received, order_vendors.is_pack_complete as vendor_is_pack_complete, order_vendors.wholesale_total as vendor_wholesale_total'));
+        } else {
+            $orders->select(DB::raw('orders.*'));
+        }
+
         return view('order.active_orders', ['orders' => $orders->orderBy('id', 'desc')->get()]);
     }
 
@@ -177,6 +189,8 @@ class OrderController extends Controller
     {
         $order = Order::where(['id' => $orderId])->firstOrFail();
 
+        $orderNotificationService = new OrderNotificationService($order);
+
         if ($order->is_cancelled) {
             return response()->json([
                 'message' => 'Order Already Cancelled'
@@ -188,6 +202,8 @@ class OrderController extends Controller
                 'is_approved' => true,
                 'status' => OrderStatusEnum::APPROVED
             ]);
+            $order->notify()->admin("অর্ডারটি গ্রহণ করা হয়েছে।");
+            $order->notify()->customer("আপনার অর্ডারটি গ্রহণ করা হয়েছে।");
         }
 
         if ($status == 'pack_complete') {
@@ -195,6 +211,8 @@ class OrderController extends Controller
                 'is_pack_complete' => true,
                 'status' => OrderStatusEnum::PACK_COMPLETE
             ]);
+            $order->notify()->admin("অর্ডারটির প্রস্তুতি সম্পন্ন হয়েছে।");
+            $order->notify()->customer("আপনার অর্ডারটির প্রস্তুতি সম্পন্ন হয়েছে।");
         }
 
         if ($status == 'start_delivery') {
@@ -202,6 +220,9 @@ class OrderController extends Controller
                 'is_delivery_start' => true,
                 'status' => OrderStatusEnum::START_DELIVERY
             ]);
+            $order->notify()->admin("অর্ডারটির ডেলিভারির জন্য রওনা হয়েছে।");
+            $order->notify()->allVendors("অর্ডারটির ডেলিভারির জন্য রওনা হয়েছে।");
+            $order->notify()->customer("আপনার অর্ডারটির ডেলিভারির জন্য রওনা হয়েছে।");
         }
 
         if ($status == 'delivery_complete') {
@@ -209,6 +230,9 @@ class OrderController extends Controller
                 'is_delivery_complete' => true,
                 'status' => OrderStatusEnum::DELIVERY_COMPLETED
             ]);
+            $order->notify()->admin("অর্ডারটির ডেলিভারি টি সম্পন্ন হয়েছে।");
+            $order->notify()->allVendors("অর্ডারটির ডেলিভারি টি সম্পন্ন হয়েছে।");
+            $order->notify()->customer("আপনার অর্ডারটির ডেলিভারি টি সম্পন্ন হয়েছে।");
         }
 
         if ($status == 'canceled') {
@@ -216,19 +240,33 @@ class OrderController extends Controller
                 'is_cancelled' => true,
                 'status' => OrderStatusEnum::CANCELED
             ]);
+            $order->notify()->admin("অর্ডারটি বাতিল করা হয়েছে।");
+            $order->notify()->allVendors("অর্ডারটি বাতিল করা হয়েছে।");
+            $order->notify()->customer("আপনার অর্ডারটি বাতিল করা হয়েছে।");
         }
+
+        // activity()
+        // ->performedOn($order)
+        // ->log('Order status has been edited. New status: '. $status);
 
         if (isset(request()->vendor)) {
             $orderVendor = $order->vendors()->where(['uuid' => request()->vendor])->first();
             if ($orderVendor) {
                 $orderVendorData = [];
-
-                if ($status == 'vendor_received') $orderVendorData['is_received'] = true;
-                if ($status == 'vendor_pack_complete') $orderVendorData['is_pack_complete'] = true;
-
+                $notifyMessage = "";
+                if ($status == 'vendor_received') {
+                    $orderVendorData['is_received'] = true;
+                    $notifyMessage = "Vendor Approved";
+                    $notifyMessage = $orderVendor->user->name . " অর্ডারটি গ্রহণ করেছে";
+                } else if ($status == 'vendor_pack_complete') {
+                    $orderVendorData['is_pack_complete'] = true;
+                    $notifyMessage = $orderVendor->user->name . " এর প্রস্তুতি সম্পন্ন হয়েছে";
+                }
                 $orderVendor->update($orderVendorData);
+                if ($notifyMessage != "") $order->notify()->Admin($notifyMessage);
             }
         }
+
 
         return response()->json([
             'message' => 'Successfully Change Status'
@@ -298,6 +336,9 @@ class OrderController extends Controller
             'status' => OrderStatusEnum::ASSIGN_STORE
         ]);
 
+        $order->notify()->admin("অর্ডারটি বিক্রেতার কাছে পাঠানো হয়েছে।");
+        $order->notify()->customer("আপনার অর্ডারটির প্রস্তুতি চলছে।");
+
         $order->updateVendor();
 
 
@@ -323,63 +364,5 @@ class OrderController extends Controller
         return response()->json([
             'message' => 'Vendor Update Successfully'
         ]);
-    }
-
-    private function notificationMessageSend($order)
-    {
-        $notificationMessage = $order->notification_message;
-        if (isset($notificationMessage['admin'])) {
-            $tokens = OrderFacade::getManagerDeviceToken();
-            if (!empty($tokens)) {
-                $body = $notificationMessage['admin'] . "\n";
-                $body .= "🔖 অর্ডার নম্বর : " . bnConvert()->number($order->id);
-                $body .= "\n🛒 পণ্যের মূল্য: ৳ " . bnConvert()->number($order->subtotal);
-                $body .= "\n🚑 ডেলিভারি ফী: ৳ " . bnConvert()->number($order->delivery_fee);
-                $body .= "\n💵 সর্বমোট: ৳ " . bnConvert()->number($order->total);
-                $body .= "\n⏰ সময় : " . bnConvert()->date($order->created_at->format('d M Y, h:i a'));
-
-                PushNotificationFacade::sendNotification($tokens, [
-                    'title' => "অর্ডার #" . $order->id . "\n",
-                    'body' => $body,
-                    "url" => route('orders.show', ['order' => $order->id]),
-                ]);
-            }
-        }
-
-        if (isset($notificationMessage['vendor']) && !is_null($order->vendor_id)) {
-            $tokens = OrderFacade::getVendorDeviceToken($order->vendor_id);
-            if (!empty($tokens)) {
-                $body = $notificationMessage['vendor'] . "\n";
-                $body .= "🔖 অর্ডার নম্বর : " . bnConvert()->number($order->id);
-                $body .= "\n⏰ সময় : " . bnConvert()->date($order->created_at->format('d M Y, h:i a'));
-                PushNotificationFacade::sendNotification($tokens, [
-                    'title' => "অর্ডার #" . $order->id . "\n",
-                    'body' => $body,
-                    "url" => route('orders.show', ['order' => $order->id]),
-                ]);
-            }
-        }
-
-        if (isset($notificationMessage['customer'])) {
-            $tokens = [];
-            if ($order->device_token) {
-                $tokens[] = $order->device_token;
-            }
-
-            if (!empty($tokens)) {
-                $body = $notificationMessage['customer'] . "\n";
-                $body .= "🔖 অর্ডার নম্বর : " . bnConvert()->number($order->id);
-                $body .= "\n🛒 পণ্যের মূল্য: ৳ " . bnConvert()->number($order->subtotal);
-                $body .= "\n🚑 ডেলিভারি ফী: ৳ " . bnConvert()->number($order->delivery_fee);
-                $body .= "\n💵 সর্বমোট: ৳ " . bnConvert()->number($order->total);
-                $body .= "\n⏰ সময় : " . bnConvert()->date($order->created_at->format('d M Y, h:i a'));
-
-                PushNotificationFacade::sendNotification($tokens, [
-                    'title' => "অর্ডার #" . $order->id . "\n",
-                    'body' => $body,
-                    "url" => route('store.order.show', ['uuid' => $order->uuid]),
-                ]);
-            }
-        }
     }
 }

@@ -82,13 +82,14 @@ class OrderService
         foreach ($vendorData as $key => $data) {
             $vendor = $order->vendors()->where(['vendor_id' => $key])->first();
             if (!$vendor) {
-                OrderVendor::create([
+                $vendor = OrderVendor::create([
                     'order_id' => $order->id,
                     'vendor_id' => $key,
                     'total' => $data['total'],
                     'wholesale_total' => $data['wholesale_total'],
                     'profit' => $data['profit']
                 ]);
+                $order->notify()->vendor("আপনার একটি নতুন অর্ডার এসেছে।", $vendor);
             } else {
                 if ($vendor->total != $data['total'] || $vendor->wholesale_total != $data['wholesale_total'] || $vendor->profit != $data['profit']) {
                     $vendor->update([
@@ -96,6 +97,7 @@ class OrderService
                         'wholesale_total' => $data['wholesale_total'],
                         'profit' => $data['profit']
                     ]);
+                    $order->notify()->vendor("আপনার অর্ডারটিতে কিছু পরিবর্তন করা হয়েছে।", $vendor);
                 }
             }
         }
@@ -103,6 +105,7 @@ class OrderService
         $extraVendor = $order->vendors()->whereNotIn('vendor_id', array_keys($vendorData))->get();
 
         foreach ($extraVendor as $key => $vendor) {
+            $order->notify()->vendor("অর্ডারটি আপনার দোকান থেকে সরিয়ে ফেলা হয়েছে।", $vendor);
             $vendor->delete();
         }
     }

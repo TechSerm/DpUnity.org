@@ -54,6 +54,9 @@
                     </div>
                     <div class="body">
                         <table class="table table-bordered">
+                            @if (auth()->user()->isAdmin())
+                                
+                            
                             <tr>
                                 <td class="infoTd" style="width: 150px;">কাস্টমারের নাম </td>
                                 <td style="">{{ $order->name }}</td>
@@ -68,6 +71,7 @@
                                     @endif
                                 </td>
                             </tr>
+                            @endif
                             <tr>
                                 <td>অর্ডারটি করা হয়েছে</td>
                                 <td>{{ bnConvert()->date($order->created_at->format('d M Y, H:i')) }}
@@ -79,7 +83,7 @@
                             </tr>
                             <tr>
                                 <td>সর্বমোট:</td>
-                                <td>৳ {{ bnConvert()->number($order->total) }}</td>
+                                <td>৳ {{ bnConvert()->number(auth()->user()->isAdmin() ? $order->total: $order->vendor_wholesale_total) }}</td>
                             </tr>
                         </table>
     

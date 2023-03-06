@@ -29,12 +29,21 @@
             <x-adminlte-small-box title="{{ $order['complete'] }}" text="ডেলিভারি সম্পন্ন হয়েছে" icon="fas fa-check"
                 theme="success" />
         </div>
+    </div>
+</div>
+<div style="" class="dashboardReportSubArea">
+    <div class="row">
+        
         <div class="col-md-3 col-sm-6">
             <x-adminlte-small-box title="{{ $order['vendor_payment_pending'] }}" text="বিক্রেতার বাকি আছে"
-                icon="fas fa-times" theme="warning" />
+                icon="fas fa-times" theme="danger" />
         </div>
         <div class="col-md-3 col-sm-6">
-            <x-adminlte-small-box title="{{ $order['vendor_payment_complete'] }}" text="বিক্রেতাকে দেয়া হয়েছে"
+            <x-adminlte-small-box title="{{ $order['vendor_payment_send'] }}" text="বিক্রেতাকে পাঠানো হয়েছে"
+                icon="fas fa-clock" theme="warning" />
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <x-adminlte-small-box title="{{ $order['vendor_payment_complete'] }}" text="বিক্রেতা পেয়েছে"
                 icon="fas fa-check" theme="success" />
         </div>
     </div>
@@ -48,6 +57,11 @@
                 icon="fas fa-check" theme="success" />
         </div>
         <div class="col-md-3 col-sm-6">
+            <x-adminlte-small-box title="{{ $profit['profit_percent'] }}" text="পণ্যে শতকরা লাভ "
+                icon="fas fa-check" theme="success" />
+        </div>
+        @if(!(isset(request()->vendor) && request()->vendor != ""))
+        <div class="col-md-3 col-sm-6">
             <x-adminlte-small-box title="{{ $profit['delivery_profit'] }}" text="সর্বমোট ডেলিভারি"
                 icon="fas fa-check" theme="success" />
         </div>
@@ -55,6 +69,7 @@
             <x-adminlte-small-box title="{{ $profit['total_profit'] }}" text="সর্বমোট (লাভ + ডেলিভারি)"
                 icon="fas fa-check" theme="success" />
         </div>
+        @endif
     </div>
 </div>
 @endcan
