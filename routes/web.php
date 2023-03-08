@@ -17,6 +17,7 @@ use App\Http\Controllers\SearchKeywordController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
+use App\Http\Controllers\VendorPaymentController;
 use Illuminate\Support\Facades\App;
 
 /*
@@ -104,7 +105,12 @@ Route::prefix('admin')->group(function () {
         Route::get('/push_notifications/data', [PushNotificationController::class, 'getData'])->name('push_notifications.data');
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
-    
+        
+        Route::get('/vendor_payment/{vendor_id}/send_payment', [VendorPaymentController::class, 'sendPayment'])->name('vendor_payments.send_payment');
+        Route::post('/vendor_payment/{vendor_id}/send_payment', [VendorPaymentController::class, 'store']);
+        Route::get('/vendor_payment/{vendor_id}/send_pending_payment', [VendorPaymentController::class, 'sendPendingPayment'])->name('vendor_payments.send_pending_payment');
+        Route::post('/vendor_payment/{vendor_id}/confirm', [VendorPaymentController::class, 'paymentConfirm'])->name('vendor_payments.payment_confirm');
+        Route::resource('vendor_payments', VendorPaymentController::class);
         
         Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
 

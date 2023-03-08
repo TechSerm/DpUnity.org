@@ -276,6 +276,12 @@ return [
             'label_color' => 'success',
         ],
         [
+            'text'        => 'বিক্রেতার পেমেন্ট',
+            'url'         => '/admin/vendor_payments',
+            'icon'        => 'fa fa-credit-card',
+            'label_color' => 'success',
+        ],
+        [
             'text'        => 'Search Keywords',
             'url'         => '/admin/search-keywords',
             'icon'        => 'fas fa-search',

@@ -30,6 +30,12 @@
                         $vendorBoxColor = "danger";
                         $vendorBoxIcon = "fa-times";
                     }
+
+                    if(!$order->is_delivery_complete){
+                        $vendorBoxColor = "secondary";
+                        $vendorBoxIcon = "";
+                        $vendorPaymentMessage = "";
+                    }
                 @endphp
                 <div class="col-md-4 col-sm-6">
                     <div class="info-box bg-{{$vendorBoxColor}}">
@@ -43,6 +49,7 @@
                                     {{ bnConvert()->number($vendor->wholesale_total) }}</b> টাকা</span>
                             @if (auth()->user()->isAdmin())
                             <span class="">লাভ: <b>{{ bnConvert()->number($vendor->profit) }}</b> টাকা</span>
+                            <span class="">শতকরা লাভ : <b>{{ bnConvert()->floatNumber(($vendor->profit * 100)/($vendor->wholesale_total == 0 ? 1 : $vendor->wholesale_total), 1) }}</b>%</span>
                             @endif
                             <span class="info-box-number">{{$vendorPaymentMessage}}</span>
                         </div>
