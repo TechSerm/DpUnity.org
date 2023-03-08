@@ -12,7 +12,7 @@ class HomePageProductService
     {
         $mxSerialNo = HomePageProduct::max('serial_no') + 1;
 
-        $products = Product::with(['imageTable'])->where(['status' => 'publish'])->leftJoin('home_page_products', function ($join) {
+        $products = Product::with(['imageTable'])->where(['status' => 'publish', 'has_stock' => true])->leftJoin('home_page_products', function ($join) {
             $join->on('products.id', '=', 'home_page_products.product_id');
         })->leftJoin($this->getOrderSaleQueryTable(), function ($join) {
             $join->on('products.id', '=', 'sale_count_table.product_id');
