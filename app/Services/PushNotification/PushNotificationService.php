@@ -70,7 +70,8 @@ class PushNotificationService
     public function sendNotification($deviceTokens, $data)
     {
         if(empty($deviceTokens))return;
-        
+        if(!config("bibisena.push_notification_enabled"))return;
+
         $SERVER_API_KEY = 'AAAAGN5kMhY:APA91bHq8R97jpbd3wQ31WCPNbDs0sV0tgLyApM7ZmRivwH_td4UuDfYvH_Nw89ngF76VyVdJz5hgY9i-puudFksGcMlTUmSj3QsYyzNsoZWYFOc11zv4a0IARmXPNYl0NQAjVNmKu7-';
 
         $data = array_merge([

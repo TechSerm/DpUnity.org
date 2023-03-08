@@ -52,6 +52,9 @@
                     <th>#</th>
                     <th>পণ্যের ছবি</th>
                     <th style="text-align: left">পণ্য</th>
+                    @if (auth()->user()->isAdmin())
+                    <th>লাভ</th>
+                    @endif
                     <th>মূল্য</th>
                     <th>পরিমান</th>
                     <th>সর্বমোট মূল্য</th>
@@ -108,6 +111,9 @@
                                 @endif
                             </div>
                         </td>
+                        @if (auth()->user()->isAdmin())
+                        <td style="width: 100px"><b>{{ bnConvert()->number($item->profit) }}</b> ৳</td>
+                        @endif
                         <td style="width: 100px"><b>{{ bnConvert()->number($price) }}</b> ৳</td>
                         <td style="width: 100px">
                             <span class="mb-1"><b> {{ bnConvert()->number($item->quantity) }} </b></span>
@@ -118,19 +124,25 @@
                 @if (auth()->user()->isAdmin())
                 <tr>
                     <td colspan="3" style="text-align: right; background-color: #f5f5f5">পণ্যের মূল্য:</td>
-                    <td colspan="3" style="background: #eeeeee"><b>{{ bnConvert()->number($order->subtotal) }}</b>
+                    <td colspan="{{auth()->user()->isAdmin() ? 4 : 3}}" style="background: #eeeeee"><b>{{ bnConvert()->number($order->subtotal) }}</b>
                         টাকা </td>
                 </tr>
                 <tr>
                     <td colspan="3" style="text-align: right; background-color: #f5f5f5">ডেলিভারি ফী:</td>
-                    <td colspan="3" style="background: #eeeeee">
+                    <td colspan="{{auth()->user()->isAdmin() ? 4 : 3}}" style="background: #eeeeee">
                         <b>{{ bnConvert()->number($order->delivery_fee) }}</b> টাকা
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: right; background-color: #f5f5f5">লাভ:</td>
+                    <td colspan="{{auth()->user()->isAdmin() ? 4 : 3}}" style="background: #eeeeee">
+                        <b>{{ bnConvert()->number($order->products_profit) }}</b> টাকা
                     </td>
                 </tr>
                 @endif
                 <tr>
                     <td colspan="3" style="text-align: right; background-color: #f5f5f5">সর্বমোট:</td>
-                    <td colspan="3" style="background: #eeeeee"><b>{{ bnConvert()->number($orderTotal) }}</b> টাকা
+                    <td colspan="{{auth()->user()->isAdmin() ? 4 : 3}}" style="background: #eeeeee"><b>{{ bnConvert()->number($orderTotal) }}</b> টাকা
                     </td>
                 </tr>
 
@@ -219,7 +231,7 @@
                         <td class="align-middle" style="text-align: left">
                             <div class="" style="font-size: 13px;font-weight: bold">
                                 {{ $item->name }}
-                                @if ($item->vendor)
+                                @if ($item->vendor && auth()->user()->isAdmin())
                                     <br /> <span class="badge"
                                         style="background-color: {{ $item->vendor->color }}; color: #ffffff">{{ $item->vendor->name }}</span>
                                 @endif
@@ -270,7 +282,7 @@
                     @endif
                     <tr class="orderSummeryTableTotalTr">
                         <td colspan="2"><span class="badge" style="font-size: 14px">সর্বমোট:</span></td>
-                        <td>৳ <b>{{ bnConvert()->number($order->total) }}</b></td>
+                        <td>৳ <b>{{ bnConvert()->number($orderTotal) }}</b></td>
                     </tr>
                 </table>
             </div>
