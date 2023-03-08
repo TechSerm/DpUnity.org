@@ -150,7 +150,7 @@
             margin: -2px -2px 10px -2px;
         }
     </style>
-
+    @include('store.home.ramadan')
     <div class="home-list" style="background: #edfffc">
         <div class="home-list-header" style="background: #16a085; color: #ffffff">ক্যাটেগরি</div>
         <div class="row categories">

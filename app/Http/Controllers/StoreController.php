@@ -17,10 +17,13 @@ class StoreController extends Controller
     {
         $products = HomePageProductFacade::get();
         $activeOrders = OrderFacade::userOrder()->activeOrToday();
+        $ramadanCategory = Category::find(env('RAMADAN_CATEGORY_ID'));
+        $ramadanCategoryProducts = $ramadanCategory ? $ramadanCategory->products : [];
         return view('store.home.index', [
             'products' => $products,
             'categories' => Category::with('imageTable')->get(),
-            'activeOrders' => $activeOrders
+            'activeOrders' => $activeOrders,
+            'ramadanCategoryProducts' => $ramadanCategoryProducts
         ]);
     }
 
