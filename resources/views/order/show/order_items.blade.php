@@ -81,14 +81,20 @@
                     <tr>
                         <td style="width: 30px">{{ bnConvert()->number($key + 1) }}</td>
                         <td style="width: 80px">
-                            <img src="{{ $item->product->image }}" height="70px" width="70px" alt="">
+                            <img src="{{ $item->product ? $item->product->image : '' }}" height="70px" width="70px" alt="">
                         </td>
                         <td style="text-align: left">
                             <div class="" style="font-size: 13px;font-weight: bold">
+                                @if ($item->product)
+                                    
                                 <a data-toggle="modal" data-modal-size="md"
                                     data-modal-header="Product #{{ $item->product_id }}"
-                                    href="{{ route('products.show', ['product' => $item->product_id]) }}">{{ $item->name }}</a>
-                                
+                                    href="{{ route('products.show', ['product' => $item->product_id]) }}">
+                                @endif
+                                    {{ $item->name }}
+                                @if ($item->product)
+                                </a>
+                                @endif
                             </div>
                             <div style="font-size: 11px;font-weight: bold; color: #767575">
                                 {{ bnConvert()->number($item->unit_quantity, false) }}
@@ -226,7 +232,7 @@
                             }
                         </style>
                         <td class="align-middle" style="padding: 5px">
-                            <img src="{{ $item->product->image }}" height="70px" width="70px" alt="">
+                            <img src="{{ $item->product ? $item->product->image : '' }}" height="70px" width="70px" alt="">
                         </td>
                         <td class="align-middle" style="text-align: left">
                             <div class="" style="font-size: 13px;font-weight: bold">
