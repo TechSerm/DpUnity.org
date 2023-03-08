@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Vendor\Vendor;
 use App\Helpers\Constant;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
@@ -37,7 +38,11 @@ class ProductController extends Controller
     public function getData(Request $request)
     {
         $this->authorize('products.index');
-        $productQuery = Product::with(['imageTable']);
+        $productQuery = Product::with(['imageTable','vendor']);
+
+        if (auth()->user()->isVendor()) {
+            $productQuery = $productQuery->where(['vendor_id' => auth()->user()->id]);
+        }
 
         if (isset($request->search) && is_array($request->search) && $request->search['value'] != '') {
             $searchValue = strtolower($request->search['value']);
@@ -83,7 +88,7 @@ class ProductController extends Controller
             })
             ->editColumn('has_stock', function ($model) {
                 $statusColor = $model->has_stock ? 'primary' : 'warning';
-                return "<span class = 'badge badge-{$statusColor}'>" . ($model->has_stock ? '<i class="fa fa-check"></i> আছে':'<i class="fa fa-times"></i> নেই') . "</span>";
+                return ($model->vendor ? $model->vendor->name : '') . "<span class = 'badge badge-{$statusColor}'>" . ($model->has_stock ? '<i class="fa fa-check"></i> আছে' : '<i class="fa fa-times"></i> নেই') . "</span>";
             })
             ->editColumn('status', function ($model) {
                 $statusColor = $model->status == 'private' ? 'danger' : 'success';
@@ -124,8 +129,11 @@ class ProductController extends Controller
     public function create()
     {
         $this->authorize('products.create');
+        $vendors = collect(Vendor::getList())->pluck('name', 'id')->toArray();
+
         return view('product.create', [
-            'units' => Constant::UNITS
+            'units' => Constant::UNITS,
+            'vendors' => $vendors
         ]);
     }
 
@@ -149,6 +157,7 @@ class ProductController extends Controller
             'status' => $request->status,
             'delivery_fee' => $request->delivery_fee,
             'image_id' => $imageId,
+            'vendor_id' => $request->vendor_id,
             'temp_categories_id' => json_encode($request->categories)
         ]);
 
@@ -170,9 +179,12 @@ class ProductController extends Controller
     {
         $this->authorize('products.edit');
         $product = Product::findOrFail($id);
+        $vendors = collect(Vendor::getList())->pluck('name', 'id')->toArray();
+
         return view('product.edit', [
             'product' => $product,
-            'units' => Constant::UNITS
+            'units' => Constant::UNITS,
+            'vendors' => $vendors
         ]);
     }
 
@@ -198,6 +210,7 @@ class ProductController extends Controller
             'status' => $request->status,
             'delivery_fee' => $request->delivery_fee,
             'image_id' => $imageId,
+            'vendor_id' => $request->vendor_id,
             'temp_categories_id' => json_encode($request->categories)
         ]);
 
@@ -239,6 +252,10 @@ class ProductController extends Controller
             $productQuery = $category->products()->with(['imageTable']);
         } else {
             $productQuery = Product::with(['imageTable']);
+        }
+
+        if(auth()->user()->isVendor()){
+            $productQuery->where(['vendor_id' => auth()->user()->id]);
         }
 
         if (isset($request->product_name)) {

@@ -17,6 +17,15 @@ class BnConvert
         return $number;
     }
 
+    public function floatNumber($number, $decimalPoint = 2)
+    {
+        $numbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+        $number = number_format($number, $decimalPoint, '.', ',');
+        $number = strtr($number, $numbers);
+        return $number;
+    }
+
+
     public function date($date)
     {
         

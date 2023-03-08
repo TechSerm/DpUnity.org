@@ -64,6 +64,18 @@
                     @include('order.show.order_items', ['order', $order])
                 </div>
             </div>
+
+            <div class="cardd">
+                <div class="card-bodyy">
+                    @include('order.show.vendors', ['order', $order])
+                </div>
+            </div>
+
+            {{-- <div class="cardd">
+                <div class="card-bodyt">
+                    @include('order.show.notes', ['order', $order])
+                </div>
+            </div> --}}
         </div>
     </div>
 @endsection

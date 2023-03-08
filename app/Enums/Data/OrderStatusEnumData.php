@@ -12,7 +12,7 @@ class OrderStatusEnumData
                 'name' => 'অর্ডারটি পেন্ডিং এ আছে',
                 'color' => '#ffeaa7',
             ],
-            'color' => '#000000',
+            'color' => '#34495e',
             'notificationMessage' => []
         ],
         'APPROVED' => [
@@ -22,7 +22,7 @@ class OrderStatusEnumData
                 'name' => 'অর্ডারটি গ্রহণ করা হয়েছে',
                 'color' => '#a0b9e9',
             ],
-            'color' => '#000000',
+            'color' => '#8e44ad',
             'notificationMessage' => [
                 'customer' => 'আপনার অর্ডারটি গ্রহণ করা হয়েছে',
                 'admin' => 'অর্ডারটি গ্রহণ করা হয়েছে',
@@ -36,7 +36,7 @@ class OrderStatusEnumData
                 'name' => 'অর্ডারটি গ্রহণ করা হয়েছে',
                 'color' => '#a0b9e9',
             ],
-            'color' => '#000000',
+            'color' => '#2980b9',
             'notificationMessage' => [
                 'customer' => 'আপনার অর্ডারটি বিক্রেতার কাছে পাঠানো হয়েছে',
                 'vendor' => 'আপনার নতুন একটি অর্ডার এসেছে, অর্ডারটি গ্রহণ করুন',
@@ -63,7 +63,7 @@ class OrderStatusEnumData
                 'name' => 'অর্ডারটির প্রস্তুতি সম্পন্ন হয়েছে',
                 'color' => '#a0b9e9',
             ],
-            'color' => '#000000',
+            'color' => '#e67e22',
             'notificationMessage' => [
                 'customer' => 'আপনার অর্ডারটির প্রস্তুতি সম্পন্ন হয়েছে',
                 'admin' => 'অর্ডারটির প্রস্তুতি সম্পন্ন হয়েছে'
@@ -76,7 +76,7 @@ class OrderStatusEnumData
                 'name' => 'ডেলিভারি ম্যান অর্ডারটি ডেলিভারির জন্য রওনা হয়েছে',
                 'color' => '#a0b9e9',
             ],
-            'color' => '#000000',
+            'color' => '#5f27cd',
             'notificationMessage' => [
                 'customer' => 'আপনার অর্ডারটি ডেলিভারির জন্য ডেলিভারি ম্যান রওনা হয়েছে',
                 'admin' => 'ডেলিভারির জন্য রওনা হয়েছে'
@@ -89,7 +89,7 @@ class OrderStatusEnumData
                 'name' => 'অর্ডারটির ডেলিভারি সম্পন্ন হয়েছে',
                 'color' => '#7bed9f',
             ],
-            'color' => '#000000',
+            'color' => '#16a085',
             'notificationMessage' => [
                 'customer' => 'আপনার অর্ডারটির ডেলিভারি সম্পন্ন হয়েছে',
                 'vendor' => 'অর্ডারটির ডেলিভারি সম্পন্ন হয়েছে',
@@ -128,7 +128,7 @@ class OrderStatusEnumData
                 'name' => 'অর্ডারটি বাতিল করা হয়েছে',
                 'color' => '#fab1a0',
             ],
-            'color' => '#000000',
+            'color' => '#c23616',
             'notificationMessage' => [
                 'customer' => 'আপনার অর্ডারটি বাতিল করা হয়েছে',
                 'admin' => 'অর্ডারটি বাতিল করা হয়েছে'

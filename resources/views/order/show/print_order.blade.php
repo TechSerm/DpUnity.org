@@ -1,10 +1,10 @@
-<div id="invoice_area" style="text-align: center">
+<div id="invoice_area" style="">
     <div style="margin-top: 15px;"></div>
-    <div class="bg" style="width: 400px; border-width: 0px; border-style: dotted; padding: 2px;">
+    <div class="bg" style="text-align: center;width: 400px; border-width: 0px; border-style: dotted; padding: 2px;">
 
         <div id="iv"><b>
-                Alom Brother<br/>
-                Mobile: 0154154<br></b>
+                বিবিসেনা অনলাইন শপ<br /></b>
+            ঘরে বসেই করুন আপনার বাজার<br /><b>
         </div>
 
         <div id="dot">
@@ -20,25 +20,25 @@
 
         </div>
         <div id="possition_sidee" style="text-align: left; margin-left: 15px">
-            অর্ডার নাম্বার: 42<br/>
-            নাম : thohidul Terminal<br>
-            বাড়ির ঠিকানা: 454<br />
-            মোবাইল নাম্বার: 0415<br>
+            অর্ডার নাম্বার: {{ $order->id }}<br />
+            নাম : {{ $order->name }}<br>
+            বাড়ির ঠিকানা: {{ $order->address }}<br />
+            মোবাইল নাম্বার: {{ $order->mobile }}<br>
         </div>
         <div id="dot">
             <script type="text/javascript">
-                for (var i = 0; i < 23; i++) {
+                for (var i = 0; i < 20; i++) {
                     document.write("<b>-</b>");
                 }
-                document.write("<b>Product Summery</b>");
-                for (var i = 0; i < 23; i++) {
+                document.write("<b>ক্রয়কৃত পণ্যের তালিকা</b>");
+                for (var i = 0; i < 20; i++) {
                     document.write("<b>-</b>");
                 }
             </script>
         </div>
         <style type="text/css">
             .invoice_table {
-                padding-right: 30px;
+                font-size: 13px;
 
             }
         </style>
@@ -47,16 +47,16 @@
         <table border="0px" width="100%">
             <tr>
                 <th class="invoice_table">
-                    <center>No</center>
+                    <center>নাম</center>
                 </th>
                 <th class="invoice_table">
-                    <center>Name</center>
+                    <center>পরিমান</center>
                 </th>
                 <th class="invoice_table">
-                    <center>Quntity</center>
+                    <center>দর</center>
                 </th>
                 <th class="invoice_table">
-                    <center>Price</center>
+                    <center>মোট</center>
                 </th>
             </tr>
 
@@ -65,66 +65,50 @@
             @endphp
 
             @foreach ($items as $key => $item)
-            <tr>
-                <td class="invoice_table">
-                    <center>{{$key + 1}}</center>
-                </td>
-                <td class="invoice_table">
-                    <center>{{$item->name}}</center>
-                </td>
-                <td class="invoice_table">
-                    <center>{{$item->quantity}}</center>
-                </td>
-                <td class="invoice_table">
-                    <center>{{$item->price}}</center>
-                </td>
-            </tr>
+                <tr>
+                    <td class="invoice_table">
+                        <center>{{ $item->name }} - ({{bnConvert()->number($item->unit_quantity)}} {{bnConvert()->unit($item->unit)}})</center>
+                    </td>
+                    <td class="invoice_table">
+                        <center>{{ bnConvert()->number($item->quantity) }}</center>
+                    </td>
+                    <td class="invoice_table">
+                        <center>{{ bnConvert()->number($item->price) }} টাকা</center>
+                    </td>
+                    <td class="invoice_table">
+                        <center>{{ bnConvert()->number($item->price) }} টাকা</center>
+                    </td>
+                </tr>
             @endforeach
 
 
             <tr class="line">
-                <td class="invoice_table">
-                    <center></center>
+                
+                <td colspan="2" class="invoice_table" style="text-align: right">
+                    <b>পণ্যের মূল্য: </b>
                 </td>
-                <td class="invoice_table">
-                    <center></center>
-                </td>
-                <td class="invoice_table">
-                    <center><b>Sub Total: </b></center>
-                </td>
-                <td class="invoice_table">
-                    <center><b> taka</b></center>
+                <td colspan="2" class="invoice_table">
+                    <center><b>{{ bnConvert()->number($order->subtotal) }} </b>টাকা</center>
                 </td>
 
             </tr>
 
             <tr>
-                <td class="invoice_table">
-                    <center></center>
+                <td colspan="2" class="invoice_table" style="text-align: right">
+                    <b>ডেলিভারি ফী: </b>
                 </td>
-                <td class="invoice_table">
-                    <center></center>
-                </td>
-                <td class="invoice_table">
-                    <center><b>Advanced: </b></center>
-                </td>
-                <td class="invoice_table">
-                    <center><b> taka</b></center>
+                <td colspan="2"  class="invoice_table">
+                    <center><b>{{ bnConvert()->number($order->delivery_fee) }} </b>টাকা</center>
                 </td>
 
             </tr>
             <tr>
-                <td class="invoice_table">
-                    <center></center>
+               
+                <td colspan="2" class="invoice_table" style="text-align: right">
+                    <b>সর্বমোট: </b>
                 </td>
-                <td class="invoice_table">
-                    <center></center>
-                </td>
-                <td class="invoice_table">
-                    <center><b>Due: </b></center>
-                </td>
-                <td class="invoice_table">
-                    <center><b> taka</b></center>
+                <td colspan="2" class="invoice_table">
+                    <center><b>{{ bnConvert()->number($order->total) }} </b>টাকা</center>
                 </td>
 
             </tr>
@@ -154,47 +138,45 @@
             margin-right: 20px;
             width: 100%;
         }
-        .invoice_table{
+
+        .invoice_table {
             border: 1px solid #eeeeee;
         }
     </style>
 
-    </div>
+</div>
 
 
-    <center>
-        <br />
-        <button class="btn btn-success" onclick="print_page()" />Print </button>
-    </center>
-    
+<center>
+    <br />
+    <button class="btn btn-success" onclick="print_page()" />Print </button>
+</center>
 
 
-    <style type="text/css">
-        .bg {
-            font-family: 'Arsenal', sans-serif;
-            background: #fff;
-            background: url(https://www.msoutlook.info/pictures/bgconfidential.png)repeat 0px 0px;
-            background-size: 20%;
 
-        }
-    </style>
+<style type="text/css">
+    .bg {
+        font-family: 'Arsenal', sans-serif;
+        background: #fff;
+        background-size: 20%;
+
+    }
+</style>
 
 </div>
 <script type="text/javascript">
-    
     function print_page() {
         printDiv("invoice_area");
     }
 
     function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
 
-     document.body.innerHTML = printContents;
+        document.body.innerHTML = printContents;
 
-     window.print();
+        window.print();
 
-     document.body.innerHTML = originalContents;
-}
-
+        document.body.innerHTML = originalContents;
+    }
 </script>

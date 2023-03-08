@@ -19,10 +19,7 @@
                 <td>অর্ডারটির বর্তমান অবস্থা</td>
                 <td><span class="badge" style="background: {{$order->customer_status['color']}}; color: #000000">{{$order->customer_status['name'] }}</span></td>
             </tr>
-            <tr>
-                <td>বিক্রেতা</td>
-                <td>{{$order->vendor ? $order->vendor->name : ''}}</td>
-            </tr>
+            @if (auth()->user()->isAdmin())
             <tr>
                 <td>আইপি এড্রেস</td>
                 <td><span class='badge badge-primary'>{{ $order->ip_address }}<span></td>
@@ -31,17 +28,20 @@
                 <td>এপ ভার্সন</td>
                 <td>{!! $order->app_version ? "<span class='badge badge-success'>$order->app_version</span>" : "<span class='badge badge-warning'>Not Use Bibisena App</span><span class='ml-1 badge-secondary'>$order->user_agent<span>" !!}</td>
             </tr>
+            @endif
         </table>
 
         <div class="text-right mb-2"> 
             @if ($order->isEditable())
-            <button class="btn btn-info mt-1" data-modal-title="Update Vendor" data-url="{{route('orders.vendor.update', request()->route()->parameters())}}" data-toggle="modal" >{{$order->vendor_id ? 'Update Vendor' : 'Add Vendor'}}</a>
+                <button class="btn btn-danger" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'canceled'])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
+                data-subtitle="অর্ডারটি আপনি কি বাতিল করতে চান?" data-button-text="হ্যা, আমি বাতিল করতে চাই!"
+                data-cancel-button-text="বন্ধ করুন">অর্ডারটি বাতিল করুন!</button>
             @endif
         </div>
     </div>
 
 </div>
-
+@if (auth()->user()->isAdmin())
 <div class="orderDetails mb-3">
     <div class="header" style="background: #d35400">
         পণ্য ডেলিভারি তথ্য
@@ -73,4 +73,4 @@
     </div>
 
 </div>
-
+@endif

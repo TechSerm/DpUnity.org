@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
 class OrderItemRequest extends FormRequest
@@ -23,6 +24,7 @@ class OrderItemRequest extends FormRequest
      */
     public function rules()
     {
+        $order = Order::findOrFail(request()->order);
         return [
             'product_id' => 'required',
             'name' => 'required',
@@ -35,6 +37,7 @@ class OrderItemRequest extends FormRequest
             'wholesale_price_total' => 'required|integer|min:0',
             'profit' => 'required|integer|min:0',
             'delivery_fee' => 'required|integer|min:0',
+            'vendor_id' => $order->is_vendor_assign ? 'required|exists:users,id' : ''
         ];
     }
 }

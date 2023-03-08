@@ -177,6 +177,7 @@
         @csrf
         <div class="row">
             @foreach ($products as $product)
+            
                 <div class="col-md-3">
                     <div class="card productPriceCard">
                         <table>
@@ -194,6 +195,7 @@
 
                                         <span class="badge {{$product->status == 'private' ? 'badge-danger' : 'badge-success'}}">{{$product->status}}</span>
                                         
+                                        <span class="badge badge-info">{{$product->vendor->name ?? ''}}</span>
                                         <br />
                                         
                                         <label class="toggle">

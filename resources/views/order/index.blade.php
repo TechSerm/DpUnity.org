@@ -20,14 +20,21 @@
                         <thead>
                             <tr>
                                 <th>অর্ডার নম্বর</th>
-                                <th>নাম</th>
-                                <th>মোবাইল</th>
+                                @if (auth()->user()->isAdmin())
+                                    <th>নাম</th>
+                                    <th>মোবাইল</th>
+                                @endif
+                                
                                 <th>স্টেটাস</th>
+                                <th>সর্বমোট পাইকারি দাম</th>
+
+                                @if (auth()->user()->isAdmin())
                                 <th>পণ্যের দাম </th>
                                 <th>ডেলিভারি ফি</th>
                                 <th>সর্বমোট</th>
-                                <th>সর্বমোট পাইকারি দাম</th>
                                 <th>পণ্যে লাভ</th>
+                                @endif
+                                
                                 <th>অর্ডার করা হয়েছে</th>
                                 <th style="width: 10%"></th>
                             </tr>
@@ -62,15 +69,21 @@
                 columns: [{
                         data: 'id'
                     },
+                    @if (auth()->user()->isAdmin())
                     {
                         data: 'name'
                     },
                     {
                         data: 'phone'
                     },
+                    @endif
                     {
                         data: 'status'
                     },
+                    {
+                        data: 'wholesale_total'
+                    },  
+                    @if (auth()->user()->isAdmin())
                     {
                         data: 'subtotal'
                     },
@@ -81,11 +94,9 @@
                         data: 'total'
                     },
                     {
-                        data: 'wholesale_total'
-                    },  
-                    {
                         data: 'products_profit'
                     },
+                    @endif
                     {
                         data: 'created_at'
                     },

@@ -19,6 +19,7 @@
     </div>
 </div>
 
+
 <div class="mb-3 row">
     <label for="unit" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পণ্যের একক</label>
     <div class="col-sm-{{ $inputWidth }}">
@@ -30,6 +31,18 @@
     </div>
 </div>
 
+@if ($order->is_vendor_assign)
+<div class="mb-3 row">
+    <label for="vendor_id" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">বিক্রেতা</label>
+    <div class="col-sm-{{ $inputWidth }}">
+        {!! Form::select('vendor_id', collect($vendors)->pluck('name', 'id')->toArray(), $item->vendor_id, [
+            'placeholder' => 'Select Unit',
+            'class' => 'form-control ',
+            'id' => 'vendor_id',
+        ]) !!}
+    </div>
+</div>
+@endif
 
 <div class="mb-3 row ">
     <label for="image" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পণ্যের ছবি</label>

@@ -30,7 +30,8 @@ class Product extends Model
         'keyword',
         'delivery_fee',
         'status',
-        'has_stock'
+        'has_stock',
+        'vendor_id'
     ];
 
     protected $casts = [
@@ -55,6 +56,11 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'product_category');
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(User::class, 'vendor_id');
     }
 
     public function cartQuantity()

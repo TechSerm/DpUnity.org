@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Services\Search\SearchService;
+use App\Services\Vendor\VendorService;
 use Illuminate\Http\Request;
 
 class OrderItemController extends Controller
@@ -31,7 +32,7 @@ class OrderItemController extends Controller
             $product->price = bnConvert()->number($product->price, true);
             $product->quantity = bnConvert()->number($product->quantity);
             $product->unit = bnConvert()->unit($product->unit);
-            return $product->only(['id', 'name','image','price', 'quantity', 'unit']);
+            return $product->only(['id', 'name', 'image', 'price', 'quantity', 'unit']);
         });
 
         return $products;
@@ -56,13 +57,13 @@ class OrderItemController extends Controller
     public function store(OrderItemRequest $request, $orderId)
     {
         $order = Order::where(['id' => $orderId])->firstOrFail();
-        if(!$order->isEditable()){
+        if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
         }
         $orderItem = $order->items()->where(['product_id' => $request->product_id])->first();
-        if($orderItem){
+        if ($orderItem) {
             return response()->json([
                 'message' => 'Product already added'
             ], 419);
@@ -85,9 +86,20 @@ class OrderItemController extends Controller
             'wholesale_price_total' => $request->wholesale_price_total,
             'profit' => $request->profit,
             'delivery_fee' => $request->delivery_fee,
+            'vendor_id' => $request->vendor_id
         ]);
 
         $order->updateTotalCalculation();
+
+        $order->updateVendor();
+
+        // activity()
+        // ->performedOn($order)
+        // ->log('New product added');
+
+        if ($order->is_vendor_assign) {
+            $order->updateVendor();
+        }
     }
 
     /**
@@ -104,7 +116,7 @@ class OrderItemController extends Controller
     public function productCreateForm($orderId)
     {
         $order = Order::where(['id' => $orderId])->firstOrFail();
-        if(!$order->isEditable()){
+        if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
@@ -121,8 +133,10 @@ class OrderItemController extends Controller
 
         $product = Product::where(['id' => request()->product_id])->firstOrFail();
         return view('order.show.order_item.create', [
+            'order' => $order,
             'item' => $product,
-            'units' => Constant::UNITS
+            'units' => Constant::UNITS,
+            'vendors' => (new VendorService())->getList()
         ]);
     }
 
@@ -136,7 +150,7 @@ class OrderItemController extends Controller
     {
         $order = Order::where(['id' => $orderId])->firstOrFail();
 
-        if(!$order->isEditable()){
+        if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
@@ -144,8 +158,10 @@ class OrderItemController extends Controller
 
         $orderItem = $order->items()->where(['uuid' => $orderItemId])->firstOrFail();
         return view('order.show.order_item.edit', [
+            'order' => $order,
             'item' => $orderItem,
-            'units' => Constant::UNITS
+            'units' => Constant::UNITS,
+            'vendors' => (new VendorService())->getList()
         ]);
     }
 
@@ -160,7 +176,7 @@ class OrderItemController extends Controller
     {
         $order = Order::where(['id' => $orderId])->firstOrFail();
 
-        if(!$order->isEditable()){
+        if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
@@ -171,6 +187,10 @@ class OrderItemController extends Controller
         $orderItem->update($request->except(['product_id']));
 
         $order->updateTotalCalculation();
+
+        if ($order->is_vendor_assign) {
+            $order->updateVendor();
+        }
     }
 
     /**
@@ -183,7 +203,7 @@ class OrderItemController extends Controller
     {
         $order = Order::where(['id' => $orderId])->firstOrFail();
 
-        if(!$order->isEditable()){
+        if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
@@ -193,5 +213,8 @@ class OrderItemController extends Controller
 
         $orderItem->delete();
         $order->updateTotalCalculation();
+        if ($order->is_vendor_assign) {
+            $order->updateVendor();
+        }
     }
 }

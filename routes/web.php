@@ -17,6 +17,7 @@ use App\Http\Controllers\SearchKeywordController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
+use App\Http\Controllers\VendorPaymentController;
 use Illuminate\Support\Facades\App;
 
 /*
@@ -71,15 +72,17 @@ Route::prefix('admin')->group(function () {
         //order routes
         Route::get('/orders/data', [OrderController::class, 'getData'])->name('orders.data');
         Route::get('/orders/active', [OrderController::class, 'activeOrders']);
-        Route::post('/orders/{order}/change_order_status/{order_status}', [OrderController::class, 'changeOrderStatus'])->name('orders.status.change');
+        Route::post('/orders/{order}/change_order_status/{status}', [OrderController::class, 'changeOrderStatus'])->name('orders.status.change');
         Route::get('/orders/{order}/update_customer_details', [OrderController::class, 'showUpdateCustomer'])->name('orders.customer.update');
         Route::put('/orders/{order}/update_customer_details', [OrderController::class, 'updateCustomer']);
-        Route::prefix('orders/{order}')->group(function () {
+        Route::prefix('orders/{order}')->middleware(['order_show_page_check'])->group(function () {
             Route::get('/update_vendor', [OrderController::class, 'showVendor'])->name('orders.vendor.update');
             Route::put('/update_vendor', [OrderController::class, 'updateVendor']);
             Route::get('/product_select2_data', [OrderItemController::class, 'getProductSelect2Data'])->name('orders.order_items.product_select2_data');
             Route::get('/product_create_form', [OrderItemController::class, 'productCreateForm'])->name('orders.order_items.create_form');
             Route::resource('order_items', OrderItemController::class);
+            Route::get('/assign_product_vendor_list', [OrderController::class, 'assignProductVendorList'])->name('orders.vendor.assign_product_vendor_list');
+            Route::post('/assign_product_vendor_list', [OrderController::class, 'updateAssignProductVendorList']);
         });
 
         Route::get('/orders/{order}/print', [OrderController::class, 'printOrder'])->name('orders.print');
@@ -102,7 +105,12 @@ Route::prefix('admin')->group(function () {
         Route::get('/push_notifications/data', [PushNotificationController::class, 'getData'])->name('push_notifications.data');
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
-    
+        
+        Route::get('/vendor_payment/{vendor_id}/send_payment', [VendorPaymentController::class, 'sendPayment'])->name('vendor_payments.send_payment');
+        Route::post('/vendor_payment/{vendor_id}/send_payment', [VendorPaymentController::class, 'store']);
+        Route::get('/vendor_payment/{vendor_id}/send_pending_payment', [VendorPaymentController::class, 'sendPendingPayment'])->name('vendor_payments.send_pending_payment');
+        Route::post('/vendor_payment/{vendor_id}/confirm', [VendorPaymentController::class, 'paymentConfirm'])->name('vendor_payments.payment_confirm');
+        Route::resource('vendor_payments', VendorPaymentController::class);
         
         Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
 

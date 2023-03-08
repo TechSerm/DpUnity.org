@@ -11,12 +11,14 @@ const FormBuild = {
             resetForm: form.data('reset'),
             pageReload: form.data('page-reload'),
             pageRedirect: form.data('page-redirect'),
+            pageDivLoad: form.data('div-load'),
         };
         let defaultFormSetting = {
             modalClose: true,
             resetForm: true,
             pageReload: true,
             pageRedirect: false,
+            pageDivLoad: false
         };
 
         formSetting = $.extend({}, defaultFormSetting, formSetting);
@@ -29,7 +31,8 @@ const FormBuild = {
                         if (currModal != null) currModal.close();
                     }
                     if (formSetting.pageRedirect == true) Helper.url.load(response.url);
-                    else if (formSetting.pageReload == true) Helper.url.load();
+                    else if (formSetting.pageReload == true) Helper.url.reload();
+                    else if (formSetting.pageDivLoad == true) Helper.url.load();
 
                 }
             }
