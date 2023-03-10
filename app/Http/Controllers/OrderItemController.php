@@ -91,7 +91,6 @@ class OrderItemController extends Controller
 
         $order->updateTotalCalculation();
 
-        $order->updateVendor();
 
         // activity()
         // ->performedOn($order)
@@ -138,6 +137,56 @@ class OrderItemController extends Controller
             'units' => Constant::UNITS,
             'vendors' => (new VendorService())->getList()
         ]);
+    }
+
+
+    public function productTempCreateForm($orderId){
+        $order = Order::where(['id' => $orderId])->firstOrFail();
+        if (!$order->isEditable()) {
+            return response()->json([
+                'message' => 'Invalid Action'
+            ], 401);
+        }
+
+        return view('order.show.order_item.temp_create', [
+            'order' => $order,
+            'item' => [],
+            'units' => Constant::UNITS,
+            'vendors' => (new VendorService())->getList()
+        ]);
+    }
+
+    public function storeProductTemp(OrderItemRequest $request, $orderId)
+    {
+        $order = Order::where(['id' => $orderId])->firstOrFail();
+        if (!$order->isEditable()) {
+            return response()->json([
+                'message' => 'Invalid Action'
+            ], 401);
+        }
+        
+        OrderItem::create([
+            'order_id' => $order->id,
+
+            'name' => $request->name,
+            'unit' => $request->unit,
+            'unit_quantity' => $request->unit_quantity,
+
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+            'wholesale_price' => $request->wholesale_price,
+            'total' => $request->total,
+            'wholesale_price_total' => $request->wholesale_price_total,
+            'profit' => $request->profit,
+            'delivery_fee' => $request->delivery_fee,
+            'vendor_id' => $request->vendor_id
+        ]);
+
+        $order->updateTotalCalculation();
+
+        if ($order->is_vendor_assign) {
+            $order->updateVendor();
+        }
     }
 
     /**

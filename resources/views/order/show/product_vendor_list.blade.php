@@ -32,7 +32,7 @@
                     }
                 </style>
                 <td class="align-middle" style="padding: 5px">
-                    <img src="{{ $item->product->image }}" height="70px" width="70px" alt="">
+                    <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}" height="70px" width="70px" alt="">
                 </td>
                 <td class="align-middle" style="text-align: left">
                     <div class="" style="font-size: 13px;font-weight: bold">
@@ -56,12 +56,12 @@
                 <td class="align-middle" style="text-align: center; width: 150px;">
                     <label for="" style="font-size: 12px;">বিক্রেতা</label>
                     <select name="product_vendor[{{ $item->uuid }}]"
-                        class="custom-select {{ $item->product->vendor_id ? '' : 'is-invalid' }}" style="padding: 2px;"
+                        class="custom-select {{ ((!$item->product) || ($item->product && !$item->product->vendor_id)) ? 'is-invalid' : '' }}" style="padding: 2px;"
                         name="" id="">
                         <option value="">Select Vendor</option>
                         @foreach ($vendors as $vendor)
                             <option value="{{ $vendor->id }}"
-                                {{ $vendor->id == $item->product->vendor_id ? 'selected' : '' }}>{{ $vendor->name }}
+                                {{ $item->product ? ($vendor->id == $item->product->vendor_id ? 'selected' : '') : '' }}>{{ $vendor->name }}
                             </option>
                         @endforeach
                     </select>
