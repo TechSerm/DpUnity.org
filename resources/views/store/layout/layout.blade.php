@@ -6,7 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="turbolinks-cache-control" content="no-cache">
-
+    <link rel="icon" type="image/x-icon" href="{{asset('assets/img/fav.png')}}">
+    <title>বিবিসেনা অনলাইন  শপ </title>
     <link rel="stylesheet" href="{{ mix('css/store.css') }}">
     <style>
         .turbolinks-progress-bar {
