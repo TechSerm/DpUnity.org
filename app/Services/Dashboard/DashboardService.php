@@ -23,14 +23,22 @@ class DashboardService
         ];
     }
 
+    private function getProductQuery(){
+        $query = Product::where([]);
+        if(auth()->user()->isVendor()){
+            $query->where(['vendor_id' => auth()->user()->id]);
+        }
+        return $query;
+    }
+
     public function getTotalProduct()
     {
-        return Product::count();
+        return $this->getProductQuery()->count();
     }
 
     public function getTotalPublishProduct()
     {
-        return Product::where(['status' => 'publish'])->count();
+        return $this->getProductQuery()->where(['status' => 'publish'])->count();
     }
 
     public function getTotalCategory()

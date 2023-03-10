@@ -64,7 +64,7 @@
                 }
             </style>
             <td class="align-middle" style="padding: 5px">
-                <img src="{{ $item->product->image }}" height="70px" width="70px" alt="">
+                <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}" height="70px" width="70px" alt="">
             </td>
             <td class="align-middle">
                 <div class="" style="font-size: 13px;font-weight: bold">

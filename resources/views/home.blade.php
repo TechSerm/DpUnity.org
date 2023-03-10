@@ -37,7 +37,7 @@
                 <div class="col-md-2">
                     <input type="date" id="endDate" value="{{ $endDate->format('Y-m-d') }}" class="form-control mb-1">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" style="{{auth()->user()->isVendor() ? 'display: none' : ''}}">
                     <select name="" class="form-control mb-1" id="vendorSelect">
                         @if(auth()->user()->isAdmin())
                         <option value="">All Vendor</option>
@@ -51,7 +51,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" style="{{auth()->user()->isVendor() ? 'display: none' : ''}}">
                     <select name="" class="form-control mb-1" id="orderTypeSelect">
                         @if(auth()->user()->isAdmin())
                         <option value="total" {{request()->order_type == 'total' ? 'selected' : ''}}>Total</option>
