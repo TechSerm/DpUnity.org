@@ -276,7 +276,7 @@ return [
             'label_color' => 'success',
         ],
         [
-            'text'        => 'বিক্রেতার পেমেন্ট',
+            'text'        => 'বিক্রেতার পাওনা',
             'url'         => '/admin/vendor_payments',
             'icon'        => 'fa fa-credit-card',
             'label_color' => 'success',

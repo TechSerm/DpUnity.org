@@ -80,6 +80,8 @@ Route::prefix('admin')->group(function () {
             Route::put('/update_vendor', [OrderController::class, 'updateVendor']);
             Route::get('/product_select2_data', [OrderItemController::class, 'getProductSelect2Data'])->name('orders.order_items.product_select2_data');
             Route::get('/product_create_form', [OrderItemController::class, 'productCreateForm'])->name('orders.order_items.create_form');
+            Route::get('/product_temp_create_form', [OrderItemController::class, 'productTempCreateForm'])->name('orders.order_items.temp_create_form');
+            Route::post('/product_temp_create_form', [OrderItemController::class, 'storeProductTemp']);
             Route::resource('order_items', OrderItemController::class);
             Route::get('/assign_product_vendor_list', [OrderController::class, 'assignProductVendorList'])->name('orders.vendor.assign_product_vendor_list');
             Route::post('/assign_product_vendor_list', [OrderController::class, 'updateAssignProductVendorList']);

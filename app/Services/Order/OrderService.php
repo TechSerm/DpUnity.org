@@ -29,7 +29,7 @@ class OrderService
             DB::raw("max(delivery_fee) as delivery_fee"),
         ])->first();
 
-        $order->delivery_fee = $orderTotalCalculations->delivery_fee == 0 ? config('bibisena.default_delivery_fee') : $orderTotalCalculations->delivery_fee;
+        $order->delivery_fee = is_null($orderTotalCalculations->delivery_fee) ? config('bibisena.default_delivery_fee') : $orderTotalCalculations->delivery_fee;
         $order->subtotal = $orderTotalCalculations->subtotal;
         $order->wholesale_total = $orderTotalCalculations->wholesale_total;
         $order->products_profit = $orderTotalCalculations->products_profit;

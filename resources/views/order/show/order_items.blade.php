@@ -2,14 +2,21 @@
     $items = $order->items();
     $orderTotal = $order->total;
     
-    if(auth()->user()->isVendor()){
+    if (
+        auth()
+            ->user()
+            ->isVendor()
+    ) {
         $items->where(['vendor_id' => auth()->user()->id])->where(['vendor_id' => auth()->user()->id]);
-        $vendor = $order->vendors()->where(['vendor_id' => auth()->user()->id])->first();
+        $vendor = $order
+            ->vendors()
+            ->where(['vendor_id' => auth()->user()->id])
+            ->first();
         $orderTotal = $vendor->wholesale_total;
     }
-
+    
     $items = $items->orderBy('vendor_id', 'desc')->get();
-            
+    
 @endphp
 
 
@@ -42,8 +49,11 @@
         <div class="float-right">
             @if ($order->isEditable())
                 <a data-toggle="modal" data-modal-size="600" data-modal-header="Add New Product"
+                    href="{{ route('orders.order_items.temp_create_form',request()->route()->parameters()) }}"
+                    class="btn btn-success mb-2"><i class="fas fa-plus"></i> Temporary Add Product</a>
+                <a data-toggle="modal" data-modal-size="600" data-modal-header="Add New Product"
                     href="{{ route('order_items.create',request()->route()->parameters()) }}"
-                    class="btn btn-success mb-2"><i class="fas fa-pencil-alt"></i> Add Product</a>
+                    class="btn btn-success mb-2"><i class="fas fa-plus"></i> Add Product</a>
             @endif
         </div>
         <div class="orderPcVersion">
@@ -53,13 +63,13 @@
                     <th>পণ্যের ছবি</th>
                     <th style="text-align: left">পণ্য</th>
                     @if (auth()->user()->isAdmin())
-                    <th>লাভ</th>
+                        <th>লাভ</th>
                     @endif
                     <th>মূল্য</th>
                     <th>পরিমান</th>
                     <th>সর্বমোট মূল্য</th>
                 </tr>
-                
+
                 @foreach ($items as $key => $item)
                     @php
                         $product = $item->product;
@@ -69,11 +79,21 @@
                                 ->parameters(),
                             ['order_item' => $item->uuid],
                         );
-                        $price = auth()->user()->isVendor() ? $item->wholesale_price : $item->price;
-                        $total = auth()->user()->isVendor() ? $item->wholesale_price_total : $item->total;
+                        $price = auth()
+                            ->user()
+                            ->isVendor()
+                            ? $item->wholesale_price
+                            : $item->price;
+                        $total = auth()
+                            ->user()
+                            ->isVendor()
+                            ? $item->wholesale_price_total
+                            : $item->total;
                         
                     @endphp
-                    {{-- @if ($order->is_vendor_assign && $needVendorAdd && auth()->user()->isAdmin())
+                    {{-- @if ($order->is_vendor_assign &&
+    $needVendorAdd &&
+    auth()->user()->isAdmin())
                     <tr style="background: {{$item->vendor->color}}; color: #ffffff; ">
                         <td style="text-align: left"colspan="6">{{$item->vendor->name}}</td>
                       </tr>  
@@ -81,30 +101,32 @@
                     <tr>
                         <td style="width: 30px">{{ bnConvert()->number($key + 1) }}</td>
                         <td style="width: 80px">
-                            <img src="{{ $item->product ? $item->product->image : '' }}" height="70px" width="70px" alt="">
+                            <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}" height="70px" width="70px"
+                                alt="">
                         </td>
                         <td style="text-align: left">
                             <div class="" style="font-size: 13px;font-weight: bold">
                                 @if ($item->product)
-                                    
-                                <a data-toggle="modal" data-modal-size="md"
-                                    data-modal-header="Product #{{ $item->product_id }}"
-                                    href="{{ route('products.show', ['product' => $item->product_id]) }}">
+                                    <a data-toggle="modal" data-modal-size="md"
+                                        data-modal-header="Product #{{ $item->product_id }}"
+                                        href="{{ route('products.show', ['product' => $item->product_id]) }}">
                                 @endif
-                                    {{ $item->name }}
+                                {{ $item->name }}
                                 @if ($item->product)
-                                </a>
+                                    </a>
                                 @endif
                             </div>
                             <div style="font-size: 11px;font-weight: bold; color: #767575">
                                 {{ bnConvert()->number($item->unit_quantity, false) }}
-                                {{ bnConvert()->unit($item->unit) }} 
-                                @if ($item->vendor && auth()->user()->isAdmin())
-                                <br/> <span class="badge"
+                                {{ bnConvert()->unit($item->unit) }}
+                                @if (
+                                    $item->vendor &&
+                                        auth()->user()->isAdmin())
+                                    <br /> <span class="badge"
                                         style="background-color: {{ $item->vendor->color }}; color: #ffffff">{{ $item->vendor->name }}</span>
                                 @endif
                             </div>
-                                
+
                             <div style="margin-top: 2px;">
                                 @if ($order->isEditable())
                                     <a data-toggle="modal" data-modal-header="Update Order Item #{{ $key + 1 }}"
@@ -118,7 +140,7 @@
                             </div>
                         </td>
                         @if (auth()->user()->isAdmin())
-                        <td style="width: 100px"><b>{{ bnConvert()->number($item->profit) }}</b> ৳</td>
+                            <td style="width: 100px"><b>{{ bnConvert()->number($item->profit) }}</b> ৳</td>
                         @endif
                         <td style="width: 100px"><b>{{ bnConvert()->number($price) }}</b> ৳</td>
                         <td style="width: 100px">
@@ -128,27 +150,29 @@
                     </tr>
                 @endforeach
                 @if (auth()->user()->isAdmin())
-                <tr>
-                    <td colspan="3" style="text-align: right; background-color: #f5f5f5">পণ্যের মূল্য:</td>
-                    <td colspan="{{auth()->user()->isAdmin() ? 4 : 3}}" style="background: #eeeeee"><b>{{ bnConvert()->number($order->subtotal) }}</b>
-                        টাকা </td>
-                </tr>
-                <tr>
-                    <td colspan="3" style="text-align: right; background-color: #f5f5f5">ডেলিভারি ফী:</td>
-                    <td colspan="{{auth()->user()->isAdmin() ? 4 : 3}}" style="background: #eeeeee">
-                        <b>{{ bnConvert()->number($order->delivery_fee) }}</b> টাকা
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3" style="text-align: right; background-color: #f5f5f5">লাভ:</td>
-                    <td colspan="{{auth()->user()->isAdmin() ? 4 : 3}}" style="background: #eeeeee">
-                        <b>{{ bnConvert()->number($order->products_profit) }}</b> টাকা
-                    </td>
-                </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: right; background-color: #f5f5f5">পণ্যের মূল্য:</td>
+                        <td colspan="{{ auth()->user()->isAdmin()? 4: 3 }}" style="background: #eeeeee">
+                            <b>{{ bnConvert()->number($order->subtotal) }}</b>
+                            টাকা </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: right; background-color: #f5f5f5">ডেলিভারি ফী:</td>
+                        <td colspan="{{ auth()->user()->isAdmin()? 4: 3 }}" style="background: #eeeeee">
+                            <b>{{ bnConvert()->number($order->delivery_fee) }}</b> টাকা
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: right; background-color: #f5f5f5">লাভ:</td>
+                        <td colspan="{{ auth()->user()->isAdmin()? 4: 3 }}" style="background: #eeeeee">
+                            <b>{{ bnConvert()->number($order->products_profit) }}</b> টাকা
+                        </td>
+                    </tr>
                 @endif
                 <tr>
                     <td colspan="3" style="text-align: right; background-color: #f5f5f5">সর্বমোট:</td>
-                    <td colspan="{{auth()->user()->isAdmin() ? 4 : 3}}" style="background: #eeeeee"><b>{{ bnConvert()->number($orderTotal) }}</b> টাকা
+                    <td colspan="{{ auth()->user()->isAdmin()? 4: 3 }}" style="background: #eeeeee">
+                        <b>{{ bnConvert()->number($orderTotal) }}</b> টাকা
                     </td>
                 </tr>
 
@@ -212,9 +236,24 @@
                                 ->parameters(),
                             ['order_item' => $item->uuid],
                         );
-                        $price = auth()->user()->isVendor() ? $item->wholesale_price : $item->price;
-                        $total = auth()->user()->isVendor() ? $item->wholesale_price_total : $item->total;
-                        if(auth()->user()->isVendor() && $item->vendor_id != auth()->user()->id)continue;
+                        $price = auth()
+                            ->user()
+                            ->isVendor()
+                            ? $item->wholesale_price
+                            : $item->price;
+                        $total = auth()
+                            ->user()
+                            ->isVendor()
+                            ? $item->wholesale_price_total
+                            : $item->total;
+                        if (
+                            auth()
+                                ->user()
+                                ->isVendor() &&
+                            $item->vendor_id != auth()->user()->id
+                        ) {
+                            continue;
+                        }
                     @endphp
                     <tr class="cartTr">
                         <style>
@@ -232,12 +271,15 @@
                             }
                         </style>
                         <td class="align-middle" style="padding: 5px">
-                            <img src="{{ $item->product ? $item->product->image : '' }}" height="70px" width="70px" alt="">
+                            <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}" height="70px" width="70px"
+                                alt="">
                         </td>
                         <td class="align-middle" style="text-align: left">
                             <div class="" style="font-size: 13px;font-weight: bold">
                                 {{ $item->name }}
-                                @if ($item->vendor && auth()->user()->isAdmin())
+                                @if (
+                                    $item->vendor &&
+                                        auth()->user()->isAdmin())
                                     <br /> <span class="badge"
                                         style="background-color: {{ $item->vendor->color }}; color: #ffffff">{{ $item->vendor->name }}</span>
                                 @endif
@@ -275,16 +317,20 @@
             <div class="orderTotalArea">
                 <table class="orderTotalTable">
                     @if (auth()->user()->isAdmin())
+                        <tr class="orderSummeryTableTotalTr">
+                            <td colspan="2"><span>পণ্যের মূল্য:</span>
+                            </td>
+                            <td>৳ <b>{{ bnConvert()->number($order->subtotal) }}</b></td>
+                        </tr>
+                        <tr class="orderSummeryTableTotalTr">
+                            <td colspan="2">ডেলিভারি ফী:</td>
+                            <td>৳ <b>{{ bnConvert()->number($order->delivery_fee) }}</b></td>
+                        </tr>
+                        <tr class="orderSummeryTableTotalTr">
+                            <td colspan="2">লাভ:</td>
+                            <td>৳ <b>{{ bnConvert()->number($order->products_profit) }}</b></td>
+                        </tr>
                         
-                    <tr class="orderSummeryTableTotalTr">
-                        <td colspan="2"><span>পণ্যের মূল্য:</span>
-                        </td>
-                        <td>৳ <b>{{ bnConvert()->number($order->subtotal) }}</b></td>
-                    </tr>
-                    <tr class="orderSummeryTableTotalTr">
-                        <td colspan="2">ডেলিভারি ফী:</td>
-                        <td>৳ <b>{{ bnConvert()->number($order->delivery_fee) }}</b></td>
-                    </tr>
                     @endif
                     <tr class="orderSummeryTableTotalTr">
                         <td colspan="2"><span class="badge" style="font-size: 14px">সর্বমোট:</span></td>

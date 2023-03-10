@@ -15,7 +15,22 @@
 
 
     <div class="row">
+        @if (auth()->user()->isVendor() && count($vendors) == 0 && count($vendorPayments))
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header" style=""><b>{{auth()->user()->name}}</b></div>
+                    <div style="" class="dashboardReportSubArea">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <x-adminlte-small-box title="সুখবর" text="আপনার সবগুলো অর্ডার এর টাকা পরিশুধ করা হয়েছে" icon="fas fa-check"
+                                    theme="success" />
 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
         @foreach ($vendors as $vendor)
             <div class="col-md-6">
                 <div class="card">
@@ -63,7 +78,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            
+
             $(document).on('change', '#vendorPaymentCheckboxAll', function(e) {
                 $('tbody tr td input[type="checkbox"]').prop('checked', $(this).prop('checked'));
                 calculateSelectedOrder();
@@ -99,7 +114,5 @@
 
 
         });
-
-        
     </script>
 @endpush
