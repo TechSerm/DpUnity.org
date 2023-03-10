@@ -4,12 +4,14 @@
 
 @endphp
 
+@if ($item && !isset($item->order_id))
 <div class="mb-3 row ">
     <label for="product_id" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পণ্যের আইডি</label>
     <div class="col-sm-{{ $inputWidth }}">
         {!! Form::text('product_id', $item->product ? $item->product_id : $item->id, ['class' => 'form-control ', 'id' => 'name', 'readonly'=> 'true']) !!}
     </div>
 </div>
+@endif
 
 <div class="mb-3 row ">
     <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পণ্যের নাম</label>
