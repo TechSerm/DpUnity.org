@@ -17,6 +17,7 @@ use App\Http\Controllers\SearchKeywordController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
+use App\Http\Controllers\TemporaryProductController;
 use App\Http\Controllers\VendorPaymentController;
 use Illuminate\Support\Facades\App;
 
@@ -57,6 +58,12 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware(['auth','device_token_check','check_push_notification_click'])->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('admin.home');
+
+        //temporary products routes
+        Route::get('/temporary_products/data', [TemporaryProductController::class, 'getData'])->name('temporary_products.data');
+        Route::get('/temporary_products/{temporary_product}/confirm', [TemporaryProductController::class, 'showConfirm'])->name('temporary_products.confirm');
+        Route::post('/temporary_products/{temporary_product}/confirm', [TemporaryProductController::class, 'confirm']);
+        Route::resource('temporary_products', TemporaryProductController::class);
 
         //product routes
         Route::get('/products/data', [ProductController::class, 'getData'])->name('products.data');

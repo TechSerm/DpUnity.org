@@ -141,6 +141,7 @@ class CategoryController extends Controller
     {
         $this->authorize('categories.delete');
         $category = Category::findOrFail($id);
+        $category->imageSrv()->delete();
         $category->delete();
     }
 }
