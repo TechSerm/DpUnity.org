@@ -70,7 +70,6 @@ const Search = {
 };
 
 $(window).keyup('#search', Search.delay(function() {
-    $("#product-list").html("working " + $("#search").val());
     Search.setSearchQuery($("#search").val());
     Search.loadInitPage();
 }, 500));
