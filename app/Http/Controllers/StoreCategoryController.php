@@ -20,7 +20,7 @@ class StoreCategoryController extends Controller
         $category = Category::findOrFail(request()->category);
 
         return view('store.category.show', [
-            'products' => $category->products()->with('imageTable')->where(['status' => 'publish'])->get(),
+            'products' => $category->products()->with('imageTable')->where(['status' => 'publish'])->orderBy('has_stock', 'desc')->get(),
             'category' => $category
         ]);
     }
