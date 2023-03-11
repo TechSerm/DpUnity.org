@@ -25,7 +25,7 @@ class OrderItemController extends Controller
 
     public function getProductSelect2Data()
     {
-
+        if(request()->q == "")return [];
         $products = SearchService::getSearchProduct(request()->q)->get();
 
         $products = $products->map(function ($product) {

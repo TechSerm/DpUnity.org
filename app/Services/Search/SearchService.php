@@ -38,7 +38,7 @@ class SearchService
         }
 
         return $words;
-    }
+    } 
 
     public static function getSearchKeyword($searchValue){
         
@@ -62,6 +62,7 @@ class SearchService
     }
 
     public static function getSearchProduct($searchValue){
+        if($searchValue == "")return [];
         $searchValue = strtolower($searchValue);
         $suggestionWords = self::getSearchKeyword($searchValue);
        // dd($suggestionWords);
