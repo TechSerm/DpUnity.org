@@ -164,7 +164,9 @@ class ProductController extends Controller
         $product->categories()->sync($request->categories);
         $product->keyWordUpdate();
 
-        return back()->with('success', 'Product create successfully!');
+        return response()->json([
+            'message' => 'Product Successfully Created'
+        ]);;
     }
 
 
@@ -233,6 +235,7 @@ class ProductController extends Controller
     {
         $this->authorize('products.delete');
         $product = Product::findOrFail($id);
+        $product->imageSrv()->delete();
         $product->delete();
     }
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content_header')
-    <h1>Products List</h1>
+    <h1>প্রোডাক্ট রিকোয়েস্ট</h1>
 @stop
 @section('content')
 
@@ -18,11 +18,9 @@
                     </style>
                     <div class="row">
                         <div class="align-self-end ml-auto mb-4">
-                            @can('products.create')
-                            <button class="btn btn-primary " data-url="{{ route('products.create') }}"
+                            <button class="btn btn-primary " data-url="{{ route('temporary_products.create') }}"
                                 data-modal-title="Create Product" data-modal-size="650" data-toggle="modal">Create
                                 Product</button>
-                            @endcan
                         </div>
                     </div>
                     <table class="table table-bordered table-responsive-md" style="width: 100%" id="myTable">
@@ -35,8 +33,9 @@
                                 <th>পাইকারি মূল্য</th>
                                 <th>বাজার দর</th>
                                 @if (auth()->user()->isAdmin())
-                                <th>লাভ</th>
+                                    <th>লাভ</th>
                                 @endif
+                                <th>বাজার দর</th>
                                 <th style="width: 10%">Action</th>
                             </tr>
                         </thead>
@@ -76,21 +75,22 @@
                     {
                         data: 'name'
                     },
-                    
+                    {
+                        data: 'vendor'
+                    },
+
                     {
                         data: 'wholesale_price'
                     },
                     {
                         data: 'market_sale_price'
                     },
-                    
+
                     @if (auth()->user()->isAdmin())
-                    {
-                        data: 'profit'
-                    },
-                    
-                    @endif
-                    {
+                        {
+                            data: 'profit'
+                        },
+                    @endif {
                         data: 'updated_at'
                     },
                     {
@@ -128,39 +128,18 @@
             });
         }
 
-
-        $(document).on('keyup', '#wholesale_price, #profit', function(e) {
-            calculateProductPrice();
-        });
-
-        $(document).on('keyup', '#image', function(e) {
-            $("#image-preview").attr("src", $("#image").val());
-        });
-
-        function calculateProductPrice() {
-            let wholesalePrice = $("#wholesale_price").val();
-            let profit = $("#profit").val();
-            wholesalePrice = wholesalePrice ? parseInt(wholesalePrice) : 0;
-            profit = profit ? parseInt(profit) : 0;
-            let price = wholesalePrice + profit;
-            $("#price").val(price);
+        function confirmProduct(e) {
+            let form = Helper.form(e);
+            form.submit({
+                success: {
+                    'callback': function(response) {
+                        $('#myTable').DataTable().ajax.reload(null, false);
+                        Helper.currentModal().load("/admin/products/"+response.product_id);
+                    }
+                }
+            });
         }
 
-        $('#categories').select2({
-
-            placeholder: 'Select an Categories',
-            allowClear: true,
-            minimumInputLength: 1,
-            ajax: {
-                url: "{{ route('categories.select2_data') }}",
-                dataType: 'json',
-                delay: 250,
-                processResults: function(response) {
-                    return response.results;
-                },
-                cache: true
-            }
-        });
 
         function previewFile(event) {
 

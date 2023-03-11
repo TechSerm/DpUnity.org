@@ -61,6 +61,8 @@ Route::prefix('admin')->group(function () {
 
         //temporary products routes
         Route::get('/temporary_products/data', [TemporaryProductController::class, 'getData'])->name('temporary_products.data');
+        Route::get('/temporary_products/{temporary_product}/confirm', [TemporaryProductController::class, 'showConfirm'])->name('temporary_products.confirm');
+        Route::post('/temporary_products/{temporary_product}/confirm', [TemporaryProductController::class, 'confirm']);
         Route::resource('temporary_products', TemporaryProductController::class);
 
         //product routes

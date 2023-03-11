@@ -250,6 +250,12 @@ return [
             'can' => 'products.index'
         ],
         [
+            'text'        => 'প্রোডাক্ট রিকোয়েস্ট',
+            'url'         => '/admin/temporary_products',
+            'icon'        => 'fas fa-egg',
+            'label_color' => 'success',
+        ],
+        [
             'text'        => 'পণ্যের দাম আপডেট',
             'url'         => '/admin/product_price',
             'icon'        => 'fas fa-egg',
