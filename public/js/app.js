@@ -3567,6 +3567,12 @@ $(document).on('hide.bs.modal', '.modal', function (response) {
   setTimeout(function () {
     $('#modal-area').children().last().remove();
     Helper.modalStack.pop();
+
+    if ($('.modal:visible').length) {
+      setTimeout(function () {
+        $('body').addClass('modal-open');
+      }, 100);
+    }
   }, 300);
 });
 $(document).on('show.bs.modal', '.modal', function (event) {
