@@ -40,7 +40,7 @@ class OrderNotificationService
     public function vendor($message, $orderVendor)
     {
         $body = $this->getVendorNotification($message, $orderVendor);
-        $tokens = OrderFacade::getManagerDeviceToken([$orderVendor->vendor_id]);
+        $tokens = OrderFacade::getVendorDeviceToken([$orderVendor->vendor_id]);
         $this->notify($tokens, $body);
     }
 
