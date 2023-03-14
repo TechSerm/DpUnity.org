@@ -6,7 +6,7 @@
             color: #ffffff;
             margin-top: 10px;
             margin-left: -26px;
-            background-color: #16a085;
+            background-color: #c0392b;
             width: 82px;
             transform: rotate(310deg);
             font-size: 12px;
