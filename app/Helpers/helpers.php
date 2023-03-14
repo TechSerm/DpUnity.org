@@ -31,3 +31,16 @@ if (!function_exists('deviceInfo')) {
         return new DeviceInfo();
     }
 }
+
+if (!function_exists('getProductDiscount')) {
+    function getProductDiscountIncValue($price)
+    {
+        $incDiv = ceil($price / 100);
+        if($price < 100)return $incDiv;
+        if ($price % 5 != 0) return $incDiv;
+        $divFiv = ceil($incDiv / 5);
+        $amount = $divFiv * 5;
+        if($divFiv > 600)return 10;
+        return $divFiv * 5;
+    }
+}

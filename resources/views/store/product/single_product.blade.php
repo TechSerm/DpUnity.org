@@ -22,7 +22,7 @@
 
     @php
         $hasStock = $product->has_stock;
-        $incMarketSalePrice = 5;
+        $incMarketSalePrice = getProductDiscountIncValue($product->market_sale_price);
     @endphp
 
     <div class="">
@@ -32,7 +32,7 @@
             @if ($product->price < $product->market_sale_price)
                 <span class="discountLebel">৳ <b>{{bnConvert()->number($product->market_sale_price - $product->price + $incMarketSalePrice)}}</b> ছাড়</span>
             @endif
-            
+
             @if (!$isShowPage && $hasStock)
                 <span href="#" wire:click="increment" class="">
             @endif
