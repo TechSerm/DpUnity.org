@@ -22,7 +22,7 @@
 
     @php
         $hasStock = $product->has_stock;
-        $incMarketSalePrice = 7;
+        $incMarketSalePrice = 5;
     @endphp
 
     <div class="">
