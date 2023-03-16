@@ -75,7 +75,7 @@ class ProductController extends Controller
                 return $this->addPriceLabel($model->market_sale_price);
             })
             ->editColumn('delivery_fee', function ($model) {
-                return $this->addPriceLabel($model->delivery_fee == '' ? 19 : $model->delivery_fee);
+                return $this->addPriceLabel($model->delivery_fee == '' ? config('bibisena.default_delivery_fee') : $model->delivery_fee);
             })
             ->editColumn('price', function ($model) {
                 return $this->addPriceLabel($model->price);
