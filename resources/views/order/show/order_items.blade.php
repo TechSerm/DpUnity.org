@@ -19,7 +19,24 @@
     
 @endphp
 
+@if (auth()->user()->isAdmin())
+<textarea name="" id="" cols="30" rows="10">
+{{$order->id}}
+{{$order->name}}
+{{$order->address}}
+{{$order->phone}}
+----------
+@foreach ($items as $item)
+-[{{$item->name}}-{{ $item->vendor ? $item->vendor->name : '' }} - {{ bnConvert()->number($item->unit_quantity, false) }} {{ bnConvert()->unit($item->unit) }} - {{ bnConvert()->number($item->price)}} -  {{ bnConvert()->number($item->quantity) }} - {{ bnConvert()->number($item->total)}}]
+@endforeach
 
+পণ্যের মূল্য:{{ bnConvert()->number($order->subtotal) }}
+ডেলিভারি ফী:{{ bnConvert()->number($order->delivery_fee) }}
+সর্বমোট: {{ bnConvert()->number($orderTotal) }}
+
+</textarea>    
+
+@endif
 
 <style>
     .orderPcVersion {

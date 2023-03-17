@@ -11,6 +11,11 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
+                    @include('product.filter')
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
                     <style>
                         .table>tbody>tr>td,
                         th {
@@ -18,15 +23,6 @@
                             text-align: center
                         }
                     </style>
-                    <div class="row">
-                        <div class="align-self-end ml-auto mb-4">
-                            @can('products.create')
-                            <button class="btn btn-primary " data-url="{{ route('products.create') }}"
-                                data-modal-title="Create Product" data-modal-size="650" data-toggle="modal">Create
-                                Product</button>
-                            @endcan
-                        </div>
-                    </div>
                     <table class="table table-bordered table-responsive-md" style="width: 100%" id="myTable">
                         <thead>
                             <tr>
@@ -34,14 +30,17 @@
                                 <th>পণ্যের ছবি</th>
                                 <th>পণ্যের নাম</th>
                                 <th>ক্যাটাগরি</th>
+                                @if (auth()->user()->isAdmin())
+                                    <th>দোকান</th>
+                                @endif
                                 <th>স্টক</th>
                                 <th>অবস্থা</th>
                                 <th>পাইকারি মূল্য</th>
                                 <th>বাজার দর</th>
                                 <th>ডেলিভারি ফী</th>
                                 @if (auth()->user()->isAdmin())
-                                <th>লাভ</th>
-                                <th>বিবিসিনা মূল্য</th>
+                                    <th>লাভ</th>
+                                    <th>বিবিসিনা মূল্য</th>
                                 @endif
                                 <th>Last Update</th>
                                 <th style="width: 10%">Action</th>
@@ -59,66 +58,77 @@
             localStorage.clear();
         }
 
-        $(document).ready(function() {
-            // DataTable
-            $('#myTable').DataTable({
-                processing: true,
-                serverSide: true,
-                bStateSave: true,
-                "aaSorting": [],
-                idSrc: "id",
-                "fnStateSave": function(oSettings, oData) {
-                    Helper.storage.setItem('productDataTables', JSON.stringify(oData));
+
+        var productDatatable = $('#myTable').DataTable({
+            processing: true,
+            serverSide: true,
+            bStateSave: true,
+            "aaSorting": [],
+            idSrc: "id",
+            "fnStateSave": function(oSettings, oData) {
+                Helper.storage.setItem('productDataTables', JSON.stringify(oData));
+            },
+            "fnStateLoad": function(oSettings) {
+                return JSON.parse(Helper.storage.getItem('productDataTables'));
+            },
+            ajax: {
+                url: "{{ route('products.data') }}",
+                data: function(d) {
+                    d.product_id = $('#product_id').val();
+
+                }
+            },
+            columns: [{
+                    data: 'id'
                 },
-                "fnStateLoad": function(oSettings) {
-                    return JSON.parse(Helper.storage.getItem('productDataTables'));
+                {
+                    data: 'image'
                 },
-                ajax: "{{ route('products.data') }}",
-                columns: [{
-                        data: 'id'
-                    },
+                {
+                    data: 'name'
+                },
+                {
+                    data: 'categories'
+                },
+                @if (auth()->user()->isAdmin())
                     {
-                        data: 'image'
+                        data: 'vendor_id'
                     },
-                    {
-                        data: 'name'
-                    },
-                    {
-                        data: 'categories'
-                    },
-                    {
-                        data: 'has_stock'
-                    },
-                    {
-                        data: 'status'
-                    },
-                    {
-                        data: 'wholesale_price'
-                    },
-                    {
-                        data: 'market_sale_price'
-                    },
-                    {
-                        data: 'delivery_fee'
-                    },
-                    @if (auth()->user()->isAdmin())
+                @endif {
+                    data: 'has_stock'
+                },
+                {
+                    data: 'status'
+                },
+                {
+                    data: 'wholesale_price'
+                },
+                {
+                    data: 'market_sale_price'
+                },
+                {
+                    data: 'delivery_fee'
+                },
+                @if (auth()->user()->isAdmin())
                     {
                         data: 'profit'
-                    },
-                    {
+                    }, {
                         data: 'price'
                     },
-                    @endif
-                    {
-                        data: 'updated_at'
-                    },
-                    {
-                        data: 'action'
-                    },
-                ]
-            });
-
+                @endif {
+                    data: 'updated_at'
+                },
+                {
+                    data: 'action'
+                },
+            ]
         });
+
+
+
+        function productTableFilter() {
+            productDatatable.draw();
+        }
 
         function createProduct(e) {
             let form = Helper.form(e);

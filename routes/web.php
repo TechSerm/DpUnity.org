@@ -66,6 +66,7 @@ Route::prefix('admin')->group(function () {
         Route::resource('temporary_products', TemporaryProductController::class);
 
         //product routes
+        Route::get('/products/offer', [ProductController::class, 'offer'])->name('products.offer');
         Route::get('/products/data', [ProductController::class, 'getData'])->name('products.data');
         Route::get('/products/{product}/history', [ProductController::class, 'history'])->name('products.history');
         Route::get('/products/{product}/sync', [ProductController::class, 'sync'])->name('products.sync');

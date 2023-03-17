@@ -195,7 +195,9 @@
 
                                         <span class="badge {{$product->status == 'private' ? 'badge-danger' : 'badge-success'}}">{{$product->status}}</span>
                                         
-                                        <span class="badge badge-info">{{$product->vendor->name ?? ''}}</span>
+                                        @if (auth()->user()->isAdmin())
+                                            <span class="badge badge-info">{{$product->vendor->name ?? ''}}</span>
+                                        @endif
                                         <br />
                                         
                                         <label class="toggle">

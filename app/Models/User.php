@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->role_name == 'super_admin';
     }
+
+    public function isCashier()
+    {
+        return $this->role_name == 'cashier';
+    }
 }

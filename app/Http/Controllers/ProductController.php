@@ -35,13 +35,22 @@ class ProductController extends Controller
         ]);
     }
 
+    public function offer()
+    {
+        return view('product.offer');
+    }
+
     public function getData(Request $request)
     {
         $this->authorize('products.index');
-        $productQuery = Product::with(['imageTable','vendor']);
+        $productQuery = Product::with(['imageTable', 'vendor']);
 
         if (auth()->user()->isVendor()) {
             $productQuery = $productQuery->where(['vendor_id' => auth()->user()->id]);
+        }
+
+        if (isset($request->product_id) && $request->product_id) {
+            $productQuery->where(['id' => $request->product_id]);
         }
 
         if (isset($request->search) && is_array($request->search) && $request->search['value'] != '') {
@@ -86,9 +95,12 @@ class ProductController extends Controller
             ->editColumn('updated_at', function ($model) {
                 return bnConvert()->date($model->updated_at->diffForHumans());
             })
+            ->editColumn('vendor_id', function ($model) {
+                return $model->vendor ? "<span class='badge' style='color: #ffffff;background-color: {$model->vendor->color}'>" . $model->vendor->name . '</span>' : '';
+            })
             ->editColumn('has_stock', function ($model) {
                 $statusColor = $model->has_stock ? 'primary' : 'warning';
-                return ($model->vendor ? $model->vendor->name : '') . "<span class = 'badge badge-{$statusColor}'>" . ($model->has_stock ? '<i class="fa fa-check"></i> আছে' : '<i class="fa fa-times"></i> নেই') . "</span>";
+                return "<span class = 'badge badge-{$statusColor}'>" . ($model->has_stock ? '<i class="fa fa-check"></i> আছে' : '<i class="fa fa-times"></i> নেই') . "</span>";
             })
             ->editColumn('status', function ($model) {
                 $statusColor = $model->status == 'private' ? 'danger' : 'success';
@@ -257,7 +269,7 @@ class ProductController extends Controller
             $productQuery = Product::with(['imageTable']);
         }
 
-        if(auth()->user()->isVendor()){
+        if (auth()->user()->isVendor()) {
             $productQuery->where(['vendor_id' => auth()->user()->id]);
         }
 

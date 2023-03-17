@@ -260,7 +260,7 @@ return [
             'url'         => '/admin/product_price',
             'icon'        => 'fas fa-egg',
             'label_color' => 'success',
-            'can' => 'products.index'
+            'can' => 'products_price.index'
         ],
         [
             'text'        => 'ক্যাটেগরি',
