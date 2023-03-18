@@ -20,6 +20,7 @@
                         <thead>
                             <tr>
                                 <th>অর্ডার নম্বর</th>
+                                @if (!auth()->user()->isCashier())
                                 @if (auth()->user()->isAdmin())
                                     <th>নাম</th>
                                     <th>মোবাইল</th>
@@ -36,6 +37,7 @@
                                 @endif
                                 
                                 <th>অর্ডার করা হয়েছে</th>
+                                @endif
                                 <th style="width: 10%"></th>
                             </tr>
                         </thead>
@@ -69,6 +71,7 @@
                 columns: [{
                         data: 'id'
                     },
+                    @if (!auth()->user()->isCashier())
                     @if (auth()->user()->isAdmin())
                     {
                         data: 'name'
@@ -100,6 +103,7 @@
                     {
                         data: 'created_at'
                     },
+                    @endif
                     {
                         data: 'action'
                     },

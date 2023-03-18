@@ -1,80 +1,100 @@
 <link rel="stylesheet" href="http://127.0.0.1:8000/vendor/adminlte/dist/css/adminlte.min.css">
 <style>
     .productArea {
-       padding: 5px;
-       width: 70%;
-       margin-left: 150px;
-       border: 1px solid #f5f5f5;
+        padding: 5px;
+        width: 70%;
+        margin-left: 150px;
+        border: 1px solid #f5f5f5;
     }
 
     .productAreaMiddle {}
 
     .productBox {
         background: #FDD4DA;
-        height: 200px;
+        height: 300px;
         width: 100%;
         text-align: center;
+        margin-top: 5px;
+        vertical-align: middle;
+        overflow: hidden;
     }
 
-    .discountLabel {
-        position: absolute;
-        background: red;
-        color: #ffffff;
-        border: 1px solid green;
-        padding: 30px;
-        border-radius: 100%;
-        font-size: 20px;
+    .productImg {
+        height: 150px;
+        width: 150px;
     }
-    .banner{
-        height: 220px;
+
+    .priceBody{
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    .discountLebel {
+        position: absolute;
+        text-align: center;
+        color: #ffffff;
+        margin-top: 10px;
+        margin-left: -26px;
+        background-color: #c0392b;
+        width: 82px;
+        transform: rotate(310deg);
+        font-size: 12px;
+        padding: 3px 0px 3px 3px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .priceLabel {
+        background: #EF6F6C;
+        border-radius: 100%;
+        position: absolute;
+        top: 70%;
+        height: 70px;
+        width: 70px;
+        vertical-align: middle;
+    }
+
+    .banner {
+        height: 630px;
         width: 100%;
-        border-radius: 0px 0px 15px 15px;
+        
+        background: #F46F2E;
     }
 </style>
 
 <div class="productArea">
-
-
-
     <div class="row">
         <div class="col-md-3">
-            <div class="productBox">
-                দেশী পেঁয়াজ
-                ১ কেজি<br />
-                <img src="https://www.bibisena.com/images/IG4X1sugqU045zwXgUnPm7KDDFmXiO1ArI58s7I1.jpg"
-                    style="width: 70px" alt="">
-                <div class="discountLabel">
-                    185
+            <div class="row">
+                <div class="col-md-12">
+                    @include('product.offer_products')
+                </div>
+                <div class="col-md-12">
+                    @include('product.offer_products')
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <img class="banner" src="https://img.freepik.com/free-vector/islamic-style-ramadan-kareem-eid-decorative-banner_1017-31082.jpg" alt="">
+            <div class="banner">
+                <img style="width: 50px; height: 70px" src="https://www.pngkey.com/png/full/160-1605477_mosque-chandelier-png-lantern-ramadan-png.png" alt="">
+            </div>
         </div>
         <div class="col-md-3">
-            <div class="productBox">
-                দেশী পেঁয়াজ
-                ১ কেজি
-                <img src="https://www.bibisena.com/images/IG4X1sugqU045zwXgUnPm7KDDFmXiO1ArI58s7I1.jpg"
-                    style="width: 70px" alt="">
-                <div class="discountLabel">
-                    185
+            <div class="row">
+                <div class="col-md-12">
+                    @include('product.offer_products')
+                </div>
+                <div class="col-md-12">
+                    @include('product.offer_products')
                 </div>
             </div>
         </div>
-        @for ($i=1; $i<=5; $i++)
-        <div class="col-md-3">
-            <div class="productBox">
-                দেশী পেঁয়াজ
-                ১ কেজি
-                <img src="https://www.bibisena.com/images/IG4X1sugqU045zwXgUnPm7KDDFmXiO1ArI58s7I1.jpg"
-                    style="width: 70px" alt="">
-                <div class="discountLabel">
-                    185
-                </div>
+        @for ($i = 1; $i <= 8; $i++)
+            <div class="col-md-3">
+                @include('product.offer_products')
             </div>
-        </div>
         @endfor
+
     </div>
 </div>
 

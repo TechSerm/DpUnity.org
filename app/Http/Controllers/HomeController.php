@@ -47,7 +47,8 @@ class HomeController extends Controller
 
     private function setStartEndDate()
     {
-        request()->start_date = request()->start_date ?? Carbon::now()->startOfMonth();
+        $startOfDate = auth()->user()->isCashier() ? Carbon::now()->today() : Carbon::now()->startOfMonth();
+        request()->start_date = request()->start_date ?? $startOfDate;
         request()->end_date = request()->end_date ?? Carbon::now();
     }
 

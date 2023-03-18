@@ -46,6 +46,7 @@
                 $orderTotal = $vendors[0]->wholesale_total;
             }
         @endphp
+        @if (!auth()->user()->isCashier())
             @foreach ($vendors as $vendor)
             @php
                 if (!$vendor->is_pack_complete) {
@@ -89,7 +90,7 @@
                 </td>
             </tr>
             @endforeach
-            
+            @endif
 
             <tr>
                 <td style="text-align: right; max-width: 400px">

@@ -64,13 +64,13 @@
                     @include('order.show.order_items', ['order', $order])
                 </div>
             </div>
-
+            @if (auth()->user()->isAdmin() || auth()->user()->isVendor())
             <div class="cardd">
                 <div class="card-bodyy">
                     @include('order.show.vendors', ['order', $order])
                 </div>
             </div>
-
+            @endif
             {{-- <div class="cardd">
                 <div class="card-bodyt">
                     @include('order.show.notes', ['order', $order])

@@ -48,7 +48,7 @@ class OrderService
 
     public function getManagerDeviceToken()
     {
-        $users = User::whereIn('id', [1, 2, 4])->whereNotNull('device_token')->get()->pluck(['device_token'])->toArray();
+        $users = User::whereIn('id', [1, 4, 8])->whereNotNull('device_token')->get()->pluck(['device_token'])->toArray();
         return $users;
     }
 

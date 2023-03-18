@@ -35,6 +35,7 @@ class OrderController extends Controller
 
     public function activeOrders()
     {
+        $this->authorize('active_orders.index');
         $orders = Order::where(['is_cancelled' => false]);
         if (auth()->user()->isVendor()) {
             $orders->leftJoin('order_vendors', 'orders.id', '=', 'order_vendors.order_id');

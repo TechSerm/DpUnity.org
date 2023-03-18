@@ -235,7 +235,7 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-        
+
         [
             'text'        => 'ড্যাশবোর্ড',
             'url'         => '/admin',
@@ -274,6 +274,7 @@ return [
             'url'         => '/admin/orders/active',
             'icon'        => 'fas fa-paperclip',
             'label_color' => 'success',
+            'can' => 'active_orders.index'
         ],
         [
             'text'        => 'অর্ডার সমুখ',
@@ -286,6 +287,7 @@ return [
             'url'         => '/admin/vendor_payments',
             'icon'        => 'fa fa-credit-card',
             'label_color' => 'success',
+            'can' => 'vendor_payment.index'
         ],
         [
             'text'        => 'Search Keywords',

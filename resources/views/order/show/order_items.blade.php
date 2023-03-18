@@ -166,7 +166,7 @@
                         <td style="width: 100px"><b>{{ bnConvert()->number($total) }}</b> ৳</td>
                     </tr>
                 @endforeach
-                @if (auth()->user()->isAdmin())
+                @if (!auth()->user()->isVendor())
                     <tr>
                         <td colspan="3" style="text-align: right; background-color: #f5f5f5">পণ্যের মূল্য:</td>
                         <td colspan="{{ auth()->user()->isAdmin()? 4: 3 }}" style="background: #eeeeee">
@@ -333,7 +333,7 @@
 
             <div class="orderTotalArea">
                 <table class="orderTotalTable">
-                    @if (auth()->user()->isAdmin())
+                    @if (!auth()->user()->isVendor())
                         <tr class="orderSummeryTableTotalTr">
                             <td colspan="2"><span>পণ্যের মূল্য:</span>
                             </td>

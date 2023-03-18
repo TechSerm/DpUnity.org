@@ -10,11 +10,13 @@
                 <td class="infoTd" style="width: 150px;">অর্ডার নাম্বার </td>
                 <td style="font-weight: bold; font-size: 16px;">{{ $order->id }}</td>
             </tr>
+            @if (auth()->user()->isAdmin())
             <tr>
                 <td>অর্ডারটি করা হয়েছে</td>
                 <td>{{ bnConvert()->date($order->created_at->format('d M Y, h:i a')) }}
                     ({{ bnConvert()->date($order->created_at->diffForHumans()) }})</td>
             </tr>
+            @endif
             <tr>
                 <td>অর্ডারটির বর্তমান অবস্থা</td>
                 <td><span class="badge" style="background: {{$order->customer_status['color']}}; color: #000000">{{$order->customer_status['name'] }}</span></td>

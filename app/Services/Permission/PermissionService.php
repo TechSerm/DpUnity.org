@@ -18,6 +18,8 @@ class PermissionService
 
             //dashboard
             'dashboard.profit' => ['admin'],
+            'dashboard.profit.all_status' => ['admin', 'vendor'],
+            'dashboard.profit.cashier' => ['admin','cashier'],
             
             //products
             'products.index' => ['admin', 'vendor','cashier'],
@@ -36,6 +38,9 @@ class PermissionService
             'categories.edit' => ['admin'],
             'categories.history' => ['admin'],
             'categories.delete' => ['super_admin'],
+
+            'active_orders.index' => ['admin','vendor'],
+            'vendor_payment.index' => ['admin','vendor'],
 
         ];
 
