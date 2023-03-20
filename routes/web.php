@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountTransactionController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -94,6 +95,13 @@ Route::prefix('admin')->group(function () {
             Route::get('/assign_product_vendor_list', [OrderController::class, 'assignProductVendorList'])->name('orders.vendor.assign_product_vendor_list');
             Route::post('/assign_product_vendor_list', [OrderController::class, 'updateAssignProductVendorList']);
         });
+
+        Route::get('/account_transaction', [AccountTransactionController::class, 'index'])->name('account_transaction.index');
+        Route::get('/account_transaction/diposite', [AccountTransactionController::class, 'dipositeCreate'])->name('account_transaction.diposite');
+        Route::post('/account_transaction/diposite', [AccountTransactionController::class, 'dipositeStore']);
+
+        Route::get('/account_transaction/withdraw', [AccountTransactionController::class, 'withdrawCreate'])->name('account_transaction.withdraw');
+        Route::post('/account_transaction/withdraw', [AccountTransactionController::class, 'withdrawStore']);
 
         Route::get('/orders/{order}/print', [OrderController::class, 'printOrder'])->name('orders.print');
         Route::resource('orders', OrderController::class);

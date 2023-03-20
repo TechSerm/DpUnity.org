@@ -290,6 +290,34 @@ return [
             'can' => 'vendor_payment.index'
         ],
         [
+            'text'        => 'একাউন্ট হিসাব',
+            'url'         => 'admin/account_transaction',
+            'icon'        => 'fa fa-credit-card',
+            'label_color' => 'success',
+            'can' => 'vendor_payment.index',
+            'submenu' => [
+                [
+                    'text'    => 'ড্যাশবোর্ড',
+                    'shift'   => 'ml-3',
+                    'url'         => 'admin/account_transaction',
+                    'icon'        => 'fa fa-credit-card',
+                ],
+                [
+                    'text'    => 'জমা',
+                    'shift'   => 'ml-3',
+                    'url'         => '/admin/diposites',
+                    'icon'        => 'fa fa-credit-card',
+                ],
+                [
+                    'text'    => 'তোলা',
+                    'shift'   => 'ml-3',
+                    'url'         => '/admin/withdraw',
+                    'icon'        => 'fa fa-credit-card',
+                ],
+            ],
+
+        ],
+        [
             'text'        => 'Search Keywords',
             'url'         => '/admin/search-keywords',
             'icon'        => 'fas fa-search',
