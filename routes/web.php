@@ -12,6 +12,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomePageProductController;
 use App\Http\Controllers\NotificationDeviceController;
 use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\OrderProfitDipositeController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SearchKeywordController;
@@ -102,6 +103,10 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/account_transaction/withdraw', [AccountTransactionController::class, 'withdrawCreate'])->name('account_transaction.withdraw');
         Route::post('/account_transaction/withdraw', [AccountTransactionController::class, 'withdrawStore']);
+
+        //order profit diposite
+        Route::post('/order_profit_diposites/{order_profit_diposite}/confirm', [OrderProfitDipositeController::class, 'confirm'])->name('order_profit_diposites.confirm');
+        Route::resource('order_profit_diposites', OrderProfitDipositeController::class);
 
         Route::get('/orders/{order}/print', [OrderController::class, 'printOrder'])->name('orders.print');
         Route::resource('orders', OrderController::class);

@@ -43,4 +43,9 @@ class VendorPaymentService
 
         return collect($orderVendorData);
     }
+
+    public function notPaidVendorAmount()
+    {
+        return $this->getAllVendorData()->sum('not_send');
+    }
 }

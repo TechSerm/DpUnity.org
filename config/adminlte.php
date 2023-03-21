@@ -297,19 +297,19 @@ return [
             'can' => 'vendor_payment.index',
             'submenu' => [
                 [
-                    'text'    => 'ড্যাশবোর্ড',
+                    'text'    => 'একাউন্ট ড্যাশবোর্ড',
                     'shift'   => 'ml-3',
                     'url'         => 'admin/account_transaction',
                     'icon'        => 'fa fa-credit-card',
                 ],
                 [
-                    'text'    => 'জমা',
+                    'text'    => 'জমাকৃত লাভ',
                     'shift'   => 'ml-3',
-                    'url'         => '/admin/diposites',
+                    'url'         => '/admin/order_profit_diposites',
                     'icon'        => 'fa fa-credit-card',
                 ],
                 [
-                    'text'    => 'তোলা',
+                    'text'    => 'ডেলিভারি খরচ',
                     'shift'   => 'ml-3',
                     'url'         => '/admin/withdraw',
                     'icon'        => 'fa fa-credit-card',

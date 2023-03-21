@@ -9,7 +9,7 @@ class WithdrawService
     public function create($title, $amount, $note = null)
     {
         $accountTransaction = new AccountTransaction();
-        if (!$accountTransaction->isPossibleWithdraw($amount)) return [];
+        if (!$accountTransaction->isPossibleWithdraw($amount) || $amount < 0) return [];
 
         $accountTransaction = AccountTransaction::create([
             'type' => 'withdraw',

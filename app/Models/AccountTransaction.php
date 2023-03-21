@@ -48,4 +48,9 @@ class AccountTransaction extends Model
     {
         return $this->totalBalance() >= $amount;
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

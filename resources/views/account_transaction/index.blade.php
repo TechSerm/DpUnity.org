@@ -59,11 +59,14 @@
                         <td><span
                                 class="badge {{ $transaction->type == 'diposite' ? 'badge-success' : 'badge-danger' }}">{{ $transaction->type }}</span>
                         </td>
-                        <td>{{ $transaction->title }}</td>
-                        <td>{{ $transaction->amount }}</td>
+                        <td><span
+                            class="badge {{ $transaction->title == 'manual' ? 'badge-warning' : 'badge-primary' }}">{{ $transaction->title }}</span></td>
+                        <td><b>{{ bnConvert()->number($transaction->amount) }}</b> টাকা</td>
                         <td>{{ $transaction->note }}</td>
-                        <td>{{ $transaction->user_id }}</td>
-                        <td>{{ $transaction->created_at }}</td>
+                        <td><span class="badge badge-secondary">{{ $transaction->user->name }}</span></td>
+                        <td><span
+                            title="{{ $transaction->created_at->format('d M Y H:i:s') }}">{{ bnConvert()->date($transaction->created_at->diffForHumans()) }}</span>
+                    </td>
                     </tr>
                 @endforeach
             </table>
