@@ -28,6 +28,7 @@ class OrderProfitDipositeController extends Controller
 
     public function index()
     {
+        $this->authorize('order_profit_diposites.index');
         $orderQuery = Order::whereNull('order_profit_diposite_id')->where(['is_delivery_complete' => true]);
 
         $totalDipositeableProfit = $orderQuery->sum('total_profit');
@@ -47,6 +48,7 @@ class OrderProfitDipositeController extends Controller
 
     public function create()
     {
+        $this->authorize('order_profit_diposites.index');
         $orders = Order::whereNull('order_profit_diposite_id')->where(['is_delivery_complete' => true])->get();
 
         return view('order_profit_diposite.create', [
@@ -56,6 +58,7 @@ class OrderProfitDipositeController extends Controller
 
     public function store(OrderProfitDipositeRequest $request)
     {
+        $this->authorize('order_profit_diposites.index');
         $orders = Order::whereIn('uuid', array_keys($request->OrderProfitPaymentCheckbox))->where(['order_profit_diposite_id' => null])->get();
         if (empty($orders)) {
             return response()->json([
@@ -87,31 +90,33 @@ class OrderProfitDipositeController extends Controller
         if (!empty($tokens)) {
             PushNotificationFacade::sendNotification($tokens, [
                 'title' => "লাভ যুক্ত করা হয়েছে",
-                'body' => "লাভ যুক্ত করা হয়েছে",
+                'body' => $this->getOrderProfitNotificationBody($orderProfitDiposite),
                 "url" => route('order_profit_diposites.index'),
             ]);
         }
     }
 
-    public function show($dipositeId){
+    public function show($dipositeId)
+    {
         $orderProfitDiposite = OrderProfitDiposite::where(['uuid' => $dipositeId])->firstOrFail();
 
-        return view('order_profit_diposite.show' , [
+        return view('order_profit_diposite.show', [
             'diposite' => $orderProfitDiposite
         ]);
     }
-    
 
-    public function confirm($dipositeId){
+
+    public function confirm($dipositeId)
+    {
         $orderProfitDiposite = OrderProfitDiposite::where(['uuid' => $dipositeId])->firstOrFail();
 
-        if($orderProfitDiposite->total_amount >= 0){
-            $transaction = $this->dipositeService->create("order_profit", $orderProfitDiposite->total_amount);
+        if ($orderProfitDiposite->total_amount >= 0) {
+            $transaction = $this->dipositeService->create("order_profit", $orderProfitDiposite->total_amount, '', $orderProfitDiposite->user_id);
         } else {
-            $transaction = $this->withdrawService->create("order_loss", $orderProfitDiposite->total_amount * (-1));
+            $transaction = $this->withdrawService->create("order_loss", $orderProfitDiposite->total_amount * (-1), '', $orderProfitDiposite->user_id);
         }
 
-        if(empty($transaction)){
+        if (empty($transaction)) {
             return response()->json([
                 'Invalid Transaction'
             ], 419);
@@ -119,10 +124,10 @@ class OrderProfitDipositeController extends Controller
 
         $orderProfitDiposite->update([
             'is_approved' => true,
-            'account_transaction_id' => $transaction->id 
+            'account_transaction_id' => $transaction->id
         ]);
 
-        return view('order_profit_diposite.show' , [
+        return view('order_profit_diposite.show', [
             'diposite' => $orderProfitDiposite
         ]);
     }
@@ -150,5 +155,12 @@ class OrderProfitDipositeController extends Controller
         ]);
     }
 
-    
+    private function getOrderProfitNotificationBody($orderProfitDiposite)
+    {
+        $body = "🔖 আইডি : " . bnConvert()->number($orderProfitDiposite->id);
+        $body .= "\n🛒 সর্বমোট অর্ডার: " . bnConvert()->number($orderProfitDiposite->total_orders);
+        $body .= "\n💵 সর্বমোট: ৳ " . bnConvert()->number($orderProfitDiposite->total_amount);
+        $body .= "\n⏰ সময় : " . bnConvert()->date($orderProfitDiposite->created_at->format('d M Y, h:i a'));
+        return $body;
+    }
 }

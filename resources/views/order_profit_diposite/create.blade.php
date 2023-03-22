@@ -6,9 +6,9 @@
 
                 <th scope="col"><input type="checkbox" name="" id="vendorPaymentCheckboxAll"></th>
                 <th scope="col">অর্ডার নম্বর</th>
+                <th scope="col">সর্বমোট</th>
                 <th scope="col">পণ্যে লাভ</th>
                 <th scope="col">ডেলিভারি ফি</th>
-                <th scope="col">সর্বমোট</th>
                 <th scope="col">অর্ডারটি করা হয়েছে</th>
             </tr>
         </thead>
@@ -19,11 +19,10 @@
                     <td><input type="checkbox" data-total="{{ $order->total_profit }}" class="OrderProfitPaymentCheckbox"
                             name="OrderProfitPaymentCheckbox[{{ $order->uuid }}]" id=""></td>
                     <th scope="row">{{ bnConvert()->number($order->id) }}</th>
+                    <td><b>{{ bnConvert()->number($order->total_profit) }}</b> টাকা</td>
                     <td>{{ bnConvert()->number($order->products_profit) }} টাকা</td>
                     <td>{{ bnConvert()->number($order->delivery_fee) }} টাকা</td>
-                    <td><b>{{ bnConvert()->number($order->total_profit) }}</b> টাকা</td>
-                    <td><span
-                            title='{{ $order->created_at }}'>{{ bnConvert()->date($order->created_at->diffForHumans()) }}</span>
+                    <td><span title='{{ $order->created_at }}'>{{ bnConvert()->date($order->created_at->diffForHumans()) }}</span>
                     </td>
                 </tr>
             @endforeach
@@ -40,11 +39,8 @@
                 <div class="inner">
                     <h3><span id="totalSelectedAmount">{{ bnConvert()->number(0) }}</span> টাকা (<span
                             id="totalSelected">{{ bnConvert()->number(0) }}</span>)</h3>
-
                     <h5>সর্বমোট সিলেক্ট করা হয়েছে</h5>
                 </div>
-
-
                 <div class="icon">
                     <i class="fas fa-check"></i>
                 </div>
@@ -66,7 +62,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="mb-3 row">
         <label for="categories" class="col-sm-3 col-form-label form-control-label" for="image">নোট</label>

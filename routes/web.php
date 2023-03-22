@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DeliveryTransportCostController;
 use App\Http\Controllers\HomePageProductController;
 use App\Http\Controllers\NotificationDeviceController;
 use App\Http\Controllers\OrderItemController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
 use App\Http\Controllers\TemporaryProductController;
 use App\Http\Controllers\VendorPaymentController;
+use App\Models\DeliveryTransportCost;
 use Illuminate\Support\Facades\App;
 
 /*
@@ -110,6 +112,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/orders/{order}/print', [OrderController::class, 'printOrder'])->name('orders.print');
         Route::resource('orders', OrderController::class);
+
+        Route::resource('delivery_transport_costs', DeliveryTransportCostController::class);
 
         Route::get('/product_name_suggestions', [ProductController::class, 'getSuggestionsProductName'])->name('product.name_suggestions');
         

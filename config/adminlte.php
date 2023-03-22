@@ -243,24 +243,35 @@ return [
             'label_color' => 'success',
         ],
         [
-            'text'        => 'পণ্যের তালিকা',
+            'text'        => 'পণ্য',
             'url'         => '/admin/products',
             'icon'        => 'fas fa-egg',
             'label_color' => 'success',
-            'can' => 'products.index'
-        ],
-        [
-            'text'        => 'প্রোডাক্ট রিকোয়েস্ট',
-            'url'         => '/admin/temporary_products',
-            'icon'        => 'fas fa-egg',
-            'label_color' => 'success',
-        ],
-        [
-            'text'        => 'পণ্যের দাম আপডেট',
-            'url'         => '/admin/product_price',
-            'icon'        => 'fas fa-egg',
-            'label_color' => 'success',
-            'can' => 'products_price.index'
+            'can' => 'products.index',
+            'submenu' => [
+                [
+                    'text'    => 'পণ্যের তালিকা',
+                    'shift'   => 'ml-3',
+                    'url'         => '/admin/products',
+                    'icon'        => 'fas fa-egg',
+                ],
+                [
+                    'text'        => 'পেন্ডিং পণ্য',
+                    'url'         => '/admin/temporary_products',
+                    'icon'        => 'fas fa-egg',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+
+                ],
+                [
+                    'text'    => 'পণ্যের দাম পরিবর্তন',
+                    'shift'   => 'ml-3',
+                    'url'         => '/admin/product_price',
+                    'icon'        => 'fa fa-credit-card',
+                    'label_color' => 'success',
+                    'can' => 'products_price.index'
+                ],
+            ],
         ],
         [
             'text'        => 'ক্যাটেগরি',
@@ -270,17 +281,26 @@ return [
             'can' => 'categories.index'
         ],
         [
-            'text'        => 'চলমান অর্ডার সমুখ',
-            'url'         => '/admin/orders/active',
-            'icon'        => 'fas fa-paperclip',
+            'text'        => 'অর্ডার',
+            'icon'        => 'fas fa-list',
             'label_color' => 'success',
-            'can' => 'active_orders.index'
-        ],
-        [
-            'text'        => 'অর্ডার সমুখ',
-            'url'         => '/admin/orders',
-            'icon'        => 'fas fa-paperclip',
-            'label_color' => 'success',
+            'submenu' => [
+                [
+                    'text'    => 'চলমান অর্ডার সমুখ',
+                    'shift'   => 'ml-3',
+                    'url'         => '/admin/orders/active',
+                    'icon'        => 'fas fa-list',
+                    'can' => 'active_orders.index',
+                ],
+                [
+                    'text'        => 'সবগুলো অর্ডার',
+                    'url'         => '/admin/orders',
+                    'icon'        => 'fas fa-list',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+
+                ],
+            ],
         ],
         [
             'text'        => 'বিক্রেতার পাওনা',
@@ -294,7 +314,7 @@ return [
             'url'         => 'admin/account_transaction',
             'icon'        => 'fa fa-credit-card',
             'label_color' => 'success',
-            'can' => 'vendor_payment.index',
+            'can' => 'account.index',
             'submenu' => [
                 [
                     'text'    => 'একাউন্ট ড্যাশবোর্ড',
@@ -311,7 +331,7 @@ return [
                 [
                     'text'    => 'ডেলিভারি খরচ',
                     'shift'   => 'ml-3',
-                    'url'         => '/admin/withdraw',
+                    'url'         => '/admin/delivery_transport_costs',
                     'icon'        => 'fa fa-credit-card',
                 ],
             ],

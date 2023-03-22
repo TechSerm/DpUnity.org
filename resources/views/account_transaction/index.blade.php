@@ -45,13 +45,13 @@
             @endif
             <table class="table table-bordered" style="text-align: center">
                 <tr>
-                    <td>#</td>
-                    <td>Type</td>
-                    <td>Title</td>
-                    <td>Amount</td>
-                    <td>Note</td>
-                    <td>Added By</td>
-                    <td>Created At</td>
+                    <td><b>#</b></td>
+                    <td><b>টাইপ</b></td>
+                    <td><b>টাইটেল</b></td>
+                    <td><b>টাকার পরিমান</b></td>
+                    <td><b>নোট</b></td>
+                    <td><b>যুক্ত করেছে</b></td>
+                    <td><b>যুক্ত করা হয়েছে</b></td>
                 </tr>
                 @foreach ($transactions as $transaction)
                     <tr>
@@ -70,6 +70,9 @@
                     </tr>
                 @endforeach
             </table>
+            <div style="text-align: center">
+                {{$transactions->links()}}
+            </div>
         </div>
     </div>
 

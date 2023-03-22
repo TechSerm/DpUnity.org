@@ -80,7 +80,7 @@
         </tr>
     </table>
 </div>
-@if (!$diposite->is_approved)
+@if (!$diposite->is_approved && auth()->user()->isAdmin())
     <div class="float-right">
         <button data-toggle="confirm" data-title="আপনি কি নিশ্চিত?" data-subtitle="পেমেন্টটি গ্রহণ করতে চান?"
             data-button-text="হ্যা, গ্রহণ করতে চাই!" data-cancel-button-text="বন্ধ করুন"

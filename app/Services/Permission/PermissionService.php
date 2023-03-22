@@ -19,7 +19,7 @@ class PermissionService
             //dashboard
             'dashboard.profit' => ['admin'],
             'dashboard.profit.all_status' => ['admin', 'vendor'],
-            'dashboard.profit.cashier' => ['admin','cashier'],
+            'dashboard.profit.cashier' => ['admin', 'cashier'],
             
             //products
             'products.index' => ['admin', 'vendor','cashier'],
@@ -41,6 +41,10 @@ class PermissionService
 
             'active_orders.index' => ['admin','vendor'],
             'vendor_payment.index' => ['admin','vendor'],
+
+            'account.index' => ['admin', 'cashier'],
+            'order_profit_diposites.index' => ['admin', 'cashier'],
+            'delivery_transport_costs.index' => ['admin', 'cashier'],
 
         ];
 

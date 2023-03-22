@@ -6,7 +6,7 @@ use App\Models\AccountTransaction;
 
 class WithdrawService
 {
-    public function create($title, $amount, $note = null)
+    public function create($title, $amount, $note = null, $userId = null)
     {
         $accountTransaction = new AccountTransaction();
         if (!$accountTransaction->isPossibleWithdraw($amount) || $amount < 0) return [];
@@ -17,7 +17,7 @@ class WithdrawService
             'amount' => $amount,
             'note' => $note,
             'is_approved' => true,
-            'user_id' => auth()->user()->id
+            'user_id' => is_null($userId) ? auth()->user()->id : $userId 
         ]);
 
         return $accountTransaction;

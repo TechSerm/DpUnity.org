@@ -22,7 +22,7 @@ class AccountTransactionController extends Controller
 
     public function index()
     {
-        // $this->dipositeService->create("manual", 10);
+        $this->authorize('account.index');
         $transactions = AccountTransaction::orderBy('id', 'desc')->paginate(20);
         $accountTransaction = new AccountTransaction();
         return view('account_transaction.index', [

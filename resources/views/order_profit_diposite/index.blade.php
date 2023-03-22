@@ -21,25 +21,28 @@
                         title="{{ bnConvert()->number($totalDipositeableProfit) }} টাকা ({{ bnConvert()->number($countDipositeableProfit) }})"
                         text="ক্যাশে জমা দেয়া বাকি আছে" icon="fa fa-credit-card" theme="danger" />
                 </div>
+                @if (auth()->user()->isAdmin())
                 <div class="col-md-6 col-sm-6">
                     <x-adminlte-small-box title="{{ bnConvert()->number($totalDeliveryManHas) }} টাকা"
                         text="ডেলিভারি ম্যান এর কাছে আছে (বিক্রেতার টাকা + লাভ)" icon="fa fa-credit-card" theme="warning" />
                 </div>
+                @endif
             </div>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header" style=""><b>পেমেন্ট টেবিল</b></div>
-        <div style="" class="dashboardReportSubArea">
-            <div class="row">
-                <div class="align-self-end ml-auto mb-4">
-                    <button class="btn btn-success" data-modal-title='লাভ ক্যাশে জমা দিন' data-modal-size="md" data-toggle='modal'
-                        data-url="{{ route('order_profit_diposites.create') }}">লাভ ক্যাশে জমা দিন</button>
+        <div style="" class="card-body dashboardReportSubArea">
+            <div class="row  mb-4">
+                <div class="align-self-end ml-auto">
+                    <button class="btn btn-success" data-modal-title='লাভ ক্যাশে জমা দিন' data-modal-size="md"
+                        data-toggle='modal' data-url="{{ route('order_profit_diposites.create') }}">লাভ ক্যাশে জমা
+                        দিন</button>
                 </div>
             </div>
-            @include('order_profit_diposite.diposite_profit_table')
 
+            @include('order_profit_diposite.diposite_profit_table')
         </div>
     </div>
 @stop
