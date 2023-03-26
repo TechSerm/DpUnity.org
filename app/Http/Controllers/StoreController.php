@@ -19,11 +19,14 @@ class StoreController extends Controller
         $activeOrders = OrderFacade::userOrder()->activeOrToday();
         $ramadanCategory = Category::find(env('RAMADAN_CATEGORY_ID'));
         $ramadanCategoryProducts = $ramadanCategory ? $ramadanCategory->products : [];
+        $iftarCategory = Category::find(env('IFTAR_CATEGORY_ID'));
+        $iftarCategoryProducts = $iftarCategory ? $iftarCategory->products : [];
         return view('store.home.index', [
             'products' => $products,
             'categories' => Category::with('imageTable')->get(),
             'activeOrders' => $activeOrders,
-            'ramadanCategoryProducts' => $ramadanCategoryProducts
+            'ramadanCategoryProducts' => $ramadanCategoryProducts,
+            'iftarCategoryProducts' => $iftarCategoryProducts
         ]);
     }
 
