@@ -32,6 +32,9 @@
             ইফতারের বাজার
         </div>
         <div class="home-list-body" style="margin-right: -19px;margin-left: -10px;">
+            <div class="card-header  mb-3" style="background: #e67e22; color: #ffffff">
+                ইফতার সামগ্রী অর্ডার করলে আপনাকে অবশ্যই বিকাল ৫ টার মধ্যে অর্ডার করতে হবে।  বিকাল ৫ টার পর অর্ডার করলে আপনার অর্ডারটি পরের দিন দেয়া হবে। 
+            </div>
             <div class="row no-gutters" style="">
                 @include('store.product.single_product_page', ['products' => $iftarCategoryProducts])
             </div>
