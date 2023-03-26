@@ -63,6 +63,7 @@
         অর্ডারকৃত পণ্য
     </div>
     <div class="body">
+        @can('order.items.add')
         <div class="float-right">
             @if ($order->isEditable())
                 <a data-toggle="modal" data-modal-size="600" data-modal-header="Add New Product"
@@ -73,15 +74,16 @@
                     class="btn btn-success mb-2"><i class="fas fa-plus"></i> Add Product</a>
             @endif
         </div>
+        @endcan
         <div class="orderPcVersion">
             <table class="table table-bordered">
                 <tr>
                     <th>#</th>
                     <th>পণ্যের ছবি</th>
                     <th style="text-align: left">পণ্য</th>
-                    @if (auth()->user()->isAdmin())
+                    @can('order.items.profit_column')
                         <th>লাভ</th>
-                    @endif
+                    @endcan
                     <th>মূল্য</th>
                     <th>পরিমান</th>
                     <th>সর্বমোট মূল্য</th>
@@ -138,13 +140,14 @@
                                 {{ bnConvert()->unit($item->unit) }}
                                 @if (
                                     $item->vendor &&
-                                        auth()->user()->isAdmin())
+                                        auth()->user()->can('order.items.vendor_name'))
                                     <br /> <span class="badge"
                                         style="background-color: {{ $item->vendor->color }}; color: #ffffff">{{ $item->vendor->name }}</span>
                                 @endif
                             </div>
-
+                            @can('order.items.edit')
                             <div style="margin-top: 2px;">
+                                
                                 @if ($order->isEditable())
                                     <a data-toggle="modal" data-modal-header="Update Order Item #{{ $key + 1 }}"
                                         href="{{ route('order_items.edit', $attr) }}" style="padding: 2px 4px 2px 4px;"
@@ -155,10 +158,11 @@
                                             class="fas fa-trash"></i></button>
                                 @endif
                             </div>
+                            @endcan
                         </td>
-                        @if (auth()->user()->isAdmin())
+                        @can('order.items.profit_column')
                             <td style="width: 100px"><b>{{ bnConvert()->number($item->profit) }}</b> ৳</td>
-                        @endif
+                        @endcan
                         <td style="width: 100px"><b>{{ bnConvert()->number($price) }}</b> ৳</td>
                         <td style="width: 100px">
                             <span class="mb-1"><b> {{ bnConvert()->number($item->quantity) }} </b></span>
@@ -169,26 +173,26 @@
                 @if (!auth()->user()->isVendor())
                     <tr>
                         <td colspan="3" style="text-align: right; background-color: #f5f5f5">পণ্যের মূল্য:</td>
-                        <td colspan="{{ auth()->user()->isAdmin()? 4: 3 }}" style="background: #eeeeee">
+                        <td colspan="{{ auth()->user()->can('order.items.profit_column') ? 4: 3 }}" style="background: #eeeeee">
                             <b>{{ bnConvert()->number($order->subtotal) }}</b>
                             টাকা </td>
                     </tr>
                     <tr>
                         <td colspan="3" style="text-align: right; background-color: #f5f5f5">ডেলিভারি ফী:</td>
-                        <td colspan="{{ auth()->user()->isAdmin()? 4: 3 }}" style="background: #eeeeee">
+                        <td colspan="{{ auth()->user()->can('order.items.profit_column') ? 4: 3 }}" style="background: #eeeeee">
                             <b>{{ bnConvert()->number($order->delivery_fee) }}</b> টাকা
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3" style="text-align: right; background-color: #f5f5f5">লাভ:</td>
-                        <td colspan="{{ auth()->user()->isAdmin()? 4: 3 }}" style="background: #eeeeee">
+                        <td colspan="{{ auth()->user()->can('order.items.profit_column') ? 4: 3 }}" style="background: #eeeeee">
                             <b>{{ bnConvert()->number($order->products_profit) }}</b> টাকা
                         </td>
                     </tr>
                 @endif
                 <tr>
                     <td colspan="3" style="text-align: right; background-color: #f5f5f5">সর্বমোট:</td>
-                    <td colspan="{{ auth()->user()->isAdmin()? 4: 3 }}" style="background: #eeeeee">
+                    <td colspan="{{ auth()->user()->can('order.items.profit_column') ? 4: 3 }}" style="background: #eeeeee">
                         <b>{{ bnConvert()->number($orderTotal) }}</b> টাকা
                     </td>
                 </tr>

@@ -100,7 +100,7 @@ class Order extends Model
 
     public function isEditable()
     {
-        return !($this->is_delivery_complete == true || $this->is_cancelled || auth()->user()->isVendor());
+        return !($this->is_delivery_complete == true || $this->is_cancelled);
     }
 
     public function vendor()

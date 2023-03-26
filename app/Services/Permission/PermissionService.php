@@ -14,41 +14,9 @@ class PermissionService
 
     private function dashboardPermission()
     {
-        $permissions = [
-
-            //dashboard
-            'dashboard.profit' => ['admin'],
-            'dashboard.profit.all_status' => ['admin', 'vendor'],
-            'dashboard.profit.cashier' => ['admin', 'cashier'],
-            
-            //products
-            'products.index' => ['admin', 'vendor','cashier'],
-            'products.create' => ['admin'],
-            'products.edit' => ['admin', 'vendor'],
-            'products.show' => ['admin', 'vendor'],
-            'products.history' => ['admin'],
-            'products.delete' => ['super_admin'],
-
-
-            'products_price.index' => ['admin', 'vendor'],
-
-            //categories
-            'categories.index' => ['admin'],
-            'categories.create' => ['admin'],
-            'categories.edit' => ['admin'],
-            'categories.history' => ['admin'],
-            'categories.delete' => ['super_admin'],
-
-            'active_orders.index' => ['admin','vendor'],
-            'vendor_payment.index' => ['admin','vendor'],
-
-            'account.index' => ['admin', 'cashier'],
-            'order_profit_diposites.index' => ['admin', 'cashier'],
-            'delivery_transport_costs.index' => ['admin', 'cashier'],
-
-        ];
-
-        $this->defineGate($permissions);
+        $permissions = config('bsenapermission');
+        $this->buildPermissionArray($permissions);
+        $this->defineGate($this->permissionList);
     }
 
 
@@ -56,13 +24,37 @@ class PermissionService
     {
         foreach ($permissions as $permissionName => $roles) {
             Gate::define($permissionName, function ($user) use ($roles) {
-                $isAdmin = in_array("admin", $roles) ? $user->isAdmin() : false;
-                $isSuperAdmin = in_array("super_admin", $roles) ? $user->isSuperAdmin() : false;
-                $vendor = in_array("vendor", $roles) ? $user->isVendor() : false;
-                $cashier = in_array("cashier", $roles) ? $user->isCashier() : false;
-
-                return $isAdmin | $isSuperAdmin | $vendor | $cashier;
+                return in_array($user->role_name, $roles);
             });
         }
+    }
+
+    private function buildPermissionArray($permissionArray, $permissionPrefix = '')
+    {
+        if ($this->isRoleArray($permissionArray)) {
+            if($permissionPrefix == '')return;
+            if(!isset($this->permissionList[$permissionPrefix])){
+                $this->permissionList[$permissionPrefix] = $permissionArray;
+            }
+            
+            return;
+        }
+
+        foreach ($permissionArray as $key => $value) {
+            $newPermissionPrefix = $permissionPrefix;
+            if(!is_int($key)){
+                $newPermissionPrefix .= ($permissionPrefix != '' ? '.' : '').$key;
+            }
+            
+            $this->buildPermissionArray($value, $newPermissionPrefix);
+        }
+    }
+
+    private function isRoleArray($permissionArray)
+    {
+        foreach ($permissionArray as $key => $value) {
+            if (is_array($value)) return false;
+        }
+        return true;
     }
 }

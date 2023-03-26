@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->role_name == 'cashier';
     }
+
+    public function isDeliveryMan()
+    {
+        return $this->role_name == 'delivery_man';
+    }
 }
