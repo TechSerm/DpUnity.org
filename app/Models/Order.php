@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\OrderStatusEnum;
 use App\Facades\Order\OrderFacade;
+use App\Services\Order\OrderActivityService;
 use App\Services\Order\OrderNotificationService;
 use App\Services\Order\OrderService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -118,9 +119,15 @@ class Order extends Model
         return new OrderNotificationService($this);
     }
 
+    public function activityLogService()
+    {
+        return new OrderActivityService($this);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly([]);
+            ->logOnly($this->fillable)
+            ->logOnlyDirty($this->fillable);
     }
 }

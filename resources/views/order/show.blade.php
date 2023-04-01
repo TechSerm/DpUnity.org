@@ -73,7 +73,7 @@
             @endif
             {{-- <div class="cardd">
                 <div class="card-bodyt">
-                    @include('order.show.notes', ['order', $order])
+                    @include('order.show.activity', ['order', $order])
                 </div>
             </div> --}}
         </div>

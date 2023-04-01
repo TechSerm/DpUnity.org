@@ -84,6 +84,7 @@ Route::prefix('admin')->group(function () {
         //order routes
         Route::get('/orders/data', [OrderController::class, 'getData'])->name('orders.data');
         Route::get('/orders/active', [OrderController::class, 'activeOrders']);
+        Route::get('/orders/{order}/history', [OrderController::class, 'history'])->name('orders.show.history');
         Route::post('/orders/{order}/change_order_status/{status}', [OrderController::class, 'changeOrderStatus'])->name('orders.status.change');
         Route::get('/orders/{order}/update_customer_details', [OrderController::class, 'showUpdateCustomer'])->name('orders.customer.update');
         Route::put('/orders/{order}/update_customer_details', [OrderController::class, 'updateCustomer']);

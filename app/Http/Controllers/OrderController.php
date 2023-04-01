@@ -14,6 +14,7 @@ use App\Services\Order\OrderService;
 use App\Services\Vendor\VendorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Facades\CauserResolver;
 use Woo\Order\OrderSync;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -140,8 +141,16 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::with(['items'])->findOrFail($id);
+        $order->activityLogService()->createShowActivity();
         return view('order.show', ['order' => $order]);
     }
+
+    public function history($id)
+    {
+        $order = Order::with(['items'])->findOrFail($id);
+        return view('order.show.activity', ['order' => $order]);
+    }
+    
 
     public function edit($id)
     {
@@ -180,7 +189,9 @@ class OrderController extends Controller
                 'message' => 'Invalid Action'
             ], 401);
         }
+        
         $order->update($request->all());
+        
         return response()->json([
             'message' => 'Customer Update Successfully'
         ]);

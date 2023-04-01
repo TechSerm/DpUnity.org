@@ -41,7 +41,10 @@ return [
             'ip' => ['admin'],
             'app_version' => ['admin'],
             'order_date' => ['admin', 'delivery_man'],
-            'cancel_order' => ['admin']
+            'cancel_order' => ['admin'],
+            'history' => ['admin'],
+            'total_profit' => ['admin', 'delivery_man'],
+            'wholesale_total' => ['admin', 'delivery_man'],
         ],
         'customer_area' => [
             ['admin', 'delivery_man'],
@@ -53,7 +56,14 @@ return [
             'edit' => ['admin'],
             'delete' => ['admin'],
             'add' => ['admin'],
-            'profit_column' => ['admin'] 
+            'profit_column' => ['admin']
+        ],
+        'status' => [
+            'approved' => ['admin'],
+            'assign_vendor' => ['admin'],
+            'pack_complete' => ['admin','delivery_man'],
+            'start_delivery' => ['admin','delivery_man'],
+            'complete_delivery' => ['admin','delivery_man'],
         ]
     ]
 ];

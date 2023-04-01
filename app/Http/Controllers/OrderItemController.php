@@ -71,7 +71,7 @@ class OrderItemController extends Controller
 
         $product = Product::where(['id' => $request->product_id])->firstOrFail();
 
-        OrderItem::create([
+        $orderItem = OrderItem::create([
             'order_id' => $order->id,
             'product_id' => $product ? $product->id : null,
 
@@ -88,6 +88,8 @@ class OrderItemController extends Controller
             'delivery_fee' => $request->delivery_fee,
             'vendor_id' => $request->vendor_id
         ]);
+
+        $order->activityLogService()->createAddProductActivity($orderItem);
 
         $order->updateTotalCalculation();
 
@@ -165,7 +167,7 @@ class OrderItemController extends Controller
             ], 401);
         }
         
-        OrderItem::create([
+        $orderItem = OrderItem::create([
             'order_id' => $order->id,
 
             'name' => $request->name,
@@ -181,6 +183,8 @@ class OrderItemController extends Controller
             'delivery_fee' => $request->delivery_fee,
             'vendor_id' => $request->vendor_id
         ]);
+
+        $order->activityLogService()->createAddProductActivity($orderItem);
 
         $order->updateTotalCalculation();
 
@@ -232,10 +236,13 @@ class OrderItemController extends Controller
         }
 
         $orderItem = $order->items()->where(['uuid' => $orderItemId])->firstOrFail();
+        $orderItemOld = clone $orderItem;
 
         $orderItem->update($request->except(['product_id']));
 
-        $order->updateTotalCalculation();
+        $order->activityLogService()->createUpdateProductActivity($orderItem, $orderItemOld);
+
+        $order->updateTotalCalculation($orderItem);
 
         if ($order->is_vendor_assign) {
             $order->updateVendor();

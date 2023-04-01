@@ -9,7 +9,7 @@
                     গ্রহণ করা হয়েছে
                 </td>
                 <td>
-                    @if ($order->is_approved == false && $order->is_cancelled == false && auth()->user()->isAdmin())
+                    @if ($order->is_approved == false && $order->is_cancelled == false && auth()->user()->can('order.status.approved'))
                         <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'approved'])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
                         data-subtitle="অর্ডারটি গ্রহণ করা হয়েছে?" data-button-text="হ্যা, আমি নিশ্চিত!"
                         data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
@@ -26,7 +26,7 @@
                     বিক্রেতার কাছে পাঠানো হয়েছে	
                 </td>
                 <td>
-                    @if ($order->is_vendor_assign == false && $order->is_approved == true && $order->is_cancelled == false && auth()->user()->isAdmin())
+                    @if ($order->is_vendor_assign == false && $order->is_approved == true && $order->is_cancelled == false && auth()->user()->can('order.status.assign_vendor'))
                         <button class="btn btn-success" data-url="{{route('orders.vendor.assign_product_vendor_list', request()->route()->parameters())}}" data-modal-size="md" data-toggle="modal" data-modal-title="আপনি কি নিশ্চিত?">হ্যা!</button>
                     @endif
                     @if ($order->is_vendor_assign)
@@ -97,7 +97,7 @@
                     ডেলিভারির জন্য প্রস্তুতি সম্পন্ন হয়েছে
                 </td>
                 <td>
-                    @if ($order->is_pack_complete == false && $allVendorPackReady == true && $order->is_vendor_assign == true && $order->is_cancelled == false && auth()->user()->isAdmin())
+                    @if ($order->is_pack_complete == false && $allVendorPackReady == true && $order->is_vendor_assign == true && $order->is_cancelled == false && auth()->user()->can('order.status.pack_complete'))
                         <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'pack_complete'])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
                         data-subtitle="অর্ডারটি ডেলিভারির জন্য প্রস্তুতি সম্পন্ন হয়েছে?" data-button-text="হ্যা, আমি নিশ্চিত!"
                         data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
@@ -114,7 +114,7 @@
                     ডেলিভারির জন্য রওনা হয়েছে
                 </td>
                 <td>
-                    @if ($order->is_delivery_start == false && $order->is_pack_complete == true && $order->is_cancelled == false && auth()->user()->isAdmin())
+                    @if ($order->is_delivery_start == false && $order->is_pack_complete == true && $order->is_cancelled == false && auth()->user()->can('order.status.start_delivery'))
                         <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'start_delivery'])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
                         data-subtitle="অর্ডারটি ডেলিভারির জন্য রওনা হয়েছে?" data-button-text="হ্যা, আমি নিশ্চিত!"
                         data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
@@ -131,7 +131,7 @@
                     ডেলিভারি টি সম্পন্ন হয়েছে
                 </td>
                 <td>
-                    @if ($order->is_delivery_complete == false && $order->is_delivery_start == true && $order->is_cancelled == false && auth()->user()->isAdmin())
+                    @if ($order->is_delivery_complete == false && $order->is_delivery_start == true && $order->is_cancelled == false && auth()->user()->can('order.status.complete_delivery'))
                         <button class="btn btn-success" data-url="{{route('orders.status.change', ['order' => $order->id,'status' => 'delivery_complete'])}}" data-toggle="confirm" data-title="আপনি কি নিশ্চিত?"
                         data-subtitle="অর্ডারটি ডেলিভারি টি সম্পন্ন হয়েছে?" data-button-text="হ্যা, আমি নিশ্চিত!"
                         data-cancel-button-text="বন্ধ করুন">হ্যা!</button>
