@@ -25,6 +25,7 @@ class DeliveryTransportCostRequest extends FormRequest
     {
         return [
             'amount' => 'required|integer|min:1',
+            'date' => 'required|date'
         ];
     }
 }

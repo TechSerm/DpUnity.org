@@ -14,6 +14,13 @@
 </div>
 
 <div class="mb-3 row ">
+    <label for="date" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">তারিখ</label>
+    <div class="col-sm-{{ $inputWidth }}">
+        {!! Form::datetimeLocal('date', null, ['class' => 'form-control ', 'id' => 'note']) !!}
+    </div>
+</div>
+
+<div class="mb-3 row ">
     <label for="note" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">নোট</label>
     <div class="col-sm-{{ $inputWidth }}">
         {!! Form::textarea('note', null, ['class' => 'form-control ', 'id' => 'note']) !!}

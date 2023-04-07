@@ -32,6 +32,7 @@
                     <td>#</td>
                     <td><b>পরিমান (টাকা)</b></td>
                     <td><b>নোট</b></td>
+                    <td><b>তারিখ</b></td>
                     <td><b>যুক্ত করেছে</b></td>
                     <td><b>যুক্ত করা হয়েছে</b></td>
                 </tr>
@@ -40,6 +41,8 @@
                         <td>{{ bnConvert()->number($cost->id) }}</td>
                         <td><b>{{ bnConvert()->number($cost->amount) }}</b> টাকা</td>
                         <td>{{ $cost->note }}</td>
+                        <td><span
+                            title="{{ $cost->date->format('d M Y h:i:s a') }}">{{ bnConvert()->date($cost->date->format('d M Y')) }}</span>
                         <td><span class="badge badge-secondary">{{ $cost->user->name }}</span></td>
                         <td><span
                             title="{{ $cost->created_at->format('d M Y H:i:s') }}">{{ bnConvert()->date($cost->created_at->diffForHumans()) }}</span>

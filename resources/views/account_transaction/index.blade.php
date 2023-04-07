@@ -8,10 +8,10 @@
             <div class="row">
                 <div class="col-md-4 col-sm-4">
                     <x-adminlte-small-box title="{{ bnConvert()->number($totalBalance) }} টাকা" text="সর্বমোট একাউন্টে আছে"
-                        icon="fa fa-credit-card" theme="info" />
+                        icon="fa fa-credit-card" theme="success" />
                 </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-4 col-sm-4">
                     <x-adminlte-small-box title="{{ bnConvert()->number($totalDiposite) }} টাকা" text="সর্বমোট জমা হয়েছে"
                         icon="fa fa-credit-card " theme="success" />
@@ -20,14 +20,14 @@
                     <x-adminlte-small-box title="{{ bnConvert()->number($totalWithdraw) }} টাকা" text="সর্বমোট তোলা হয়েছে "
                         icon="fa fa-credit-card " theme="danger" />
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 
     <div class="card">
         <div class="card-header"><b>Recent Transactions</b></div>
         <div class="card-body">
-            @if (auth()->user()->isAdmin())
+            
             <div class="row mb-3">
                 <div class="col-md-3 offset-md-9">
                     <div style="text-align: right">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </div>
-            @endif
+            
             <table class="table table-bordered" style="text-align: center">
                 <tr>
                     <td><b>#</b></td>

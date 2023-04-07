@@ -60,13 +60,13 @@ class DeliveryTransportCostController extends Controller
                 'message' => 'একাউন্টে পর্যাপ্ত পরিমান টাকা নেই'
             ], 419);
         }
-        
+
         DeliveryTransportCost::create([
             'uuid' => Str::uuid(),
             'user_id' => auth()->user()->id,
             'amount' => $request->amount,
-            'date' => Carbon::now(),
-            'note' => $request->notes
+            'date' => $request->date,
+            'note' => $request->note
         ]);
     }
 

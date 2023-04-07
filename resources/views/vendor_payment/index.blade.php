@@ -15,15 +15,17 @@
 
 
     <div class="row">
-        @if (auth()->user()->isVendor() && count($vendors) == 0 && count($vendorPayments))
+        @if (auth()->user()->isVendor() &&
+                count($vendors) == 0 &&
+                count($vendorPayments))
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header" style=""><b>{{auth()->user()->name}}</b></div>
+                    <div class="card-header" style=""><b>{{ auth()->user()->name }}</b></div>
                     <div style="" class="dashboardReportSubArea">
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
-                                <x-adminlte-small-box title="সুখবর" text="আপনার সবগুলো অর্ডার এর টাকা পরিশুধ করা হয়েছে" icon="fas fa-check"
-                                    theme="success" />
+                                <x-adminlte-small-box title="সুখবর" text="আপনার সবগুলো অর্ডার এর টাকা পরিশুধ করা হয়েছে"
+                                    icon="fas fa-check" theme="success" />
 
                             </div>
                         </div>
@@ -104,12 +106,29 @@
                     }
                 });
 
-                $("#totalSelectedAmount").html(totalSelectAmount);
-                $("#totalSelected").html(totalSelect);
-                $("#totalNoSelectedAmount").html(totalNoSelectAmount);
-                $("#totalNoSelected").html(totalNoSelect);
+                $("#totalSelectedAmount").html(convertToBanglaNumber(totalSelectAmount));
+                $("#totalSelected").html(convertToBanglaNumber(totalSelect));
+                $("#totalNoSelectedAmount").html(convertToBanglaNumber(totalNoSelectAmount));
+                $("#totalNoSelected").html(convertToBanglaNumber(totalNoSelect));
 
 
+            }
+
+            function convertToBanglaNumber(number) {
+                const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+                const englishNumberString = number.toString();
+                let banglaNumberString = '';
+
+                for (let i = 0; i < englishNumberString.length; i++) {
+                    const englishDigit = parseInt(englishNumberString[i]);
+                    if (isNaN(englishDigit)) {
+                        banglaNumberString += englishNumberString[i];
+                    } else {
+                        banglaNumberString += banglaDigits[englishDigit];
+                    }
+                }
+
+                return banglaNumberString;
             }
 
 

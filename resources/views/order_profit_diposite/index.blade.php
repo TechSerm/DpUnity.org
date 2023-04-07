@@ -78,12 +78,29 @@
                     }
                 });
 
-                $("#totalSelectedAmount").html(totalSelectAmount);
-                $("#totalSelected").html(totalSelect);
-                $("#totalNoSelectedAmount").html(totalNoSelectAmount);
-                $("#totalNoSelected").html(totalNoSelect);
+                $("#totalSelectedAmount").html(convertToBanglaNumber(totalSelectAmount));
+                $("#totalSelected").html(convertToBanglaNumber(totalSelect));
+                $("#totalNoSelectedAmount").html(convertToBanglaNumber(totalNoSelectAmount));
+                $("#totalNoSelected").html(convertToBanglaNumber(totalNoSelect));
 
 
+            }
+
+            function convertToBanglaNumber(number) {
+                const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+                const englishNumberString = number.toString();
+                let banglaNumberString = '';
+
+                for (let i = 0; i < englishNumberString.length; i++) {
+                    const englishDigit = parseInt(englishNumberString[i]);
+                    if (isNaN(englishDigit)) {
+                        banglaNumberString += englishNumberString[i];
+                    } else {
+                        banglaNumberString += banglaDigits[englishDigit];
+                    }
+                }
+
+                return banglaNumberString;
             }
 
 
