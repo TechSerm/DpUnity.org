@@ -22,12 +22,12 @@ class VendorPaymentController extends Controller
 
     public function index()
     {
-        $vendorPayments = VendorPayment::where(function($query){
-            if(auth()->user()->isVendor()){
+        $vendorPayments = VendorPayment::where(function ($query) {
+            if (auth()->user()->isVendor()) {
                 $query->where(['vendor_id' => auth()->user()->id]);
             }
         })->orderBy('id', 'desc')->paginate(10);
-        
+
         $vendors = $this->vendorPaymentService->getAllVendorData();
         if (auth()->user()->isVendor()) {
             $vendors = $vendors->filter(function ($item) {
@@ -87,27 +87,26 @@ class VendorPaymentController extends Controller
         }
 
         $tokens = OrderFacade::getVendorDeviceToken([$request->vendor_id]);
-        
-        
+
+
         $body = $this->getPaymentNotificationBody($vendorPayment);
 
-        if(!empty($tokens)){
+        if (!empty($tokens)) {
             PushNotificationFacade::sendNotification($tokens, [
                 'title' => "আপনাকে পেমেন্ট পাঠানো হয়েছে",
-                'body' => $body."\n📌 পেমেন্ট টি গ্রহণ করুন",
+                'body' => $body . "\n📌 পেমেন্ট টি গ্রহণ করুন",
                 "url" => route('vendor_payments.index'),
             ]);
         }
 
         $tokens = OrderFacade::getManagerDeviceToken();
-        if(!empty($tokens)){
+        if (!empty($tokens)) {
             PushNotificationFacade::sendNotification($tokens, [
                 'title' => "পেমেন্ট পাঠানো হয়েছে",
                 'body' => $body,
                 "url" => route('vendor_payments.index'),
             ]);
         }
-        
     }
 
     public function show($vendorPaymentId)
@@ -116,6 +115,17 @@ class VendorPaymentController extends Controller
 
         return view('vendor_payment.show', [
             'vendorPayment' => $vendorPayment
+        ]);
+    }
+
+    public function showOrder($vendorId, $orderId)
+    {
+        $orderVendor = OrderVendor::where(['uuid' => $orderId])->firstOrFail();
+        $order = $orderVendor->order;
+        $items = $order->items()->where(['vendor_id' => $vendorId])->get();
+        return view('vendor_payment.show_order', [
+            'items' => $items,
+            'orderVendor' => $orderVendor
         ]);
     }
 
@@ -142,12 +152,12 @@ class VendorPaymentController extends Controller
         ]);
 
         $body = $this->getPaymentNotificationBody($vendorPayment);
-        
+
         $tokens = OrderFacade::getManagerDeviceToken();
-        if(!empty($tokens)){
+        if (!empty($tokens)) {
             PushNotificationFacade::sendNotification($tokens, [
                 'title' => "পেমেন্ট গ্রহণ করা হয়েছে",
-                'body' => $body."\n👦 ".auth()->user()->name,
+                'body' => $body . "\n👦 " . auth()->user()->name,
                 "url" => route('vendor_payments.index'),
             ]);
         }
@@ -181,10 +191,10 @@ class VendorPaymentController extends Controller
         $body = $this->getPaymentNotificationBody($vendorPayment);
         $tokens = OrderFacade::getManagerDeviceToken();
 
-        if(!empty($tokens)){
+        if (!empty($tokens)) {
             PushNotificationFacade::sendNotification($tokens, [
                 'title' => "পেমেন্ট বাতিল করা হয়েছে",
-                'body' => $body."\n👦 ".auth()->user()->name,
+                'body' => $body . "\n👦 " . auth()->user()->name,
                 "url" => route('vendor_payments.index'),
             ]);
         }
@@ -203,7 +213,8 @@ class VendorPaymentController extends Controller
         }
     }
 
-    private function getPaymentNotificationBody($vendorPayment){
+    private function getPaymentNotificationBody($vendorPayment)
+    {
         $body = "🔖 পেমেন্ট আইডি : " . bnConvert()->number($vendorPayment->id);
         $body .= "\n🏬 দোকান : " . $vendorPayment->vendor->name;
         $body .= "\n🛒 সর্বমোট অর্ডার: " . bnConvert()->number($vendorPayment->total_orders);

@@ -136,6 +136,7 @@ Route::prefix('admin')->group(function () {
         
         Route::get('/vendor_payment/{vendor_id}/send_payment', [VendorPaymentController::class, 'sendPayment'])->name('vendor_payments.send_payment');
         Route::post('/vendor_payment/{vendor_id}/send_payment', [VendorPaymentController::class, 'store']);
+        Route::get('/vendor_payment/{vendor_id}/show_order/{order_id}', [VendorPaymentController::class, 'showOrder'])->name('vendor_payments.show_order');
         Route::get('/vendor_payment/{vendor_id}/send_pending_payment', [VendorPaymentController::class, 'sendPendingPayment'])->name('vendor_payments.send_pending_payment');
         Route::post('/vendor_payment/{vendor_id}/confirm', [VendorPaymentController::class, 'paymentConfirm'])->name('vendor_payments.payment_confirm');
         Route::resource('vendor_payments', VendorPaymentController::class);
