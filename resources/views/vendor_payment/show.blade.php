@@ -12,7 +12,7 @@
         @endphp
         @foreach ($orderVendors as $orderVendor)
             <tr>
-                <th scope="row">{{ bnConvert()->number($orderVendor->order_id) }}</th>
+                <th scope="row"><a href="{{route('vendor_payments.show_order', ['vendor_id' => $orderVendor->vendor_id,'order_id' => $orderVendor->uuid])}}" data-modal-header="Order {{$orderVendor->order_id}}" data-toggle="modal">{{ bnConvert()->number($orderVendor->order_id) }}</a></th>
                 <td><b>{{ bnConvert()->number($orderVendor->wholesale_total) }}</b> টাকা</td>
                 <td><span
                         title='{{ $orderVendor->order->created_at }}'>{{ bnConvert()->date($orderVendor->order->created_at->diffForHumans()) }}</span>

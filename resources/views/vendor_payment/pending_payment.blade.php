@@ -12,7 +12,7 @@
         <tbody>
             @foreach ($vendor['send_ids'] as $order)
                 <tr>
-                    <th scope="row">{{ bnConvert()->number($order['order_id']) }}</th>
+                    <th scope="row"><a href="{{route('vendor_payments.show_order', ['vendor_id' => request()->vendor_id,'order_id' => $order['uuid']])}}" data-modal-header="Order {{$order['order_id']}}" data-toggle="modal">{{ bnConvert()->number($order['order_id']) }}</a></th>
                     <td><b>{{ bnConvert()->number($order['total']) }}</b> টাকা</td>
                     <td><b>{{ bnConvert()->number($order['payment_id']) }}</b></td>
                     <td>
