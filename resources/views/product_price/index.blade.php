@@ -237,7 +237,7 @@
 
         </div>
         <div style="overflow: hidden; font-size: 10px;">
-            {{ $products->onEachSide(1)->links() }}
+            {{ $products->onEachSide(1)->withQueryString()->links() }}
         </div>
         <div style="margin-bottom: 150px; "></div>
         <footer class="fixed-bottom"><button type="submit" id="priceSubmitBtn" style="width: 100%"
