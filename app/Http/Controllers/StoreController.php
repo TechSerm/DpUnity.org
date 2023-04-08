@@ -18,9 +18,9 @@ class StoreController extends Controller
         $products = HomePageProductFacade::get();
         $activeOrders = OrderFacade::userOrder()->activeOrToday();
         $ramadanCategory = Category::find(env('RAMADAN_CATEGORY_ID'));
-        $ramadanCategoryProducts = $ramadanCategory ? $ramadanCategory->products : [];
+        $ramadanCategoryProducts = $ramadanCategory ? $ramadanCategory->products()->with(['imageTable'])->get() : [];
         $iftarCategory = Category::find(env('IFTAR_CATEGORY_ID'));
-        $iftarCategoryProducts = $iftarCategory ? $iftarCategory->products : [];
+        $iftarCategoryProducts = $iftarCategory ? $iftarCategory->products()->with(['imageTable'])->get() : [];
         return view('store.home.index', [
             'products' => $products,
             'categories' => Category::with('imageTable')->get(),

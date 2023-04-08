@@ -56,7 +56,14 @@ class SearchService
         ->pluck('key')
         ->toArray();
 
-        $suggestionWords = array_merge($suggestionWords, $words);
+        $products = Product::where(function($query) use($words, $searchValue){
+            $query->orWhere('name', 'LIKE', "%{$searchValue}%");
+            foreach ($words as $word) {
+                $query->orWhereRaw('`name` LIKE ?', ['%'.trim(strtolower($word)).'%']);
+            }
+        })->distinct('name')->pluck('name')->toArray();
+
+        $suggestionWords = array_merge($suggestionWords, $words, $products);
 
         return $suggestionWords;
     }

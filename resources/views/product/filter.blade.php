@@ -1,3 +1,5 @@
+<link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css">
 <div class="">
     <div class="mb-3 row ">
         <label for="name" class="col-md-2 col-form-label form-control-label">পণ্যের আইডি</label>
@@ -10,29 +12,41 @@
         </div>
         <label for="name" class="col-md-2 col-form-label form-control-label">ক্যাটাগরি</label>
         <div class="col-md-2">
-            <select name="" id="" class="form-control">
-                <option value="">Hello</option>
+            <select name="category" id="category" class="form-control">
+                <option value="">All Categories</option>
+                @foreach ($categories as $category)
+                <option value="{{$category->id}}">{{$category->name}}</option>
+                @endforeach
             </select>
         </div>
     </div>
 
     <div class="mb-3 row" style="margin-top: -2px">
+        @if (auth()->user()->isAdmin())
         <label for="name" class="col-md-2 col-form-label form-control-label">দোকান</label>
         <div class="col-md-2">
-            <select name="" id="" class="form-control">
-                <option value="">Hello</option>
+            <select name="vendor" id="vendor" class="form-control">
+                <option value="">All Vendor</option>
+                @foreach ($vendors as $vendor)
+                <option value="{{$vendor->id}}">{{$vendor->name}}</option>
+                @endforeach
             </select>
         </div>
+        @endif
         <label for="name" class="col-md-2 col-form-label form-control-label">স্টক</label>
         <div class="col-md-2">
-            <select name="" id="" class="form-control">
-                <option value="">Hello</option>
+            <select name="" id="has_stock" class="form-control">
+                <option value="">Any</option>
+                <option value="yes">আছে</option>
+                <option value="no">নেই</option>
             </select>
         </div>
         <label for="name" class="col-md-2 col-form-label form-control-label">অবস্থা</label>
         <div class="col-md-2">
-            <select name="" id="" class="form-control">
-                <option value="">Hello</option>
+            <select name="status" id="status" class="form-control">
+                <option value="">Any</option>
+                <option value="publish">Publish</option>
+                <option value="private">Private</option>
             </select>
         </div>
     </div>

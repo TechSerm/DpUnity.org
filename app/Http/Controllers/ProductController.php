@@ -31,7 +31,9 @@ class ProductController extends Controller
         $this->authorize('products.index');
         $products = Product::all();
         return view('product.index', [
-            'products' => $products
+            'products' => $products,
+            'vendors' => Vendor::getList(),
+            'categories' => Category::all(),
         ]);
     }
 
@@ -45,6 +47,12 @@ class ProductController extends Controller
         $this->authorize('products.index');
         $productQuery = Product::with(['imageTable', 'vendor']);
 
+        if (isset($request->category)) {
+            $category = Category::findOrFail($request->category);
+            $cProducts = $category->products()->pluck('id')->toArray();
+            $productQuery->whereIn('id' , $cProducts);
+        }
+
         if (auth()->user()->isVendor()) {
             $productQuery = $productQuery->where(['vendor_id' => auth()->user()->id]);
         }
@@ -53,11 +61,22 @@ class ProductController extends Controller
             $productQuery->where(['id' => $request->product_id]);
         }
 
-        if (isset($request->search) && is_array($request->search) && $request->search['value'] != '') {
-            $searchValue = strtolower($request->search['value']);
+        if (isset($request->has_stock)) {
+            $productQuery->where(['has_stock' => $request->has_stock == 'yes' ? true : false]);
+        }
+
+        if (isset($request->status)) {
+            $productQuery->where(['status' => $request->status]);
+        }
+
+        if (isset($request->vendor)) {
+            $productQuery->where(['vendor_id' => $request->vendor]);
+        }
+
+        if (isset($request->product_name) && $request->product_name != '') {
+            $searchValue = strtolower($request->product_name);
             $suggestionWords = SearchService::getSearchKeyword($searchValue);
             $productQuery->where(function ($query) use ($suggestionWords, $searchValue) {
-                $query->orWhere('name', 'LIKE', "%{$searchValue}%");
                 foreach ($suggestionWords as $word) {
                     $query->orWhereRaw('`name` LIKE ?', ['%' . trim(strtolower($word)) . '%']);
                 }
