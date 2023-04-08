@@ -4,15 +4,15 @@
     <div class="mb-3 row ">
         <label for="name" class="col-md-2 col-form-label form-control-label">পণ্যের আইডি</label>
         <div class="col-md-2">
-            <input type="text" class="form-control" name="name" id="product_id" value="">
+            <input type="text" class="form-control" name="name" id="filter_product_id" value="">
         </div>
         <label for="product_name" class="col-md-2 col-form-label form-control-label">পণ্যের নাম</label>
         <div class="col-md-2">
-            <input type="text" class="form-control" name="product_name" id="product_name" value="">
+            <input type="text" class="form-control" name="filter_product_name" id="product_name" value="">
         </div>
         <label for="name" class="col-md-2 col-form-label form-control-label">ক্যাটাগরি</label>
         <div class="col-md-2">
-            <select name="category" id="category" class="form-control">
+            <select name="category" id="filter_category" class="form-control">
                 <option value="">All Categories</option>
                 @foreach ($categories as $category)
                 <option value="{{$category->id}}">{{$category->name}}</option>
@@ -25,7 +25,7 @@
         @if (auth()->user()->isAdmin())
         <label for="name" class="col-md-2 col-form-label form-control-label">দোকান</label>
         <div class="col-md-2">
-            <select name="vendor" id="vendor" class="form-control">
+            <select name="vendor" id="filter_vendor" class="form-control">
                 <option value="">All Vendor</option>
                 @foreach ($vendors as $vendor)
                 <option value="{{$vendor->id}}">{{$vendor->name}}</option>
@@ -35,7 +35,7 @@
         @endif
         <label for="name" class="col-md-2 col-form-label form-control-label">স্টক</label>
         <div class="col-md-2">
-            <select name="" id="has_stock" class="form-control">
+            <select name="" id="filter_has_stock" class="form-control">
                 <option value="">Any</option>
                 <option value="yes">আছে</option>
                 <option value="no">নেই</option>
@@ -43,7 +43,7 @@
         </div>
         <label for="name" class="col-md-2 col-form-label form-control-label">অবস্থা</label>
         <div class="col-md-2">
-            <select name="status" id="status" class="form-control">
+            <select name="status" id="filter_status" class="form-control">
                 <option value="">Any</option>
                 <option value="publish">Publish</option>
                 <option value="private">Private</option>

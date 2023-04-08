@@ -75,12 +75,12 @@
             ajax: {
                 url: "{{ route('products.data') }}",
                 data: function(d) {
-                    d.product_id = $('#product_id').val();
-                    d.product_name = $('#product_name').val();
-                    d.has_stock = $('#has_stock').val();
-                    d.status = $('#status').val();
-                    d.vendor = $('#vendor').val();
-                    d.category = $('#category').val();
+                    d.product_id = $('#filter_product_id').val();
+                    d.product_name = $('#filter_product_name').val();
+                    d.has_stock = $('#filter_has_stock').val();
+                    d.status = $('#filter_status').val();
+                    d.vendor = $('#filter_vendor').val();
+                    d.category = $('#filter_category').val();
 
                 }
             },

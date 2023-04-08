@@ -73,13 +73,3 @@
     </div>
 </div>
 @endcan
-@can('dashboard.profit.cashier')
-<div class="dashboardReportSubArea mt-3">
-    <div class="row">
-        <div class="col-md-3 col-sm-6">
-            <x-adminlte-small-box title="{{ $profit['total_profit'] }}" text="ক্যাশ এ যুক্ত হবে"
-                icon="fas fa-check" theme="success" />
-        </div>
-    </div>
-</div>
-@endcan
