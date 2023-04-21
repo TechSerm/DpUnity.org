@@ -30,7 +30,7 @@
     <div style="background: #9fa8d2; margin-left: -2px;padding: 15px;">
         <div class="card header" style="">
             <div style="font-size: 12px;">বিবিসেনায় সাশ্রয় মূল্যে করুন</div> 
-            রমজানের বাজার
+            ঈদের বাজার
         </div>
         <div class="home-list-body" style="margin-right: -19px;margin-left: -10px;">
             <div class="row no-gutters" style="">
