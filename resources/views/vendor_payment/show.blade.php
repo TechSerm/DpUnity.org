@@ -70,9 +70,11 @@
         </tr>
     </table>
 </div>
+@can('vendor_payment.confirm')
 @if (!$vendorPayment->is_vendor_received)
     <div class="float-right">
         <button data-toggle="confirm" data-title="আপনি কি নিশ্চিত?" data-subtitle="পেমেন্টটি গ্রহণ করতে চান?"  data-button-text="হ্যা, গ্রহণ করতে চাই!"
         data-cancel-button-text="বন্ধ করুন" data-url="{{route('vendor_payments.payment_confirm',  $vendorPayment)}}" class="btn btn-success btn-lg"><i class="fa fa-check"></i> পেমেন্টটি গ্রহণ করুন</button>
     </div>
 @endif
+@endcan

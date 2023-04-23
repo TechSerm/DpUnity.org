@@ -3,9 +3,9 @@
     <table class="table table-bordered" style="text-align: center">
         <thead>
             <tr>
-                @if (auth()->user()->isAdmin())
+                @can('vendor_payment.add')
                     <th scope="col"><input type="checkbox" name="" id="vendorPaymentCheckboxAll"></th>
-                @endif
+                @endcan
                 <th scope="col">অর্ডার নম্বর</th>
                 <th scope="col">সর্বমোট</th>
                 <th scope="col">অর্ডারটি করা হয়েছে</th>
@@ -14,10 +14,10 @@
         <tbody>
             @foreach ($vendor['not_send_ids'] as $order)
                 <tr>
-                    @if (auth()->user()->isAdmin())
+                    @can('vendor_payment.add')
                         <td><input type="checkbox" data-total="{{ $order['total'] }}" class="vandorPaymentCheckbox"
                                 name="vandorPaymentCheckbox[{{ $order['uuid'] }}]" id=""></td>
-                    @endif
+                    @endcan
                     <th scope="row"><a href="{{route('vendor_payments.show_order', ['vendor_id' => request()->vendor_id,'order_id' => $order['uuid']])}}" data-modal-header="Order {{$order['order_id']}}" data-toggle="modal">{{ bnConvert()->number($order['order_id']) }}</a></th>
                     <td><b>{{ bnConvert()->number($order['total']) }}</b> টাকা</td>
                     <td><span
@@ -32,7 +32,7 @@
         title="{{ bnConvert()->number($vendor['not_send']) }} টাকা ({{ bnConvert()->number(count($vendor['not_send_ids'])) }})"
         text="বিক্রেতার বাকি আছে" icon="fas fa-times" theme="danger" />
 
-    @if (auth()->user()->isAdmin())
+    @can('vendor_payment.add')
         <div class="row">
             <div class="col-md-6 col-sm-6">
                 
@@ -76,6 +76,6 @@
                     <button type="submit" class="btn btn-success mt-2">বিক্রেতার টাকা পাঠান</button>
                 </div>
             </div>
-    @endif
+    @endcan
 
 </form>

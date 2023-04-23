@@ -24,11 +24,13 @@ return [
     'categories.delete' => ['super_admin'],
 
     'active_orders.index' => ['admin', 'vendor', 'delivery_man'],
-    'vendor_payment.index' => ['admin', 'vendor'],
+    'vendor_payment.index' => ['admin', 'vendor', 'delivery_man'],
+    'vendor_payment.add' => ['admin', 'delivery_man'],
+    'vendor_payment.confirm' => ['admin', 'vendor'],
 
-    'account.index' => ['admin', 'cashier'],
-    'order_profit_diposites.index' => ['admin', 'cashier'],
-    'delivery_transport_costs.index' => ['admin', 'cashier'],
+    'account.index' => ['admin', 'cashier', 'delivery_man'],
+    'order_profit_diposites.index' => ['admin', 'cashier', 'delivery_man'],
+    'delivery_transport_costs.index' => ['admin', 'cashier', 'delivery_man'],
 
 
     /*
@@ -43,13 +45,13 @@ return [
             'order_date' => ['admin', 'delivery_man'],
             'cancel_order' => ['admin'],
             'history' => ['admin'],
-            'total_profit' => ['admin', 'delivery_man'],
-            'wholesale_total' => ['admin', 'delivery_man'],
+            'total_profit' => ['admin', 'delivery_man', 'cashier'],
+            'wholesale_total' => ['admin', 'delivery_man', 'cashier'],
         ],
         'customer_area' => [
-            ['admin', 'delivery_man'],
-            'phone_number' => ['admin', 'delivery_man'],
-            'edit_info' => ['admin']
+            ['admin', 'delivery_man', 'cashier'],
+            'phone_number' => ['admin', 'delivery_man', 'cashier'],
+            'edit_info' => ['admin', 'cashier']
         ],
         'items' => [
             'vendor_name' => ['admin', 'delivery_man'],
