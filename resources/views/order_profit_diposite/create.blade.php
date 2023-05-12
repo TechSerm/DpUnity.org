@@ -1,5 +1,7 @@
+
 <form action="{{ route('order_profit_diposites.store') }}" method="post">
     @csrf
+    <div class="table-responsive">
     <table class="table table-bordered table-striped" style="text-align: center">
         <thead>
             <tr>
@@ -29,6 +31,7 @@
 
         </tbody>
     </table>
+</div>
     <x-adminlte-small-box title="{{ bnConvert()->number($orders->sum('total_profit')) }} টাকা ({{ bnConvert()->number($orders->count()) }})"
         text="ক্যাশে জমা দেয়া বাকি আছে" icon="fas fa-times" theme="danger" />
 

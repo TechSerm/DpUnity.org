@@ -54,6 +54,8 @@ Route::middleware(['device_token_check','check_push_notification_click'])->group
 
     Route::get('/categories', [StoreCategoryController::class, 'index'])->name('store.categories');
     Route::get('/categories/{category}', [StoreCategoryController::class, 'show'])->name('store.categories.show');
+
+    Route::post('/survey_form',  [StoreController::class, 'surveyFormSave'])->name('survey_form_save.store');
     
 });
 

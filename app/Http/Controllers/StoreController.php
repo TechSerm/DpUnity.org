@@ -7,9 +7,11 @@ use App\Facades\HomePageProduct\HomePageProductFacade;
 use App\Facades\Order\OrderFacade;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\SurveyResponse;
+use App\Services\DeviceToken\DeviceTokenService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;    
+use Illuminate\Support\Facades\Session;
 
 class StoreController extends Controller
 {
@@ -47,17 +49,49 @@ class StoreController extends Controller
 
         Cart::update($product->id, 1);
 
-       
+
 
         return redirect('/');
     }
 
     public function getCart()
     {
-
     }
 
-    public function showProduct($productId){
+    public function surveyFormSave(Request $request)
+    {
+        $data = [
+            'address' => $request->address,
+            'mobile_number' => $request->address,
+            'total_member' => $request->address,
+            'member_under_18' => $request->address,
+            'occupation' => $request->address,
+            'income' => $request->address,
+            'time_save' => $request->address,
+            'category' => $request->category
+        ];
+
+        $deviceId = (new DeviceTokenService())->getCacheId();
+
+
+        dd($deviceId);
+        $requestData = [
+            'survey_key' => 1,
+            'survey_body' => json_encode($data),
+            'user_id' => auth()->user()->id
+        ];
+
+        if(empty($deviceId)){
+            $requestData['device_id'] = $deviceId;
+        }
+
+        SurveyResponse::create($requestData);
+
+        return redirect('/');
+    }
+
+    public function showProduct($productId)
+    {
         $product = Product::findOrFail($productId);
         return view('store.product.show', ['product' => $product]);
     }

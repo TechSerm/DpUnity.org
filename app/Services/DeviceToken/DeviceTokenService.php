@@ -73,7 +73,7 @@ class DeviceTokenService
         }
     }
 
-    private function getCacheId()
+    public function getCacheId()
     {
         return Cookie::has($this->cookieKey) ? Cookie::get($this->cookieKey) : '';
     }

@@ -66,7 +66,7 @@
     </style>
 
     <div style="">
-        <img class="" src="{{ asset('assets/img/eid.jpg') }}" style="width: 100%;border-radius: 5px"
+        <img class="" src="{{ asset('assets/img/welcome_banner.jpg') }}" style="width: 100%;border-radius: 5px"
             alt="">
         <div class="row mt-3">
             @if (
@@ -150,7 +150,7 @@
             margin: -2px -2px 10px -2px;
         }
     </style>
-    {{-- @include('store.home.ramadan') --}}
+    {{-- @include('store.home.feedback_form') --}}
     <div class="home-list" style="background: #edfffc">
         <div class="home-list-header" style="background: #16a085; color: #ffffff">ক্যাটেগরি</div>
         <div class="row categories">
