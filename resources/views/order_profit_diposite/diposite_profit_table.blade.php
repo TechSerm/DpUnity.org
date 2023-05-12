@@ -21,7 +21,7 @@
 
     .mobile-block {
         padding: 5px;
-        font-size: 12px;
+        font-size: 14px;
         margin-bottom: 10px;
         border-radius: 3px;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -70,8 +70,8 @@
     }
 
     .mobile-block .btn {
-        font-size: 12px;
-        height: 25px;
+        font-size: 13px;
+        height: 27px;
         width: 30px;
     }
 
