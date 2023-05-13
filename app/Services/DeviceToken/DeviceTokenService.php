@@ -141,7 +141,7 @@ class DeviceTokenService
 
     private function getChartData(Model $model, string $keyName)
     {
-        $startDate = Carbon::now()->subDays(15)->startOfDay();
+        $startDate = Carbon::now()->subDays(30)->startOfDay();
         $endDate = Carbon::now()->endOfDay();
 
         $ordersByDay = $model->selectRaw('DATE('.$keyName.') as date, COUNT(*) as total')
