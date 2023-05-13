@@ -19,8 +19,7 @@
                     <x-adminlte-small-box title="{{ $totalDevice }}" text="Total Device" icon="fas fa-gift" theme="info" />
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <x-adminlte-small-box title="{{ $todayAddDevice }}" text="Today" icon="fas fa-gift"
-                        theme="info" />
+                    <x-adminlte-small-box title="{{ $todayAddDevice }}" text="Today" icon="fas fa-gift" theme="info" />
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <x-adminlte-small-box title="{{ $weekAddDevice }}" text="Last 7 Days" icon="fas fa-gift"
@@ -42,8 +41,7 @@
                         theme="success" />
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <x-adminlte-small-box title="{{ $today }}" text="Today" icon="fas fa-gift"
-                        theme="success" />
+                    <x-adminlte-small-box title="{{ $today }}" text="Today" icon="fas fa-gift" theme="success" />
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <x-adminlte-small-box title="{{ $weekVisit }}" text="Last 7 Days" icon="fas fa-gift"
@@ -56,11 +54,23 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header"><b>Last 15 Days Device Graph</b></div>
+                <div class="card-body">
+                    <canvas id="myChart" height="60"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <div class="card">
         <div class="card-header"><b>Device List Table</b></div>
         <div class="card-body">
             <div style="margin-bottom: 10px;">
-                <b>My IP:</b> {{request()->ip()}}
+                <b>My IP:</b> {{ request()->ip() }}
             </div>
             <table class="table table-bordered table-responsive-md" style="width: 100%" id="myTable">
                 <thead>
@@ -116,6 +126,43 @@
                 ]
             });
 
+        });
+
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'line',
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            },
+            data: {
+                labels: {!! json_encode($lastVisitGraphData['labels']) !!},
+                datasets: [{
+                    label: 'Visitor',
+                    data: {!! json_encode($lastVisitGraphData['data']) !!},
+                    borderWidth: 2,
+                    borderColor: 'rgb(75, 192, 192)',
+                }, {
+                    label: 'New Device',
+                    data: {!! json_encode($lastNewDeviceGraphData['data']) !!},
+                    borderWidth: 2,
+                    borderColor: 'black',
+                }, {
+                    label: 'Order',
+                    data: {!! json_encode($lastOrderGraphData['data']) !!},
+                    borderWidth: 2,
+                    borderColor: 'red',
+                }],
+
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
     </script>
 @endpush
