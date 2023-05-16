@@ -146,7 +146,7 @@ class DeviceTokenService
 
         $ordersByDay = $model->selectRaw('DATE('.$keyName.') as date, COUNT(*) as total')
             ->whereBetween($keyName, [$startDate, $endDate])
-            ->groupBy('date')
+            ->groupBy($keyName)
             ->get();
 
         $chartData = [
