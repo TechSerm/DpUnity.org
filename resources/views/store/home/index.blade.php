@@ -66,7 +66,7 @@
     </style>
 
     <div style="">
-        <img class="" src="{{ asset('assets/img/welcome_banner.jpg') }}" style="width: 100%;border-radius: 5px"
+        <img class="card hotline-card" src="{{ asset('assets/img/bsena1.jpg') }}" style="width: 100%;border-radius: 5px"
             alt="">
         <div class="row mt-3">
             @if (
