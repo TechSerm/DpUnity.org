@@ -13,6 +13,14 @@
             padding: 3px 0px 3px 3px;
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
+        .productName{
+            color: #000000;
+            
+        }
+        .productName:hover{
+            outline: none;
+            text-decoration: none;
+        }
     </style>
     @if ($isShowPage)
         <div class="row">
@@ -44,7 +52,7 @@
                 </span>
             @endif
             <div class="body">
-                <div class="title">{{ $product->name }}</div>
+                <div class="title"><a class="productName" href="product/{{ $product->id }}">{{$product->name}}</a></div>
                 <div class="quantity-area">
                     <span>{{ bnConvert()->number($product->quantity, false) }}
                         {{ bnConvert()->unit($product->unit) }}</span>
