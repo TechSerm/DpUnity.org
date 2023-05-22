@@ -52,7 +52,7 @@
                 </span>
             @endif
             <div class="body">
-                <div class="title"><a class="productName" href="product/{{ $product->id }}">{{$product->name}}</a></div>
+                <div class="title"><a class="productName" href="{{route('store.product.show', $product)}}">{{$product->name}}</a></div>
                 <div class="quantity-area">
                     <span>{{ bnConvert()->number($product->quantity, false) }}
                         {{ bnConvert()->unit($product->unit) }}</span>
