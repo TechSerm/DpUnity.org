@@ -33,7 +33,7 @@
 </style>
 
 @php
-    $categoryColor = ['#F7E5D7', '#F8F9E9', '#D6CBCD', '#F7F7F7', '#F9EDF1', '#FFFFFF', '#E4EEDB'];
+    $categoryColor = ['#FDEBDD', '#FCFDEA', '#F7EDF3', '#F1F3DC', '#F9EDF1', '#FFF9E7', '#E4EEDB', '#E4EDEE'];
 @endphp
 <div class="row no-gutters categoryList">
     @foreach ($categories as $key => $category)
