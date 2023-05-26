@@ -83,7 +83,7 @@ class CategoryController extends Controller
         $imageId = null;
 
         if ($request->hasFile('image')) {
-            $image = (new ImageService())->create('image');
+            $image = $this->getImageService((new ImageService()))->create('image');
             $imageId = $image ? $image->id : $imageId;
         }
 
@@ -115,7 +115,8 @@ class CategoryController extends Controller
         $imageId = $category->image_id;
 
         if ($request->hasFile('image')) {
-            $image = $category->imageSrv()->createAndReplace('image');
+            $imgSrv = $this->getImageService($category->imageSrv());
+            $image = $imgSrv->createAndReplace('image');
             $imageId = $image ? $image->id : $imageId;
         }
 
@@ -127,6 +128,14 @@ class CategoryController extends Controller
         return response()->json([
             'message' => 'Category Successfully Updated'
         ]);
+    }
+
+    private function getImageService($imgSrv){
+        $imgSrv->setHeight(312);
+        $imgSrv->setWidth(600);
+        $imgSrv->setText("");
+
+        return $imgSrv;
     }
 
 

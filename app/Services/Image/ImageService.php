@@ -11,10 +11,31 @@ use Intervention\Image\Facades\Image as ImageLib;
 class ImageService
 {
     private $image;
+    private $height;
+    private $width;
+    private $imageText;
 
     public function __construct(Image $image = null)
     {
         $this->image = $image;
+        $this->height = 800;
+        $this->width = 800;
+        $this->imageText = "BibiSena.Com";
+    }
+
+    public function setHeight($height)
+    {
+        $this->height = $height;
+    }
+
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
+    public function setText($text)
+    {
+        $this->imageText = $text;
     }
 
     public function src()
@@ -32,15 +53,17 @@ class ImageService
         if (!request()->hasFile($imageFile)) return null;
 
         $imageFile = request()->file($imageFile);
-        $image = ImageLib::make($imageFile)->resize(800, 800);
+        $image = ImageLib::make($imageFile)->resize($this->width, $this->height);
 
-        $image->text('BibiSena.Com', 70, 30, function ($font) {
-            $font->file(public_path('fonts/OpenSans-Regular.ttf'));
-            $font->size(10);
-            $font->color('#aaaaaa');
-            $font->align('center');
-            $font->angle(10);
-        });
+        if ($this->imageText != "") {
+            $image->text($this->imageText, 70, 30, function ($font) {
+                $font->file(public_path('fonts/OpenSans-Regular.ttf'));
+                $font->size(10);
+                $font->color('#aaaaaa');
+                $font->align('center');
+                $font->angle(10);
+            });
+        }
 
         $imageName = $this->getImageName($imageFile);
         File::put(public_path(Constant::IMAGE_DIR . $imageName), $image->stream());

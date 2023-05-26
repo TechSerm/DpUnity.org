@@ -133,9 +133,7 @@
             border-radius: 5px;
         }
 
-        .home-list-body{
-            
-        }
+        .home-list-body {}
 
         .product:nth-child(3) {
             background: red;
@@ -149,30 +147,18 @@
             padding: 10px;
             margin: -2px -2px 10px -2px;
         }
+
+
     </style>
     {{-- @include('store.home.feedback_form') --}}
-    <div class="home-list" style="background: #edfffc">
-        <div class="home-list-header" style="background: #16a085; color: #ffffff">ক্যাটেগরি</div>
-        <div class="row categories">
-            @foreach ($categories as $category)
-                @php
-                    $totalProducts = $category
-                        ->products()
-                        ->where(['status' => 'publish'])
-                        ->count();
-                @endphp
-                @if ($totalProducts > 0)
-                    <div class="col-md-2 col-sm-6 col-lg-2 col-6">
-                        <a href="{{ route('store.categories.show', $category) }}">
-                            <div class="card product" style="height: 210px; border-radius: 15px">
-                                <img src="{{ $category->image }}" alt="">
-                                <div class="title">{{ $category->name }} ({{ bnConvert()->number($totalProducts) }})
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                @endif
-            @endforeach
+    
+    <div class="home-listt" style="background: #ffffff">
+        <div class="home-list-headerr" style=" color: #000000; margin-top: 10px">
+            <h4>ক্যাটেগরি</h4>
+            <hr>
+        </div>
+        <div style="margin-right: -12px;">
+            @include('store.category.ui')
         </div>
     </div>
     <div class="home-list" style="background: #eaeffc">
