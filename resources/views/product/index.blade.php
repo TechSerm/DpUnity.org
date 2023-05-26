@@ -76,7 +76,7 @@
                 url: "{{ route('products.data') }}",
                 data: function(d) {
                     d.product_id = $('#filter_product_id').val();
-                    d.product_name = $('#filter_product_name').val();
+                    d.product_name = $('#product_name').val();
                     d.has_stock = $('#filter_has_stock').val();
                     d.status = $('#filter_status').val();
                     d.vendor = $('#filter_vendor').val();
