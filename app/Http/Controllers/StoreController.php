@@ -25,7 +25,7 @@ class StoreController extends Controller
         $iftarCategoryProducts = $iftarCategory ? $iftarCategory->products()->with(['imageTable'])->get() : [];
         return view('store.home.index', [
             'products' => $products,
-            'categories' => Category::with('imageTable')->get(),
+            'categories' => Category::with('imageTable', 'products')->get(),
             'activeOrders' => $activeOrders,
             'ramadanCategoryProducts' => $ramadanCategoryProducts,
             'iftarCategoryProducts' => $iftarCategoryProducts
