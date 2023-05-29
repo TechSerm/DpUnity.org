@@ -38,10 +38,7 @@
 <div class="row no-gutters categoryList">
     @foreach ($categories as $key => $category)
         @php
-            $totalProducts = $category
-                ->products()
-                ->where(['status' => 'publish'])
-                ->count();
+            $totalProducts = $category->products->count();
         @endphp
         @if ($totalProducts > 0)
             <div class="col-md-3 col-sm-6 col-lg-3 col-6">
@@ -49,7 +46,7 @@
                     <a href="{{ route('store.categories.show', $category) }}">
                         <div style="">
                             <img src="{{ $category->image }}" class="categoryImg" alt="">
-                            <p style="" class="categoryText">{{ $category->name }}
+                            <p style="" class="categoryText">{{ $category->name }} ({{bnConvert()->number($totalProducts)}})
                             </p>
                         </div>
                 </div>
