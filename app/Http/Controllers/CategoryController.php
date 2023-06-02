@@ -130,12 +130,9 @@ class CategoryController extends Controller
         ]);
     }
 
-    private function getImageService($imgSrv){
-        $imgSrv->setHeight(312);
-        $imgSrv->setWidth(600);
-        $imgSrv->setText("");
-
-        return $imgSrv;
+    private function getImageService($imgSrv)
+    {
+        return $imgSrv->setHeight(312)->setWidth(600)->setText("");
     }
 
 

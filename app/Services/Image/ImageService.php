@@ -26,16 +26,19 @@ class ImageService
     public function setHeight($height)
     {
         $this->height = $height;
+        return $this;
     }
 
     public function setWidth($width)
     {
         $this->width = $width;
+        return $this;
     }
 
     public function setText($text)
     {
         $this->imageText = $text;
+        return $this;
     }
 
     public function src()
