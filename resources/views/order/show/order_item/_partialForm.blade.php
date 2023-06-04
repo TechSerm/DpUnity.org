@@ -77,7 +77,7 @@
 <div class="mb-3 row ">
     <label for="quantity" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">কেনার পরিমান</label>
     <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::text('quantity', $item->order_id ? $item->quantity : 1, ['class' => 'form-control ', 'id' => 'quantity', 'onkeyup' => 'updateOrderItemPrice()']) !!}
+        {!! Form::text('quantity', rtrim(rtrim(number_format($item->order_id ? $item->quantity : 1, 2, '.', ','), '0'), '.'), ['class' => 'form-control ', 'id' => 'quantity', 'onkeyup' => 'updateOrderItemPrice()']) !!}
     </div>
 </div>
 

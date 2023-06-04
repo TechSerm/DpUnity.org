@@ -20,15 +20,21 @@ class BnConvert
     public function floatNumber($number, $decimalPoint = 2)
     {
         $numbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-        $number = number_format($number, $decimalPoint, '.', ',');
-        $number = strtr($number, $numbers);
-        return $number;
+        $formattedNumber = number_format($number, $decimalPoint, '.', ',');
+        $formattedNumber = strtr($formattedNumber, $numbers);
+
+        if ($decimalPoint > 0) {
+            $formattedNumber = rtrim($formattedNumber, '০'); // Remove trailing zeros
+            $formattedNumber = rtrim($formattedNumber, '.'); // Remove decimal point if no decimal places left
+        }
+
+        return $formattedNumber;
     }
 
 
     public function date($date)
     {
-        
+
         $enShortMonths = [
             'Jan' => 'জানুয়ারী',
             'Feb' => 'ফেব্রুয়ারী',
@@ -36,11 +42,11 @@ class BnConvert
             'Apr' => 'এপ্রিল',
             'May' => 'মে',
             'June' => 'জুন',
-            'July' => 'জুলাই', 
-            'Aug' => 'অগাস্ট', 
-            'Sep' => 'সেপ্টেম্বর', 
-            'Oct' => 'অক্টোবর', 
-            'Nov' => 'নভেম্বর', 
+            'July' => 'জুলাই',
+            'Aug' => 'অগাস্ট',
+            'Sep' => 'সেপ্টেম্বর',
+            'Oct' => 'অক্টোবর',
+            'Nov' => 'নভেম্বর',
             'Dec' => 'ডিসেম্বর'
         ];
 
