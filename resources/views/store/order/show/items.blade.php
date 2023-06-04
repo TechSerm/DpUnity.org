@@ -75,7 +75,7 @@
                 <div style="margin-top: 5px; font-size: 12px; font-weight: bold;">
                     <span style="background: #f5f5f5; border: 1px solid #aaaaaa; padding: 2px; border-radius: 5px">
                         <span
-                            style="margin-left: 5px; margin-right: 5px;">{{ bnConvert()->number($item->quantity) }}</span>
+                            style="margin-left: 5px; margin-right: 5px;">{{ bnConvert()->floatNumber($item->quantity) }}</span>
                     </span>
                 </div>
             </td>

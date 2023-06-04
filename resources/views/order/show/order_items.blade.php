@@ -135,9 +135,14 @@
                                     </a>
                                 @endif
                             </div>
-                            <div style="font-size: 11px;font-weight: bold; color: #767575">
+                            <div style="font-size: 11px;font-weight: bold; color: #574b4b">
                                 {{ bnConvert()->number($item->unit_quantity, false) }}
                                 {{ bnConvert()->unit($item->unit) }}
+                                <br/>
+                                <span style="color: #767575;">
+                                    {{ bnConvert()->number($item->unit_quantity, false) }} {{ bnConvert()->unit($item->unit) }} × {{ bnConvert()->floatNumber($item->quantity) }} = {{ bnConvert()->number($item->unit_quantity * $item->quantity , false) }} {{ bnConvert()->unit($item->unit) }}
+                                </span>
+                                
                                 @if (
                                     $item->vendor &&
                                         auth()->user()->can('order.items.vendor_name'))
@@ -165,7 +170,7 @@
                         @endcan
                         <td style="width: 100px"><b>{{ bnConvert()->number($price) }}</b> ৳</td>
                         <td style="width: 100px">
-                            <span class="mb-1"><b> {{ bnConvert()->number($item->quantity) }} </b></span>
+                            <span class="mb-1"><b> {{ bnConvert()->floatNumber($item->quantity) }} </b></span>
                         </td>
                         <td style="width: 100px"><b>{{ bnConvert()->number($total) }}</b> ৳</td>
                     </tr>
@@ -309,12 +314,17 @@
                                 ৳
                                 {{ convertBanglaNumber($price) }}
                                 / {{ bnConvert()->number($item->unit_quantity, false) }}
-                                {{ bnConvert()->unit($item->unit) }} </div>
+                                {{ bnConvert()->unit($item->unit) }} <br/>
+                                <span style="color: #767575; border-top: 1px solid #aaaaaa">
+                                    {{ bnConvert()->number($item->unit_quantity, false) }} {{ bnConvert()->unit($item->unit) }} × {{ bnConvert()->floatNumber($item->quantity) }} = {{ bnConvert()->number($item->unit_quantity * $item->quantity , false) }} {{ bnConvert()->unit($item->unit) }}
+                                </span>
+                                
+                            </div>
                             <div style="margin-top: 3px; font-size: 12px;">
                                 <span
                                     style="background: #f5f5f5; border: 1px solid #aaaaaa; padding: 2px 0px 2px 0px; border-radius: 5px; ">
                                     <span
-                                        style="margin-left: 2px; margin-right: 5px;">পরিমান: <b>{{ bnConvert()->number($item->quantity) }}</b></span>
+                                        style="margin-left: 2px; margin-right: 5px;">পরিমান: <b>{{ bnConvert()->floatNumber($item->quantity) }}</b></span>
                                 </span>
                                 @can('order.items.edit')
                                 @if ($order->isEditable())
@@ -402,8 +412,8 @@
             let price = $("#price").val();
             let wholesale_price = $("#wholesale_price").val();
 
-            let total = quantiy * price;
-            let wholesalePriceTotal = quantiy * wholesale_price;
+            let total = Math.round(quantiy * price);
+            let wholesalePriceTotal = Math.round(quantiy * wholesale_price);
 
             let profit = (total - wholesalePriceTotal);
 

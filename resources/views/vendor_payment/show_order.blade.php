@@ -32,7 +32,7 @@
                     <span
                         style="background: #f5f5f5; border: 1px solid #aaaaaa; padding: 2px 0px 2px 0px; border-radius: 5px; ">
                         <span style="margin-left: 2px; margin-right: 5px;">পরিমান:
-                            <b>{{ bnConvert()->number($item->quantity) }}</b></span>
+                            <b>{{ bnConvert()->floatNumber($item->quantity) }}</b></span>
                     </span>
                 </div>
             </td>

@@ -29,7 +29,7 @@ class OrderItemRequest extends FormRequest
             'name' => 'required',
             'unit_quantity' => 'required',
             'unit' => 'required',
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'required|numeric|min:1',
             'price' => 'required|integer|min:0',
             'wholesale_price' => 'required|integer|min:0',
             'total' => 'required|integer|min:0',
