@@ -6,7 +6,7 @@ return [
     'dashboard.profit.cashier' => ['admin', 'cashier'],
 
     //products
-    'products.index' => ['admin', 'vendor', 'cashier'],
+    'products.index' => ['admin', 'vendor', 'cashier', 'delivery_man'],
     'products.create' => ['admin'],
     'products.edit' => ['admin', 'vendor'],
     'products.show' => ['admin', 'vendor'],
@@ -14,7 +14,8 @@ return [
     'products.delete' => ['super_admin'],
 
 
-    'products_price.index' => ['admin', 'vendor'],
+    'products_price.index' => ['admin', 'vendor', 'delivery_man'],
+    'products_price.show_vendor' => ['admin', 'delivery_man'],
 
     //categories
     'categories.index' => ['admin'],

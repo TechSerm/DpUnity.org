@@ -7,6 +7,7 @@ use App\Helpers\Constant;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\WooQueue;
 use App\Services\File\FileService;
 use App\Services\Image\ImageService;
@@ -288,6 +289,11 @@ class ProductController extends Controller
             $productQuery = Product::with(['imageTable']);
         }
 
+        $vendor = User::where(['id' => request()->vendor])->first();
+        if($vendor){
+            $productQuery->where(['vendor_id' => $vendor->id]);
+        }
+
         if (auth()->user()->isVendor()) {
             $productQuery->where(['vendor_id' => auth()->user()->id]);
         }
@@ -303,11 +309,12 @@ class ProductController extends Controller
             });
         }
 
-        $products = $productQuery->paginate(20);
+        $products = $productQuery->paginate(30);
 
         return view('product_price.index', [
             'products' => $products,
-            'categories' => $categories
+            'categories' => $categories,
+            'vendors' => Vendor::getList(),
         ]);
     }
 

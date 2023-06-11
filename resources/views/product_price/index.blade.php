@@ -166,6 +166,17 @@
                             @endforeach
                         </select>
                     </div>
+                    @can('products_price.show_vendor')
+                    <div class="col-md-3">
+                        <label>দোকান</label>
+                            <select name="vendor" id="filter_vendor" class="form-control">
+                                <option value="">All Vendor</option>
+                                @foreach ($vendors as $vendor)
+                                <option {{ isset(request()->vendor) && request()->vendor == $vendor->id ? 'selected' : '' }} value="{{$vendor->id}}">{{$vendor->name}}</option>
+                                @endforeach
+                            </select>
+                    </div>
+                    @endcan
                     <div class="col-md-3">
                         <button class="btn btn-primary mt-2" onclick="filterProduct()" type="submit">ফিল্টার করুন</button>
                     </div>
@@ -195,8 +206,8 @@
 
                                         <span class="badge {{$product->status == 'private' ? 'badge-danger' : 'badge-success'}}">{{$product->status}}</span>
                                         
-                                        @if (auth()->user()->isAdmin())
-                                            <span class="badge badge-info">{{$product->vendor->name ?? ''}}</span>
+                                        @can('products_price.show_vendor')
+                                            <span class="badge badge-info" style="background: {{$product->vendor ? $product->vendor->color : ""}}">{{$product->vendor->name ?? ''}}</span>
                                         @endif
                                         <br />
                                         
@@ -302,10 +313,12 @@
         function filterProduct() {
             let productName = $("#product_name").val();
             let category = $("#category").val();
+            let vendor = $("#filter_vendor").val();
 
             var url = new URL("{{route('product_price.index')}}");
-            url.searchParams.set('product_name', productName);
-            url.searchParams.set('category', category);
+            if(productName) url.searchParams.set('product_name', productName);
+            if(category)url.searchParams.set('category', category);
+            if(vendor) url.searchParams.set('vendor', vendor ? vendor : "");
 
             window.location.href = url;
         }
