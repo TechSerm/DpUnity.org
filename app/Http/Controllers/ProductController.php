@@ -309,7 +309,7 @@ class ProductController extends Controller
             });
         }
 
-        $products = $productQuery->paginate(30);
+        $products = $productQuery->paginate(32);
 
         return view('product_price.index', [
             'products' => $products,
