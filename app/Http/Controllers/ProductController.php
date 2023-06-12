@@ -363,8 +363,18 @@ class ProductController extends Controller
 
     public function getOrder()
     {
+        $categories = Category::all();
+
+        $category = Category::where(['id' => request()->category])->first();
+        if ($category) {
+            $productQuery = $category->products()->with(['imageTable', 'vendor','categories']);
+        } else {
+            $productQuery = Product::with(['imageTable', 'vendor','categories']);
+        }
+
         return view('product.set_order', [
-            'products' => Product::with('imageTable', 'vendor','categories')->orderBy('serial', 'asc')->get()
+            'products' => $productQuery->orderBy('serial', 'asc')->get(),
+            'categories' => $categories
         ]);
     }
 
