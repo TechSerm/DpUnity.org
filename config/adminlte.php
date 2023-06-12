@@ -271,6 +271,14 @@ return [
                     'label_color' => 'success',
                     'can' => 'products_price.index'
                 ],
+                [
+                    'text'    => 'পণ্যের সিরিয়াল',
+                    'shift'   => 'ml-3',
+                    'url'         => '/admin/products/order',
+                    'icon'        => 'fa fa-credit-card',
+                    'label_color' => 'success',
+                    'can' => 'products.serial'
+                ],
             ],
         ],
         [

@@ -12,6 +12,7 @@ return [
     'products.show' => ['admin', 'vendor'],
     'products.history' => ['admin'],
     'products.delete' => ['super_admin'],
+    'products.serial' => ['admin'],
 
 
     'products_price.index' => ['admin', 'vendor', 'delivery_man'],
