@@ -51,7 +51,7 @@ class ProductController extends Controller
         if (isset($request->category)) {
             $category = Category::findOrFail($request->category);
             $cProducts = $category->products()->pluck('id')->toArray();
-            $productQuery->whereIn('id' , $cProducts);
+            $productQuery->whereIn('id', $cProducts);
         }
 
         if (auth()->user()->isVendor()) {
@@ -190,7 +190,8 @@ class ProductController extends Controller
             'delivery_fee' => $request->delivery_fee,
             'image_id' => $imageId,
             'vendor_id' => $request->vendor_id,
-            'temp_categories_id' => json_encode($request->categories)
+            'temp_categories_id' => json_encode($request->categories),
+            'serial' => Product::all()->count() + 1
         ]);
 
         $product->categories()->sync($request->categories);
@@ -284,13 +285,13 @@ class ProductController extends Controller
 
         $category = Category::where(['id' => request()->category])->first();
         if ($category) {
-            $productQuery = $category->products()->with(['imageTable']);
+            $productQuery = $category->products()->with(['imageTable', 'vendor']);
         } else {
-            $productQuery = Product::with(['imageTable']);
+            $productQuery = Product::with(['imageTable', 'vendor']);
         }
 
         $vendor = User::where(['id' => request()->vendor])->first();
-        if($vendor){
+        if ($vendor) {
             $productQuery->where(['vendor_id' => $vendor->id]);
         }
 
@@ -358,5 +359,25 @@ class ProductController extends Controller
         return response()->json([
             'message' => 'Successfully Price Update'
         ]);
+    }
+
+    public function getOrder()
+    {
+        return view('product.set_order', [
+            'products' => Product::with('imageTable', 'vendor','categories')->orderBy('serial', 'asc')->get()
+        ]);
+    }
+
+    public function setOrder(Request $request)
+    {
+        $productIds =  $request->products;
+
+        $products = Product::whereIn('id', $productIds)->get();
+        foreach ($products as $product) {
+            $productsSerial = array_search($product->id, $productIds) + 1;
+            $product->serial = $productsSerial;
+            $product->timestamps = false;
+            $product->save();
+        }
     }
 }

@@ -31,7 +31,8 @@ class Product extends Model
         'delivery_fee',
         'status',
         'has_stock',
-        'vendor_id'
+        'vendor_id',
+        'serial'
     ];
 
     protected $casts = [
@@ -85,8 +86,11 @@ class Product extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
+        $fillable = array_diff($this->fillable, ['serial']);
+
         return LogOptions::defaults()
-            ->logOnly($this->fillable)
-            ->logOnlyDirty($this->fillable);
+            ->logOnly($fillable)
+            ->dontLogIfAttributesChangedOnly(['serial'])
+            ->logOnlyDirty($fillable);
     }
 }

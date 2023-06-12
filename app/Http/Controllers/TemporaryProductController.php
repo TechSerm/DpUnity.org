@@ -272,7 +272,8 @@ class TemporaryProductController extends Controller
             'delivery_fee' => $request->delivery_fee,
             'image_id' => $imageId,
             'vendor_id' => $request->vendor_id,
-            'temp_categories_id' => json_encode($request->categories)
+            'temp_categories_id' => json_encode($request->categories),
+            'serial' => Product::all()->count() + 1
         ]);
 
         $product->categories()->sync($request->categories);

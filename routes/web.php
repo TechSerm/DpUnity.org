@@ -74,6 +74,8 @@ Route::prefix('admin')->group(function () {
         //product routes
         Route::get('/products/offer', [ProductController::class, 'offer'])->name('products.offer');
         Route::get('/products/data', [ProductController::class, 'getData'])->name('products.data');
+        Route::get('/products/order', [ProductController::class, 'getOrder'])->name('products.order');
+        Route::post('/products/order', [ProductController::class, 'setOrder']);
         Route::get('/products/{product}/history', [ProductController::class, 'history'])->name('products.history');
         Route::get('/products/{product}/sync', [ProductController::class, 'sync'])->name('products.sync');
         Route::resource('products', ProductController::class);
