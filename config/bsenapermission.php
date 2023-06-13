@@ -11,7 +11,7 @@ return [
     'products.edit' => ['admin', 'vendor'],
     'products.show' => ['admin', 'vendor'],
     'products.history' => ['admin'],
-    'products.delete' => ['super_admin'],
+    'products.delete' => ['admin'],
     'products.serial' => ['admin'],
 
 
@@ -23,7 +23,7 @@ return [
     'categories.create' => ['admin'],
     'categories.edit' => ['admin'],
     'categories.history' => ['admin'],
-    'categories.delete' => ['super_admin'],
+    'categories.delete' => ['admin'],
 
     'active_orders.index' => ['admin', 'vendor', 'delivery_man'],
     'vendor_payment.index' => ['admin', 'vendor', 'delivery_man'],

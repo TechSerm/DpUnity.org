@@ -41,6 +41,11 @@
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             padding: 5px;
         }
+
+        table {
+            border: 1px solid #eeeeee;
+            margin-top: 10px;
+        }
     </style>
 
     <div class="row">
@@ -70,7 +75,19 @@
         @foreach ($products as $product)
             <div class="col-md-3" data-id="{{ $product->id }}">
                 <div class="card productPriceCard">
-                    <button class="btn btn-sm ml-1 btn-secondary drg"><i class="fas fa-grip-horizontal"></i></button>
+                    <div style="text-align: center">
+                        <button class="btn btn-action btn-sm btn-secondary drg"><i
+                                class="fas fa-grip-horizontal"></i></button>
+                        <button data-url="{{ route('products.edit', $product) }}" class='btn btn-success btn-action btn-sm'
+                            data-modal-title='Update Product <b># {{ $product->id }}</b>' data-modal-size='650'
+                            data-toggle='modal'><i class='fa fa-edit'></i></button>
+                        <button data-url="{{ route('products.history', $product) }}"
+                            class='btn btn-primary btn-action btn-sm'
+                            data-modal-title='Update Product <b>#{{ $product->id }}</b>' data-modal-size='1200'
+                            data-toggle='modal'><i class='fa fa-history'></i></button>
+                            <button data-url="{{ route('products.destroy', $product) }} " class='btn btn-danger btn-action btn-sm' data-callback='location.reload()' data-toggle='delete'><i class='fa fa-trash'></i></button>
+
+                    </div>
                     <table>
                         <tr class="cartTr">
                             <td class="align-middle" style="padding: 5px; width: 70px">
@@ -201,5 +218,16 @@
                     //console.log("update call");
                 }
             });
+
+            function updateProduct(e) {
+                let form = Helper.form(e);
+                form.submit({
+                    success: {
+                        'callback': function() {
+                            location.reload();
+                        }
+                    }
+                });
+            }
         </script>
     @endpush

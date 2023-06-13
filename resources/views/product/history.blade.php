@@ -8,9 +8,6 @@
     }
 
 
-
-    
-
     .marker-success{
         background: #ABF2BC;
         font-size: 13px;
@@ -30,6 +27,8 @@
     .history-table i {
         font-size: 13px;
     }
+
+    
 </style>
 <table class="history-table" style="width: 100%">
     <thead>
@@ -75,7 +74,7 @@
                 <td>
                     <span title="{{ $activitie->created_at }}" class="badge badge-light">{{ $activitie->created_at->diffForHumans() }}</span>
                 </td>
-                <td style="text-align: left" style="padding-left: 15px;">
+                <td style="text-align: left" class="infoDiff" style="padding-left: 15px;">
                     @foreach ($attributes as $key => $value)
                     @php
                         $oldAttr = isset($oldAttributes[$key]) ? $oldAttributes[$key]  : '';
