@@ -367,9 +367,9 @@ class ProductController extends Controller
 
         $category = Category::where(['id' => request()->category])->first();
         if ($category) {
-            $productQuery = $category->products()->with(['imageTable', 'vendor','categories']);
+            $productQuery = $category->products()->with(['imageTable', 'vendor','categories', 'orders']);
         } else {
-            $productQuery = Product::with(['imageTable', 'vendor','categories']);
+            $productQuery = Product::with(['imageTable', 'vendor','categories', 'orders']);
         }
 
         return view('product.set_order', [

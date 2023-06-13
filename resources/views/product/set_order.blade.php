@@ -100,7 +100,12 @@
                                 <div style="font-size: 11px;font-weight: bold; color: #767575">
                                     {{ bnConvert()->number($product->quantity) }}
                                     {{ bnConvert()->unit($product->unit) }}
-
+                                    <br/>
+                                    @php
+                                        $totalOrder = $product->orders->sum('quantity');
+                                    @endphp
+                                    <span
+                                    class="badge {{ $totalOrder == 0 ? 'badge-danger' : 'badge-success' }}">{{ bnConvert()->floatNumber($totalOrder) }} টি অর্ডার হয়েছে </span><br/>
                                     <span
                                         class="badge {{ $product->status == 'private' ? 'badge-danger' : 'badge-success' }}">{{ $product->status }}</span>
                                     <span

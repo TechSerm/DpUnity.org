@@ -74,6 +74,11 @@ class Product extends Model
         Cart::update($this->id, $quantity);
     }
 
+    public function orders()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function keyWordUpdate()
     {
         SearchService::createSearchKeyword($this->name);
