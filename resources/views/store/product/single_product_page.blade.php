@@ -1,8 +1,7 @@
 @foreach ($products as $product)
     @if ($product->category_name != '')
         <div class="col-md-12">
-            <h4>{{ $product->category_name }}</h4>
-            <hr>
+            <div class="home-list-category-name"><i class="fa fa-arrow-right" aria-hidden="true"></i> {{ $product->category_name }}</div>
         </div>
     @endif
     <div class="col-md-2 col-sm-6 col-lg-2 col-6">

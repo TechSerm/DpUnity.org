@@ -148,6 +148,14 @@
             margin: -2px -2px 10px -2px;
         }
 
+        .home-list-category-name{
+            border-bottom: 1px solid #c1c5ce;
+            margin: 10px 10px 15px 0px;
+            padding-bottom: 5px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
 
     </style>
     {{-- @include('store.home.feedback_form') --}}
@@ -163,7 +171,7 @@
     </div>
     <div class="home-list" style="background: #eaeffc">
         <div class="home-list-header" style="background: #3d579c; color: #ffffff">পণ্যের তালিকা</div>
-        <div class="home-list-body" style="margin-right: -10px;">
+        <div class="home-list-body" style="margin-right: -10px;margin-top: -5px;">
             <div class="row no-gutters" style="" id="product-list">
 
                 @include('store.product.single_product_page')
