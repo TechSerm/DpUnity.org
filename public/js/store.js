@@ -2487,7 +2487,6 @@ var Home = {
     if (Store.home.pageLoading === true || Store.home.pageStop === true) return;
     Store.home.pageLoading = true;
     Store.home.pageNo += 1;
-    //console.log("home ajax call " + this.pageNo);
     $("#loader-area").show();
     $.get(Store.home.url, {
       page: Store.home.pageNo
@@ -2515,6 +2514,9 @@ var Home = {
     var heightWeight = Math.min(300, 150 + diff);
     $(".product-img").height(heightWeight).width(heightWeight);
     // $(".product-card-height").height(300 + diff);
+
+    var heightWeightIsShowPage = Math.min(500, 350 + (divWidth - 350));
+    $(".product-img-isShowPage").height(heightWeightIsShowPage).width(heightWeightIsShowPage);
 
     //console.log(divWidth);
     // console.log("height: " + ($(".product-div").height() - divWidth));
