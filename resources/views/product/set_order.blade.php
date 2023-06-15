@@ -98,7 +98,7 @@
                                     {{ $product->id }} - {{ $product->name }}
                                 </div>
                                 <div style="font-size: 11px;font-weight: bold; color: #767575">
-                                    {{ bnConvert()->number($product->quantity) }}
+                                    {{ bnConvert()->floatNumber($product->quantity) }}
                                     {{ bnConvert()->unit($product->unit) }}
                                     <br/>
                                     @php
