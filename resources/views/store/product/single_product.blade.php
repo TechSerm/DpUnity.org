@@ -33,7 +33,7 @@
         $incMarketSalePrice = getProductDiscountIncValue($product->market_sale_price);
     @endphp
 
-    <div class="">
+    <div class="" style="text-align: center">
         
         <div class="card product"
             style="height: {{ $isShowPage == true ? '500' : '300' }}px; {{ !$hasStock ? 'opacity: 0.6' : '' }};">
@@ -45,7 +45,7 @@
                 <span href="#" wire:click="increment" class="">
             @endif
             <span class="ct-image-container">
-                <img width="100%" id="productImage" height="{{ $isShowPage == true ? '350' : '150' }}px"
+                <img width="{{ $isShowPage == true ? '350' : '150' }}px;" id="productImage" height="{{ $isShowPage == true ? '350' : '150' }}px"
                     src="{{ $product->image }}" class="" alt="">
             </span>
             @if (!$isShowPage && $hasStock)
