@@ -13,11 +13,11 @@
             padding: 3px 0px 3px 3px;
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
-        .productName{
+        .productName {
             color: #000000;
-            
+
         }
-        .productName:hover{
+        .productName:hover {
             outline: none;
             text-decoration: none;
         }
@@ -34,25 +34,27 @@
     @endphp
 
     <div class="" style="text-align: center">
-        
-        <div class="card product"
-            style="height: {{ $isShowPage == true ? '500' : '300' }}px; {{ !$hasStock ? 'opacity: 0.6' : '' }};">
+        <div class="card product product-div {{ $isShowPage ? 'product-card-height-isShowPage' : 'product-card-height' }}"
+            style="{{ !$hasStock ? 'opacity: 0.6' : '' }};">
             @if ($product->price < $product->market_sale_price)
-                <span class="discountLebel">৳ <b>{{bnConvert()->number($product->market_sale_price - $product->price + $incMarketSalePrice)}}</b> ছাড়</span>
+                <span class="discountLebel">৳
+                    <b>{{ bnConvert()->number($product->market_sale_price - $product->price + $incMarketSalePrice) }}</b>
+                    ছাড়</span>
             @endif
 
             @if (!$isShowPage && $hasStock)
                 <span href="#" wire:click="increment" class="">
             @endif
             <span class="ct-image-container">
-                <img width="{{ $isShowPage == true ? '350' : '150' }}px;" id="productImage" height="{{ $isShowPage == true ? '350' : '150' }}px"
-                    src="{{ $product->image }}" class="" alt="">
+                <img id="productImage" src="{{ $product->image }}"
+                    class="{{ $isShowPage ? 'product-img-isShowPage' : 'product-img' }}" alt="">
             </span>
             @if (!$isShowPage && $hasStock)
                 </span>
             @endif
             <div class="body">
-                <div class="title"><a class="productName" href="{{route('store.product.show', $product)}}">{{$product->name}}</a></div>
+                <div class="title"><a class="productName"
+                        href="{{ route('store.product.show', $product) }}">{{ $product->name }}</a></div>
                 <div class="quantity-area">
                     <span>{{ bnConvert()->number($product->quantity, false) }}
                         {{ bnConvert()->unit($product->unit) }}</span>

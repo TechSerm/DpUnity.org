@@ -9588,6 +9588,20 @@ a.text-dark:hover, a.text-dark:focus {
   color: #fff;
   float: right;
 }
+.product .product-card-height {
+  height: 300px;
+}
+.product .product-img {
+  height: 150px;
+  width: 150px;
+}
+.product .product-img-isShowPage {
+  height: 350px;
+  width: 350px;
+}
+.product .product-card-height-isShowPage {
+  height: 500px;
+}
 
 .product {
   border-radius: 10px;

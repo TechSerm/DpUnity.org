@@ -190,5 +190,6 @@
         Store.home.init({
             url: "{{ route('store.home.products') }}"
         });
+        
     </script>
 @endpush

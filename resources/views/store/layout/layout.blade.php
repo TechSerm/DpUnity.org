@@ -25,8 +25,13 @@
 
     <script>
         window.livewire.rescan();
+        
         $(document).on('turbolinks:visit', function() {
             $("#loadBody").append($("#pageLoader").html());
+        });
+
+        $(window).resize(function() {
+            Store.home.updateProductImageSize();
         });
 
         window.addEventListener('change-cart-animation', event => {
@@ -58,5 +63,9 @@
     @include('store.layout.footer')
 </body>
 @stack('scripts')
+
+<script>
+    Store.home.updateProductImageSize();
+</script>
 
 </html>

@@ -25,6 +25,7 @@ const Home = {
             Store.home.pageStop = response == "" ? true : false;
             Store.home.pageLoading = false;
             window.livewire.rescan();
+            Store.home.updateProductImageSize();
         });
     },
 
@@ -37,6 +38,24 @@ const Home = {
     isHomePage: function() {
         let uri = require('urijs')();
         return uri.segmentCoded(0) == '' ? true : false;
+    },
+
+    updateProductImageSize: function() {
+
+        let divWidth = $(".product-div").width();
+        let diff = divWidth - 150;
+        let heightWeight = Math.min(300, 150 + diff);
+        $(".product-img").height(heightWeight).width(heightWeight);
+        // $(".product-card-height").height(300 + diff);
+
+        let heightWeightIsShowPage = Math.min(400, 350 + diff);
+        $(".product-img-isShowPage").height(heightWeightIsShowPage).width(heightWeightIsShowPage);
+
+        //console.log(divWidth);
+        // console.log("height: " + ($(".product-div").height() - divWidth));
+        //console.log(heightWeightIsShowPage);
+        // $(".product-card-height-isShowPage").height(500 + diff);
+
     }
 }
 
