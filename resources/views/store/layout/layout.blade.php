@@ -46,6 +46,12 @@
             $('#orderDetailsModal').addClass("show").css("display","block");
             // $('#orderDetailsModal').modal('toggle');
         })
+
+        window.addEventListener('livewire:load', function () {
+            Livewire.on('cartUpdate', function () {
+                Store.home.updateProductImageSize();
+            });
+        });
     </script>
 
     @livewireStyles
