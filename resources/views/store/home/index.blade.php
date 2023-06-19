@@ -66,8 +66,10 @@
     </style>
 
     <div style="">
-        <img class="card hotline-card" src="{{ asset('assets/img/bsena1.jpg') }}" style="width: 100%;border-radius: 5px"
+
+        <img class="card hotline-card mb-1" src="{{ asset('assets/img/bsena1.jpg') }}" style="width: 100%;border-radius: 5px"
             alt="">
+        {{-- @include('store.home.slider') --}}
         <div class="row mt-3">
             @if (
                 !deviceInfo()->hasDeviceToken() ||
@@ -97,17 +99,22 @@
                     </a>
                 </div>
             @endif
+
             <div class="col-md-4 col-sm-4 col-12">
+                <div class="card hotline-card" style="text-align: center; font-size: 15px;">
 
-                <div class="card hotline-card" style="text-align: center; font-size: 20px;">
-                    <div style="height: 80px">
-                        যেকোনো প্রয়োজনে যোগাযোগ করুন আমাদের হটলাইন নাম্বারে
+                    <div style="color: #474145; margin-top: 10px;margin-bottom: -10px; ">
+                        যেকোনো প্রয়োজনে যোগাযোগ করুন আমাদের হটলাইন নাম্বারে<br />
+                        <img width="110px;" style="top: 40%" src="{{ asset('assets/img/phone1.png') }}" alt="">
                     </div>
-                    <a class="btn btn-success mt-1" href="tel:01603169395"><i class="fa fa-phone" aria-hidden="true"></i>
-                        01603169395</a>
-                </div>
+                    <a class="btn mt-1" style="background: #554594; color: #ffffff; font-weight: bold; width: 100%"
+                        href="tel:01603169395">
+                        <i class="fa fa-phone" aria-hidden="true"></i> 01603169395
+                    </a>
 
+                </div>
             </div>
+
         </div>
     </div>
     <div class="row orderArea mt-3">
@@ -148,18 +155,16 @@
             margin: -2px -2px 10px -2px;
         }
 
-        .home-list-category-name{
+        .home-list-category-name {
             border-bottom: 1px solid #c1c5ce;
             margin: 10px 10px 15px 0px;
             padding-bottom: 5px;
             font-weight: bold;
             font-size: 18px;
         }
-
-
     </style>
     {{-- @include('store.home.feedback_form') --}}
-    
+
     <div class="home-listt" style="background: #ffffff">
         <div class="home-list-headerr" style=" color: #000000; margin-top: 10px">
             <h4>ক্যাটেগরি</h4>
@@ -190,6 +195,5 @@
         Store.home.init({
             url: "{{ route('store.home.products') }}"
         });
-        
     </script>
 @endpush
