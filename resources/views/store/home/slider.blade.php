@@ -1,7 +1,10 @@
 @php
-    $img1 = "https://tajabajar.s3.ap-south-1.amazonaws.com/uploads/all/IQxNYnSZnNu2ybs5Cqbzxuzt5iATBicklrf6Im07.webp";
-    $img2 = "https://tajabajar.s3.ap-south-1.amazonaws.com/uploads/all/A3dqXzRO7z18I4ahCFnjxRcTlhMJfcelO0Vxb2jJ.webp";
-    $img3 = "https://tajabajar.s3.ap-south-1.amazonaws.com/uploads/all/79HZJzWll5Ggh5uwqBPknScPFDoVlqtPMgkGpgBT.webp";
+    $imgList = [
+        asset('assets/img/free1.png'),
+        "https://tajabajar.s3.ap-south-1.amazonaws.com/uploads/all/IQxNYnSZnNu2ybs5Cqbzxuzt5iATBicklrf6Im07.webp",
+        "https://tajabajar.s3.ap-south-1.amazonaws.com/uploads/all/A3dqXzRO7z18I4ahCFnjxRcTlhMJfcelO0Vxb2jJ.webp",
+        "https://tajabajar.s3.ap-south-1.amazonaws.com/uploads/all/79HZJzWll5Ggh5uwqBPknScPFDoVlqtPMgkGpgBT.webp",
+];
 @endphp
 
 <style>
@@ -22,13 +25,12 @@
         position: relative;
         display: flex;
         align-items: center;
-        padding: 5px;
+        padding: 10px 5px 10px 5px;
     }
 
     .image-list {
         display: flex;
         gap: 10px;
-        margin-bottom: 15px;
         width: fit-content;
         transition: transform 0.5s ease;
     }
@@ -64,14 +66,15 @@
 
 
 
-<div class="image-slider-container">
+<div class="image-slider-container mt-3">
     <div class="image-slider">
         <div class="arrow arrow-left">&lt;</div>
         <div class="arrow arrow-right">&gt;</div>
         <div class="image-list">
-            <img src="{{ $img1 }}" class="img" alt="Image 1">
-            <img src="{{ $img2 }}" class="img" alt="Image 2">
-            <img src="{{ $img3 }}" class="img" alt="Image 3">
+            @foreach ($imgList as $img)
+                <img src="{{ $img }}" class="img" alt="Image 1">
+            @endforeach
+
             <!-- Add more images to the list -->
         </div>
     </div>
