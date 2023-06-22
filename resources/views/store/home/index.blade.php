@@ -67,7 +67,7 @@
 
     <div style="">
 
-        <img class="card hotline-card mb-1" src="{{ asset('assets/img/free_bottle.png') }}" style="width: 100%;border-radius: 5px"
+        <img class="card hotline-card mb-1" src="{{ asset('assets/img/free_bottle_1500.png') }}" style="width: 100%;border-radius: 5px"
             alt="">
         <div class="row mt-3">
             @if (
