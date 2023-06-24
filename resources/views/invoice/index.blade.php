@@ -58,7 +58,8 @@
     document.getElementById("myForm").addEventListener("submit", function(event) {
       event.preventDefault();
       var inputValue = document.getElementById("orderNo").value;
-      window.location.href = inputValue;
+      var url = "{{ route('invoice.index') }}";
+      window.location.href = url + "/" + inputValue;
     });
   </script>
 </html>
