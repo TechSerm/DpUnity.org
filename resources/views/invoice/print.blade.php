@@ -127,7 +127,7 @@
                     <tr>
                         <td> {{ bnConvert()->number($key + 1) }} </td>
                         <td style="text-align: left">{{ $item->name }} -
-                            {{ bnConvert()->number($item->unit_quantity, false) }}
+                            {{ bnConvert()->floatNumber($item->unit_quantity, false) }}
                             {{ bnConvert()->unit($item->unit) }} </td>
                         <td>{{ bnConvert()->floatNumber($item->quantity) }}</td>
                         <td>৳ {{ bnConvert()->number($item->price) }}</td>
