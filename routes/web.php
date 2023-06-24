@@ -11,6 +11,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DeliveryTransportCostController;
 use App\Http\Controllers\HomePageProductController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NotificationDeviceController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\OrderProfitDipositeController;
@@ -59,6 +60,8 @@ Route::middleware(['device_token_check','check_push_notification_click'])->group
     
 });
 
+Route::get('/print', [InvoiceController::class, 'index'])->name('invoice.index');
+Route::get('/print/{order_id}', [InvoiceController::class, 'print'])->name('invoice.print');
 
 Route::prefix('admin')->group(function () {
 
