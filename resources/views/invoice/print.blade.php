@@ -99,7 +99,6 @@
         <div class="invoice-details" style="font-size: 16px;">
             <p style="font-size: 20px; font-weight: bold">{{ $order->name }}</p>
             <p>{{ $order->address }}</p>
-            <p>মোবাইল: {{ $order->phone }}</p>
         </div>
 
         <div class="invoice-details" style="float: right;">
