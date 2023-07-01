@@ -1,5 +1,4 @@
 <div>
-    @include('store.cart.offer')
 <div class="orderTotalArea">
     
     <table class="orderTotalTable">
