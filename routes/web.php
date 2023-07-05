@@ -37,7 +37,7 @@ use Illuminate\Support\Facades\App;
 |
 */
 
-Route::middleware(['device_token_check','check_push_notification_click'])->group(function () {
+Route::middleware(['device_token_check', 'device_history', 'check_push_notification_click'])->group(function () {
     Route::get('/',  [StoreController::class, 'home'])->name('home');
     Route::get('/search', [SearchController::class, 'index'])->name('search');
     Route::get('/search-product', [SearchController::class, 'getSearchProduct'])->name('search.products');

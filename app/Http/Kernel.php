@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'device_token_check'          => \App\Http\Middleware\Notification\NotificationDeviceTokenCheck::class,
         'check_push_notification_click'          => \App\Http\Middleware\Notification\CheckNotificationClick::class,
         'order_show_page_check'          => \App\Http\Middleware\Order\OrderShowPageCheck::class,
+        'device_history'          => \App\Http\Middleware\Device\DeviceHistory::class,
         
     ];
 }
