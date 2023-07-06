@@ -25,6 +25,7 @@ class NotificationDeviceController extends Controller
                     $query->where(['last_visit_ip' => $searchValue])->orWhere('last_visit_page', 'like', '%' . $searchValue . '%');
                 }
             })
+            
             ->editColumn('last_visit_time', function ($model) use ($request) {
                 $dataOb = new Carbon($model->last_visit_time);
                 return $dataOb->format('d M y, G:i:s') . ' (' . $dataOb->diffForHumans() . ')';
@@ -32,7 +33,22 @@ class NotificationDeviceController extends Controller
             ->editColumn('created_at', function ($model) {
                 return $model->created_at->format('d M y, G:i:s') . ' (' . $model->created_at->diffForHumans() . ')';
             })
+            ->addColumn('action', function ($model) {
+
+                $content = "<button data-url='" . route('notification_device.show', ['notification_device_id' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Device Info <b>#" . $model->id . "</b>'
+                data-modal-size='lg' data-toggle='modal'><i class='fa fa-history'></i></button>";
+
+                return $content;
+            })
             ->make(true);
+    }
+
+    public function show($id)
+    {
+        $device = NotificationDevice::findOrFail($id);
+        return view('device.show', [
+            'device' => $device
+        ]);
     }
 
     public function deviceDashboard()

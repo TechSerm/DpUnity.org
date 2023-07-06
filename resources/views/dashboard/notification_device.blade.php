@@ -81,6 +81,7 @@
                         <th>Last Visit Time</th>
                         <th>Created At</th>
                         <th>Last Visit Page</th>
+                        <th style="width: 10%">Action</th>
                     </tr>
                 </thead>
             </table>
@@ -122,6 +123,9 @@
                     },
                     {
                         data: 'last_visit_page'
+                    },
+                    {
+                        data: 'action'
                     },
                 ]
             });

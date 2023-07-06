@@ -135,6 +135,7 @@ Route::prefix('admin')->group(function () {
         Route::resource('shippings', ShippingController::class);
         
         Route::get('/notification_device', [NotificationDeviceController::class, 'deviceDashboard'])->name('notification_device.dashboard');
+        Route::get('/notification_device/show/{notification_device_id}', [NotificationDeviceController::class, 'show'])->name('notification_device.show');
         Route::get('/notification_device/data', [NotificationDeviceController::class, 'getData'])->name('notification_device.data');
 
         Route::get('/push_notifications/data', [PushNotificationController::class, 'getData'])->name('push_notifications.data');
