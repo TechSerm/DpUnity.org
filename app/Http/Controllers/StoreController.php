@@ -31,7 +31,7 @@ class StoreController extends Controller
     {
         $page = request()->page;
         $products = HomePageProductFacade::get();
-        return view('store.product.single_product_page', ['products' => $products]);
+        return view(request()->ajax() ? 'store.product.single_product_page' : 'store.product.single_product_page_with_ui', ['products' => $products]);
     }
 
     public function addCart(Request $request)
