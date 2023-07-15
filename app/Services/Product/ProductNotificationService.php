@@ -108,12 +108,12 @@ class ProductNotificationService
         $idList = $this->productNotificationData->pluck('id')->all();
         $products = $queryProducts->whereNotIn('id', $idList);
 
-        if (empty($product)) {
+        if (empty($products)) {
             $idList = $this->getIdList(15);
             $products = $queryProducts->whereNotIn('id', $idList);
         }
 
-        return empty($product) ? [] : $products->random();
+        return empty($products) ? [] : $products->random();
     }
 
     private function getIdList($ignoreDays)
