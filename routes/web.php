@@ -65,7 +65,7 @@ Route::get('/print/{order_id}', [InvoiceController::class, 'print'])->name('invo
 
 Route::prefix('admin')->group(function () {
 
-    Route::middleware(['auth','device_token_check','check_push_notification_click'])->group(function () {
+    Route::middleware(['auth','device_token_check','device_history', 'check_push_notification_click'])->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('admin.home');
 
         //temporary products routes
