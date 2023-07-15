@@ -39,7 +39,7 @@ class ProductNotificationService
         ];
 
         $notifyTime = [
-            "top" => [8, 10, 15],
+            "top" => [10, 15],
             "latest" => [9, 12, 18],
             "random" => [11, 14, 16]
         ];
@@ -162,7 +162,7 @@ class ProductNotificationService
             'image' => $product->imageSrv()->getDomainPath(),
         ]);
 
-        $totalSuccessfullySend = $pushNotification->notifyAdmin();
+        $totalSuccessfullySend = $pushNotification->notifyAll();
     }
 
     private function getTitle(Product $product)
