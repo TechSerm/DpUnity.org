@@ -43,13 +43,12 @@ class DeviceHistory extends Model
 
         $outputUrl = $path . $query;
 
-        if (strlen($outputUrl) > 50) {
-            $length = 50;
-            $overflow = strlen($outputUrl) - $length;
-            $trimLength = ($length - $overflow) / 2;
+        if (empty($outputUrl)) {
+            return '/';
+        }
 
-            $path = substr($path, 0, $trimLength) . '...' . substr($path, -$trimLength);
-            $outputUrl = $path . $query;
+        if (strlen($outputUrl) > 50) {
+            $outputUrl = substr($outputUrl, 0, 50) . '...';
         }
 
         return $outputUrl;

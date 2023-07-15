@@ -10,7 +10,7 @@
     @endphp
         <tr>
             <td>{{ $history->ip }}</td>
-            <td><a href="{{ $history->url }}"><span class="badge badge-info"> {{ $history->shortUrl() == "" ? "/home" : $history->shortUrl() }}</span></a></td>
+            <td><a href="{{ $history->url }}"><span class="badge badge-info"> {{ $history->shortUrl() }}</span></a></td>
             <td>
                 @if (!empty($checkOutData))
                     {{$checkOutData['fullName']}}<br/>
