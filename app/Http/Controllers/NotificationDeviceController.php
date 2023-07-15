@@ -35,7 +35,7 @@ class NotificationDeviceController extends Controller
             })
             ->editColumn('last_visit_page', function ($model) use ($request) {
                 $history = $model->history->last();
-                return $history ? $history->url : $model->last_visit_page;
+                return $history ? $history->shortUrl() : $model->last_visit_page;
             })
             ->editColumn('created_at', function ($model) {
                 return $model->created_at->format('d M y, G:i:s') . ' (' . $model->created_at->diffForHumans() . ')';
