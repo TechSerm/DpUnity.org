@@ -12,7 +12,7 @@ class NotificationDeviceController extends Controller
 {
     public function getData(Request $request)
     {
-        $deviceQuery = NotificationDevice::where([]);
+        $deviceQuery = NotificationDevice::with('history');
 
         if (!request()->get('order')) {
             $deviceQuery = $deviceQuery->orderBy('last_visit_time', 'desc');
@@ -25,10 +25,16 @@ class NotificationDeviceController extends Controller
                     $query->where(['last_visit_ip' => $searchValue])->orWhere('last_visit_page', 'like', '%' . $searchValue . '%');
                 }
             })
-            
+            ->editColumn('hits', function ($model) use ($request) {
+                return $model->history->count();
+            })
             ->editColumn('last_visit_time', function ($model) use ($request) {
-                $dataOb = new Carbon($model->last_visit_time);
-                return $dataOb->format('d M y, G:i:s') . ' (' . $dataOb->diffForHumans() . ')';
+                $history = $model->history->last();
+                return $history? $history->created_at->format('d M y, G:i:s') . ' (' . $history->created_at->diffForHumans() . ')' : '';
+            })
+            ->editColumn('last_visit_page', function ($model) use ($request) {
+                $history = $model->history->last();
+                return $history? $history->url : '';
             })
             ->editColumn('created_at', function ($model) {
                 return $model->created_at->format('d M y, G:i:s') . ' (' . $model->created_at->diffForHumans() . ')';
