@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\PushNotification\PushNotificationService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,5 +15,15 @@ class PushNotification extends Model
     public function clicks()
     {
         return $this->hasMany(PushNotificationClick::class);
+    }
+
+    public function notifyAll()
+    {
+        return (new PushNotificationService())->notifyAll($this);
+    }
+
+    public function notifyAdmin()
+    {
+        return (new PushNotificationService())->notifyAdmin($this);
     }
 }

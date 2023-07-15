@@ -74,7 +74,7 @@ class PushNotificationController extends Controller
             'image' => $request->image,
         ]);
 
-        $totalSuccessfullySend = $this->pushNotificationService->notifyAll($pushNotification);
+        $totalSuccessfullySend = $pushNotification->notifyAll();
 
         return response()->json([
             'message' => 'Notification Successfully Send ' . $totalSuccessfullySend . ' Device'

@@ -12,20 +12,10 @@ class HomePageProductService
 {
     public function get()
     {
-        $mxSerialNo = HomePageProduct::max('serial_no') + 1;
-
         $products = [];
         $productsId = [];
 
-        $topProducts = Product::with(['imageTable'])->where(['status' => 'publish', 'has_stock' => true])->leftJoin('home_page_products', function ($join) {
-            $join->on('products.id', '=', 'home_page_products.product_id');
-        })->leftJoin($this->getOrderSaleQueryTable(), function ($join) {
-            $join->on('products.id', '=', 'sale_count_table.product_id');
-        })->select([
-            'products.*',
-            DB::raw('IFNULL(serial_no, ' . $mxSerialNo . ') as serial_no'),
-            DB::raw('IFNULL(total_sale , 0) as total_sale')
-        ])->orderByRaw('serial_no asc, total_sale desc')->limit(18)->get();
+        $topProducts = $this->getPopularProducts();
 
         foreach ($topProducts as $key => $product) {
             if ($key == 0) $product->category_name = "জনপ্রিয় পণ্য";
@@ -64,6 +54,22 @@ class HomePageProductService
         );
 
         // return collect($products)->paginate();
+    }
+
+    public function getPopularProducts(){
+        $mxSerialNo = HomePageProduct::max('serial_no') + 1;
+        
+        $products = Product::with(['imageTable'])->where(['status' => 'publish', 'has_stock' => true])->leftJoin('home_page_products', function ($join) {
+            $join->on('products.id', '=', 'home_page_products.product_id');
+        })->leftJoin($this->getOrderSaleQueryTable(), function ($join) {
+            $join->on('products.id', '=', 'sale_count_table.product_id');
+        })->select([
+            'products.*',
+            DB::raw('IFNULL(serial_no, ' . $mxSerialNo . ') as serial_no'),
+            DB::raw('IFNULL(total_sale , 0) as total_sale')
+        ])->orderByRaw('serial_no asc, total_sale desc')->limit(18)->get();
+
+        return $products;
     }
 
     public function getOrderSaleQueryTable()

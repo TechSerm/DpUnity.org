@@ -2,9 +2,11 @@
 
 namespace App\Services\PushNotification;
 
+use App\Facades\Order\OrderFacade;
 use App\Models\NotificationDevice;
 use App\Services\WooCommerce\WooCommerceService;
 use App\Models\PushNotification;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class PushNotificationService
@@ -14,10 +16,31 @@ class PushNotificationService
         dd($pushNotification);
     }
 
+    public function notifyAdmin(PushNotification $pushNotification){
+        $tokens = OrderFacade::getManagerDeviceToken();
+        if(empty($tokens))return;
+
+        $response = $this->sendNotification(array_values($tokens), [
+            "title" => $pushNotification->title,
+            "body" => $pushNotification->body,
+            "url" => $this->getNotificationUrl($pushNotification),
+            "largeIcon" => $pushNotification->image,
+            "bodyImage" => $pushNotification->image
+        ]);
+
+        $totalSuccessfullySend = $response['success'] ?? 0;
+        
+        $pushNotification->update([
+            'total_sends' => $totalSuccessfullySend
+        ]);
+
+        return $totalSuccessfullySend;
+    }
+
     public function notifyAll(PushNotification $pushNotification)
     {
         //fcm support max 1000 device per request so need to make group
-        $firebaseTokens = NotificationDevice::whereNotNull('token')->pluck('token')->chunk(999);
+        $firebaseTokens = NotificationDevice::whereNotNull('token')->where('updated_at', '>', Carbon::parse('2023-02-15'))->pluck('token')->chunk(999);
         $totalSuccessfullySend = 0;
 
         foreach ($firebaseTokens as $firebaseToken) {
@@ -25,7 +48,7 @@ class PushNotificationService
                 "title" => $pushNotification->title,
                 "body" => $pushNotification->body,
                 "url" => $this->getNotificationUrl($pushNotification),
-                "largeIcon" => "",
+                "largeIcon" => $pushNotification->image,
                 "bodyImage" => $pushNotification->image
             ]);
 
