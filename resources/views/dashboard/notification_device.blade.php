@@ -93,7 +93,7 @@
     <script>
         $(document).ready(function() {
             // DataTable
-            $('#myTablee').DataTable({
+            $('#myTable').DataTable({
                 processing: true,
                 serverSide: true,
                 bStateSave: true,
