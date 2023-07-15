@@ -26,7 +26,7 @@ class NotificationDeviceController extends Controller
                 }
             })
             ->editColumn('hits', function ($model) use ($request) {
-                return $model->history ? $model->history->count() : $model->hits;
+                return $model->history->count() > 0 ? $model->history->count() : $model->hits;
             })
             ->editColumn('last_visit_time', function ($model) use ($request) {
                 $history = $model->history->last();
