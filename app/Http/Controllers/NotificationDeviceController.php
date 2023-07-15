@@ -30,7 +30,7 @@ class NotificationDeviceController extends Controller
             })
             ->editColumn('last_visit_time', function ($model) use ($request) {
                 $history = $model->history->last();
-                $time = $history ? $history->created_at : $model->last_visit_time;
+                $time = $history ? $history->created_at : new Carbon($model->last_visit_time);
                 return $time->format('d M y, G:i:s') . ' (' . $time->diffForHumans() . ')';
             })
             ->editColumn('last_visit_page', function ($model) use ($request) {
