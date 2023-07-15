@@ -46,7 +46,12 @@ class ImageService
         return url($this->getImagePath());
     }
 
-    private function getImagePath()
+    public function getDomainPath()
+    {
+        return env('DOMAIN_URL') . $this->getImagePath();
+    }
+
+    public function getImagePath()
     {
         return Constant::IMAGE_DIR . ($this->image ? $this->image->name : Constant::DEFAULT_IMAGE);
     }

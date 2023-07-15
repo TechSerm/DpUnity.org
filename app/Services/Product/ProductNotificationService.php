@@ -144,6 +144,9 @@ class ProductNotificationService
             'price' => $product->price,
             'time' => Carbon::now()
         ]);
+        echo $product->name;
+        echo $product->id;
+        //print_r($this->productNotificationData->pluck('id')->toArray());
 
         $this->updateCacheNotificationData();
     }
@@ -155,8 +158,8 @@ class ProductNotificationService
             'uuid' => Str::uuid(),
             'title' => $this->getTitle($product),
             'body' => $this->getBody($product),
-            'url' => route('store.product.show', ['product' => $product->id]),
-            'image' => $product->image,
+            'url' => env('DOMAIN_URL')."product/".$product->id,
+            'image' => $product->imageSrv()->getDomainPath(),
         ]);
 
         $totalSuccessfullySend = $pushNotification->notifyAdmin();
