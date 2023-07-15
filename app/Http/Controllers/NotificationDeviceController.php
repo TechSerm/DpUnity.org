@@ -26,15 +26,16 @@ class NotificationDeviceController extends Controller
                 }
             })
             ->editColumn('hits', function ($model) use ($request) {
-                return $model->history->count();
+                return $model->history ? $model->history->count() : $model->hits;
             })
             ->editColumn('last_visit_time', function ($model) use ($request) {
                 $history = $model->history->last();
-                return $history? $history->created_at->format('d M y, G:i:s') . ' (' . $history->created_at->diffForHumans() . ')' : '';
+                $time = $history ? $history->created_at : $model->last_visit_time;
+                return $time->format('d M y, G:i:s') . ' (' . $time->diffForHumans() . ')';
             })
             ->editColumn('last_visit_page', function ($model) use ($request) {
                 $history = $model->history->last();
-                return $history? $history->url : '';
+                return $history ? $history->url : $model->last_visit_page;
             })
             ->editColumn('created_at', function ($model) {
                 return $model->created_at->format('d M y, G:i:s') . ' (' . $model->created_at->diffForHumans() . ')';
