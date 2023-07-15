@@ -3,6 +3,7 @@
 namespace App\Services\DeviceToken;
 
 use App\Cart\Cart;
+use App\Models\DeviceHistory;
 use App\Models\NotificationDevice;
 use App\Models\Order;
 use Carbon\Carbon;
@@ -102,7 +103,7 @@ class DeviceTokenService
         $weekAddDevice = NotificationDevice::where('created_at', '>=', $lastWeek)->count();
         $monthAddDevice = NotificationDevice::where('created_at', '>=', $lastMonth)->count();
 
-        $lastVisitGraphData = $this->getChartData(new NotificationDevice(), "last_visit_time");
+        $lastVisitGraphData = $this->getChartData(new DeviceHistory(), "created_at", "device_id");
         $lastNewDeviceGraphData = $this->getChartData(new NotificationDevice(), "created_at");
         $lastOrderGraphData = $this->getChartData(new Order(), "created_at");
 
@@ -139,12 +140,12 @@ class DeviceTokenService
         }
     }
 
-    private function getChartData(Model $model, string $keyName)
+    private function getChartData(Model $model, string $keyName, string $distinctKeyName = "id")
     {
         $startDate = Carbon::now()->subDays(30)->startOfDay();
         $endDate = Carbon::now()->endOfDay();
 
-        $ordersByDay = $model->selectRaw('DATE('.$keyName.') as date, COUNT(*) as total')
+        $ordersByDay = $model->selectRaw('DATE('.$keyName.') as date, COUNT(DISTINCT('.$distinctKeyName.')) as total')
             ->whereBetween($keyName, [$startDate, $endDate])
             ->groupBy($keyName)
             ->get();
