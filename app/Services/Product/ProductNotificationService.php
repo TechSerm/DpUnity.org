@@ -162,7 +162,7 @@ class ProductNotificationService
             'image' => $product->imageSrv()->getDomainPath(),
         ]);
 
-        $totalSuccessfullySend = $pushNotification->notifyAll();
+        $totalSuccessfullySend = $pushNotification->notifyAdmin();
     }
 
     private function getTitle(Product $product)
