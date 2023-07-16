@@ -2,7 +2,7 @@
     $histories = $device->history()->with('user')->orderBy('id', 'desc')->get();
 @endphp
 
-<table class="table table-bordered" style="font-size: 14px">
+<table class="table table-bordered table-responsive-sm" style="font-size: 14px">
     @foreach ($histories as $history)
     @php
         $data = json_decode($history->cache_data,true);
