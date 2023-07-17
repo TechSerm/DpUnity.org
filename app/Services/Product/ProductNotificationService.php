@@ -97,9 +97,9 @@ class ProductNotificationService
                 return $product->price != $price;
             }
             return true;
-        });
+        })->take(15);
 
-        return $products->first();
+        return empty($products) ? [] : $products->random();
     }
 
     private function getRandomNotificationProduct()
