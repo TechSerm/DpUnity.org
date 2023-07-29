@@ -23,7 +23,7 @@
 <div class="mb-3 row ">
     <label for="unit_quantity" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">এককের পরিমান</label>
     <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::number('unit_quantity', $item ? (($item->product) ? $item->unit_quantity : $item->quantity) : "", ['class' => 'form-control ', 'step' => '0.01']) !!}
+        {!! Form::number('unit_quantity', $item ? (($item->product || $item->order_id) ? $item->unit_quantity : $item->quantity) : "", ['class' => 'form-control ', 'step' => '0.01']) !!}
     </div>
 </div>
 

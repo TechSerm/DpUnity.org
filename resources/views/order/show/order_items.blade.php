@@ -19,23 +19,24 @@
     
 @endphp
 
-@if (auth()->user()->isAdmin())
-<textarea name="" id="" cols="30" rows="10">
-{{$order->id}}
-{{$order->name}}
-{{$order->address}}
-{{$order->phone}}
+<div style="display: none">
+    @if (auth()->user()->isAdmin())
+        <textarea name="" id="" cols="30" rows="10">
+{{ $order->id }}
+{{ $order->name }}
+{{ $order->address }}
+{{ $order->phone }}
 ----------
 @foreach ($items as $item)
--[{{$item->name}}-{{ $item->vendor ? $item->vendor->name : '' }} - {{ bnConvert()->number($item->unit_quantity, false) }} {{ bnConvert()->unit($item->unit) }} - {{ bnConvert()->number($item->price)}} -  {{ bnConvert()->number($item->quantity) }} - {{ bnConvert()->number($item->total)}}]
+-[{{ $item->name }}-{{ $item->vendor ? $item->vendor->name : '' }} - {{ bnConvert()->number($item->unit_quantity, false) }} {{ bnConvert()->unit($item->unit) }} - {{ bnConvert()->number($item->price) }} -  {{ bnConvert()->number($item->quantity) }} - {{ bnConvert()->number($item->total) }}]
 @endforeach
 
 পণ্যের মূল্য:{{ bnConvert()->number($order->subtotal) }}
 ডেলিভারি ফী:{{ bnConvert()->number($order->delivery_fee) }}
 সর্বমোট: {{ bnConvert()->number($orderTotal) }}
 
-</textarea>    
-
+</textarea>
+</div>
 @endif
 
 <style>
@@ -64,16 +65,16 @@
     </div>
     <div class="body">
         @can('order.items.add')
-        <div class="float-right">
-            @if ($order->isEditable())
-                <a data-toggle="modal" data-modal-size="600" data-modal-header="Add New Product"
-                    href="{{ route('orders.order_items.temp_create_form',request()->route()->parameters()) }}"
-                    class="btn btn-success mb-2"><i class="fas fa-plus"></i> Temporary Add Product</a>
-                <a data-toggle="modal" data-modal-size="600" data-modal-header="Add New Product"
-                    href="{{ route('order_items.create',request()->route()->parameters()) }}"
-                    class="btn btn-success mb-2"><i class="fas fa-plus"></i> Add Product</a>
-            @endif
-        </div>
+            <div class="float-right">
+                @if ($order->isEditable())
+                    <a data-toggle="modal" data-modal-size="600" data-modal-header="Add New Product"
+                        href="{{ route('orders.order_items.temp_create_form',request()->route()->parameters()) }}"
+                        class="btn btn-success mb-2"><i class="fas fa-plus"></i> Temporary Add Product</a>
+                    <a data-toggle="modal" data-modal-size="600" data-modal-header="Add New Product"
+                        href="{{ route('order_items.create',request()->route()->parameters()) }}"
+                        class="btn btn-success mb-2"><i class="fas fa-plus"></i> Add Product</a>
+                @endif
+            </div>
         @endcan
         <div class="orderPcVersion">
             <table class="table table-bordered">
@@ -120,8 +121,8 @@
                     <tr>
                         <td style="width: 30px">{{ bnConvert()->number($key + 1) }}</td>
                         <td style="width: 80px">
-                            <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}" height="70px" width="70px"
-                                alt="">
+                            <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}"
+                                height="70px" width="70px" alt="">
                         </td>
                         <td style="text-align: left">
                             <div class="" style="font-size: 13px;font-weight: bold">
@@ -138,11 +139,15 @@
                             <div style="font-size: 11px;font-weight: bold; color: #574b4b">
                                 {{ bnConvert()->number($item->unit_quantity, false) }}
                                 {{ bnConvert()->unit($item->unit) }}
-                                <br/>
+                                <br />
                                 <span style="color: #767575;">
-                                    {{ bnConvert()->number($item->unit_quantity, false) }} {{ bnConvert()->unit($item->unit) }} × {{ bnConvert()->floatNumber($item->quantity) }} = {{ bnConvert()->number($item->unit_quantity * $item->quantity , false) }} {{ bnConvert()->unit($item->unit) }}
+                                    {{ bnConvert()->number($item->unit_quantity, false) }}
+                                    {{ bnConvert()->unit($item->unit) }} ×
+                                    {{ bnConvert()->floatNumber($item->quantity) }} =
+                                    {{ bnConvert()->number($item->unit_quantity * $item->quantity, false) }}
+                                    {{ bnConvert()->unit($item->unit) }}
                                 </span>
-                                
+
                                 @if (
                                     $item->vendor &&
                                         auth()->user()->can('order.items.vendor_name'))
@@ -151,18 +156,18 @@
                                 @endif
                             </div>
                             @can('order.items.edit')
-                            <div style="margin-top: 2px;">
-                                
-                                @if ($order->isEditable())
-                                    <a data-toggle="modal" data-modal-header="Update Order Item #{{ $key + 1 }}"
-                                        href="{{ route('order_items.edit', $attr) }}" style="padding: 2px 4px 2px 4px;"
-                                        class="btn btn-sm btn-success"><i class="fas fa-pencil-alt"></i></a>
-                                    <button data-toggle="delete" data-callback="reloadOrderPage()"
-                                        data-url="{{ route('order_items.destroy', $attr) }}"
-                                        style="padding: 2px 4px 2px 4px;" class="btn btn-sm btn-danger"><i
-                                            class="fas fa-trash"></i></button>
-                                @endif
-                            </div>
+                                <div style="margin-top: 2px;">
+
+                                    @if ($order->isEditable())
+                                        <a data-toggle="modal" data-modal-header="Update Order Item #{{ $key + 1 }}"
+                                            href="{{ route('order_items.edit', $attr) }}" style="padding: 2px 4px 2px 4px;"
+                                            class="btn btn-sm btn-success"><i class="fas fa-pencil-alt"></i></a>
+                                        <button data-toggle="delete" data-callback="reloadOrderPage()"
+                                            data-url="{{ route('order_items.destroy', $attr) }}"
+                                            style="padding: 2px 4px 2px 4px;" class="btn btn-sm btn-danger"><i
+                                                class="fas fa-trash"></i></button>
+                                    @endif
+                                </div>
                             @endcan
                         </td>
                         @can('order.items.profit_column')
@@ -178,26 +183,24 @@
                 @if (!auth()->user()->isVendor())
                     <tr>
                         <td colspan="3" style="text-align: right; background-color: #f5f5f5">পণ্যের মূল্য:</td>
-                        <td colspan="{{ auth()->user()->can('order.items.profit_column') ? 4: 3 }}" style="background: #eeeeee">
+                        <td colspan="{{ auth()->user()->can('order.items.profit_column')? 4: 3 }}"
+                            style="background: #eeeeee">
                             <b>{{ bnConvert()->number($order->subtotal) }}</b>
-                            টাকা </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style="text-align: right; background-color: #f5f5f5">ডেলিভারি ফী:</td>
-                        <td colspan="{{ auth()->user()->can('order.items.profit_column') ? 4: 3 }}" style="background: #eeeeee">
-                            <b>{{ bnConvert()->number($order->delivery_fee) }}</b> টাকা
+                            টাকা
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style="text-align: right; background-color: #f5f5f5">লাভ:</td>
-                        <td colspan="{{ auth()->user()->can('order.items.profit_column') ? 4: 3 }}" style="background: #eeeeee">
-                            <b>{{ bnConvert()->number($order->products_profit) }}</b> টাকা
+                        <td colspan="3" style="text-align: right; background-color: #f5f5f5">ডেলিভারি ফী:</td>
+                        <td colspan="{{ auth()->user()->can('order.items.profit_column')? 4: 3 }}"
+                            style="background: #eeeeee">
+                            <b>{{ bnConvert()->number($order->delivery_fee) }}</b> টাকা
                         </td>
                     </tr>
                 @endif
                 <tr>
                     <td colspan="3" style="text-align: right; background-color: #f5f5f5">সর্বমোট:</td>
-                    <td colspan="{{ auth()->user()->can('order.items.profit_column') ? 4: 3 }}" style="background: #eeeeee">
+                    <td colspan="{{ auth()->user()->can('order.items.profit_column')? 4: 3 }}"
+                        style="background: #eeeeee">
                         <b>{{ bnConvert()->number($orderTotal) }}</b> টাকা
                     </td>
                 </tr>
@@ -297,15 +300,15 @@
                             }
                         </style>
                         <td class="align-middle" style="padding: 5px">
-                            <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}" height="70px" width="70px"
-                                alt="">
+                            <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}"
+                                height="70px" width="70px" alt="">
                         </td>
                         <td class="align-middle" style="text-align: left">
                             <div class="" style="font-size: 13px;font-weight: bold">
                                 {{ $item->name }}
                                 @if (
                                     $item->vendor &&
-                                    auth()->user()->can('order.items.vendor_name'))
+                                        auth()->user()->can('order.items.vendor_name'))
                                     <br /> <span class="badge"
                                         style="background-color: {{ $item->vendor->color }}; color: #ffffff">{{ $item->vendor->name }}</span>
                                 @endif
@@ -314,28 +317,33 @@
                                 ৳
                                 {{ convertBanglaNumber($price) }}
                                 / {{ bnConvert()->number($item->unit_quantity, false) }}
-                                {{ bnConvert()->unit($item->unit) }} <br/>
+                                {{ bnConvert()->unit($item->unit) }} <br />
                                 <span style="color: #767575; border-top: 1px solid #aaaaaa">
-                                    {{ bnConvert()->number($item->unit_quantity, false) }} {{ bnConvert()->unit($item->unit) }} × {{ bnConvert()->floatNumber($item->quantity) }} = {{ bnConvert()->number($item->unit_quantity * $item->quantity , false) }} {{ bnConvert()->unit($item->unit) }}
+                                    {{ bnConvert()->number($item->unit_quantity, false) }}
+                                    {{ bnConvert()->unit($item->unit) }} ×
+                                    {{ bnConvert()->floatNumber($item->quantity) }} =
+                                    {{ bnConvert()->number($item->unit_quantity * $item->quantity, false) }}
+                                    {{ bnConvert()->unit($item->unit) }}
                                 </span>
-                                
+
                             </div>
                             <div style="margin-top: 3px; font-size: 12px;">
                                 <span
                                     style="background: #f5f5f5; border: 1px solid #aaaaaa; padding: 2px 0px 2px 0px; border-radius: 5px; ">
-                                    <span
-                                        style="margin-left: 2px; margin-right: 5px;">পরিমান: <b>{{ bnConvert()->floatNumber($item->quantity) }}</b></span>
+                                    <span style="margin-left: 2px; margin-right: 5px;">পরিমান:
+                                        <b>{{ bnConvert()->floatNumber($item->quantity) }}</b></span>
                                 </span>
                                 @can('order.items.edit')
-                                @if ($order->isEditable())
-                                    <a data-toggle="modal" data-modal-header="Update Order Item #{{ $key + 1 }}"
-                                        href="{{ route('order_items.edit', $attr) }}" style="padding: 2px 4px 2px 4px;font-size: 10px;"
-                                        class="btn btn-sm btn-success ml-1"><i class="fas fa-pencil-alt"></i></a>
-                                    <button data-toggle="delete" data-callback="reloadOrderPage()"
-                                        data-url="{{ route('order_items.destroy', $attr) }}"
-                                        style="padding: 2px 4px 2px 4px; font-size: 10px;" class="btn btn-sm btn-danger"><i
-                                            class="fas fa-trash"></i></button>
-                                @endif
+                                    @if ($order->isEditable())
+                                        <a data-toggle="modal" data-modal-header="Update Order Item #{{ $key + 1 }}"
+                                            href="{{ route('order_items.edit', $attr) }}"
+                                            style="padding: 2px 4px 2px 4px;font-size: 10px;"
+                                            class="btn btn-sm btn-success ml-1"><i class="fas fa-pencil-alt"></i></a>
+                                        <button data-toggle="delete" data-callback="reloadOrderPage()"
+                                            data-url="{{ route('order_items.destroy', $attr) }}"
+                                            style="padding: 2px 4px 2px 4px; font-size: 10px;"
+                                            class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    @endif
                                 @endcan
                             </div>
                         </td>
@@ -359,12 +367,6 @@
                             <td colspan="2">ডেলিভারি ফী:</td>
                             <td>৳ <b>{{ bnConvert()->number($order->delivery_fee) }}</b></td>
                         </tr>
-                        @can('order.items.profit_column')
-                        <tr class="orderSummeryTableTotalTr">
-                            <td colspan="2">লাভ:</td>
-                            <td>৳ <b>{{ bnConvert()->number($order->products_profit) }}</b></td>
-                        </tr>
-                        @endcan
                     @endif
                     <tr class="orderSummeryTableTotalTr">
                         <td colspan="2"><span class="badge" style="font-size: 14px">সর্বমোট:</span></td>

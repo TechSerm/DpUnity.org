@@ -2,6 +2,7 @@
     <style>
         .infoTd {
             text-align: right !important;
+            background: #f5f5f5;
         }
     </style>
     <div class="header" style="background: #2980b9">
@@ -30,7 +31,7 @@
             @can('order.info.total_profit')
                 <tr>
                     <td class="infoTd">ক্যাশে জমা দিতে হবে</td>
-                    <td> <b>{{ bnConvert()->number($order->total_profit) }}</b> টাকা</td>
+                    <td> <b>({{ bnConvert()->number($order->delivery_fee) }} টাকা + {{ bnConvert()->number($order->products_profit) }}  টাকা) = {{ bnConvert()->number($order->total_profit) }}</b> টাকা</td>
                 </tr>
             @endcan
             @can('order.info.wholesale_total')
@@ -39,32 +40,15 @@
                     <td> <b>{{ bnConvert()->number($order->wholesale_total) }}</b> টাকা</td>
                 </tr>
             @endcan
-
-            @can('order.info.ip')
-                <tr>
-                    <td class="infoTd">আইপি এড্রেস</td>
-                    <td><span class='badge badge-primary'>{{ $order->ip_address }}<span></td>
-                </tr>
-            @endcan
-            @can('order.info.app_version')
-                <tr>
-                    <td class="infoTd">এপ ভার্সন</td>
-                    <td>{!! $order->app_version
-                        ? "<span class='badge badge-success'>$order->app_version</span>"
-                        : "<span class='badge badge-warning'>Not Use Bibisena App</span><span class='ml-1 badge-secondary'>$order->user_agent<span>" !!}</td>
-                </tr>
-            @endcan
-
         </table>
 
-        
-
-        
-            <div class="text-right mb-2">
-                @can('order.info.history')
-                <button class="btn btn-primary" data-modal-title="Order Log" data-toggle="modal"  data-modal-size="lg" data-url="{{route('orders.show.history', request()->route()->parameters())}}">Log History</button>
-                @endcan
-                @can('order.info.cancel_order')
+        <div class="text-right mb-2">
+            @can('order.info.history')
+                <a class="btn btn-info" href="{{ route('invoice.print', ['order_id' => $order]) }}">Print Invoice</a>
+                <button class="btn btn-primary" data-modal-title="Order Log" data-toggle="modal" data-modal-size="lg"
+                    data-url="{{ route('orders.show.history',request()->route()->parameters()) }}">Log History</button>
+            @endcan
+            @can('order.info.cancel_order')
                 @if ($order->isEditable())
                     <button class="btn btn-danger"
                         data-url="{{ route('orders.status.change', ['order' => $order->id, 'status' => 'canceled']) }}"
@@ -72,9 +56,9 @@
                         data-button-text="হ্যা, আমি বাতিল করতে চাই!" data-cancel-button-text="বন্ধ করুন">অর্ডারটি বাতিল
                         করুন!</button>
                 @endif
-                @endcan
-            </div>
-       
+            @endcan
+        </div>
+
     </div>
 
 </div>

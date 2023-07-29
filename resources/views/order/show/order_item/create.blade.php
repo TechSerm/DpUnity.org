@@ -1,8 +1,8 @@
-{{ Form::model($item, ['method' => 'POST', 'data-function' => 'updateOrderItem(form)' ,'route' => ['order_items.store', request()->route()->parameters()],'files' => true,'class' => 'form-horizontal']) }}
+{{ Form::model($item, ['method' => 'POST','data-function' => 'updateOrderItem(form)','route' => ['order_items.store',request()->route()->parameters()],'files' => true,'class' => 'form-horizontal']) }}
 
 @php
-$labelWidth = 4;
-$inputWidth = 6;
+    $labelWidth = 4;
+    $inputWidth = 6;
 @endphp
 
 
@@ -16,4 +16,3 @@ $inputWidth = 6;
 </div>
 
 {!! Form::close() !!}
-
