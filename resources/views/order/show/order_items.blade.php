@@ -36,8 +36,8 @@
 সর্বমোট: {{ bnConvert()->number($orderTotal) }}
 
 </textarea>
-</div>
 @endif
+</div>
 
 <style>
     .orderPcVersion {
