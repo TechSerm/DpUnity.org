@@ -2688,12 +2688,12 @@ var Search = {
       if ($("#search").val() !== Store.search.searchQuery) return;
       Store.search.loadProductPage();
     }
+  },
+  searchBtnClick: function searchBtnClick() {
+    Search.setSearchQuery($("#search").val());
+    Search.loadInitPage();
   }
 };
-$(window).keyup('#search', Search.delay(function () {
-  Search.setSearchQuery($("#search").val());
-  Search.loadInitPage();
-}, 500));
 $(document.body).on('touchmove', Search.onSearchScroll); // for mobile
 $(window).on('scroll', Search.onSearchScroll);
 module.exports = {
