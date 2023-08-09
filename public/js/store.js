@@ -2689,7 +2689,7 @@ var Search = {
       Store.search.loadProductPage();
     }
   },
-  searchBtnClick: function searchBtnClick() {
+  searchProduct: function searchProduct() {
     Search.setSearchQuery($("#search").val());
     Search.loadInitPage();
   }

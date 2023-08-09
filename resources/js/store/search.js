@@ -67,7 +67,7 @@ const Search = {
             Store.search.loadProductPage();
         }
     },
-    searchBtnClick: function() {
+    searchProduct: function() {
         Search.setSearchQuery($("#search").val());
         Search.loadInitPage();
     }

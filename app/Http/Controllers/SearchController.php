@@ -28,6 +28,7 @@ class SearchController extends Controller
     {
         $searchQuery = request()->q;
         if($searchQuery == "")return [];
-        return SearchService::getSearchSortableProduct($searchQuery)->forPage(request()->page, 5);
+  
+        return SearchService::getSearchSortableProduct($searchQuery)->where('status', 'publish')->forPage(request()->page, 5);
     }
 }

@@ -56,7 +56,7 @@
             <input type="search" autocomplete="off" id="search" autofocus value="{{ $searchQuery }}" class="form-control"
                 placeholder="পণ্য খুঁজুন (যেমন, ডিম, দুধ, আলু)">
             <div class="input-group-append">
-                <button id="searchBtn" onclick="Store.search.searchBtnClick()" class="searchButton" style="" type="button">
+                <button id="searchBtn" onclick="Store.search.searchProduct()" class="searchButton" style="" type="button">
                     <i class="fa fa-search"></i>
                 </button>
             </div>
@@ -92,6 +92,9 @@
                 }, function(data) {
                     response(data);
                 });
+            },
+            onSelect: function( event, ui ) {
+                Store.search.searchProduct();
             },
             appendTo: $("#suggestionArea"),
         })
