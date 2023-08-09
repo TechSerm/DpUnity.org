@@ -28,9 +28,6 @@ class SearchController extends Controller
     {
         $searchQuery = request()->q;
         if($searchQuery == "")return [];
-  
-        $products = SearchService::getSearchProduct($searchQuery)->where(['status' => 'publish'])->paginate(5);
-        
-        return $products;
+        return SearchService::getSearchSortableProduct($searchQuery)->forPage(request()->page, 5);
     }
 }
