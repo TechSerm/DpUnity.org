@@ -1,8 +1,10 @@
 const Menu = {
     isSidebarLoad: false,
     isSidebarShow: false,
-
-    initSidebar: function() {
+    goNewPage: function(url) {
+        window.location.href = url;
+    },
+    initSidebar: function(isHardShow = false) {
         let isMobileDevice = this.isMobileDevice();
 
         if (isMobileDevice === true) {
@@ -11,6 +13,8 @@ const Menu = {
             if (this.isSidebarLoad === false) {
                 this.isSidebarShow = true;
                 this.isSidebarLoad = true;
+            } else if (isHardShow == true) {
+                this.isSidebarShow = true;
             }
         }
         this.viewSidebar();

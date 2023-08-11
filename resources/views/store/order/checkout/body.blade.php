@@ -1,6 +1,6 @@
 <div>
     <style>
-        .input-group {
+        .input-group-margin {
             position: relative;
             margin-bottom: 20px;
         }
@@ -87,7 +87,7 @@
             <div style="text-align: center;margin-bottom: 15px;margin-top: -5px; font-weight: bold; color: #484646">
                 আপনার অর্ডার করা পণ্য আপনার কাছে পৌঁছানোর জন্য আপনি নিচের তথ্য গুলা পূরণ করেন !
             </div>
-            <div class="input-group">
+            <div class="input-group input-group-margin">
                 <input type="text" class="input-area @error('fullName') is-invalid @enderror"
                     wire:model.debounce.500ms="fullName" required id="inputField" />
                 @error('fullName')
@@ -98,7 +98,7 @@
                 <label for="inputField" class="label">নাম <font color="red">*</font></label>
             </div>
 
-            <div class="input-group">
+            <div class="input-group input-group-margin">
                 <input type="text" class="input-area @error('address') is-invalid @enderror"
                     wire:model.debounce.500ms="address" required id="address" />
                 @error('address')
@@ -110,7 +110,7 @@
                 <small id="addressHelp" class="form-text text-muted">বাড়ির ঠিকানা হিসেবে আপনি আপনার বাড়ির নাম্বার / মসজিদ / মাদ্রাসা / কবরস্থান / দোকানের নাম যেকোনোটি ব্যাবহার করতে পারেন। ডেলিভারির সময় আমাদের ডেলিভারি ম্যান উক্ত ঠিকানায় গিয়ে আপনার সাথে যোগাযোগ করবে।</small>
             </div>
 
-            <div class="input-group">
+            <div class="input-group input-group-margin">
                 <input type="text" wire:model.debounce.500ms="phone"
                     class="input-area @error('phone') is-invalid @enderror" id="phone" required />
                 @error('phone')

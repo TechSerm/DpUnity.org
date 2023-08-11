@@ -31,6 +31,6 @@ class ShopFooter extends Component
         $this->totalCartPrice = Cart::totalPrice();
         $this->currentUrl = $this->getCurrentPageUrl();
         
-        return view('store.layout.navbar');
+        return view('store.layout.mobile_menu');
     }
 }

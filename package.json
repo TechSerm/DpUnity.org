@@ -26,6 +26,7 @@
         "datatables.net-bs4": "^1.12.1",
         "icheck-bootstrap": "^3.0.1",
         "jquery": "^3.6.1",
+        "jquery-autocomplete": "^1.2.8",
         "jquery-viewer": "^1.0.1",
         "overlayscrollbars": "^2.0.0-beta.0",
         "select2": "^4.1.0-rc.0",

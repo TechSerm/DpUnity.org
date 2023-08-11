@@ -28,6 +28,7 @@ class HomePageProductService
             $query->where('status', 'publish');
             $query->orderBy('serial', 'asc');
         }, 'products.imageTable'])->get();
+        
         foreach ($categories as $category) {
             $categoryProducts = $category->products;
             foreach ($categoryProducts as $key => $product) {
@@ -45,13 +46,7 @@ class HomePageProductService
 
         $products = collect($products);
 
-        return new LengthAwarePaginator(
-            $products->forPage(request()->page, 12),
-            $products->count(),
-            12,
-            request()->page,
-            ['path' => request()->url(), 'query' => request()->query()]
-        );
+        return $products->forPage(request()->page, 12);
 
         // return collect($products)->paginate();
     }
