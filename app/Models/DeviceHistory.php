@@ -19,7 +19,7 @@ class DeviceHistory extends Model
 
     public function shortUrl()
     {
-        return $this->makeShortUrl($this->url);
+        return $this->makeShortUrl(urldecode($this->url));
     }
 
     public function user()
