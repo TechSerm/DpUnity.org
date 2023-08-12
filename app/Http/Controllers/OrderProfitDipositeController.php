@@ -7,7 +7,7 @@ use App\Facades\PushNotification\PushNotificationFacade;
 use App\Http\Requests\OrderProfitDipositeRequest;
 use App\Models\Order;
 use App\Models\OrderProfitDiposite;
-use App\Services\Account\DipositeService;
+use App\Services\Account\DepositService;
 use App\Services\Account\WithdrawService;
 use App\Services\VendorPayment\VendorPaymentService;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class OrderProfitDipositeController extends Controller
     private $dipositeService;
     private $withdrawService;
 
-    public function __construct(VendorPaymentService $vendorPaymentService, DipositeService $dipositeService, WithdrawService $withdrawService)
+    public function __construct(VendorPaymentService $vendorPaymentService, DepositService $dipositeService, WithdrawService $withdrawService)
     {
         $this->vendorPaymentService = $vendorPaymentService;
         $this->dipositeService = $dipositeService;
@@ -111,9 +111,9 @@ class OrderProfitDipositeController extends Controller
         $orderProfitDiposite = OrderProfitDiposite::where(['uuid' => $dipositeId])->firstOrFail();
 
         if ($orderProfitDiposite->total_amount >= 0) {
-            $transaction = $this->dipositeService->create("order_profit", $orderProfitDiposite->total_amount, '', $orderProfitDiposite->user_id);
+            $transaction = $this->dipositeService->deposit("order_profit", $orderProfitDiposite->total_amount, '', $orderProfitDiposite->user_id);
         } else {
-            $transaction = $this->withdrawService->create("order_loss", $orderProfitDiposite->total_amount * (-1), '', $orderProfitDiposite->user_id);
+            $transaction = $this->withdrawService->withdraw("order_loss", $orderProfitDiposite->total_amount * (-1), '', $orderProfitDiposite->user_id);
         }
 
         if (empty($transaction)) {

@@ -61,7 +61,7 @@ Route::middleware(['device_token_check', 'device_history', 'check_push_notificat
 });
 
 Route::get('/print', [InvoiceController::class, 'index'])->name('invoice.index');
-Route::get('/print/{order_id}', [InvoiceController::class, 'print'])->name('invoice.print');
+Route::get('/print/{order}', [InvoiceController::class, 'print'])->name('invoice.print');
 Route::get('/product_name_suggestions', [ProductController::class, 'getSuggestionsProductName'])->name('product.name_suggestions');
 
 Route::prefix('admin')->group(function () {

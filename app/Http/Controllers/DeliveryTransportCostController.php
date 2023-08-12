@@ -53,7 +53,7 @@ class DeliveryTransportCostController extends Controller
     {
         $this->authorize('delivery_transport_costs.index');
 
-        $transaction = $this->withdrawService->create("delivery_fee", $request->amount, $request->note);
+        $transaction = $this->withdrawService->withdraw("delivery_fee", $request->amount, $request->note);
 
         if (empty($transaction)) {
             return response()->json([

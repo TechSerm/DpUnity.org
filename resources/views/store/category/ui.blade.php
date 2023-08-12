@@ -28,7 +28,6 @@
         -webkit-transform: translate(-15%, -50%);
         transform: translate(-15%, -50%);
         width: 50%;
-
     }
 </style>
 
@@ -45,7 +44,7 @@
                 <div class="category" style="background: {{ $categoryColor[$key % count($categoryColor)] }}">
                     <a href="{{ route('store.categories.show', $category) }}">
                         <div style="">
-                            <img src="{{ $category->image }}" class="categoryImg" alt="">
+                            <img src="{{ asset('assets/img/category_loader.gif')  }}" data-src="{{ $category->image }}" class="lazy categoryImg" alt="">
                             <p style="" class="categoryText">{{ $category->name }} ({{bnConvert()->number($totalProducts)}})
                             </p>
                         </div>
@@ -56,3 +55,9 @@
         @endif
     @endforeach
 </div>
+
+@push('scripts')
+    <script>
+
+    </script>
+@endpush

@@ -2,24 +2,22 @@
 
 namespace App\Services\Account;
 
+use App\Enums\AccountTransactionEnum;
 use App\Models\AccountTransaction;
 
-class WithdrawService
+class WithdrawService extends AccountService
 {
-    public function create($title, $amount, $note = null, $userId = null)
+    /**
+     * @param string $title
+     * @param int $amount
+     * @param string|null $note
+     * @param int|null $userId
+     * @return mixed
+     */
+    public function withdraw(string $title, int $amount, string $note = null, int $userId = null) : mixed
     {
-        $accountTransaction = new AccountTransaction();
-        if (!$accountTransaction->isPossibleWithdraw($amount) || $amount < 0) return [];
+        if (!$this->isValidWithdrawAmount($amount)) return null;
 
-        $accountTransaction = AccountTransaction::create([
-            'type' => 'withdraw',
-            'title' => $title,
-            'amount' => $amount,
-            'note' => $note,
-            'is_approved' => true,
-            'user_id' => is_null($userId) ? auth()->user()->id : $userId 
-        ]);
-
-        return $accountTransaction;
+        return $this->addAccount(AccountTransactionEnum::WithdrawType, $title, $amount, $note, $userId);
     }
 }

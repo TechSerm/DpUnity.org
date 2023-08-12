@@ -46,8 +46,8 @@
                 <span href="#" wire:click="increment" class="">
             @endif
             <span class="ct-image-container">
-                <img id="productImage" src="{{ $product->image }}"
-                    class="{{ $isShowPage ? 'product-img-isShowPage' : 'product-img' }}" alt="">
+                <img id="productImage" src="{{ asset('assets/img/product_loader.gif') }}" data-src="{{ $product->image }}"
+                    class="lazy {{ $isShowPage ? 'product-img-isShowPage' : 'product-img' }}" alt="">
             </span>
             @if (!$isShowPage && $hasStock)
                 </span>

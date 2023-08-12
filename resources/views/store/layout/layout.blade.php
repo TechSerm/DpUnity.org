@@ -32,8 +32,35 @@
     <script>
         window.livewire.rescan();
 
+        $(document).ready(function() {
+            var lazyloadThrottleTimeout;
+            $(window).on("scroll resize", function() {
+                if (lazyloadThrottleTimeout) {
+                    clearTimeout(lazyloadThrottleTimeout);
+                }
+                lazyloadThrottleTimeout = setTimeout(lazyloadImages, 300);
+            });
+        });
+
+        function lazyloadImages() {
+            let imgList = $("img.lazy");
+            if (imgList.length == 0) return;
+            let scrollTop = $(window).scrollTop();
+            let windowHeight = $(window).height();
+            imgList.each(function() {
+                var img = $(this);
+                if (img.offset().top < (scrollTop + windowHeight)) {
+                    img.attr("src", img.data("src")).removeClass("lazy");
+                }
+            });
+        }
+
         $(document).on('turbolinks:visit', function() {
             $("#loadBody").append($("#pageLoader").html());
+        });
+
+        $(document).on('turbolinks:load', function() {
+            lazyloadImages();
         });
 
         $(window).resize(function() {
@@ -68,7 +95,7 @@
 <body>
 
     @include('store.layout.navbar')
-    
+
     <div id="pageLoader" style="display: none">
         @include('store.layout.loader')
     </div>
@@ -82,7 +109,6 @@
 
 <script>
     Store.home.updateProductImageSize();
-
 </script>
 
 </html>

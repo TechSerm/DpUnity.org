@@ -3,26 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Services\Invoice\InvoiceService;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
     public function index()
     {
-
         return view('invoice.index');
     }
 
-    public function print($orderId)
+    public function print(Order $order, InvoiceService $invoiceService)
     {
-        if (auth()->user()) {
-            $order = Order::where(['id' => $orderId])->firstOrFail();
-        } else {
-            $order = Order::where(['id' => $orderId, 'is_delivery_complete' => false, 'is_cancelled' => false, 'is_delivery_start' => false])->firstOrFail();
-        }
-
-        return view('invoice.print', [
-            'order' => $order
-        ]);
+        if (!$invoiceService->isPrintable($order)) abort(404);
+        return view('invoice.print', compact('order'));
     }
 }
