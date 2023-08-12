@@ -44,7 +44,7 @@
 
         <div class="text-right mb-2">
             @can('order.info.history')
-                <a class="btn btn-info" href="{{ route('invoice.print', ['order_id' => $order]) }}">Print Invoice</a>
+                <a class="btn btn-info" href="{{ route('invoice.print', ['order' => $order]) }}">Print Invoice</a>
                 <button class="btn btn-primary" data-modal-title="Order Log" data-toggle="modal" data-modal-size="lg"
                     data-url="{{ route('orders.show.history',request()->route()->parameters()) }}">Log History</button>
             @endcan
