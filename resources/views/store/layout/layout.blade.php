@@ -84,6 +84,7 @@
         window.addEventListener('livewire:load', function() {
             Livewire.on('cartUpdate', function() {
                 Store.home.updateProductImageSize();
+                lazyloadImages();
             });
         });
     </script>
