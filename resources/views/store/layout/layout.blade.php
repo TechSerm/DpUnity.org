@@ -38,7 +38,7 @@
                 if (lazyloadThrottleTimeout) {
                     clearTimeout(lazyloadThrottleTimeout);
                 }
-                lazyloadThrottleTimeout = setTimeout(lazyloadImages, 300);
+                lazyloadThrottleTimeout = setTimeout(lazyloadImages, 100);
             });
         });
 
