@@ -51,8 +51,7 @@ class SearchService
             foreach ($words as $word) {
                 $query->orWhere('value', 'LIKE', "%{$word}%");
             }
-        })
-            ->leftJoin('search_keywords', 'search_keywords.id', '=', 'search_keyword_values.search_keyword_id')
+        })->leftJoin('search_keywords', 'search_keywords.id', '=', 'search_keyword_values.search_keyword_id')
             ->select('key')
             ->groupBy('key')
             ->pluck('key')
@@ -65,9 +64,7 @@ class SearchService
             }
         })->distinct('name')->pluck('name')->toArray();
 
-        $suggestionWords = array_merge($suggestionWords, $words, $products);
-
-        return $suggestionWords;
+        return array_merge($suggestionWords, $words, $products);
     }
 
     public static function getSearchProduct($searchValue)
@@ -75,17 +72,13 @@ class SearchService
         if ($searchValue == "") return [];
         $searchValue = strtolower($searchValue);
         $suggestionWords = self::getSearchKeyword($searchValue);
-        // dd($suggestionWords);
-        $products = Product::where(function ($query) use ($suggestionWords, $searchValue) {
+
+        return Product::where(function ($query) use ($suggestionWords, $searchValue) {
             $query->orWhere('name', 'LIKE', "%{$searchValue}%");
             foreach ($suggestionWords as $word) {
                 $query->orWhereRaw('`name` LIKE ?', ['%' . trim(strtolower($word)) . '%']);
             }
         });
-
-        // dd($products);
-
-        return $products;
     }
 
     public static function getSearchSortableProduct($searchValue)
@@ -96,17 +89,13 @@ class SearchService
             return $product;
         });
 
-        $products = $products->sortByDesc('search_match');
-
-        return $products;
+        return $products->sortByDesc('search_match');
     }
 
-
-    public static function  percentageMatch($str1, $str2)
+    public static function percentageMatch($str1, $str2)
     {
         $similarity = self::jaccardSimilarity($str1, $str2);
-        $percentage = $similarity * 100;
-        return $percentage;
+        return $similarity * 100;
     }
 
     public static function jaccardSimilarity($str1, $str2)

@@ -57,7 +57,7 @@ Route::middleware(['device_token_check', 'device_history', 'check_push_notificat
     Route::get('/categories/{category}', [StoreCategoryController::class, 'show'])->name('store.categories.show');
 
     Route::post('/survey_form',  [StoreController::class, 'surveyFormSave'])->name('survey_form_save.store');
-    
+
 });
 
 Route::get('/print', [InvoiceController::class, 'index'])->name('invoice.index');
@@ -97,8 +97,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/orders/{order}/update_customer_details', [OrderController::class, 'showUpdateCustomer'])->name('orders.customer.update');
         Route::put('/orders/{order}/update_customer_details', [OrderController::class, 'updateCustomer']);
         Route::prefix('orders/{order}')->middleware(['order_show_page_check'])->group(function () {
-            Route::get('/update_vendor', [OrderController::class, 'showVendor'])->name('orders.vendor.update');
-            Route::put('/update_vendor', [OrderController::class, 'updateVendor']);
             Route::get('/product_select2_data', [OrderItemController::class, 'getProductSelect2Data'])->name('orders.order_items.product_select2_data');
             Route::get('/product_create_form', [OrderItemController::class, 'productCreateForm'])->name('orders.order_items.create_form');
             Route::get('/product_temp_create_form', [OrderItemController::class, 'productTempCreateForm'])->name('orders.order_items.temp_create_form');
@@ -123,7 +121,7 @@ Route::prefix('admin')->group(function () {
         Route::resource('orders', OrderController::class);
 
         Route::resource('delivery_transport_costs', DeliveryTransportCostController::class);
-        
+
         Route::get('/product_price', [ProductController::class, 'productPrice'])->name('product_price.index');
         Route::post('/product_price', [ProductController::class, 'productPriceUpdate']);
 
@@ -132,7 +130,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/shippings/data', [ShippingController::class, 'getData'])->name('shippings.data');
         Route::resource('shippings', ShippingController::class);
-        
+
         Route::get('/notification_device', [NotificationDeviceController::class, 'deviceDashboard'])->name('notification_device.dashboard');
         Route::get('/notification_device/show/{notification_device_id}', [NotificationDeviceController::class, 'show'])->name('notification_device.show');
         Route::get('/notification_device/data', [NotificationDeviceController::class, 'getData'])->name('notification_device.data');
@@ -140,14 +138,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/push_notifications/data', [PushNotificationController::class, 'getData'])->name('push_notifications.data');
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
-        
+
         Route::get('/vendor_payment/{vendor_id}/send_payment', [VendorPaymentController::class, 'sendPayment'])->name('vendor_payments.send_payment');
         Route::post('/vendor_payment/{vendor_id}/send_payment', [VendorPaymentController::class, 'store']);
         Route::get('/vendor_payment/{vendor_id}/show_order/{order_id}', [VendorPaymentController::class, 'showOrder'])->name('vendor_payments.show_order');
         Route::get('/vendor_payment/{vendor_id}/send_pending_payment', [VendorPaymentController::class, 'sendPendingPayment'])->name('vendor_payments.send_pending_payment');
         Route::post('/vendor_payment/{vendor_id}/confirm', [VendorPaymentController::class, 'paymentConfirm'])->name('vendor_payments.payment_confirm');
         Route::resource('vendor_payments', VendorPaymentController::class);
-        
+
         Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
 
         Route::get('/home_page_product', [HomePageProductController::class, 'index'])->name('admin.home_page_product.index');

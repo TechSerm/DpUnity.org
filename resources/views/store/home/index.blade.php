@@ -75,12 +75,13 @@
                     (deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config('bibisena.android_app_version')))
 
                 <div class="col-md-4 col-sm-4 col-12">
-                    <div class="card hotline-card mb-3" style="text-align: center; font-size: 20px; height: 130px">
-                        <div style="height: 80px">
+                    <div class="card hotline-card mb-3" style="text-align: center; font-size: 20px; height: 190px">
+                        <div style="height: 135px">
                             বিবিসিনা অ্যান্ড্রয়েড অ্যাপ<br />
                             @php
                                 $needUpdate = false;
                             @endphp
+                            
                             @if (deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config('bibisena.android_app_version'))
                                 @php
                                     $needUpdate = true;
@@ -155,27 +156,26 @@
         }
 
         .home-list-category-name {
-            border-bottom: 1px solid #c1c5ce;
-            margin: 10px 10px 15px 0px;
-            padding-bottom: 5px;
-            font-weight: bold;
-            font-size: 18px;
+            border-bottom: 1px solid #d8d8da;
+            margin: 15px 10px 15px 0px;
+            padding-bottom: 10px;
+            font-weight: 500;
+            font-size: 20px;
         }
     </style>
     {{-- @include('store.home.feedback_form') --}}
 
     <div class="home-listt" style="background: #ffffff">
-        <div class="home-list-headerr" style=" color: #000000; margin-top: 10px">
-            <h4>ক্যাটেগরি</h4>
-            <hr>
+        <div class="home-list-category-name" style=" color: #000000; margin-top: 10px">
+            ক্যাটেগরি
         </div>
         <div style="margin-right: -12px;">
             @include('store.category.ui')
         </div>
     </div>
-    <div class="home-list" style="background: #eaeffc">
-        <div class="home-list-header" style="background: #3d579c; color: #ffffff">পণ্যের তালিকা</div>
-        <div class="home-list-body" style="margin-right: -10px;margin-top: -5px;">
+    {{-- <div class="home-list" style="background: #eaeffc"> --}}
+        {{-- <div class="home-list-header" style="background: #3d579c; color: #ffffff">পণ্যের তালিকা</div> --}}
+        <div class="home-list-body" style="margin-right: -10px;margin-top: 15px;">
             <div class="row no-gutters" style="" id="product-list">
 
                 @include('store.product.single_product_page')
@@ -184,7 +184,7 @@
                 <img src="{{ asset('assets/img/loader.gif') }}" height="70px" width="70px" alt="">
             </div>
         </div>
-    </div>
+    {{-- </div> --}}
     </div>
 
 @stop

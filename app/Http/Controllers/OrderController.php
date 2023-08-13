@@ -11,6 +11,8 @@ use App\Models\Order;
 use App\Models\User;
 use App\Services\Order\OrderNotificationService;
 use App\Services\Order\OrderService;
+use App\Services\Order\OrderStatusService;
+use App\Services\Order\OrderVendorService;
 use App\Services\Vendor\VendorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +22,14 @@ use Yajra\DataTables\Facades\DataTables;
 
 class OrderController extends Controller
 {
-    public function __construct()
+    private OrderStatusService $orderStatusService;
+    private OrderVendorService $orderVendorService;
+
+    public function __construct(OrderStatusService $orderStatusService, OrderVendorService $orderVendorService)
     {
         $this->middleware('order_show_page_check', ['only' => ['show']]);
+        $this->orderStatusService = $orderStatusService;
+        $this->orderVendorService = $orderVendorService;
     }
     /**
      * Display a listing of the resource.
@@ -128,21 +135,11 @@ class OrderController extends Controller
         return '<span class="badge"><span style="font-size: 14px;">' . bnConvert()->number($price) . '</span><span style="color:#636e72;"> ৳ </span></span>';
     }
 
-    public function create()
+    public function show(Order $order)
     {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        $order = Order::with(['items'])->findOrFail($id);
         $order->activityLogService()->createShowActivity();
-        return view('order.show', ['order' => $order]);
+
+        return view('order.show', compact('order'));
     }
 
     public function history($id)
@@ -150,156 +147,36 @@ class OrderController extends Controller
         $order = Order::with(['items'])->findOrFail($id);
         return view('order.show.activity', ['order' => $order]);
     }
-    
 
-    public function edit($id)
+    public function showUpdateCustomer(Order $order)
     {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-    }
-
-    public function updateStatus()
-    {
-    }
-
-    public function showUpdateCustomer($id)
-    {
-        $order = Order::findOrFail($id);
         if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
         }
-        return view('order.show.update_customer', ['order' => $order]);
+
+        return view('order.show.update_customer', compact('order'));
     }
 
-    public function updateCustomer(OrderCustomerUpdateRequest $request, $orderId)
+    public function updateCustomer(OrderCustomerUpdateRequest $request, Order $order)
     {
-        $order = Order::findOrFail($orderId);
         if (!$order->isEditable()) {
             return response()->json([
                 'message' => 'Invalid Action'
             ], 401);
         }
-        
-        $order->update($request->all());
-        
+
+        $order->update($request->only('name', 'phone', 'address'));
+
         return response()->json([
             'message' => 'Customer Update Successfully'
         ]);
     }
 
-    public function changeOrderStatus($orderId, $status)
+    public function changeOrderStatus(Order $order, $status)
     {
-        $order = Order::where(['id' => $orderId])->firstOrFail();
-
-        $orderNotificationService = new OrderNotificationService($order);
-
-        if ($order->is_cancelled) {
-            return response()->json([
-                'message' => 'Order Already Cancelled'
-            ], 400);
-        }
-
-        if ($status == 'approved') {
-            $order->update([
-                'is_approved' => true,
-                'status' => OrderStatusEnum::APPROVED
-            ]);
-            $order->notify()->admin("অর্ডারটি গ্রহণ করা হয়েছে।");
-            $order->notify()->customer("আপনার অর্ডারটি গ্রহণ করা হয়েছে।");
-        }
-
-        if ($status == 'pack_complete') {
-            $order->update([
-                'is_pack_complete' => true,
-                'status' => OrderStatusEnum::PACK_COMPLETE
-            ]);
-            $order->notify()->admin("অর্ডারটির প্রস্তুতি সম্পন্ন হয়েছে।");
-            $order->notify()->customer("আপনার অর্ডারটির প্রস্তুতি সম্পন্ন হয়েছে।");
-        }
-
-        if ($status == 'start_delivery') {
-            $order->update([
-                'is_delivery_start' => true,
-                'status' => OrderStatusEnum::START_DELIVERY
-            ]);
-            $order->notify()->admin("অর্ডারটির ডেলিভারির জন্য রওনা হয়েছে।");
-            $order->notify()->allVendors("অর্ডারটির ডেলিভারির জন্য রওনা হয়েছে।");
-            $order->notify()->customer("আপনার অর্ডারটির ডেলিভারির জন্য রওনা হয়েছে।");
-        }
-
-        if ($status == 'delivery_complete') {
-            $order->update([
-                'is_delivery_complete' => true,
-                'status' => OrderStatusEnum::DELIVERY_COMPLETED
-            ]);
-            $order->notify()->admin("অর্ডারটির ডেলিভারি টি সম্পন্ন হয়েছে।");
-            $order->notify()->allVendors("অর্ডারটির ডেলিভারি টি সম্পন্ন হয়েছে।");
-            $order->notify()->customer("আপনার অর্ডারটির ডেলিভারি টি সম্পন্ন হয়েছে।");
-        }
-
-        if ($status == 'canceled') {
-            $order->update([
-                'is_cancelled' => true,
-                'status' => OrderStatusEnum::CANCELED
-            ]);
-            $order->notify()->admin("অর্ডারটি বাতিল করা হয়েছে।");
-            $order->notify()->allVendors("অর্ডারটি বাতিল করা হয়েছে।");
-            $order->notify()->customer("আপনার অর্ডারটি বাতিল করা হয়েছে।");
-        }
-
-        // activity()
-        // ->performedOn($order)
-        // ->log('Order status has been edited. New status: '. $status);
-
-        if (isset(request()->vendor)) {
-            $orderVendor = $order->vendors()->where(['uuid' => request()->vendor])->first();
-            if ($orderVendor) {
-                $orderVendorData = [];
-                $notifyMessage = "";
-                if ($status == 'vendor_received') {
-                    $orderVendorData['is_received'] = true;
-                    $notifyMessage = "Vendor Approved";
-                    $notifyMessage = $orderVendor->user->name . " অর্ডারটি গ্রহণ করেছে";
-                } else if ($status == 'vendor_pack_complete') {
-                    $orderVendorData['is_pack_complete'] = true;
-                    $notifyMessage = $orderVendor->user->name . " এর প্রস্তুতি সম্পন্ন হয়েছে";
-                }
-                $orderVendor->update($orderVendorData);
-                if ($notifyMessage != "") $order->notify()->Admin($notifyMessage);
-            }
-        }
-
-
-        return response()->json([
-            'message' => 'Successfully Change Status'
-        ]);
-    }
-
-    public function showVendor($orderId)
-    {
-        $order = Order::findOrFail($orderId);
-        if (!$order->isEditable()) {
-            return response()->json([
-                'message' => 'Invalid Action'
-            ], 401);
-        }
-
-        $vendors = User::where(['role_name' => 'vendor'])->get()->pluck('name', 'id')->toArray();
-
-        return view('order.show.vendor_add_form', [
-            'order' => $order,
-            'vendors' => $vendors
-        ]);
+        return $this->orderStatusService->changeOrderStatus($order, $status);
     }
 
     public function printOrder($orderId)
@@ -308,73 +185,16 @@ class OrderController extends Controller
         return view('order.show.print_order', ['order' => $order]);
     }
 
-    public function assignProductVendorList($orderId)
+    public function assignProductVendorList(Order $order, VendorService $vendorService)
     {
-        $order = Order::findOrFail($orderId);
-        $vendors = (new VendorService())->getList();
         return view('order.show.product_vendor_list', [
             'order' => $order,
-            'vendors' => $vendors
+            'vendors' => $vendorService->getList()
         ]);
     }
 
-    public function updateAssignProductVendorList(AssignProductVendorRequest $request, $orderId)
+    public function updateAssignProductVendorList(AssignProductVendorRequest $request, Order $order)
     {
-        $productVendor = $request->product_vendor;
-        $order = Order::findOrFail($orderId);
-
-        if ($order->is_cancelled) {
-            return response()->json([
-                'message' => 'Order Already Cancelled'
-            ], 400);
-        }
-
-        $orderItems = $order->items()->whereIn('uuid', array_keys($productVendor))->get();
-
-        if (count($order->items) != count($orderItems)) {
-            return response()->json([
-                'message' => 'Invalid Action'
-            ], 401);
-        }
-
-        foreach ($orderItems as $orderItem) {
-            $orderItem->update([
-                'vendor_id' => $productVendor[$orderItem->uuid] ?? null
-            ]);
-        }
-
-        $order->update([
-            'is_vendor_assign' => true,
-            'status' => OrderStatusEnum::ASSIGN_STORE
-        ]);
-
-        $order->notify()->admin("অর্ডারটি বিক্রেতার কাছে পাঠানো হয়েছে।");
-        $order->notify()->customer("আপনার অর্ডারটির প্রস্তুতি চলছে।");
-
-        $order->updateVendor();
-
-
-        return response()->json([
-            'message' => 'Successfully Vendor Assign'
-        ]);
-    }
-
-    public function updateVendor(Request $request, $orderId)
-    {
-        $order = Order::findOrFail($orderId);
-        if (!$order->isEditable()) {
-            return response()->json([
-                'message' => 'Invalid Action'
-            ], 401);
-        }
-
-        $vendor = User::where(['id' => $request->vendor_id])->first();
-        $order->update([
-            'vendor_id' => $vendor->id ?? null
-        ]);
-
-        return response()->json([
-            'message' => 'Vendor Update Successfully'
-        ]);
+        return $this->orderVendorService->updateAssignProductVendorList($request, $order);
     }
 }

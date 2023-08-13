@@ -91,7 +91,6 @@
 
     @livewireStyles
 </head>
-@include('store.layout.sidebar')
 
 <body>
 
@@ -101,7 +100,7 @@
         @include('store.layout.loader')
     </div>
 
-    <div class="containerr storeContent" style="margin-top: 60px; padding: 15px;" id="loadBody">
+    <div class="container storeContent" style="margin-top: 60px; padding: 15px;" id="loadBody">
         @yield('content')
     </div>
     @include('store.layout.footer')
