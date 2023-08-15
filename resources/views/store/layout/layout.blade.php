@@ -49,7 +49,7 @@
             let windowHeight = $(window).height();
             imgList.each(function() {
                 var img = $(this);
-                if (img.offset().top < (scrollTop + windowHeight)) {
+                if (img.offset().top < (scrollTop + windowHeight + 120)) {
                     img.attr("src", img.data("src")).removeClass("lazy");
                 }
             });

@@ -25,10 +25,7 @@ class FileService
             $font->align('center');
             $font->angle(10);
         });
-
-        //$file-> move(public_path('public/Image'), $filename);
-        //$path = Storage::put($imageName, $image->stream());
-        //$url = Storage::url($imageName);
+        
         File::put("images/".$imageName, $image->stream());
 
         return $imageName;
