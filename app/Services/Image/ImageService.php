@@ -102,4 +102,9 @@ class ImageService
             $this->image->delete();
         }
     }
+
+    public function response()
+    {
+        return route('image', ['filename' => $this->image ? $this->image->name : Constant::DEFAULT_IMAGE, 'height' => 300, 'width' => 300]);
+    }
 }

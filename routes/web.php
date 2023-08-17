@@ -11,6 +11,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DeliveryTransportCostController;
 use App\Http\Controllers\HomePageProductController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NotificationDeviceController;
 use App\Http\Controllers\OrderItemController;
@@ -60,6 +61,8 @@ Route::middleware(['device_token_check', 'device_history', 'check_push_notificat
 
 });
 
+Route::get('/_images/{filename}', [ImageController::class, 'resize'])->name('image');
+
 Route::get('/print', [InvoiceController::class, 'index'])->name('invoice.index');
 Route::get('/print/{order}', [InvoiceController::class, 'print'])->name('invoice.print');
 Route::get('/product_name_suggestions', [ProductController::class, 'getSuggestionsProductName'])->name('product.name_suggestions');
@@ -97,6 +100,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/orders/{order}/update_customer_details', [OrderController::class, 'showUpdateCustomer'])->name('orders.customer.update');
         Route::put('/orders/{order}/update_customer_details', [OrderController::class, 'updateCustomer']);
         Route::prefix('orders/{order}')->middleware(['order_show_page_check'])->group(function () {
+            Route::put('/update_vendor', [OrderController::class, 'updateVendor']);
             Route::get('/product_select2_data', [OrderItemController::class, 'getProductSelect2Data'])->name('orders.order_items.product_select2_data');
             Route::get('/product_create_form', [OrderItemController::class, 'productCreateForm'])->name('orders.order_items.create_form');
             Route::get('/product_temp_create_form', [OrderItemController::class, 'productTempCreateForm'])->name('orders.order_items.temp_create_form');
