@@ -41,7 +41,7 @@ class Product extends Model
 
     public function getImageAttribute()
     {
-        return $this->imageSrv()->response();
+        return $this->imageSrv()->src();
     }
 
     public function imageTable()

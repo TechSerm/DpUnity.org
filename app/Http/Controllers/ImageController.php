@@ -16,17 +16,23 @@ class ImageController extends Controller
             abort(404);
         }
 
-        // $image = Image::make($basePath);
+        $width = request()->get('width');
+        $height = request()->get('height');
 
-        // // Get the width and height parameters from the URL
-        // $width = request()->get('width', $image->width());
-        // $height = request()->get('height', $image->height());
+        $path = "images/";
+       // if($width)$path .= $width."/";
+        if($height)$path .= $height."/";
 
-        // // Resize the image
-        // $image->resize($width, $height);
+        $cachedImagePath = public_path($filename);
 
-        // Return the resized image as a response
-        return $this->getImage($basePath, $filename);
+        return response()->file($cachedImagePath);
+        
+
+        $image = Image::make($basePath);
+        $image->resize($width, $height);
+        $image->save($cachedImagePath);
+
+        return $image->response();
     }
 
     private function getImage($basePath, $filename)
