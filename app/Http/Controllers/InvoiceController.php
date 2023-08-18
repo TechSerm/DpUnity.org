@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Services\Invoice\InvoiceService;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -16,6 +17,9 @@ class InvoiceController extends Controller
     public function print(Order $order, InvoiceService $invoiceService)
     {
         if (!$invoiceService->isPrintable($order)) abort(404);
-        return view('invoice.print', compact('order'));
+
+        $qrCode = QrCode::size(80)->generate(route('store.order.show', ['uuid' => $order->uuid]));
+
+        return view('invoice.print', compact('order', 'qrCode'));
     }
 }
