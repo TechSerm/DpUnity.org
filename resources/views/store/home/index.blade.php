@@ -75,7 +75,7 @@
     <div style="">
         @section('fullContant')
         <div class="siteBanner">
-            <img class="hotline-cardd" src="{{asset('assets/img/banner7.png')}}" style="width: 100%;"
+            <img class="hotline-cardd" src="{{asset('assets/img/banner11.png')}}" style="width: 100%;"
             alt="">
         </div>
         @stop
