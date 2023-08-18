@@ -17,10 +17,10 @@ class OrderShowPageCheck
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->isVendor()){
-            $order = Order::where(['id' => request()->order])->firstOrFail();
-            $vendor = $order->vendors()->where(['vendor_id' => auth()->user()->id])->first();
-            if(empty($vendor))abort(401);
+        if (auth()->user()->isVendor()) {
+            $order = is_object(request()->order) ? request()->order : Order::where(['id' => request()->order])->firstOrFail();
+            $vendor = $order?->vendors()->where(['vendor_id' => auth()->user()->id])->first();
+            if (empty($vendor)) abort(401);
         }
         return $next($request);
     }

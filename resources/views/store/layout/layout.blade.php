@@ -99,7 +99,7 @@
     <div id="pageLoader" style="display: none">
         @include('store.layout.loader')
     </div>
-
+    @yield('fullContant')
     <div class="container storeContent" style="margin-top: 60px; padding: 15px;" id="loadBody">
         @yield('content')
     </div>

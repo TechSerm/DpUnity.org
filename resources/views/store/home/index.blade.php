@@ -63,12 +63,23 @@
         a:hover {
             outline: 0px;
         }
+
+        .siteBanner{
+            margin: 55px 0px -70px 0px!important;
+            width: 100%;
+            padding: 0px;
+            box-shadow: 0 2px 4px 0 #aaaaaa, 0 3px 10px 0 #aaaaaa;
+        }
     </style>
 
     <div style="">
-
-        <img class="card hotline-card mb-1" src="{{ asset('assets/img/bsena1.jpg') }}" style="width: 100%;border-radius: 5px"
+        @section('fullContant')
+        <div class="siteBanner">
+            <img class="hotline-cardd" src="{{asset('assets/img/banner7.png')}}" style="width: 100%;"
             alt="">
+        </div>
+        @stop
+        
         <div class="row mt-3">
             @if (
                 !deviceInfo()->hasDeviceToken() ||
