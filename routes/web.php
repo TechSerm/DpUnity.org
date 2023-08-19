@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DeliveryTransportCostController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomePageProductController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvoiceController;
@@ -62,6 +63,7 @@ Route::middleware(['device_token_check', 'device_history', 'check_push_notificat
 });
 
 Route::get('/_images/{filename}', [ImageController::class, 'resize'])->name('image');
+Route::get('/_export/{table_name}', [ExportController::class, 'exportCsv']);
 
 Route::get('/print', [InvoiceController::class, 'index'])->name('invoice.index');
 Route::get('/print/{order}', [InvoiceController::class, 'print'])->name('invoice.print');
