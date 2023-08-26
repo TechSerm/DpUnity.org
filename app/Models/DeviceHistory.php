@@ -15,6 +15,7 @@ class DeviceHistory extends Model
         'cache_data',
         'url',
         'user_id',
+        'version'
     ];
 
     public function shortUrl()

@@ -18,7 +18,8 @@ class DeviceHistoryService
                 'ip' => request()->ip(),
                 'url' => request()->fullUrl(),
                 'user_id' => auth()->user() ? auth()->user()->id : null,
-                'cache_data' => json_encode($this->getCacheData())
+                'cache_data' => json_encode($this->getCacheData()),
+                'version' => deviceInfo()->getAppVersion()
             ];
             if ($this->isInsertable($data, $deviceId)) DeviceHistory::create($data);
         } catch (\Exception $e) {
