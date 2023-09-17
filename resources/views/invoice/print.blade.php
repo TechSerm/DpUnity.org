@@ -120,7 +120,7 @@
             width: 100%;
             text-align: center;
         }
-    
+
 
         /* Style the individual box */
         .vendor-area .box {
@@ -216,6 +216,12 @@
         .card .credintials_label a {
             color: #ffffff;
             text-decoration: none;
+        }
+
+        @media print {
+            .vendor-area {
+                break-inside: avoid;
+            }
         }
     </style>
 </head>
