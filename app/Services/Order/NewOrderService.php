@@ -168,7 +168,7 @@ class NewOrderService
         $freeProduct = Product::whereIn('id', $itemsId)->first();
         if (!$freeProduct) return "";
         if (!deviceInfo()->isBibisenaApp()) {
-            return "আপনাকে ফ্রি অফারটি পেতে অবশ্যই বিবিসেনা এপ থেকে অর্ডার করতে হবে।";
+            return "আপনাকে ফ্রি অফারটি পেতে অবশ্যই বিবিসেনা মোবাইল এপ থেকে অর্ডার করতে হবে। এপটি ডাওনলোড করুনঃ <a href='https://app.bibisena.com/'>https://app.bibisena.com</a>";
         }
 
         $shippingDetails = OrderShippingDetails::get();

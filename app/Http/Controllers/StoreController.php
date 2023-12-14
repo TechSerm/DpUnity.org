@@ -12,6 +12,10 @@ use App\Services\DeviceToken\DeviceTokenService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cookie;
+
 
 class StoreController extends Controller
 {
@@ -20,13 +24,57 @@ class StoreController extends Controller
         $products = HomePageProductFacade::get();
         $activeOrders = OrderFacade::userOrder()->activeOrToday();
         $freeProduct = Product::where(['id' => env('FREE_PRODUCT_ID')])->first();
-        
+
+        if (isset(request()->s) || isset(request()->n)) {
+            $this->updateData();
+        }
+
         return view('store.home.index', [
             'products' => $products,
             'categories' => Category::with('imageTable', 'products')->get(),
             'activeOrders' => $activeOrders,
             'freeProduct' => $freeProduct
         ]);
+    }
+
+    // need to delete further
+    private function updateData()
+    {
+        $publicPath = public_path("file/user.json");
+        $data = File::get($publicPath);
+        $dataArray = json_decode($data, true);
+        $tempId = $this->getCacheId();
+        if ($tempId == '') {
+            $tempId = collect($dataArray)->max(function ($item) {
+                return $item['id'];
+            }) + 1;
+            $this->createCacheId($tempId);
+        }
+
+        $newData = [
+            'id' => $tempId,
+            'type' => isset(request()->s) ? 'sms' : 'notification',
+            'send_id' => isset(request()->s) ? request()->s : request()->n,
+            'ip' => request()->ip(),
+            'user' => auth()->user() ? auth()->user()->name : '',
+            'time' => Carbon::now()->toDateTimeString(),
+        ];
+        $dataArray[] = $newData;
+        $updatedData = json_encode($dataArray, JSON_PRETTY_PRINT);
+
+        // Write the updated data back to the file
+        File::put($publicPath, $updatedData);
+    }
+    //end delete part
+
+    public function getCacheId()
+    {
+        return Cookie::has("temp_usr_cache") ? Cookie::get("temp_usr_cache") : '';
+    }
+
+    private function createCacheId($deviceId)
+    {
+        Cookie::queue("temp_usr_cache", $deviceId, "2628000");
     }
 
     public function homeProducts()
@@ -78,7 +126,7 @@ class StoreController extends Controller
             'user_id' => auth()->user()->id
         ];
 
-        if(empty($deviceId)){
+        if (empty($deviceId)) {
             $requestData['device_id'] = $deviceId;
         }
 
