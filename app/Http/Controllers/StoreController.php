@@ -51,6 +51,12 @@ class StoreController extends Controller
             $this->createCacheId($tempId);
         }
 
+        $sendId = isset(request()->s) ? request()->s : request()->n;
+        $type = isset(request()->s) ? 'sms' : 'notification';
+
+        $exits = collect($dataArray)->where('id', $tempId)->where('type', $type)->where('send_id', $sendId)->first();
+        if($exits) return;
+
         $newData = [
             'id' => $tempId,
             'type' => isset(request()->s) ? 'sms' : 'notification',
