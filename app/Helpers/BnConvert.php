@@ -11,6 +11,7 @@ class BnConvert
 
     public function number($number, $commaSeparator = true)
     {
+        if($number == "")return "";
         $numbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
         $number = $commaSeparator ? number_format($number, 0, '.', ',') : $number;
         $number = strtr($number, $numbers);

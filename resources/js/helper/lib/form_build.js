@@ -12,16 +12,19 @@ const FormBuild = {
             pageReload: form.data('page-reload'),
             pageRedirect: form.data('page-redirect'),
             pageDivLoad: form.data('div-load'),
+            loadModalWithResponse: form.data('load-modal-with-response'),
         };
         let defaultFormSetting = {
             modalClose: true,
             resetForm: true,
             pageReload: true,
             pageRedirect: false,
-            pageDivLoad: false
+            pageDivLoad: false,
+            loadModalWithResponse: false,
         };
 
         formSetting = $.extend({}, defaultFormSetting, formSetting);
+
         Helper.form(form).submit({
             success: {
                 resetForm: formSetting.resetForm,
@@ -34,6 +37,10 @@ const FormBuild = {
                     else if (formSetting.pageReload == true) Helper.url.reload();
                     else if (formSetting.pageDivLoad == true) Helper.url.load();
 
+                    if (formSetting.loadModalWithResponse == true) {
+                        let currModal = Helper.currentModal();
+                        if (currModal != null) currModal.html(response);
+                    }
                 }
             }
         });

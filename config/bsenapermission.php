@@ -65,9 +65,12 @@ return [
         'status' => [
             'approved' => ['admin'],
             'assign_vendor' => ['admin'],
-            'pack_complete' => ['admin','delivery_man'],
-            'start_delivery' => ['admin','delivery_man'],
-            'complete_delivery' => ['admin','delivery_man'],
+            'pack_complete' => ['admin', 'delivery_man'],
+            'start_delivery' => ['admin', 'delivery_man'],
+            'complete_delivery' => ['admin', 'delivery_man'],
         ]
+    ],
+    'customer_reviews' => [
+        'index' => ['admin', 'customer_support']
     ]
 ];

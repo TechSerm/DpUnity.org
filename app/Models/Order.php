@@ -50,7 +50,9 @@ class Order extends Model
         'is_vendor_assign',
         'is_pack_complete',
         'is_delivery_start',
-        'order_profit_diposite_id'
+        'order_profit_diposite_id',
+
+        'device_id'
     ];
 
     public function items()

@@ -346,6 +346,13 @@ return [
 
         ],
         [
+            'text'        => 'Customer Review',
+            'url'         => '/admin/customer_reviews',
+            'icon'        => 'fas fa-user',
+            'label_color' => 'success',
+            'can' => 'customer_reviews.index'
+        ],
+        [
             'text'        => 'Search Keywords',
             'url'         => '/admin/search-keywords',
             'icon'        => 'fas fa-search',

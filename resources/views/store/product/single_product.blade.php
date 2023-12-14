@@ -13,10 +13,12 @@
             padding: 3px 0px 3px 3px;
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
+
         .productName {
             color: #000000;
 
         }
+
         .productName:hover {
             outline: none;
             text-decoration: none;
@@ -35,21 +37,31 @@
 
     <div class="" style="text-align: center">
         <div class="card product product-div {{ $isShowPage ? 'product-card-height-isShowPage' : 'product-card-height' }}"
-            style="{{ !$hasStock ? 'opacity: 0.6' : '' }};">
+            style="{{ !$hasStock ? 'opacity: 0.6' : '' }}">
             @if ($product->price < $product->market_sale_price)
-                <span class="discountLebel">৳
-                    <b>{{ bnConvert()->number($product->market_sale_price - $product->price + $incMarketSalePrice) }}</b>
-                    ছাড়</span>
+                @if ($product->price == 0)
+                    <span class="discountLebel" style="background: #c0392b">
+                        <b>ফ্রি</b>
+                    </span>
+                @else
+                    <span class="discountLebel">
+                        ৳
+                        <b>{{ bnConvert()->number($product->market_sale_price - $product->price + $incMarketSalePrice) }}</b>
+                        ছাড়
+                    </span>
+                @endif
+
             @endif
 
-            @if (!$isShowPage && $hasStock)
+            @if (!$isShowPage && $hasStock && !$product->isFree())
                 <span href="#" wire:click="increment" class="">
             @endif
             <span class="ct-image-container">
-                <img id="productImage" src="{{ asset('assets/img/product_loader.gif') }}" data-src="{{ $product->image }}"
+                <img id="productImage" src="{{ asset('assets/img/product_loader.gif') }}"
+                    data-src="{{ $product->image }}"
                     class="lazy {{ $isShowPage ? 'product-img-isShowPage' : 'product-img' }}" alt="">
             </span>
-            @if (!$isShowPage && $hasStock)
+            @if (!$isShowPage && $hasStock && !$product->isFree())
                 </span>
             @endif
             <div class="body">
@@ -80,10 +92,12 @@
                                 রাখুন</button>
                         @else
                             <div class="bag-count-area">
-                                <button style="padding: 5px" wire:click="decrement"
-                                    class="btn btn-sm btn-danger minus-quantity">
-                                    <i class="fa fa-minus"></i>
-                                </button>
+                                @if (!$product->isFree())
+                                    <button style="padding: 5px" wire:click="decrement"
+                                        class="btn btn-sm btn-danger minus-quantity">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                @endif
                                 @isset($count)
                                     <div class="QuantityTextContainer">
                                         <span class="badge"
@@ -98,10 +112,18 @@
 
                                     </div>
                                 @endisset
-                                <button style="padding: 5px;" wire:click="increment"
-                                    class="btn btn-sm btn-success plusQuantity">
-                                    <i class="fa fa-plus"></i>
-                                </button>
+                                @if ($product->isFree())
+                                    <button style="padding: 5px;" wire:click="decrement"
+                                        class="btn btn-sm btn-danger minus-quantity">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                @endif
+                                @if (!$product->isFree())
+                                    <button style="padding: 5px;" wire:click="increment"
+                                        class="btn btn-sm btn-success plusQuantity">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                @endif
                             </div>
                         @endif
                     </div>

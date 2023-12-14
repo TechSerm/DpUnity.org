@@ -98,4 +98,9 @@ class Product extends Model
             ->dontLogIfAttributesChangedOnly(['serial'])
             ->logOnlyDirty($fillable);
     }
+
+
+    public function isFree() {
+        return env('FREE_PRODUCT_ID') == $this->id;
+    }
 }

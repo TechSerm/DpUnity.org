@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CustomerReviewController;
 use App\Http\Controllers\DeliveryTransportCostController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomePageProductController;
@@ -154,6 +155,11 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
 
+        Route::resource('customer_reviews', CustomerReviewController::class);
+        Route::post('/customer_reviews/{customer_review}/add_review', [CustomerReviewController::class, 'enterMobile'])->name('customer_reviews.enter_mobile');
+        Route::post('/customer_reviews/enter_mobile', [CustomerReviewController::class, 'enterMobile'])->name('customer_reviews.enter_mobile');
+        Route::post('/customer_reviews/add_customer', [CustomerReviewController::class, 'addCustomer'])->name('customer_reviews.add_customer');
+
         Route::get('/home_page_product', [HomePageProductController::class, 'index'])->name('admin.home_page_product.index');
     });
 
@@ -163,6 +169,8 @@ Route::prefix('admin')->group(function () {
     Route::middleware(['cors'])->group(function () {
         Route::get('/log', [HomeController::class, 'log'])->name('log');
     });
-
+    
     Auth::routes();
 });
+
+

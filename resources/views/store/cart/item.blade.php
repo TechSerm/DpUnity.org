@@ -25,10 +25,18 @@
         <div style="font-size: 11px;font-weight: bold; color: #767575">৳ {{ convertBanglaNumber($item->price) }}  / {{ bnConvert()->number($item->quantity, false) }} {{ bnConvert()->unit($item->unit) }} </div>
         <div style="margin-top: 10px; font-size: 12px; font-weight: bold;">
             <span style="background: #f5f5f5; border: 1px solid #aaaaaa; padding: 3px 2px 5px 2px; border-radius: 5px">
+            @if (!$item->isFree())
                 <button style="padding: 0px 5px; font-size: 11px" wire:click="decrement" class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
+            @endif
+            
                 <span style="margin-left: 5px; margin-right: 5px;">{{ convertBanglaNumber($totalQuantity) }}</span>
-            <button style="padding: 0px 5px;font-size: 12px" wire:click="increment" class="btn btn-sm btn-success"><i class="fa fa-plus"></i></button>
-            </span>
+            @if ($item->isFree())
+                <button style="padding: 0px 5px; font-size: 11px" wire:click="decrement" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+            @endif
+            @if (!$item->isFree())
+                <button style="padding: 0px 5px;font-size: 12px" wire:click="increment" class="btn btn-sm btn-success"><i class="fa fa-plus"></i></button>
+            @endif    
+        </span>
         </div>
     </td>
     <td class="align-middle" style="text-align: center; width: 20px;">

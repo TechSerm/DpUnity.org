@@ -24,4 +24,5 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+window.Helper = require('./helper/helper.js').Helper;
 window.Store = require('./store/store.js').Store;

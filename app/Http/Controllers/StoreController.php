@@ -19,11 +19,13 @@ class StoreController extends Controller
     {
         $products = HomePageProductFacade::get();
         $activeOrders = OrderFacade::userOrder()->activeOrToday();
+        $freeProduct = Product::where(['id' => env('FREE_PRODUCT_ID')])->first();
         
         return view('store.home.index', [
             'products' => $products,
             'categories' => Category::with('imageTable', 'products')->get(),
             'activeOrders' => $activeOrders,
+            'freeProduct' => $freeProduct
         ]);
     }
 

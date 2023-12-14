@@ -80,6 +80,9 @@
         </div>
         @stop
         
+
+        @include('store.home.free_product')
+
         <div class="row mt-3">
             @if (
                 !deviceInfo()->hasDeviceToken() ||
@@ -128,6 +131,8 @@
 
         </div>
     </div>
+
+    
     <div class="row orderArea mt-3">
         @foreach ($activeOrders as $order)
             <div class="col-md-4">

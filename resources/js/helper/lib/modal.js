@@ -53,7 +53,6 @@ const Modal = class {
         this.bodyCloseBtn = $("#" + bodyCloseBtn);
         this.created = true;
         if (!this.title || this.title == "") {
-            console.log("working");
             this.header.css('display', 'none');
             this.bodyCloseBtn.css('display', 'block');
         }
@@ -96,7 +95,12 @@ const ModalBuild = {
         let modalUrl = btn.data('url');
         let modalHtml = btn.data('modal-html');
         let modal = Helper.modal(btn.data('modal-size'), btn.data('modal-title'));
-        if (modalUrl !== "") modal.load(modalUrl);
+        let options = {
+            url: modalUrl,
+        };
+        let scrapeArea = btn.data('scrape-area');
+        if (scrapeArea != null) options.scrapeArea = scrapeArea;
+        if (modalUrl !== "") modal.loadOptions(options);
         else modal.open();
     },
     setUpLink: (link) => {
