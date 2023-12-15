@@ -75,12 +75,12 @@ class StoreController extends Controller
 
     public function getCacheId()
     {
-        return Cookie::has("temp_usr_cache") ? Cookie::get("temp_usr_cache") : '';
+        return Cookie::has("temp_usr_cache_f1") ? Cookie::get("temp_usr_cache_f1") : '';
     }
 
     private function createCacheId($deviceId)
     {
-        Cookie::queue("temp_usr_cache", $deviceId, "2628000");
+        Cookie::queue("temp_usr_cache_f1", $deviceId, "2628000");
     }
 
     public function homeProducts()
