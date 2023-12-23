@@ -2,12 +2,12 @@
 
     <style>
         .orderTotalArea {
-            background-color: #f7f7f7;
+            background-color: #ffffff;
             padding: 15px;
             border: 1px solid #eeeeee;
-            box-shadow: -1px -2px 18px -5px rgba(170,170,170,1);
-
-            border-radius: 5px;
+            /* box-shadow: -1px -2px 18px -5px rgba(170,170,170,1); */
+            margin-top: -15px;
+            border-radius: 0px 0px 5px 5px;
         }
 
         .orderTotalTable {

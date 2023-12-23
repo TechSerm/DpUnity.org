@@ -37,6 +37,15 @@ class StoreController extends Controller
         ]);
     }
 
+    public function profile()
+    {
+        if(!auth()->check()){
+            return redirect('login');
+        }
+
+        return view('store.profile.index');
+    }
+
     // need to delete further
     private function updateData()
     {
@@ -55,7 +64,7 @@ class StoreController extends Controller
         $type = isset(request()->s) ? 'sms' : 'notification';
 
         $exits = collect($dataArray)->where('id', $tempId)->where('type', $type)->where('send_id', $sendId)->first();
-        if($exits) return;
+        if ($exits) return;
 
         $newData = [
             'id' => $tempId,

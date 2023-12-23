@@ -11,7 +11,7 @@
         padding: 1px;
         text-align: center;
         border-radius: 5px;
-        width: 100%;
+        width: 90%;
         border: 1px solid #dcd9d9;
     }
 
@@ -69,6 +69,7 @@
             <div class="input-group">
                 <input type="search" autocomplete="off" id="search" value="{{ request()->q }}" class="form-control"
                     placeholder="পণ্য খুঁজুন (যেমন, ডিম, দুধ, আলু)">
+                
                 <div class="input-group-append">
                     <button id="searchBtn" onclick="Store.search.searchProduct()" class="searchButton" style=""
                         type="button">
@@ -78,9 +79,9 @@
                 <div id="suggestionArea"></div>
             </div>
         </div>
-        <button class="loginBtn" onclick="Store.menu.goNewPage('admin')">
+        <a class="loginBtn" href="{{route('profile')}}" style="padding: 8px; font-size: 18px">
             <i class="fa fa-sign-in" aria-hidden="true"></i>
-        </button>
+        </a>
     </ul>
 </div>
 

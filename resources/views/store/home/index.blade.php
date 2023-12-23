@@ -65,7 +65,7 @@
         }
 
         .siteBanner{
-            margin: 55px 0px -70px 0px!important;
+            
             width: 100%;
             padding: 0px;
             box-shadow: 0 2px 4px 0 #aaaaaa, 0 3px 10px 0 #aaaaaa;
@@ -73,15 +73,11 @@
     </style>
 
     <div style="">
-        @section('fullContant')
+        
         <div class="siteBanner">
-            <img class="hotline-cardd" src="{{asset('assets/img/banner11.png')}}" style="width: 100%;"
+            <img class="hotline-card" src="{{asset('assets/img/banner11.png')}}" style="width: 100%;"
             alt="">
         </div>
-        @stop
-        
-
-        @include('store.home.free_product')
 
         <div class="row mt-3">
             @if (
@@ -89,7 +85,7 @@
                     (deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config('bibisena.android_app_version')))
 
                 <div class="col-md-4 col-sm-4 col-12">
-                    <div class="card hotline-card mb-3" style="text-align: center; font-size: 20px; height: 190px">
+                    <div class="card hotline-card mb-3" style="text-align: center; font-size: 20px; height: 190px; padding: 5px">
                         <div style="height: 135px">
                             বিবিসিনা অ্যান্ড্রয়েড অ্যাপ<br />
                             @php
@@ -115,7 +111,7 @@
             @endif
 
             <div class="col-md-4 col-sm-4 col-12">
-                <div class="card hotline-card" style="text-align: center; font-size: 15px;">
+                <div class="card hotline-card" style="text-align: center; font-size: 15px; padding: 5px">
 
                     <div style="color: #474145; margin-top: 10px;margin-bottom: -10px; ">
                         যেকোনো প্রয়োজনে যোগাযোগ করুন আমাদের হটলাইন নাম্বারে<br />
@@ -132,21 +128,7 @@
         </div>
     </div>
 
-    
-    <div class="row orderArea mt-3">
-        @foreach ($activeOrders as $order)
-            <div class="col-md-4">
-                <a href="{{ route('store.order.show', ['uuid' => $order->uuid]) }}">
-                    <div class="orderAreaCard" style="background: {{ $order->customer_status['color'] }}">
-                        {{ bnConvert()->date($order->created_at->diffForHumans()) }}, আপনি একটি অর্ডার করেছেন।
-                        {{ $order->customer_status['name'] }}।<br />
-                        অর্ডার নম্বর: {{ bnConvert()->number($order->id, false) }}<br />
-                        সর্বমোট: ৳ {{ bnConvert()->number($order->total) }}<br />
-                    </div>
-                </a>
-            </div>
-        @endforeach
-    </div>
+
 
     <style>
         .home-list {
@@ -181,8 +163,8 @@
     </style>
     {{-- @include('store.home.feedback_form') --}}
 
-    <div class="home-listt" style="background: #ffffff">
-        <div class="home-list-category-name" style=" color: #000000; margin-top: 10px">
+    <div class="home-listt" style="">
+        <div class="home-list-category-name" style=" color: #000000; margin-top: 30px">
             ক্যাটেগরি
         </div>
         <div style="margin-right: -12px;">

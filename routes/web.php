@@ -59,9 +59,13 @@ Route::middleware(['device_token_check', 'device_history', 'check_push_notificat
     Route::get('/categories', [StoreCategoryController::class, 'index'])->name('store.categories');
     Route::get('/categories/{category}', [StoreCategoryController::class, 'show'])->name('store.categories.show');
 
-    Route::post('/survey_form',  [StoreController::class, 'surveyFormSave'])->name('survey_form_save.store');
+    Route::get('/profile', [StoreController::class, 'profile'])->name('profile');
+
+   // Route::post('/survey_form',  [StoreController::class, 'surveyFormSave'])->name('survey_form_save.store');
 
 });
+
+Auth::routes();
 
 Route::get('/_images/{filename}', [ImageController::class, 'resize'])->name('image');
 Route::get('/_export/{table_name}', [ExportController::class, 'exportCsv']);
@@ -170,7 +174,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/log', [HomeController::class, 'log'])->name('log');
     });
     
-    Auth::routes();
+    
 });
 
 

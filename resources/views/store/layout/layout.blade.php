@@ -109,6 +109,7 @@
 
 <script>
     Store.home.updateProductImageSize();
+    Helper.initBodyAction();
 </script>
 
 </html>

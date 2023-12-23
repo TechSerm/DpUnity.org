@@ -1,3 +1,5 @@
+const { Helper } = require("../helper");
+
 //single page load
 $(document).ready(function() {
     $('body').on('click', 'a', function(e) {
@@ -51,45 +53,6 @@ $(document).ready(function() {
             e.preventDefault();
             window.open(link, '_blank');
         }
-    });
-    $(window).on('popstate', function(e) {
-        Helper.url.load(Helper.url.get(), (response) => {});
-    });
-    /*
-     * Modal button action
-     */
-    $('body').on('click', 'button[data-toggle="modal"]', function(e) {
-        require('./modal.js').ModalBuild.setUp($(this));
-    });
-    /*
-     * Modal link action
-     */
-    $('body').on('click', 'a[data-toggle="modal"]', function(e) {
-        require('./modal.js').ModalBuild.setUpLink($(this));
-    });
-    /*
-     * Delete button action
-     */
-    $('body').on('click', 'button[data-toggle="delete"]', function(e) {
-        require('./form_build.js').FormBuild.delete($(this));
-    });
-    /*
-     * Confirm button action
-     */
-    $('body').on('click', 'button[data-toggle="confirm"]', function(e) {
-        require('./form_build.js').FormBuild.confirm($(this));
-    });
-    /*
-     * Form submit action
-     */
-    $('body').on('submit', 'form', function(e) {
-        //if form method is get then its not call submit function
-        if ($(this).attr('method').toLowerCase() === "get") {
-
-            return;
-        }
-        e.preventDefault();
-        require('./form_build.js').FormBuild.submit($(this));
     });
 });
 $(window).on('load', function() {

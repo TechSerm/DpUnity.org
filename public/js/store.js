@@ -2500,10 +2500,45 @@ var Helper = {
     $('form').on('submit', function (e) {
       e.preventDefault();
     });
+  },
+  initBodyAction: function initBodyAction() {
+    $('body').on('click', 'button[data-toggle="modal"]', function (e) {
+      (__webpack_require__(/*! ./lib/modal.js */ "./resources/js/helper/lib/modal.js").ModalBuild.setUp)($(this));
+    });
+    /*
+     * Modal link action
+     */
+    $('body').on('click', 'a[data-toggle="modal"]', function (e) {
+      (__webpack_require__(/*! ./lib/modal.js */ "./resources/js/helper/lib/modal.js").ModalBuild.setUpLink)($(this));
+    });
+    /*
+     * Delete button action
+     */
+    $('body').on('click', 'button[data-toggle="delete"]', function (e) {
+      (__webpack_require__(/*! ./lib/form_build.js */ "./resources/js/helper/lib/form_build.js").FormBuild["delete"])($(this));
+    });
+    /*
+     * Confirm button action
+     */
+    $('body').on('click', 'button[data-toggle="confirm"]', function (e) {
+      (__webpack_require__(/*! ./lib/form_build.js */ "./resources/js/helper/lib/form_build.js").FormBuild.confirm)($(this));
+    });
+    /*
+     * Form submit action
+     */
+    $('body').on('submit', 'form', function (e) {
+      //if form method is get then its not call submit function
+      if ($(this).attr('method').toLowerCase() === "get") {
+        return;
+      }
+      e.preventDefault();
+      (__webpack_require__(/*! ./lib/form_build.js */ "./resources/js/helper/lib/form_build.js").FormBuild.submit)($(this));
+    });
   }
 };
 __webpack_require__(/*! ./lib/ajax_load.js */ "./resources/js/helper/lib/ajax_load.js");
 Helper.formPrevent();
+Helper.initBodyAction();
 module.exports = {
   Helper: Helper
 };
@@ -2515,6 +2550,9 @@ module.exports = {
   !*** ./resources/js/helper/lib/ajax_load.js ***!
   \**********************************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+var _require = __webpack_require__(/*! ../helper */ "./resources/js/helper/helper.js"),
+  Helper = _require.Helper;
 
 //single page load
 $(document).ready(function () {
@@ -2569,44 +2607,6 @@ $(document).ready(function () {
       e.preventDefault();
       window.open(link, '_blank');
     }
-  });
-  $(window).on('popstate', function (e) {
-    Helper.url.load(Helper.url.get(), function (response) {});
-  });
-  /*
-   * Modal button action
-   */
-  $('body').on('click', 'button[data-toggle="modal"]', function (e) {
-    (__webpack_require__(/*! ./modal.js */ "./resources/js/helper/lib/modal.js").ModalBuild.setUp)($(this));
-  });
-  /*
-   * Modal link action
-   */
-  $('body').on('click', 'a[data-toggle="modal"]', function (e) {
-    (__webpack_require__(/*! ./modal.js */ "./resources/js/helper/lib/modal.js").ModalBuild.setUpLink)($(this));
-  });
-  /*
-   * Delete button action
-   */
-  $('body').on('click', 'button[data-toggle="delete"]', function (e) {
-    (__webpack_require__(/*! ./form_build.js */ "./resources/js/helper/lib/form_build.js").FormBuild["delete"])($(this));
-  });
-  /*
-   * Confirm button action
-   */
-  $('body').on('click', 'button[data-toggle="confirm"]', function (e) {
-    (__webpack_require__(/*! ./form_build.js */ "./resources/js/helper/lib/form_build.js").FormBuild.confirm)($(this));
-  });
-  /*
-   * Form submit action
-   */
-  $('body').on('submit', 'form', function (e) {
-    //if form method is get then its not call submit function
-    if ($(this).attr('method').toLowerCase() === "get") {
-      return;
-    }
-    e.preventDefault();
-    (__webpack_require__(/*! ./form_build.js */ "./resources/js/helper/lib/form_build.js").FormBuild.submit)($(this));
   });
 });
 $(window).on('load', function () {
@@ -3474,11 +3474,13 @@ var Url = {
     location.reload();
   },
   load: function load(url, callback) {
-    Helper.div("app-body").load({
+    var divId = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+    divId = divId == null ? "app-body" : divId;
+    Helper.div(divId).load({
       url: url,
       loader: "top",
       changeUrl: true,
-      scrapeArea: 'app-body'
+      scrapeArea: divId
     }, function (response) {
       document.title = $(response).filter('title').text();
       if ($.isFunction(callback)) callback(response);
@@ -3501,6 +3503,46 @@ var Url = {
 };
 module.exports = {
   Url: Url
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/auth.js":
+/*!************************************!*\
+  !*** ./resources/js/store/auth.js ***!
+  \************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var _require = __webpack_require__(/*! ../helper/helper */ "./resources/js/helper/helper.js"),
+  Helper = _require.Helper;
+var Auth = {
+  login: function login(e) {
+    var form = Helper.form(e);
+    form.submit({
+      success: {
+        resetForm: true,
+        callback: function callback(response) {
+          $("#loadBody").append($("#pageLoader").html());
+          Helper.url.load("/profile", function () {}, "loadBody");
+        }
+      }
+    });
+  },
+  logout: function logout(e) {
+    var form = Helper.form(e);
+    $("#loadBody").append($("#pageLoader").html());
+    form.submit({
+      success: {
+        resetForm: true,
+        callback: function callback(response) {
+          Helper.url.load("/", function () {}, "loadBody");
+        }
+      }
+    });
+  }
+};
+module.exports = {
+  Auth: Auth
 };
 
 /***/ }),
@@ -3772,6 +3814,7 @@ module.exports = {
 
 var Store = {
   home: (__webpack_require__(/*! ./home.js */ "./resources/js/store/home.js").Home),
+  auth: (__webpack_require__(/*! ./auth.js */ "./resources/js/store/auth.js").Auth),
   search: (__webpack_require__(/*! ./search.js */ "./resources/js/store/search.js").Search),
   order: (__webpack_require__(/*! ./order.js */ "./resources/js/store/order.js").Order),
   menu: (__webpack_require__(/*! ./menu.js */ "./resources/js/store/menu.js").Menu),

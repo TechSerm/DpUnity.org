@@ -16,12 +16,13 @@ var Url = {
     reload: () => {
         location.reload();
     },
-    load: function(url, callback) {
-        Helper.div("app-body").load({
+    load: function(url, callback, divId = null) {
+        divId = divId == null ? "app-body" : divId
+        Helper.div(divId).load({
             url: url,
             loader: "top",
             changeUrl: true,
-            scrapeArea: 'app-body'
+            scrapeArea: divId
         }, function(response) {
             document.title = $(response).filter('title').text();
             if ($.isFunction(callback)) callback(response);

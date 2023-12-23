@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content_header')
     <h1>Dashboard</h1>
-    <form method="POST" action="admin/logout">
+    <form method="POST" action="{{route('logout')}}">
         @csrf
 
         <a href="" class="btn btn-primary" onclick="event.preventDefault(); this.closest('form').submit();">
