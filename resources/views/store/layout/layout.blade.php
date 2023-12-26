@@ -100,7 +100,7 @@
         @include('store.layout.loader')
     </div>
     @yield('fullContant')
-    <div class="container storeContent" style="margin-top: 60px; padding: 15px;" id="loadBody">
+    <div class="container-fluid container storeContent" style="margin-top: 60px; padding-top: 15px;" id="loadBody">
         @yield('content')
     </div>
     @include('store.layout.footer')

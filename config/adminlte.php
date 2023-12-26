@@ -237,71 +237,47 @@ return [
         ],
 
         [
-            'text'        => 'ড্যাশবোর্ড',
+            'text'        => 'Dashboard',
             'url'         => '/admin',
             'icon'        => 'far fa-fw fa-file',
             'label_color' => 'success',
         ],
         [
-            'text'        => 'পণ্য',
+            'text'        => 'Products',
             'url'         => '/admin/products',
             'icon'        => 'fas fa-egg',
             'label_color' => 'success',
             'can' => 'products.index',
             'submenu' => [
                 [
-                    'text'    => 'পণ্যের তালিকা',
+                    'text'    => 'Product List',
                     'shift'   => 'ml-3',
                     'url'         => '/admin/products',
                     'icon'        => 'fas fa-egg',
                 ],
-                [
-                    'text'        => 'পেন্ডিং পণ্য',
-                    'url'         => '/admin/temporary_products',
-                    'icon'        => 'fas fa-egg',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-
-                ],
-                [
-                    'text'    => 'পণ্যের দাম পরিবর্তন',
-                    'shift'   => 'ml-3',
-                    'url'         => '/admin/product_price',
-                    'icon'        => 'fa fa-credit-card',
-                    'label_color' => 'success',
-                    'can' => 'products_price.index'
-                ],
-                [
-                    'text'    => 'পণ্যের সিরিয়াল',
-                    'shift'   => 'ml-3',
-                    'url'         => '/admin/products/order',
-                    'icon'        => 'fa fa-credit-card',
-                    'label_color' => 'success',
-                    'can' => 'products.serial'
-                ],
             ],
         ],
         [
-            'text'        => 'ক্যাটেগরি',
+            'text'        => 'Categories',
             'url'         => '/admin/categories',
             'icon'        => 'fas fa-dice-d6',
             'label_color' => 'success',
             'can' => 'categories.index'
         ],
         [
-            'text'        => 'অর্ডার',
+            'text'        => 'Orders',
             'icon'        => 'fas fa-list',
             'label_color' => 'success',
             'submenu' => [
                 [
-                    'text'    => 'চলমান অর্ডার সমুখ',
+                    'text'    => 'Active Orders',
                     'shift'   => 'ml-3',
                     'url'         => '/admin/orders/active',
                     'icon'        => 'fas fa-list',
                     'can' => 'active_orders.index',
                 ],
                 [
-                    'text'        => 'সবগুলো অর্ডার',
+                    'text'        => 'All Orders',
                     'url'         => '/admin/orders',
                     'icon'        => 'fas fa-list',
                     'label_color' => 'success',
@@ -309,48 +285,6 @@ return [
 
                 ],
             ],
-        ],
-        [
-            'text'        => 'বিক্রেতার পাওনা',
-            'url'         => '/admin/vendor_payments',
-            'icon'        => 'fa fa-credit-card',
-            'label_color' => 'success',
-            'can' => 'vendor_payment.index'
-        ],
-        [
-            'text'        => 'একাউন্ট হিসাব',
-            'url'         => 'admin/account_transaction',
-            'icon'        => 'fa fa-credit-card',
-            'label_color' => 'success',
-            'can' => 'account.index',
-            'submenu' => [
-                [
-                    'text'    => 'একাউন্ট ড্যাশবোর্ড',
-                    'shift'   => 'ml-3',
-                    'url'         => 'admin/account_transaction',
-                    'icon'        => 'fa fa-credit-card',
-                ],
-                [
-                    'text'    => 'জমাকৃত লাভ',
-                    'shift'   => 'ml-3',
-                    'url'         => '/admin/order_profit_diposites',
-                    'icon'        => 'fa fa-credit-card',
-                ],
-                [
-                    'text'    => 'ডেলিভারি খরচ',
-                    'shift'   => 'ml-3',
-                    'url'         => '/admin/delivery_transport_costs',
-                    'icon'        => 'fa fa-credit-card',
-                ],
-            ],
-
-        ],
-        [
-            'text'        => 'Customer Review',
-            'url'         => '/admin/customer_reviews',
-            'icon'        => 'fas fa-user',
-            'label_color' => 'success',
-            'can' => 'customer_reviews.index'
         ],
         [
             'text'        => 'Search Keywords',

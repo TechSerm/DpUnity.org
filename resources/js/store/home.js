@@ -29,7 +29,11 @@ const Home = {
     },
 
     onPageScroll: function() {
-        if ($(window).scrollTop() + window.innerHeight + 10 >= document.body.scrollHeight) {
+
+        let pageHeight = document.body.scrollHeight;
+        let footerHeight = $("#footerArea").height();
+
+        if ($(window).scrollTop() + window.innerHeight + 10 >= (pageHeight-footerHeight)) {
             Store.home.loadMoreHomeProduct();
         }
     },

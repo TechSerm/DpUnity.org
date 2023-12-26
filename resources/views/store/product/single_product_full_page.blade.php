@@ -1,4 +1,6 @@
-<div>
+@extends('store.layout.layout')
+@section('content')
+
     <style>
         .discountLebel {
             position: absolute;
@@ -23,123 +25,129 @@
             outline: none;
             text-decoration: none;
         }
+
+        .product-show .title {
+            font-size: 18px;
+            font-weight: bold;
+
+
+        }
+
+        .productLstImg {
+            border: 1px solid #eeeeee;
+        }
+
+        .productLstImg:hover {
+            cursor: pointer;
+            border: 1px solid #aaaaaa;
+        }
+
+        .price {
+            font-size: 30px;
+            font-weight: bold;
+            color: red;
+        }
+
+        .thumbnail-container {
+            margin-top: 20px;
+            overflow-x: scroll;
+            /* Always show the scrollbar */
+        }
     </style>
-    @if ($isShowPage)
-        <div class="row">
-            <div class="col-md-6">
-    @endif
+
 
     @php
         $hasStock = $product->has_stock;
         $incMarketSalePrice = getProductDiscountIncValue($product->market_sale_price);
     @endphp
 
-    <div class="" style="text-align: center">
-        <div class="store-card productt product-div {{ $isShowPage ? 'product-card-height-isShowPage' : 'product-card-height' }}"
-            style="{{ !$hasStock ? 'opacity: 0.6' : '' }}">
-            @if ($product->price < $product->market_sale_price)
-                @if ($product->price == 0)
-                    <span class="discountLebel" style="background: #c0392b">
-                        <b>ফ্রি</b>
+    <div class="product-show">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="store-card ">
+                    <span class="ct-image-container">
+                        <img id="productImage" style="width: 100%" src="{{ asset('assets/img/product_loader.gif') }}"
+                            data-src="{{ $product->image }}" class="lazy product-img-isShowPage" alt="">
                     </span>
-                @else
-                    <span class="discountLebel">
-                        ৳
-                        <b>{{ bnConvert()->number($product->market_sale_price - $product->price + $incMarketSalePrice) }}</b>
-                        ছাড়
-                    </span>
-                @endif
-
-            @endif
-
-            @if (!$isShowPage && $hasStock && !$product->isFree())
-                <span href="#" wire:click="increment" class="">
-            @endif
-            <span class="ct-image-container">
-                <img id="productImage" src="{{ asset('assets/img/product_loader.gif') }}"
-                    data-src="{{ $product->image }}"
-                    class="lazy {{ $isShowPage ? 'product-img-isShowPage' : 'product-img' }}" alt="">
-            </span>
-            @if (!$isShowPage && $hasStock && !$product->isFree())
-                </span>
-            @endif
-            <div class="body">
-                <div class="title"><a class="productName"
-                        href="{{ route('store.product.show', $product) }}">{{ $product->name }}</a></div>
-                <div class="quantity-area">
-                    <span>{{ bnConvert()->number($product->quantity, false) }}
-                        {{ bnConvert()->unit($product->unit) }}</span>
+                    <div class="text-center mb-2 mt-2">
+                        <div class="slider" id="thumbnail-slider">
+                        @for ($i = 1; $i <= 7; $i++)
+                            <img id="" style="height: 70px; width: 70px"
+                                src="{{ asset('assets/img/product_loader.gif') }}" data-src="{{ $product->image }}"
+                                class="lazy thumbnail productLstImg product-img-isShowPage" alt="">
+                        @endfor
+                        <img id="" style="height: 70px; width: 70px"
+                            src="https://deencommerce.com/wp-content/uploads/2021/12/Jeans-Pant-Size-Dimensions.jpg"
+                            data-src="https://deencommerce.com/wp-content/uploads/2021/12/Jeans-Pant-Size-Dimensions.jpg"
+                            class="lazy thumbnail productLstImg product-img-isShowPage" alt="">
+                        </div>
+                        </div>
                 </div>
-                <div class="price-area">
-                    ৳ <span class="price">{{ bnConvert()->number($product->price) }}</span>
 
-                    @if ($product->price < $product->market_sale_price)
-                        <span
-                            style="color: #5E5E5E; font-weight: bold; font-size: 11px; margin-left: 3px; vertical-align: middle;"><del>৳
-                                {{ bnConvert()->number($product->market_sale_price + $incMarketSalePrice) }}</del></span>
-                    @endif
+            </div>
+            <div class="col-md-6">
+                <div class="store-card">
+                    <div class="" style="border-bottom: 1px solid #eeeeee;padding: 10px;">
+                        <span class="title">{{ $product->name }}</span><br />
+                        Cagegory: <a href="">Test</a> <a href="">test</a>
+                    </div>
 
-                </div>
-                @if ($hasStock)
-                    <div class="button-area">
-                        @php
-                            $cartQuantity = isset($count) ? $count : 0;
-                        @endphp
-                        @if ($cartQuantity <= 0)
-                            <button wire:click="increment" class="btn btn-sm add-bag"><i class="fa fa-shopping-bag"></i>
-                                ব্যাগে
-                                রাখুন</button>
-                        @else
-                            <div class="bag-count-area">
-                                @if (!$product->isFree())
-                                    <button style="padding: 5px" wire:click="decrement"
-                                        class="btn btn-sm btn-danger minus-quantity">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                @endif
-                                @isset($count)
-                                    <div class="QuantityTextContainer">
-                                        <span class="badge"
-                                            style="font-size: 13px; padding-bottom: 3px;">{{ bnConvert()->number($count, false) }}
-                                            টি
-                                            ব্যাগে
-                                            <br />
-                                            <span
-                                                style="color: #f1f1f1; margin-top: 3px;padding-top: 3px;display:block;border-top: 1px solid #eeeeee; font-size: 12px;">৳
-                                                {{ bnConvert()->number($product->price * $count) }}</span>
-                                        </span>
+                    <div class="price-area" style="padding: 10px;">
+                        ৳ <span class="price">{{ bnConvert()->number($product->price) }}</span>
 
-                                    </div>
-                                @endisset
-                                @if ($product->isFree())
-                                    <button style="padding: 5px;" wire:click="decrement"
-                                        class="btn btn-sm btn-danger minus-quantity">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                @endif
-                                @if (!$product->isFree())
-                                    <button style="padding: 5px;" wire:click="increment"
-                                        class="btn btn-sm btn-success plusQuantity">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                @endif
-                            </div>
+                        @if ($product->price < $product->market_sale_price)
+                            <span
+                                style="color: #5E5E5E; font-weight: bold; font-size: 11px; margin-left: 3px; vertical-align: middle;"><del>৳
+                                    {{ bnConvert()->number($product->market_sale_price + $incMarketSalePrice) }}</del></span>
                         @endif
+
+                        <div class="">
+                            <div class="mb-2">
+                                Quantity: - 1 +
+                            </div>
+                            <button class="btn btn-info">Buy Now</button>
+                            <button class="btn btn-primary">Add To Cart</button>
+                        </div>
+
                     </div>
-                @else
-                    <div class="button-area">
-                        <button class="btn btn-sm add-bag disabled" disabled style="background: #d35400"><i
-                                class="fa fa-exclamation-triangle"></i> পণ্যটি স্টকে নেই </button>
-                    </div>
-                @endif
+                </div>
             </div>
         </div>
     </div>
-    @if ($isShowPage)
-</div>
-<div class="col-md-6">
-        <h1>{{$product->name}}</h1>
-</div>
-</div>
-@endif
-</div>
+
+    <div class="store-card product-show">
+        <div class="header">
+            Desciptions
+        </div>
+        <div class="body">
+            hello this is system
+        </div>
+    </div>
+
+@stop
+
+@push('scripts')
+<!-- Slick Carousel -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#thumbnail-slider').slick({
+                infinite: true,
+  slidesToShow: 3,
+  slidesToScroll: 3,
+
+    });
+
+            // Handle thumbnail clicks
+            $(".thumbnail").click(function() {
+                // Get the clicked thumbnail's source
+                var newImageSrc = $(this).attr("src");
+                // Update the main product image with the clicked thumbnail
+                $("#productImage").attr("src", newImageSrc);
+            });
+        });
+    </script>
+@endpush

@@ -2,7 +2,8 @@
     background-color: #fff;
     border: none;
     border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border: 1px solid #e9ecef;
+    box-shadow: 0 0 20px 0 rgba(183,190,199,0.15);
     margin-right: 10px;
     padding: 2px;
     margin-bottom: 15px;
@@ -21,13 +22,12 @@
         text-align: center;
         font-weight: bold;
         font-size: 14px;
-        margin: 0px 0px 3px 0px;
+        margin: 0px 0px 10px 0px;
         padding-top: 5px;
         color: black;
-        height: 50px;
+        height: 40px;
         /* background: red; */
-        overflow: hidden;
-        line-height: 15px;
+        
     }
     .quantity-area {
         height: 20px;
@@ -36,9 +36,8 @@
         color: #2c3e50;
     }
     .price-area {
-        height: 20px;
-        /* background: green; */
-        margin-bottom: 3px;
+        margin-bottom: 5px;
+        margin-top: 10px;
         color: red;
     }
     .price {
@@ -49,7 +48,6 @@
     .button-area {
         text-align: center;
         height: 40px;
-        margin-top: 10px;
         vertical-align: middle;
     }
     button:focus {
@@ -97,7 +95,7 @@
         float: right;
     }
     .product-card-height {
-        height: 300px;
+        height: 200px;
     }
     .product-img {
         height: 150px;
@@ -114,6 +112,11 @@
 
 .product {
     border-radius: 10px;
+}
+
+.product:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
 }
 
 @mixin modal-fullscreen() {

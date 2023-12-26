@@ -118,41 +118,10 @@ class StoreController extends Controller
     {
     }
 
-    public function surveyFormSave(Request $request)
-    {
-        $data = [
-            'address' => $request->address,
-            'mobile_number' => $request->address,
-            'total_member' => $request->address,
-            'member_under_18' => $request->address,
-            'occupation' => $request->address,
-            'income' => $request->address,
-            'time_save' => $request->address,
-            'category' => $request->category
-        ];
-
-        $deviceId = (new DeviceTokenService())->getCacheId();
-
-
-        dd($deviceId);
-        $requestData = [
-            'survey_key' => 1,
-            'survey_body' => json_encode($data),
-            'user_id' => auth()->user()->id
-        ];
-
-        if (empty($deviceId)) {
-            $requestData['device_id'] = $deviceId;
-        }
-
-        SurveyResponse::create($requestData);
-
-        return redirect('/');
-    }
 
     public function showProduct($productId)
     {
         $product = Product::findOrFail($productId);
-        return view('store.product.show', ['product' => $product]);
+        return view('store.product.single_product_full_page', ['product' => $product]);
     }
 }

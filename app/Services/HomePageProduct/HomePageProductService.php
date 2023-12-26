@@ -12,6 +12,13 @@ class HomePageProductService
 {
     public function get()
     {
+       // return 
+        return $this->getProductWithQuery();
+        //;
+    }
+
+    public function getProductWithQuery()
+    {
         $products = [];
         $productsId = [];
 
@@ -28,7 +35,7 @@ class HomePageProductService
             $query->where('status', 'publish');
             $query->orderBy('serial', 'asc');
         }, 'products.imageTable'])->get();
-        
+
         foreach ($categories as $category) {
             $categoryProducts = $category->products;
             foreach ($categoryProducts as $key => $product) {
@@ -47,13 +54,12 @@ class HomePageProductService
         $products = collect($products);
 
         return $products->forPage(request()->page, 12);
-
-        // return collect($products)->paginate();
     }
 
-    public function getPopularProducts(){
+    public function getPopularProducts()
+    {
         $mxSerialNo = HomePageProduct::max('serial_no') + 1;
-        
+
         $products = Product::with(['imageTable'])->where(['status' => 'publish', 'has_stock' => true])->leftJoin('home_page_products', function ($join) {
             $join->on('products.id', '=', 'home_page_products.product_id');
         })->leftJoin($this->getOrderSaleQueryTable(), function ($join) {

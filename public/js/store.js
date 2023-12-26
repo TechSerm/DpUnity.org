@@ -3583,7 +3583,9 @@ var Home = {
     });
   },
   onPageScroll: function onPageScroll() {
-    if ($(window).scrollTop() + window.innerHeight + 10 >= document.body.scrollHeight) {
+    var pageHeight = document.body.scrollHeight;
+    var footerHeight = $("#footerArea").height();
+    if ($(window).scrollTop() + window.innerHeight + 10 >= pageHeight - footerHeight) {
       Store.home.loadMoreHomeProduct();
     }
   },

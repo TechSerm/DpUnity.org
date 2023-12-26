@@ -64,71 +64,57 @@
             outline: 0px;
         }
 
-        .siteBanner{
-            
+        .siteBanner {
             width: 100%;
             padding: 0px;
-            box-shadow: 0 2px 4px 0 #aaaaaa, 0 3px 10px 0 #aaaaaa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.01)
+        }
+
+        .siteBanner img {
+            border-radius: 10px;
+            max-height: 400px;
         }
     </style>
 
-    <div style="">
-        
-        <div class="siteBanner">
-            <img class="hotline-card" src="{{asset('assets/img/banner11.png')}}" style="width: 100%;"
-            alt="">
-        </div>
-
-        <div class="row mt-3">
-            @if (
-                !deviceInfo()->hasDeviceToken() ||
-                    (deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config('bibisena.android_app_version')))
-
-                <div class="col-md-4 col-sm-4 col-12">
-                    <div class="card hotline-card mb-3" style="text-align: center; font-size: 20px; height: 190px; padding: 5px">
-                        <div style="height: 135px">
-                            বিবিসিনা অ্যান্ড্রয়েড অ্যাপ<br />
-                            @php
-                                $needUpdate = false;
-                            @endphp
-                            
-                            @if (deviceInfo()->hasDeviceToken() && deviceInfo()->getAppVersion() != config('bibisena.android_app_version'))
-                                @php
-                                    $needUpdate = true;
-                                @endphp
-                                <div style="color: red; font-size: 14px">আপনি এপটির পুরাতন ভার্সন ব্যবহার করছেন। সর্বোচ্চ
-                                    পারফরমেন্স পেতে এপটির নতুন ভার্সন আপডেট করুন। </div>
-                            @endif
-                        </div>
-
-                        <a class="btn btn-info mt-1"
-                            href="https://play.google.com/store/apps/details?id=com.amirhamza.bibisena"><i
-                                class="fa fa-download" aria-hidden="true"></i>
-                            {{ $needUpdate ? 'নতুন ভার্সন আপডেট' : 'ডাউনলোড' }} করুন </a>
-                    </div>
-                    </a>
+    <div class="siteBanner mb-3">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://icms-image.slatic.net/images/ims-web/787ada0a-40c9-4164-9ff3-15ad11e2e7a3.jpg_1200x1200.jpg"
+                        class="d-block w-100" alt="...">
                 </div>
-            @endif
-
-            <div class="col-md-4 col-sm-4 col-12">
-                <div class="card hotline-card" style="text-align: center; font-size: 15px; padding: 5px">
-
-                    <div style="color: #474145; margin-top: 10px;margin-bottom: -10px; ">
-                        যেকোনো প্রয়োজনে যোগাযোগ করুন আমাদের হটলাইন নাম্বারে<br />
-                        <img width="110px;" style="top: 40%" src="{{ asset('assets/img/phone1.png') }}" alt="">
-                    </div>
-                    <a class="btn mt-1" style="background: #554594; color: #ffffff; font-weight: bold; width: 100%"
-                        href="tel:01603169395">
-                        <i class="fa fa-phone" aria-hidden="true"></i> 01603169395
-                    </a>
-
+                <div class="carousel-item">
+                    <img src="https://icms-image.slatic.net/images/ims-web/b1986946-079d-43f2-9317-ba524cb832a2.jpg"
+                        class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://icms-image.slatic.net/images/ims-web/95207be7-e752-4577-9971-75a7be72fcd2.jpg"
+                        class="d-block w-100" alt="...">
                 </div>
             </div>
 
+            <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators" data-slide="prev">
+                <div style="background: #000000;border-radius: 3px; padding:  8px 2px 5px 2px;">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </div>
+
+            </button>
+            <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators" data-slide="next">
+                <div style="background: #000000;border-radius: 3px; padding:  8px 2px 5px 2px;">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </div>
+            </button>
         </div>
     </div>
-
-
 
     <style>
         .home-list {
@@ -172,16 +158,16 @@
         </div>
     </div>
     {{-- <div class="home-list" style="background: #eaeffc"> --}}
-        {{-- <div class="home-list-header" style="background: #3d579c; color: #ffffff">পণ্যের তালিকা</div> --}}
-        <div class="home-list-body" style="margin-right: -10px;margin-top: 15px;">
-            <div class="row no-gutters" style="" id="product-list">
+    {{-- <div class="home-list-header" style="background: #3d579c; color: #ffffff">পণ্যের তালিকা</div> --}}
+    <div class="home-list-body" style="margin-right: -10px;margin-top: 15px;">
+        <div class="row no-gutters" style="" id="product-list">
 
-                @include('store.product.single_product_page')
-            </div>
-            <div class="loader-area" id="loader-area">
-                <img src="{{ asset('assets/img/loader.gif') }}" height="70px" width="70px" alt="">
-            </div>
+            @include('store.product.single_product_page')
         </div>
+        <div class="loader-area" id="loader-area">
+            <img src="{{ asset('assets/img/loader.gif') }}" height="70px" width="70px" alt="">
+        </div>
+    </div>
     {{-- </div> --}}
     </div>
 
