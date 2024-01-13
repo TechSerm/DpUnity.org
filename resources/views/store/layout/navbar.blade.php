@@ -67,15 +67,15 @@
                 <div class="leftSide" style="float:left;">
                     <div class="pl-0 d-flex align-items-center" style="float:left">
                         <a href="/" class="py-10px mr-3 ml-0 " style="float: left" class=""> <img
-                                class="logo" src="{{ asset('assets/img/bibisena_logo.png') }}" alt=""></a>
-                        <a href="/" class="btn cbtn {{ request()->segment(1) == '' ? 'active' : '' }}"><i
+                                class="logo" src="{{ asset('assets/img/bibisena_logo.jpg') }}" alt=""></a>
+                        {{-- <a href="/" class="btn cbtn {{ request()->segment(1) == '' ? 'active' : '' }}"><i
                                 class="fa fa-home" aria-hidden="true"></i> হোম</a>
                         <a href="/categories"
                             class="btn cbtn {{ request()->segment(1) == 'categories' ? 'active' : '' }}"><i
                                 class="fa fa-list-alt" aria-hidden="true"></i> ক্যাটেগরি</a>
                         <a href="{{ route('store.order.list') }}"
                             class="btn cbtn {{ request()->segment(1) == 'order' ? 'active' : '' }}"><i
-                                class="fa fa-shopping-cart" aria-hidden="true"></i> অর্ডার</a>
+                                class="fa fa-shopping-cart" aria-hidden="true"></i> অর্ডার</a> --}}
 
 
                     </div>

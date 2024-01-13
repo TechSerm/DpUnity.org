@@ -68,7 +68,7 @@
         <div class="searchBoxArea" >
             <div class="input-group">
                 <input type="search" autocomplete="off" id="search" value="{{ request()->q }}" class="form-control"
-                    placeholder="পণ্য খুঁজুন (যেমন, ডিম, দুধ, আলু)">
+                    placeholder="Search In STC Shop BD">
                 
                 <div class="input-group-append">
                     <button id="searchBtn" onclick="Store.search.searchProduct()" class="searchButton" style=""
