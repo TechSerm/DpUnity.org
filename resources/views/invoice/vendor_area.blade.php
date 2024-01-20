@@ -1,9 +1,8 @@
-
 <div class="vendor-area">
 
     <div class="card" style="border-color: red">
         <div class="header" style="background: red; ">
-            বিবিসেনা অনলাইন শপ
+            {{ App\Helpers\Constant::SITE_NAME }}
         </div>
         <center>
             <div class="label" style="background: red;">
@@ -24,10 +23,11 @@
                         {{ bnConvert()->date($order->created_at->format('d M Y')) }}
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td class="td1">মোটঃ</td>
-                    <td class="td2"><b>{{ bnConvert()->number($order->products_profit + $order->delivery_fee) }}</b> টাকা</td>
+                    <td class="td2"><b>{{ bnConvert()->number($order->products_profit + $order->delivery_fee) }}</b>
+                        টাকা</td>
                 </tr>
             </table>
             <div class="coderoj_t">
@@ -48,7 +48,7 @@
     @foreach ($vendors as $vendor)
         <div class="card" ng-repeat="user in users" style="border-color: green">
             <div class="header" style="background: green">
-                বিবিসেনা অনলাইন শপ
+                {{ Config::get('constants.SITE_NAME') }}
             </div>
             <center>
                 <div class="label" style="background: green">
