@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content_header')
-    <h1>Products List</h1>
+    <h1></h1>
 @stop
 @section('content')
 
@@ -10,12 +10,18 @@
     <div class="row">
 
         <div class="col-md-12">
-            <div class="card">
+            {{-- <div class="card">
+                <div class="card-header">
+                    Filter
+                </div>
                 <div class="card-body">
                     @include('product.filter')
                 </div>
-            </div>
+            </div> --}}
             <div class="card">
+                <div class="card-header">
+                    All Products
+                </div>
                 <div class="card-body">
                     <style>
                         .table>tbody>tr>td,
@@ -28,22 +34,12 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>পণ্যের ছবি</th>
-                                <th>পণ্যের নাম</th>
-                                <th>ক্যাটাগরি</th>
-                                @if (auth()->user()->isAdmin())
-                                    <th>দোকান</th>
-                                @endif
-                                <th>স্টক</th>
-                                <th>অবস্থা</th>
-                                <th>পাইকারি মূল্য</th>
-                                <th>বাজার দর</th>
-                                <th>ডেলিভারি ফী</th>
-                                @if (auth()->user()->isAdmin())
-                                    <th>লাভ</th>
-                                    <th>বিবিসিনা মূল্য</th>
-                                @endif
-                                <th>Last Update</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Regular Price</th>
+                                <th>Sale Price</th>
+                                <th>Hot Deals</th>
+                                <th>Status</th>
                                 <th style="width: 10%">Action</th>
                             </tr>
                         </thead>
@@ -94,14 +90,7 @@
                     data: 'name'
                 },
                 {
-                    data: 'categories'
-                },
-                @if (auth()->user()->isAdmin())
-                    {
-                        data: 'vendor_id'
-                    },
-                @endif {
-                    data: 'has_stock'
+                    data: 'status'
                 },
                 {
                     data: 'status'
@@ -111,18 +100,6 @@
                 },
                 {
                     data: 'market_sale_price'
-                },
-                {
-                    data: 'delivery_fee'
-                },
-                @if (auth()->user()->isAdmin())
-                    {
-                        data: 'profit'
-                    }, {
-                        data: 'price'
-                    },
-                @endif {
-                    data: 'updated_at'
                 },
                 {
                     data: 'action'

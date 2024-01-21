@@ -247,15 +247,7 @@ return [
             'url'         => '/admin/products',
             'icon'        => 'fas fa-egg',
             'label_color' => 'success',
-            'can' => 'products.index',
-            'submenu' => [
-                [
-                    'text'    => 'Product List',
-                    'shift'   => 'ml-3',
-                    'url'         => '/admin/products',
-                    'icon'        => 'fas fa-egg',
-                ],
-            ],
+            'can' => '',
         ],
         [
             'text'        => 'Categories',
@@ -263,6 +255,13 @@ return [
             'icon'        => 'fas fa-dice-d6',
             'label_color' => 'success',
             'can' => 'categories.index'
+        ],
+        [
+            'text'        => 'Brand',
+            'url'         => '/admin/brand',
+            'icon'        => 'fas fa-dice-d6',
+            'label_color' => 'success',
+            'can' => ''
         ],
         [
             'text'        => 'Orders',
@@ -287,25 +286,11 @@ return [
             ],
         ],
         [
-            'text'        => 'Search Keywords',
-            'url'         => '/admin/search-keywords',
-            'icon'        => 'fas fa-search',
+            'text'        => 'Settings',
+            'url'         => '/admin/brand',
+            'icon'        => 'fas fa-dice-d6',
             'label_color' => 'success',
-            'can' => 'categories.index'
-        ],
-        [
-            'text'        => 'Push Notifications',
-            'url'         => '/admin/push_notifications',
-            'icon'        => 'fas fa-search',
-            'label_color' => 'success',
-            'can' => 'categories.index'
-        ],
-        [
-            'text'        => 'Notifications Device',
-            'url'         => '/admin/notification_device',
-            'icon'        => 'fas fa-search',
-            'label_color' => 'success',
-            'can' => 'categories.index'
+            'can' => ''
         ],
         ['header' => 'account_settings'],
         [
