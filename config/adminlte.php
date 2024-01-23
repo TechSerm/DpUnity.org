@@ -287,7 +287,7 @@ return [
         ],
         [
             'text'        => 'Settings',
-            'url'         => '/admin/brand',
+            'url'         => '/admin/settings',
             'icon'        => 'fas fa-dice-d6',
             'label_color' => 'success',
             'can' => ''
@@ -295,12 +295,12 @@ return [
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
-            'url'  => 'admin/settings',
+            'url'  => 'admin/account_settings',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => 'change_password',
-            'url'  => 'admin/settings',
+            'url'  => 'admin/account_settings',
             'icon' => 'fas fa-fw fa-lock',
         ],
     ],

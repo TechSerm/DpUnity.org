@@ -21,6 +21,7 @@ use App\Http\Controllers\OrderProfitDipositeController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SearchKeywordController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
@@ -118,7 +119,9 @@ Route::prefix('admin')->group(function () {
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
 
-        Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
+        Route::get('/reset_password', [ResetPasswordController::class, 'showResetForm'])->name('admin.account_settings');
+        
+        Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');
 
         Route::get('/home_page_product', [HomePageProductController::class, 'index'])->name('admin.home_page_product.index');
     });

@@ -94,7 +94,7 @@
 
 <body>
 
-    @include('store.layout.navbar')
+    @include('store.layout.new_navbar')
 
     <div id="pageLoader" style="display: none">
         @include('store.layout.loader')

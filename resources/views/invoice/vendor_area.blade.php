@@ -48,7 +48,7 @@
     @foreach ($vendors as $vendor)
         <div class="card" ng-repeat="user in users" style="border-color: green">
             <div class="header" style="background: green">
-                {{ Config::get('constants.SITE_NAME') }}
+                {{-- {{ Config::get('constants.SITE_NAME') }} --}}
             </div>
             <center>
                 <div class="label" style="background: green">
