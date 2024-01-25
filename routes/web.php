@@ -8,25 +8,17 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CustomerReviewController;
-use App\Http\Controllers\DeliveryTransportCostController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomePageProductController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NotificationDeviceController;
 use App\Http\Controllers\OrderItemController;
-use App\Http\Controllers\OrderProfitDipositeController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SearchKeywordController;
-use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
-use App\Http\Controllers\TemporaryProductController;
-use App\Http\Controllers\VendorPaymentController;
-use App\Models\DeliveryTransportCost;
 use Illuminate\Support\Facades\App;
 
 /*

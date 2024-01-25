@@ -35,17 +35,18 @@ class CategoryController extends Controller
             ->editColumn('image', function ($model) {
                 return "<img src='" . $model->image . "' height='50px' width='50px' class='img-fluid img-thumbnail'>";
             })
-            ->editColumn('updated_at', function ($model) {
-                return $model->updated_at->diffForHumans();
+            ->addColumn('status', function ($model) {
+                return "
+                <label class='switch'>
+                <input type='checkbox' checked>
+                <span class='slider round'></span>
+                </label>
+                ";
             })
             ->addColumn('action', function ($model) {
                 if (request()->user()->can('categories.edit')) {
                     $content = "<button data-url='" . route('categories.edit', ['category' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update Category <b>#" . $model->id . "</b>'
                     data-modal-size='650' data-toggle='modal'><i class='fa fa-edit'></i></button>";
-                }
-                if (request()->user()->can('categories.history')) {
-                    $content .= "<button data-url='" . route('categories.history', ['category' => $model->id]) . "' class='btn btn-primary btn-action btn-sm mr-1' data-modal-title='Update Category <b>#" . $model->id . "</b>'
-                    data-modal-size='1200' data-toggle='modal'><i class='fa fa-history'></i></button>";
                 }
                 if (request()->user()->can('categories.delete')) {
                     $content .= "<button data-url='" . route('categories.destroy', ['category' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadProductDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";
@@ -132,7 +133,7 @@ class CategoryController extends Controller
 
     private function getImageService($imgSrv)
     {
-        return $imgSrv->setHeight(312)->setWidth(600)->setText("");
+        return $imgSrv->setHeight(600)->setWidth(600)->setText("");
     }
 
 

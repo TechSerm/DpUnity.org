@@ -1,13 +1,7 @@
 @extends('layouts.app')
-@section('content_header')
-    <h1></h1>
-@stop
 @section('content')
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    
-
-    <div class="row">
+    <div class="row" style="">
 
         <div class="col-md-12">
             {{-- <div class="card">
@@ -18,9 +12,16 @@
                     @include('product.filter')
                 </div>
             </div> --}}
-            <div class="card">
+            <div class="card" style="margin-top: 10px;">
                 <div class="card-header">
-                    All Products
+                    <div class="row">
+                        <div class="pull-left">
+                            Product List
+                        </div>
+                        <div class="pull-right">
+                            Test
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <style>

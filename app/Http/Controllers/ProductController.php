@@ -138,12 +138,7 @@ class ProductController extends Controller
             ->addColumn('action', function ($model) {
                 $content = '';
                 if (request()->user()->can('products.edit')) {
-                    $content = "<button data-url='" . route('products.edit', ['product' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update Product <b>#" . $model->id . "</b>'
-                data-modal-size='650' data-toggle='modal'><i class='fa fa-edit'></i></button>";
-                }
-                if (request()->user()->can('products.history')) {
-                    $content .= "<button data-url='" . route('products.history', ['product' => $model->id]) . "' class='btn btn-primary btn-action btn-sm mr-1' data-modal-title='Update Product <b>#" . $model->id . "</b>'
-                data-modal-size='1200' data-toggle='modal'><i class='fa fa-history'></i></button>";
+                    $content = "<a href='" . route('products.edit', ['product' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1''><i class='fa fa-edit'></i></a>";
                 }
                 if (request()->user()->can('products.delete')) {
                     $content .= "<button data-url='" . route('products.destroy', ['product' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadProductDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";

@@ -45,7 +45,10 @@
 
         
     </style>
-    <div class="">
+    <div class="store-card">
+        <div class="card-header">
+            অর্ডার ইনফরমেশন
+        </div>
         <table class="table table-borderless orderSummeryTable">
             @foreach ($items as $key => $item)
                 @livewire('cart.cart-item', ['item' => $item])

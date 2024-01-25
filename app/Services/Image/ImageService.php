@@ -18,8 +18,8 @@ class ImageService
     public function __construct(Image $image = null)
     {
         $this->image = $image;
-        $this->height = 800;
-        $this->width = 800;
+        $this->height = "";
+        $this->width = "";
         $this->imageText = "BibiSena.Com";
     }
 
@@ -61,7 +61,11 @@ class ImageService
         if (!request()->hasFile($imageFile)) return null;
 
         $imageFile = request()->file($imageFile);
-        $image = ImageLib::make($imageFile)->resize($this->width, $this->height);
+        $image = ImageLib::make($imageFile);
+
+        if ($this->width != "" && $this->height != "") {
+            $image->resize($this->width, $this->height);
+        }
 
         if ($this->imageText != "") {
             $image->text($this->imageText, 70, 30, function ($font) {
