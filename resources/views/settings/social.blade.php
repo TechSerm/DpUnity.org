@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="v-pills-SocialLinks" role="tabpanel" aria-labelledby="v-pills-SocialLinks-tab">
+<div class="tab-pane fade" id="SocialLinks" role="tabpanel" aria-labelledby="SocialLinks-tab">
     <div class="form-group row">
         <label class="col-sm-2 col-form-label col-form-label-sm"><b>Facebook:
             </b></label>

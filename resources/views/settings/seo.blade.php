@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="v-pills-SEO" role="tabpanel" aria-labelledby="v-pills-SEO-tab">
+<div class="tab-pane fade" id="SEO" role="tabpanel" aria-labelledby="SEO-tab">
     <div class="form-group row">
         <label class="col-sm-2 col-form-label col-form-label-sm"><b>Meta
                 Description:

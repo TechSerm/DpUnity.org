@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="v-pills-Shop" role="tabpanel" aria-labelledby="v-pills-Shop-tab">
+<div class="tab-pane fade" id="Shop" role="tabpanel" aria-labelledby="Shop-tab">
     <div class="row">
         <div class="col-md-10">
             <div class="form-group row">
