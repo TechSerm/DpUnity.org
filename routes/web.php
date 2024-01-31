@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountTransactionController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\BrandController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -85,6 +86,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/categories/data', [CategoryController::class, 'getData'])->name('categories.data');
         Route::get('/categories/{category}/history', [CategoryController::class, 'history'])->name('categories.history');
         Route::resource('categories', CategoryController::class);
+
+        Route::get('/brands/data', [BrandController::class, 'getData'])->name('brands.data');
+        Route::get('/brands/{brand}/history', [BrandController::class, 'history'])->name('brands.history');
+        Route::resource('brands', BrandController::class);
 
         //order routes
         Route::get('/orders/data', [OrderController::class, 'getData'])->name('orders.data');

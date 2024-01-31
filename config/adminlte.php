@@ -258,7 +258,7 @@ return [
         ],
         [
             'text'        => 'Brand',
-            'url'         => '/admin/brand',
+            'url'         => '/admin/brands',
             'icon'        => 'fas fa-dice-d6',
             'label_color' => 'success',
             'can' => ''
