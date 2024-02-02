@@ -7,10 +7,9 @@ const Auth = {
 
         form.submit({
             success: {
-                resetForm: true,
+                resetForm: false,
                 callback: function(response) {
-                    $("#loadBody").append($("#pageLoader").html());
-                    Helper.url.load("/profile", function(){}, "loadBody");
+                    window.location.href = "/admin";
                 }
             }
         })

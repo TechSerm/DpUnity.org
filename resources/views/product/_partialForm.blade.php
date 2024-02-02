@@ -15,121 +15,83 @@
         border: 0px solid green !important;
         border-radius: 0px;
     }
+
+    .form-control-label{
+        margin-top: -2px;
+    }
 </style>
 
 @php
-$isVendor = auth()
+    $isVendor = auth()
         ->user()
         ->isVendor();
-    $displayNone = $isVendor ? 'display: none': '';
-    
+    $displayNone = $isVendor ? 'display: none' : '';
+
 @endphp
 
 <div class="mb-3 row ">
-    <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পণ্যের নাম</label>
+    <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Product Name</label>
     <div class="col-sm-{{ $inputWidth }}">
         {!! Form::text('name', null, ['class' => 'form-control ', 'id' => 'name']) !!}
     </div>
 </div>
 
-<div class="mb-3 row ">
-    <label for="quantity" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পরিমান</label>
+<div class="mb-3 row">
+    <label for="regular_price" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Regular
+        Price</label>
     <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::number('quantity', null, ['class' => 'form-control ', 'id' => 'quantity', 'step' => '0.01']) !!}
+        {!! Form::number('regular_price', null, ['class' => 'form-control ', 'id' => 'regular_price']) !!}
     </div>
 </div>
 
 <div class="mb-3 row">
-    <label for="unit" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">একক</label>
+    <label for="sale_price" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Sale
+        Price</label>
     <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::select('unit', $units, null, [
-            'placeholder' => 'Select Unit',
-            'class' => 'form-control ',
-            'id' => 'status',
-        ]) !!}
+        {!! Form::number('sale_price', null, ['class' => 'form-control ', 'id' => 'sale_price']) !!}
     </div>
 </div>
 
 <div class="mb-3 row">
-    <label for="wholesale_price" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পাইকারি
-        মূল্য</label>
+    <label for="has_hot_deals" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Hot Deals</label>
     <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::number('wholesale_price', null, ['class' => 'form-control ', 'id' => 'wholesale_price']) !!}
+        <label class='switch'>
+            <input type='checkbox' name="has_hot_deals">
+            <span class='slider round'></span>
+        </label>
     </div>
 </div>
 
 <div class="mb-3 row">
-    <label for="market_sale_price" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">বাজার দর</label>
+    <label for="status" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Status</label>
     <div class="col-sm-{{ $inputWidth }}">
-        {!! Form::number('market_sale_price', null, ['class' => 'form-control ', 'id' => 'market_sale_price']) !!}
+        <label class='switch'>
+            <input type='checkbox' name="status" checked>
+            <span class='slider round'></span>
+        </label>
     </div>
 </div>
-<div style="{{ $displayNone }}">
-    <div class="mb-3 row">
-        <label for="profit" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">লাভ</label>
-        <div class="col-sm-{{ $inputWidth }}">
-            {!! Form::number('profit', isset($product) ? $product->profit : 0, ['class' => 'form-control ', 'id' => 'profit']) !!}
-        </div>
-    </div>
 
-    <div class="mb-3 row">
-        <label for="price" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">বিবিসিনা
-            মূল্য</label>
-        <div class="col-sm-{{ $inputWidth }}">
-            {!! Form::number('price', null, ['class' => 'form-control ', 'id' => 'price']) !!}
-        </div>
-    </div>
 
-    <div class="mb-3 row">
-        <label for="delivery_fee" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">ডেলিভারি
-            ফী</label>
-        <div class="col-sm-{{ $inputWidth }}">
-            {!! Form::number('delivery_fee', null, ['class' => 'form-control ', 'id' => 'delivery_fee']) !!}
-        </div>
-    </div>
-
-    <div class="mb-3 row">
-        <label for="status" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">অবস্থা</label>
-        <div class="col-sm-{{ $inputWidth }}">
-            {!! Form::select('status', ['private' => 'Private', 'publish' => 'Publish'], isset($product) ? $product->status : 'private', [
-                'placeholder' => 'Select Status',
-                'class' => 'form-control ',
-                'id' => 'status',
-            ]) !!}
-        </div>
-    </div>
-
-    <div class="mb-3 row">
-        <label for="categories" class="col-sm-{{ $labelWidth }} col-form-label form-control-label"
-            for="image">ক্যাটাগরি</label>
-        <div class="col-sm-{{ $inputWidth }}">
-            <select class="form-control" id="categories" name="categories[]" multiple="multiple">
-                @php
-                    $categories = isset($product) ? $product->categories : [];
-                @endphp
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="vendor_id" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Vendor</label>
-        <div class="col-sm-{{ $inputWidth }}">
-            {!! Form::select('vendor_id', $vendors, null, [
-                'placeholder' => 'Select Vendor',
-                'class' => 'form-control ',
-                'id' => 'vendor_id',
-            ]) !!}
-        </div>
+<div class="mb-3 row">
+    <label for="categories" class="col-sm-{{ $labelWidth }} col-form-label form-control-label"
+        for="image">Categories</label>
+    <div class="col-sm-{{ $inputWidth }}">
+        <select class="form-control" id="categories" name="categories[]" multiple="multiple">
+            @php
+                $categories = isset($product) ? $product->categories : [];
+            @endphp
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
+            @endforeach
+        </select>
     </div>
 </div>
 
 
 
 <div class="mb-3 row">
-    <label for="image1" class="col-sm-{{ $labelWidth }} col-form-label form-control-label" for="image">পণ্যের
-        ছবি</label>
+    <label for="image1" class="col-sm-{{ $labelWidth }} col-form-label form-control-label" for="image">Product Image</label>
     <div class="col-sm-{{ $inputWidth }}">
         <div style="">
             <input type="file" name="image" id="image" onchange="previewFile(event)">
@@ -143,7 +105,7 @@ $isVendor = auth()
 <div class="mb-3 row">
     <label for="inputPassword" class="col-sm-{{ $labelWidth }} col-form-label form-control-label"></label>
     <div class="col-sm-{{ $inputWidth }}">
-        <button type="submit" class="btn btn-success">Save Product</button>
+        <button type="submit" class="btn btn-success">Create New Product</button>
     </div>
 </div>
 

@@ -20,7 +20,7 @@ class ImageService
         $this->image = $image;
         $this->height = "";
         $this->width = "";
-        $this->imageText = "BibiSena.Com";
+        $this->imageText = "";
     }
 
     public function setHeight($height)

@@ -140,29 +140,33 @@
         }
 
         .home-list-category-name {
-            border-bottom: 3px solid #16a085;
             margin: 15px 10px 15px 0px;
-            padding-bottom: 2px;
+            border-bottom: 1px solid #eeeeee;
+            padding-bottom: 5px;
             font-weight: 500;
             font-size: 20px;
-        }
-
-
-        .home-list-category-name .titleSpan{
-            background: #16a085;
-            padding: 5px 10px;
-            border-radius: 5px 5px 0px 0px;
-            color: #ffffff;
         }
     </style>
     {{-- @include('store.home.feedback_form') --}}
 
-    <div class="store-card" style="margin-top: 20px">
-        <div class="header" style="padding-left: 10px;">
-            <i class="fa fa-list-alt" aria-hidden="true"></i> ক্যাটেগরি
-        </div>
-        <div class="body" style="padding-top: 15px">
+    <div class="store-card" style="margin-top: 30px">
+        <div class="body" style="padding-top: 0px">
+            <div class="home-list-category-name titleSpan mb-3">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> ক্যাটেগরি
+            </div>
+            
             @include('store.category.ui')
+        </div>    
+    </div>
+    <div class="store-card" style="margin-top: 30px;color: #ffffff; background: linear-gradient(141.11deg, rgb(73, 119, 238) 0%, rgb(240, 84, 84) 100%);">
+        <div class="body" style="padding-top: 0px">
+            <div class="home-list-category-name titleSpan mb-3">
+               Hot Deals
+            </div>
+            <div class="row no-gutters" style="" id="">
+
+                @include('store.product.single_product_page')
+            </div>
         </div>    
     </div>
     {{-- <div class="home-list" style="background: #eaeffc"> --}}

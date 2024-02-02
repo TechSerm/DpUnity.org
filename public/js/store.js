@@ -3520,10 +3520,9 @@ var Auth = {
     var form = Helper.form(e);
     form.submit({
       success: {
-        resetForm: true,
+        resetForm: false,
         callback: function callback(response) {
-          $("#loadBody").append($("#pageLoader").html());
-          Helper.url.load("/profile", function () {}, "loadBody");
+          window.location.href = "/admin";
         }
       }
     });
@@ -3543,6 +3542,33 @@ var Auth = {
 };
 module.exports = {
   Auth: Auth
+};
+
+/***/ }),
+
+/***/ "./resources/js/store/cart.js":
+/*!************************************!*\
+  !*** ./resources/js/store/cart.js ***!
+  \************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var _require = __webpack_require__(/*! ../helper/helper */ "./resources/js/helper/helper.js"),
+  Helper = _require.Helper;
+var Cart = {
+  directOrder: function directOrder(btn) {
+    var productId = $(btn).data("product_id");
+    var csrf = $(btn).data("csrf");
+    $.post("/add_cart", {
+      product_id: productId,
+      _token: csrf
+    }, function (response) {
+      Helper.url.load(response.url, function () {}, "loadBody");
+      Helper.toast.success(response.message);
+    });
+  }
+};
+module.exports = {
+  Cart: Cart
 };
 
 /***/ }),
@@ -3820,6 +3846,7 @@ var Store = {
   search: (__webpack_require__(/*! ./search.js */ "./resources/js/store/search.js").Search),
   order: (__webpack_require__(/*! ./order.js */ "./resources/js/store/order.js").Order),
   menu: (__webpack_require__(/*! ./menu.js */ "./resources/js/store/menu.js").Menu),
+  cart: (__webpack_require__(/*! ./cart.js */ "./resources/js/store/cart.js").Cart),
   instanceAlreadyLoad: false
 };
 module.exports = {

@@ -4,21 +4,18 @@
         padding: 10px 15px;
         border: 1px solid #eeeeee;
         display: inline-block;
-        background: #f8f8f8;
         margin: 0px 12px 12px 0px;
-        border: 1px solid #16a085;
         
     }
     .category:hover{
-        background: #f5f5f5;
-        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.01)
+        
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.01)
+    }
+    .category a{
+        text-decoration: none;
     }
 
-    .category a {
-        text-decoration: none;
-        font-weight: bold;
-        color: #000000;
-    }
+    
 
 </style>
 
@@ -32,7 +29,7 @@
             $totalProducts = $category->products->count();
         @endphp
 
-        <div class="category">
+        <div class="category theme-bg">
             <a href="{{ route('store.categories.show', $category) }}">
                 {{ $category->name }} ({{ bnConvert()->number($totalProducts) }})
             </a>

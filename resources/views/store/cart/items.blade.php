@@ -3,10 +3,11 @@
     <style>
         .orderTotalArea {
             background-color: #ffffff;
-            padding: 15px;
+            padding: 10px 0px;
             border: 1px solid #eeeeee;
             /* box-shadow: -1px -2px 18px -5px rgba(170,170,170,1); */
             margin-top: -15px;
+            
             border-radius: 0px 0px 5px 5px;
         }
 
@@ -30,6 +31,7 @@
 
         .orderSummeryTableTotalTr {
             text-align: right;
+            font-size: 16px;
         }
 
         .totalMessageArea {
@@ -45,8 +47,8 @@
 
         
     </style>
-    <div class="store-card">
-        <div class="card-header">
+    <div class="store-card mt-4">
+        <div class="header" style="text-align: center; font-size: 18px;">
             অর্ডার ইনফরমেশন
         </div>
         <table class="table table-borderless orderSummeryTable">
@@ -54,7 +56,6 @@
                 @livewire('cart.cart-item', ['item' => $item])
             @endforeach
         </table>
-        
     </div>
     
 </div>

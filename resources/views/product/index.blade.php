@@ -1,6 +1,66 @@
 @extends('layouts.app')
 @section('content')
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 53px;
+        height: 26px;
+    }
 
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 22px;
+        width: 23px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked+.slider {
+        background-color: #27ae60;
+    }
+
+    input:focus+.slider {
+        box-shadow: 0 0 1px #27ae60;
+    }
+
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>
     <div class="row" style="">
 
         <div class="col-md-12">
@@ -14,13 +74,14 @@
             </div> --}}
             <div class="card" style="margin-top: 10px;">
                 <div class="card-header">
-                    <div class="row">
-                        <div class="pull-left">
-                            Product List
-                        </div>
-                        <div class="pull-right">
-                            Test
-                        </div>
+                    <div class="float-left" style="padding-top: 7px;">
+                        Product List
+                    </div>
+                    <div class="float-right">
+                        <button class="btn btn-primary " data-url="{{ route('products.create') }}"
+                            data-modal-title="Create Product" data-modal-size="650" data-toggle="modal">
+                            <i class="fa fa-plus"></i> Add Product
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -72,13 +133,6 @@
             ajax: {
                 url: "{{ route('products.data') }}",
                 data: function(d) {
-                    d.product_id = $('#filter_product_id').val();
-                    d.product_name = $('#product_name').val();
-                    d.has_stock = $('#filter_has_stock').val();
-                    d.status = $('#filter_status').val();
-                    d.vendor = $('#filter_vendor').val();
-                    d.category = $('#filter_category').val();
-
                 }
             },
             columns: [{
@@ -91,16 +145,16 @@
                     data: 'name'
                 },
                 {
-                    data: 'status'
+                    data: 'regular_price'
+                },
+                {
+                    data: 'sale_price'
+                },
+                {
+                    data: 'has_hot_deals'
                 },
                 {
                     data: 'status'
-                },
-                {
-                    data: 'wholesale_price'
-                },
-                {
-                    data: 'market_sale_price'
                 },
                 {
                     data: 'action'
