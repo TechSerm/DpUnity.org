@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\BrandController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -21,6 +22,8 @@ use App\Http\Controllers\ProductAttribtueController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SearchKeywordController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
 use Illuminate\Support\Facades\App;
@@ -94,6 +97,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/categories/data', [CategoryController::class, 'getData'])->name('categories.data');
         Route::get('/categories/{category}/history', [CategoryController::class, 'history'])->name('categories.history');
         Route::resource('categories', CategoryController::class);
+
+        Route::get('/brands/data', [BrandController::class, 'getData'])->name('brands.data');
+        Route::get('/brands/{brand}/history', [BrandController::class, 'history'])->name('brands.history');
+        Route::resource('brands', BrandController::class);
 
         //order routes
         Route::get('/orders/data', [OrderController::class, 'getData'])->name('orders.data');

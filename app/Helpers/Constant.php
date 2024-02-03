@@ -13,12 +13,13 @@ class Constant
         'ml' => 'মিলি',
     ];
 
+    public const SITE_NAME = "Shobeikhane";
+
     public const IMAGE_DIR = "images/";
-    
+
     public const DEFAULT_IMAGE = "default.png";
-    
+
     public const SHIPPING_AREA_TYPE = [
         'all', 'selected'
     ];
-    
 }
