@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountTransactionController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -129,7 +130,10 @@ Route::prefix('admin')->group(function () {
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
 
-        Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
+        // Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
+        
+        Route::resource('settings', AdminController::class);
+
 
         Route::get('/home_page_product', [HomePageProductController::class, 'index'])->name('admin.home_page_product.index');
     });

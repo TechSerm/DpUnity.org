@@ -299,6 +299,13 @@ return [
             'label_color' => 'success',
             'can' => ''
         ],
+        [
+            'text'        => 'Admin',
+            'url'         => '/admin/settings',
+            'icon'        => 'fas fa-user',
+            'label_color' => 'success',
+            'can' => ''
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
