@@ -17,5 +17,4 @@
 <div class="details-body" style="padding: 0px">
     @livewire('cart.cart-items')
     @livewire('cart.cart-subtotal-area')
-
 </div>

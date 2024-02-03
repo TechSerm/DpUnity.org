@@ -2,6 +2,21 @@
 @section('content')
 
     <style>
+
+        .productOrderBtn {
+            padding: 12px;
+            border-width: 0px;
+            color: #ffffff;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .productOrderBtn:hover {
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
         .discountLebel {
             position: absolute;
             text-align: center;
@@ -88,14 +103,7 @@
             border-color: #e74c3c;
             color: #e74c3c
         }
-
     </style>
-
-
-    @php
-        $hasStock = $product->has_stock;
-        $incMarketSalePrice = getProductDiscountIncValue($product->market_sale_price);
-    @endphp
 
     <div class="product-show">
 
@@ -124,26 +132,22 @@
             </div>
             <div class="col-md-7">
                 <div class="store-card">
-                    <div class="" style="border-bottom: 1px solid #eff0f5;padding: 10px;">
+                    <div class="" style="padding: 10px;">
                         <span class="title mb-2">{{ $product->name }}</span>
-                        <div class="mt-3">
-                            <span class="text-secondary">Cagegory:</span> <a href="">Test</a> <a href="">test</a>
-                        </div>
-                        
                     </div>
 
                     <div class="price-area" style="padding: 10px;">
 
-                        <div class="price-a" style="margin: -10px -10px 15px -10px; border-bottom: 1px solid #eff0f5; padding: 10px;">
-                            <span class="price">৳ {{ bnConvert()->number($product->price) }}</span>
-                            @if ($product->price < $product->market_sale_price)
-                            <span
-                                style="color: #5E5E5E; font-weight: bold; font-size: 18px; margin-left: 5px; vertical-align: middle;"><del>৳
-                                    {{ bnConvert()->number($product->market_sale_price + $incMarketSalePrice) }}</del></span>
+                        <div class="price-a" style="margin: -10px -10px 15px -10px; padding: 10px;">
+                            <span class="price">৳ {{ bnConvert()->number($product->sale_price) }}</span>
+                            @if ($product->regular_price > $product->sale_price)
+                                <span
+                                    style="color: #5E5E5E; font-weight: bold; font-size: 18px; margin-left: 5px; vertical-align: middle;"><del>৳
+                                        {{ bnConvert()->number($product->regular_price) }}</del></span>
                             @endif
                         </div>
-                        
-                        <div class="row no-gutters mb-3">
+
+                        {{-- <div class="row no-gutters mb-3">
                             <div class="col-sm-2">
                                 <div class="text-secondary fs-14 fw-400 mt-2 ">
                                     Color Family
@@ -192,7 +196,7 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="row no-gutters mb-3">
                             <div class="col-sm-2">
                                 <div class="text-secondary fs-14 fw-400 mt-2 ">
@@ -206,7 +210,7 @@
                             </div>
                         </div>
 
-                        <div class="row no-gutters mb-3">
+                        {{-- <div class="row no-gutters mb-3">
                             <div class="col-sm-2">
                                 <div class="text-secondary fs-14 fw-400 mt-2 ">
                                     Total Price
@@ -217,9 +221,25 @@
                                     <span class="price">৳ {{ bnConvert()->number($product->price) }}</span>
                                 </div>
                             </div>
-                        </div>
-                        <button class="btn btn-md btn-primary">Buy Now</button>
-                        <button class="btn btn-md btn-success">Add To Cart</button>
+                        </div> --}}
+                        <button data-product_id="{{ $product->id }}" data-csrf="{{ csrf_token() }}"
+                            onclick="Store.cart.directOrder(this)" class="btn btn-sm productOrderBtn  theme-bg"><i class="fa fa-cart"></i>
+                            অর্ডার করুন 
+                        </button>
+                        <button class="btn btn-md productOrderBtn" style="background: #16a085">কার্ট-এ যোগ করুন</button><br />
+                        <a class="btn btn-md productOrderBtn mt-1" style="width: 400px;background: #2c3e50">ফোনে অর্ডার করুনঃ 01958452421</a><br />
+                        <button class="btn btn-md productOrderBtn mt-1 mb-2" style="width: 400px; background: #2980b9">ম্যাসেজের মাধ্যমে অর্ডার করতে
+                            ক্লিক করুন</button>
+                        <table class="table table-bordered" style="max-width: 400px;">
+                            <tr>
+                                <td>ঢাকার ভিতরে ডেলিভারি</td>
+                                <td><b>{{ bnConvert()->number(siteData()->inSideDhakaDeliveryFee()) }} ৳</td>
+                            </tr>
+                            <tr>
+                                <td>ঢাকার বাইরে ডেলিভারি</td>
+                                <td><b>{{ bnConvert()->number(siteData()->outSideDhakaDeliveryFee()) }} ৳</td>
+                            </tr>
+                        </table>
                     </div>
 
 

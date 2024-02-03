@@ -74,14 +74,6 @@ class NewOrderService
             return ['message' => $offerValidation];
         }
 
-        $activeOrders = OrderFacade::userOrder()->active();
-
-        if (count($activeOrders) >= 3 && !auth()->check()) {
-            return [
-                'message' => "আপনার ইতিমধ্যে তিনটি অর্ডার পেন্ডিং এ আছে। আরও অর্ডার করতে আমাদের হট লাইনে যোগাযোগ করুন। আমাদের হটলাইন নম্বর " . config('bibisena.mobile_number') . "।",
-            ];
-        }
-
         return [];
     }
 

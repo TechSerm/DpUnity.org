@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\SiteData\SiteDataService;
 use App\Helpers\BnConvert;
 use App\Helpers\DeviceInfo;
 use App\Services\Theme\ThemeService;
@@ -41,6 +42,14 @@ if (!function_exists('theme')) {
     }
 }
 
+if (!function_exists('siteData')) {
+    function siteData()
+    {
+        $dataService = SiteDataService::getInstance();
+        return $dataService;
+    }
+}
+
 if (!function_exists('getProductDiscount')) {
     function getProductDiscountIncValue($price)
     {
@@ -53,3 +62,4 @@ if (!function_exists('getProductDiscount')) {
         return $divFiv * 5;
     }
 }
+

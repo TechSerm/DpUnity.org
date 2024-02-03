@@ -2,6 +2,7 @@
 
 namespace App\Cart;
 
+use App\Facades\Order\OrderShippingDetails;
 use App\Models\Product;
 use Carbon\Carbon;
 use Cookie;
@@ -44,8 +45,7 @@ class Cart
 
     public static function getDeliveryFee()
     {
-        $items = collect(self::items());
-        return (int)$items->max('delivery_fee');
+        return OrderShippingDetails::getValue("deliveryArea") == "inside_dhaka" ? siteData()->insideDhakaDeliveryFee() : siteData()->outsideDhakaDeliveryFee();
     }
 
     public static function getTotalWithDeliveryFee()

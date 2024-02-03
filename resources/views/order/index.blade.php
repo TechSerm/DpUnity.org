@@ -19,25 +19,16 @@
                     <table class="table table-bordered table-responsive-md" style="width: 100%" id="myTable">
                         <thead>
                             <tr>
-                                <th>অর্ডার নম্বর</th>
-                                @if (!auth()->user()->isCashier())
-                                @if (auth()->user()->isAdmin())
-                                    <th>নাম</th>
-                                    <th>মোবাইল</th>
-                                @endif
-                                
-                                <th>স্টেটাস</th>
-                                <th>সর্বমোট পাইকারি দাম</th>
+                                <th>Order ID</th>
 
-                                @if (auth()->user()->isAdmin())
-                                <th>পণ্যের দাম </th>
-                                <th>ডেলিভারি ফি</th>
-                                <th>সর্বমোট</th>
-                                <th>পণ্যে লাভ</th>
-                                @endif
-                                
-                                <th>অর্ডার করা হয়েছে</th>
-                                @endif
+                                <th>Shipping Name</th>
+                                <th>Shippeing Address</th>
+                                <th>Shipping Mobile Number</th>
+
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th>Payment Status</th>
+    
                                 <th style="width: 10%"></th>
                             </tr>
                         </thead>

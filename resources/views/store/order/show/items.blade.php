@@ -48,7 +48,7 @@
 
 <table class="table table-borderless orderSummeryTable">
     @foreach ($items as $item)
-        <tr class="cartTr">
+        <tr style="" class="cartTr">
             <style>
                 .cartTr {
                     /* box-shadow: 0px 0px 5px rgba(70, 8, 86, 0.3);  */
@@ -57,55 +57,54 @@
                     margin-bottom: 6px;
                     display: table-row;
                     width: 100%;
+
                 }
 
                 .cartTr td {
                     /* border: 1px solid #000000; */
+                    font-size: 16px;
+                }
+
+                .tdTitle {
+                    width: 65%;
+                }
+
+                .orderTotalTable td {
+                    border: 1px solid #eeeeee;
+                    padding: 10px;
+                }
+
+                .orderShowProductLink {
+                    color: #000000;
+                }
+                .orderShowProductLink:hover {
+                    text-decoration: none;
                 }
             </style>
-            <td class="align-middle" style="padding: 5px">
-                <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}" height="70px" width="70px" alt="">
+            <td class="align-middle" style="padding: 10px; width: 110px;">
+                <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}"
+                    class="img-thumbnail" height="100px" width="100px" alt="">
             </td>
-            <td class="align-middle">
-                <div class="" style="font-size: 13px;font-weight: bold">
-                    {{ $item->name }}
+            <td class="">
+                <div class="" style="font-size: 15px;font-weight: bold">
+                    <a class="orderShowProductLink"
+                        href="{{ route('store.product.show', ['product' => $item->product_id]) }}">{{ $item->name }}</a>
                 </div>
-                <div style="font-size: 11px;font-weight: bold; color: #767575">৳ {{ convertBanglaNumber($item->price) }}
-                    / {{ bnConvert()->number($item->unit_quantity, false) }} {{ bnConvert()->unit($item->unit) }} </div>
-                <div style="margin-top: 5px; font-size: 12px; font-weight: bold;">
-                    <span style="background: #f5f5f5; border: 1px solid #aaaaaa; padding: 2px; border-radius: 5px">
+                <div style="font-size: 13px;font-weight: bold; color: #767575; margin-top: 0px">৳
+                    {{ convertBanglaNumber($item->price) }} </div>
+                <div style="margin-top: 10px; font-size: 14px; font-weight: bold;">
+                    <span
+                        style="background: #f5f5f5; border: 1px solid #aaaaaa; padding: 3px 2px 5px 2px; border-radius: 5px">
                         <span
-                            style="margin-left: 5px; margin-right: 5px;">{{ bnConvert()->floatNumber($item->quantity) }}</span>
+                            style="margin-left: 5px; margin-right: 5px;">{{ convertBanglaNumber($item->quantity) }}</span>
+
                     </span>
                 </div>
             </td>
             <td class="align-middle" style="text-align: center; width: 20px;">
-                <span class="badge badge-info" style="min-width: 40px">৳ {{ bnConvert()->number($item->total) }}</span>
+                <span class="badge badge-info" style="min-width: 40px; font-size: 13px;">৳
+                    {{ bnConvert()->number($item->total) }}</span>
             </td>
         </tr>
     @endforeach
 </table>
-
-<div class="orderTotalArea">
-    <table class="orderTotalTable">
-        <tr class="orderSummeryTableTotalTr">
-            <td colspan="2"><span>পণ্যের মূল্য:</span>
-            </td>
-            <td>৳ <b>{{ bnConvert()->number($order->subtotal) }}</b></td>
-        </tr>
-        <tr class="orderSummeryTableTotalTr">
-            <td colspan="2">ডেলিভারি ফী:</td>
-            <td>৳ <b>{{ bnConvert()->number($order->delivery_fee) }}</b></td>
-        </tr>
-
-        <tr class="orderSummeryTableTotalTr">
-            <td colspan="2"><span class="badge" style="font-size: 14px">সর্বমোট:</span></td>
-            <td>৳ <b>{{ bnConvert()->number($order->total) }}</b></td>
-        </tr>
-    </table>
-
-    <div class="totalMessageArea">
-        ডেলিভারি এর সময় <span class="badge badge-success"
-            style="font-size: 14px">{{ bnConvert()->number($order->total) }}</span> টাকা পরিশোধ করতে হবে
-    </div>
-</div>
