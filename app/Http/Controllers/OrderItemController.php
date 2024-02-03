@@ -76,31 +76,14 @@ class OrderItemController extends Controller
             'product_id' => $product ? $product->id : null,
 
             'name' => $request->name,
-            'unit' => $request->unit,
-            'unit_quantity' => $request->unit_quantity,
 
             'quantity' => $request->quantity,
             'price' => $request->price,
-            'wholesale_price' => $request->wholesale_price,
             'total' => $request->total,
-            'wholesale_price_total' => $request->wholesale_price_total,
-            'profit' => $request->profit,
-            'delivery_fee' => $request->delivery_fee,
-            'vendor_id' => $request->vendor_id
         ]);
 
-        $order->activityLogService()->createAddProductActivity($orderItem);
 
         $order->updateTotalCalculation();
-
-
-        // activity()
-        // ->performedOn($order)
-        // ->log('New product added');
-
-        if ($order->is_vendor_assign) {
-            $order->updateVendor();
-        }
     }
 
     /**
@@ -236,17 +219,10 @@ class OrderItemController extends Controller
         }
 
         $orderItem = $order->items()->where(['uuid' => $orderItemId])->firstOrFail();
-        $orderItemOld = clone $orderItem;
 
         $orderItem->update($request->except(['product_id']));
 
-        $order->activityLogService()->createUpdateProductActivity($orderItem, $orderItemOld);
-
         $order->updateTotalCalculation($orderItem);
-
-        if ($order->is_vendor_assign) {
-            $order->updateVendor();
-        }
     }
 
     /**

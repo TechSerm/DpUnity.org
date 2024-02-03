@@ -88,6 +88,9 @@ class OrderController extends Controller
             ->editColumn('name', function ($model) {
                 return '<span style="font-size: 12px; font-weight: bold; display:block;">' . $model->name . '</span>';
             })
+            ->editColumn('address', function ($model) {
+                return '<span style="font-size: 12px; font-weight: bold; display:block;">' . $model->address . '</span>';
+            })
             ->editColumn('phone', function ($model) {
                 return '<span class="badge">' . $model->phone . '</span>';
             })
@@ -97,22 +100,11 @@ class OrderController extends Controller
             ->editColumn('subtotal', function ($model) {
                 return $this->addPriceLabel($model->subtotal);
             })
-            ->editColumn('delivery_fee', function ($model) {
-                return $this->addPriceLabel($model->delivery_fee);
-            })
+            
             ->editColumn('total', function ($model) {
                 return $this->addPriceLabel($model->total);
             })
-            ->editColumn('wholesale_total', function ($model) {
-                $total = auth()->user()->isVendor() ? $model->vendor_wholesale_total : $model->wholesale_total;
-                return $this->addPriceLabel($total);
-            })
-            ->editColumn('delivery_fee', function ($model) {
-                return $this->addPriceLabel($model->delivery_fee);
-            })
-            ->editColumn('products_profit', function ($model) {
-                return $this->addPriceLabel($model->products_profit);
-            })
+
             ->editColumn('created_at', function ($model) {
                 return "<span style='font-size: 12px'>" . $model->created_at->format('d M Y H:i:s') . " (" . $model->created_at->diffForHumans() . ")</span>";
             })
@@ -122,7 +114,6 @@ class OrderController extends Controller
             })
 
             ->addColumn('action', function ($model) {
-
                 $content = "<a href='" . route('orders.show', ['order' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' ><i class='fa fa-eye'></i> View</a>";
 
                 return $content;
@@ -137,8 +128,6 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $order->activityLogService()->createShowActivity();
-
         return view('order.show', compact('order'));
     }
 

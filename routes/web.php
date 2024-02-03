@@ -105,7 +105,7 @@ Route::prefix('admin')->group(function () {
         Route::prefix('orders/{order}')->middleware(['order_show_page_check'])->group(function () {
             Route::put('/update_vendor', [OrderController::class, 'updateVendor']);
             Route::get('/product_select2_data', [OrderItemController::class, 'getProductSelect2Data'])->name('orders.order_items.product_select2_data');
-
+            Route::get('/product_create_form', [OrderItemController::class, 'productCreateForm'])->name('orders.order_items.create_form');
             Route::resource('order_items', OrderItemController::class);
         });
 

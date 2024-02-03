@@ -1,43 +1,9 @@
 @php
-    $items = $order->items();
+    $items = $order->items()->get();
     $orderTotal = $order->total;
-    
-    if (
-        auth()
-            ->user()
-            ->isVendor()
-    ) {
-        $items->where(['vendor_id' => auth()->user()->id])->where(['vendor_id' => auth()->user()->id]);
-        $vendor = $order
-            ->vendors()
-            ->where(['vendor_id' => auth()->user()->id])
-            ->first();
-        $orderTotal = $vendor->wholesale_total;
-    }
-    
-    $items = $items->orderBy('vendor_id', 'desc')->get();
     
 @endphp
 
-<div style="display: none">
-    @if (auth()->user()->isAdmin())
-        <textarea name="" id="" cols="30" rows="10">
-{{ $order->id }}
-{{ $order->name }}
-{{ $order->address }}
-{{ $order->phone }}
-----------
-@foreach ($items as $item)
--[{{ $item->name }}-{{ $item->vendor ? $item->vendor->name : '' }} - {{ bnConvert()->number($item->unit_quantity, false) }} {{ bnConvert()->unit($item->unit) }} - {{ bnConvert()->number($item->price) }} -  {{ bnConvert()->number($item->quantity) }} - {{ bnConvert()->number($item->total) }}]
-@endforeach
-
-পণ্যের মূল্য:{{ bnConvert()->number($order->subtotal) }}
-ডেলিভারি ফী:{{ bnConvert()->number($order->delivery_fee) }}
-সর্বমোট: {{ bnConvert()->number($orderTotal) }}
-
-</textarea>
-@endif
-</div>
 
 <style>
     .orderPcVersion {
@@ -59,17 +25,14 @@
     }
 </style>
 
-<div class="orderDetails mb-3">
-    <div class="header" style="background: #16a085">
+<div class="card mb-3">
+    <div class="card-header">
         অর্ডারকৃত পণ্য
     </div>
-    <div class="body">
+    <div class="card-body">
         @can('order.items.add')
             <div class="float-right">
                 @if ($order->isEditable())
-                    <a data-toggle="modal" data-modal-size="600" data-modal-header="Add New Product"
-                        href="{{ route('orders.order_items.temp_create_form',request()->route()->parameters()) }}"
-                        class="btn btn-success mb-2"><i class="fas fa-plus"></i> Temporary Add Product</a>
                     <a data-toggle="modal" data-modal-size="600" data-modal-header="Add New Product"
                         href="{{ route('order_items.create',request()->route()->parameters()) }}"
                         class="btn btn-success mb-2"><i class="fas fa-plus"></i> Add Product</a>
@@ -80,14 +43,11 @@
             <table class="table table-bordered">
                 <tr>
                     <th>#</th>
-                    <th>পণ্যের ছবি</th>
-                    <th style="text-align: left">পণ্য</th>
-                    @can('order.items.profit_column')
-                        <th>লাভ</th>
-                    @endcan
-                    <th>মূল্য</th>
-                    <th>পরিমান</th>
-                    <th>সর্বমোট মূল্য</th>
+                    <th>Image</th>
+                    <th style="text-align: left">Name</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
                 </tr>
 
                 @foreach ($items as $key => $item)
@@ -99,27 +59,13 @@
                                 ->parameters(),
                             ['order_item' => $item->uuid],
                         );
-                        $price = auth()
-                            ->user()
-                            ->isVendor()
-                            ? $item->wholesale_price
-                            : $item->price;
-                        $total = auth()
-                            ->user()
-                            ->isVendor()
-                            ? $item->wholesale_price_total
-                            : $item->total;
+                        $price = $item->price;
+                        $total = $item->total;
                         
                     @endphp
-                    {{-- @if ($order->is_vendor_assign &&
-    $needVendorAdd &&
-    auth()->user()->isAdmin())
-                    <tr style="background: {{$item->vendor->color}}; color: #ffffff; ">
-                        <td style="text-align: left"colspan="6">{{$item->vendor->name}}</td>
-                      </tr>  
-                    @endif --}}
+
                     <tr>
-                        <td style="width: 30px">{{ bnConvert()->number($key + 1) }}</td>
+                        <td style="width: 30px">{{ $key + 1 }}</td>
                         <td style="width: 80px">
                             <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}"
                                 height="70px" width="70px" alt="">
@@ -137,23 +83,9 @@
                                 @endif
                             </div>
                             <div style="font-size: 11px;font-weight: bold; color: #574b4b">
-                                {{ bnConvert()->number($item->unit_quantity, false) }}
-                                {{ bnConvert()->unit($item->unit) }}
-                                <br />
                                 <span style="color: #767575;">
-                                    {{ bnConvert()->number($item->unit_quantity, false) }}
-                                    {{ bnConvert()->unit($item->unit) }} ×
-                                    {{ bnConvert()->floatNumber($item->quantity) }} =
-                                    {{ bnConvert()->number($item->unit_quantity * $item->quantity, false) }}
-                                    {{ bnConvert()->unit($item->unit) }}
+                                  Product Code: {{$item->product_id}}
                                 </span>
-
-                                @if (
-                                    $item->vendor &&
-                                        auth()->user()->can('order.items.vendor_name'))
-                                    <br /> <span class="badge"
-                                        style="background-color: {{ $item->vendor->color }}; color: #ffffff">{{ $item->vendor->name }}</span>
-                                @endif
                             </div>
                             @can('order.items.edit')
                                 <div style="margin-top: 2px;">
@@ -170,9 +102,6 @@
                                 </div>
                             @endcan
                         </td>
-                        @can('order.items.profit_column')
-                            <td style="width: 100px"><b>{{ bnConvert()->number($item->profit) }}</b> ৳</td>
-                        @endcan
                         <td style="width: 100px"><b>{{ bnConvert()->number($price) }}</b> ৳</td>
                         <td style="width: 100px">
                             <span class="mb-1"><b> {{ bnConvert()->floatNumber($item->quantity) }} </b></span>
