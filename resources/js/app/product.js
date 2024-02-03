@@ -6,7 +6,10 @@ const Product = {
         profit = profit ? parseInt(profit) : 0;
         let price = wholesalePrice + profit;
         $("#price").val(price);
-    }
+    }, 
+    edit: require('./product_edit.js').Edit,
 };
 
-export default Product;
+module.exports = {
+    Product
+};

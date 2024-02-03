@@ -2,6 +2,7 @@
 
 use App\Helpers\BnConvert;
 use App\Helpers\DeviceInfo;
+use App\Services\Theme\ThemeService;
 
 /**
  * Bangla Convert
@@ -29,6 +30,14 @@ if (!function_exists('deviceInfo')) {
     function deviceInfo()
     {
         return new DeviceInfo();
+    }
+}
+
+if (!function_exists('theme')) {
+    function theme()
+    {
+        $infoInstance = ThemeService::getInstance();
+        return $infoInstance;
     }
 }
 

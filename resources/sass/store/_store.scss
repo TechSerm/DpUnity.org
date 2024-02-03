@@ -5,6 +5,16 @@ body {
 }
 
 
+.storeContent{
+    padding: 15px 0px 0px 0px;
+}
+
+@media screen and (max-width: 767px) {
+    .storeContent{
+        padding: 15px 10px;
+    }
+}
+
 .store-card {
     position: relative;
     display: -webkit-box;

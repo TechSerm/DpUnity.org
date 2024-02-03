@@ -95,12 +95,13 @@
 <body>
 
     @include('store.layout.navbar')
+    @include('store.layout.theme_style')
 
     <div id="pageLoader" style="display: none">
         @include('store.layout.loader')
     </div>
     @yield('fullContant')
-    <div class="container-fluid container storeContent" style="margin-top: 60px; padding-top: 15px;" id="loadBody">
+    <div class="container-fluid container storeContent" id="loadBody">
         @yield('content')
     </div>
     @include('store.layout.footer')
