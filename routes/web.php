@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountTransactionController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\BrandController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -20,6 +21,8 @@ use App\Http\Controllers\ProductAttribtueController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SearchKeywordController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
 use Illuminate\Support\Facades\App;
@@ -94,6 +97,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/categories/{category}/history', [CategoryController::class, 'history'])->name('categories.history');
         Route::resource('categories', CategoryController::class);
 
+        Route::get('/brands/data', [BrandController::class, 'getData'])->name('brands.data');
+        Route::get('/brands/{brand}/history', [BrandController::class, 'history'])->name('brands.history');
+        Route::resource('brands', BrandController::class);
+
         //order routes
         Route::get('/orders/data', [OrderController::class, 'getData'])->name('orders.data');
         Route::get('/orders/active', [OrderController::class, 'activeOrders']);
@@ -129,7 +136,9 @@ Route::prefix('admin')->group(function () {
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
 
-        Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
+        Route::get('/reset_password', [ResetPasswordController::class, 'showResetForm'])->name('admin.account_settings');
+        
+        Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');
 
         Route::get('/home_page_product', [HomePageProductController::class, 'index'])->name('admin.home_page_product.index');
     });

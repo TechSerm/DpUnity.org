@@ -68,7 +68,7 @@
         <div class="searchBoxArea" >
             <div class="input-group">
                 <input type="search" autocomplete="off" id="search" value="{{ request()->q }}" class="form-control"
-                    placeholder="Search In STC Shop BD">
+                    placeholder="Search In {{ App\Helpers\Constant::SITE_NAME }}">
                 
                 <div class="input-group-append">
                     <button id="searchBtn" onclick="Store.search.searchProduct()" class="searchButton" style=""

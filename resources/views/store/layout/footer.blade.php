@@ -12,12 +12,12 @@
 </style>
 <div id="footerArea">
     <footer class="">
-        <div class="footerBlock">
+        {{-- <div class="footerBlock">
             <div class="container">
-                free Devlivary
+                Free Delivary
             </div>
-        </div>
-        <div class="footerBlock">
+        </div> --}}
+        {{-- <div class="footerBlock">
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
@@ -61,10 +61,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="footerBlock text-center">
             <div class="container">
-                Design and Developed By: <b>MyEcommerceBuilder</b>
+                Developed By: <a href="https://xotechz.com/ " style="color: black;text-decoration: none;"><b>Xotech</b></a>
             </div>
         </div>
 

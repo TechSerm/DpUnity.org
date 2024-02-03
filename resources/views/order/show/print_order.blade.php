@@ -3,7 +3,7 @@
     <div class="bg" style="text-align: center;width: 400px; border-width: 0px; border-style: dotted; padding: 2px;">
 
         <div id="iv"><b>
-                বিবিসেনা অনলাইন শপ<br /></b>
+                {{ App\Helpers\Constant::SITE_NAME }}<br /></b>
             ঘরে বসেই করুন আপনার বাজার<br /><b>
         </div>
 
@@ -67,7 +67,8 @@
             @foreach ($items as $key => $item)
                 <tr>
                     <td class="invoice_table">
-                        <center>{{ $item->name }} - ({{bnConvert()->number($item->unit_quantity)}} {{bnConvert()->unit($item->unit)}})</center>
+                        <center>{{ $item->name }} - ({{ bnConvert()->number($item->unit_quantity) }}
+                            {{ bnConvert()->unit($item->unit) }})</center>
                     </td>
                     <td class="invoice_table">
                         <center>{{ bnConvert()->number($item->quantity) }}</center>
@@ -83,7 +84,7 @@
 
 
             <tr class="line">
-                
+
                 <td colspan="2" class="invoice_table" style="text-align: right">
                     <b>পণ্যের মূল্য: </b>
                 </td>
@@ -97,13 +98,13 @@
                 <td colspan="2" class="invoice_table" style="text-align: right">
                     <b>ডেলিভারি ফী: </b>
                 </td>
-                <td colspan="2"  class="invoice_table">
+                <td colspan="2" class="invoice_table">
                     <center><b>{{ bnConvert()->number($order->delivery_fee) }} </b>টাকা</center>
                 </td>
 
             </tr>
             <tr>
-               
+
                 <td colspan="2" class="invoice_table" style="text-align: right">
                     <b>সর্বমোট: </b>
                 </td>
