@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AccountTransactionController;
+use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\BrandController;
 use Illuminate\Support\Facades\Route;
@@ -9,16 +11,13 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StoreController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CustomerReviewController;
-use App\Http\Controllers\DeliveryTransportCostController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomePageProductController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NotificationDeviceController;
 use App\Http\Controllers\OrderItemController;
-use App\Http\Controllers\OrderProfitDipositeController;
+use App\Http\Controllers\ProductAttribtueController;
 use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SearchKeywordController;
@@ -26,9 +25,6 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
-use App\Http\Controllers\TemporaryProductController;
-use App\Http\Controllers\VendorPaymentController;
-use App\Models\DeliveryTransportCost;
 use Illuminate\Support\Facades\App;
 
 /*
@@ -42,7 +38,7 @@ use Illuminate\Support\Facades\App;
 |
 */
 
-Route::middleware(['device_token_check', 'device_history', 'check_push_notification_click'])->group(function () {
+Route::middleware([])->group(function () {
     Route::get('/',  [StoreController::class, 'home'])->name('home');
     Route::get('/search', [SearchController::class, 'index'])->name('search');
     Route::get('/search-product', [SearchController::class, 'getSearchProduct'])->name('search.products');
@@ -61,6 +57,7 @@ Route::middleware(['device_token_check', 'device_history', 'check_push_notificat
     Route::get('/categories/{category}', [StoreCategoryController::class, 'show'])->name('store.categories.show');
 
     Route::get('/profile', [StoreController::class, 'profile'])->name('profile');
+    Route::post('/add_cart', [StoreController::class, 'addCart'])->name('cart.add');
 
 });
 
@@ -80,6 +77,19 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/products/data', [ProductController::class, 'getData'])->name('products.data');
         Route::get('/products/{product}/history', [ProductController::class, 'history'])->name('products.history');
+        
+        Route::get('/product_attributes/select2_data', [ProductAttribtueController::class, 'getSelect2Data'])->name('product_attributes.select2_data');
+        
+        Route::prefix('/products/{product}/edit/stock_and_price')->group(function () {
+            Route::get('/', [ProductController::class, 'stockAndPrice'])->name('product.edit.stock_and_price');
+            
+            
+            Route::resource('product_attributes', ProductAttribtueController::class);
+            
+        });
+
+        
+
         Route::resource('products', ProductController::class);
 
         Route::get('/categories/select2_data', [CategoryController::class, 'getSelect2Data'])->name('categories.select2_data');
@@ -106,6 +116,8 @@ Route::prefix('admin')->group(function () {
             Route::resource('order_items', OrderItemController::class);
         });
 
+        Route::resource('attributes', AttributeController::class);
+        Route::resource('attribute_values', AttributeValueController::class);
 
         Route::get('/orders/{order}/print', [OrderController::class, 'printOrder'])->name('orders.print');
         Route::resource('orders', OrderController::class);

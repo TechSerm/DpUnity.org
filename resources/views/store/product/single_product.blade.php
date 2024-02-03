@@ -23,43 +23,52 @@
             outline: none;
             text-decoration: none;
         }
+
+        .productName .title:hover {
+            color: {{theme()->color()}};
+        }
+
+        .product-order-btn:hover{
+            font-size: 16px
+            ;
+            color: {{theme()->textColor()}};
+            
+        }
+
+        .product:hover {
+            border: 1px solid {{theme()->color()}};
+        }
     </style>
 
 
-    @php
-        $hasStock = $product->has_stock;
-        $incMarketSalePrice = getProductDiscountIncValue($product->market_sale_price);
-    @endphp
-    <a class="productName" href="{{ route('store.product.show', $product) }}">
-        <div class="" style="text-align: center">
-            <div class="card product product-div">
-                
-                @if (!$isShowPage && $hasStock && !$product->isFree())
-                    <span href="#" wire:click="increment" class="">
-                @endif
+    <div class="" style="text-align: center">
+        <div class="card product product-div">
+
+            <a class="productName" href="{{ route('store.product.show', $product) }}">
                 <span class="ct-image-container">
                     <img id="productImage" src="{{ asset('assets/img/product_loader.gif') }}"
                         data-src="{{ $product->image }}"
                         class="lazy {{ $isShowPage ? 'product-img-isShowPage' : 'product-img' }}" alt="">
                 </span>
-                @if (!$isShowPage && $hasStock && !$product->isFree())
-                    </span>
-                @endif
-                <div class="body">
-                    <div class="title"><span class="">{{ $product->name }}</span></div>
+            </a>
 
-                    <div class="price-area">
-                        ৳ <span class="price">{{ bnConvert()->number($product->price) }}</span>
+            <div class="body">
+                <a class="productName" href="{{ route('store.product.show', $product) }}">
+                    <div class="title"><span class="">{{ $product->short_name }}</span></div>
+                </a>
+                <div class="price-area">
+                    ৳ <span class="price">{{ bnConvert()->number($product->sale_price) }}</span>
 
-                        @if ($product->price < $product->market_sale_price)
-                            <span
-                                style="color: #5E5E5E; font-weight: bold; font-size: 11px; margin-left: 3px; vertical-align: middle;"><del>৳
-                                    {{ bnConvert()->number($product->market_sale_price + $incMarketSalePrice) }}</del></span>
-                        @endif
-
-                    </div>
+                    @if ($product->regular_price > $product->sale_price)
+                        <span
+                            style="color: #5E5E5E; font-weight: bold; font-size: 11px; margin-left: 3px; vertical-align: middle;"><del>৳
+                                {{ bnConvert()->number($product->regular_price) }}</del></span>
+                    @endif
+                </div>
+                <div class="button-area">
+                    <button data-product_id="{{$product->id}}" data-csrf="{{csrf_token()}}" onclick="Store.cart.directOrder(this)" class="btn btn-sm product-order-btn add-bag  theme-bg"><i class="fa fa-cart"></i> অর্ডার করুন </button>
                 </div>
             </div>
         </div>
-    </a>
+    </div>
 </div>

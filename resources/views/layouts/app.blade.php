@@ -3,6 +3,7 @@
 @section('css')
     <link rel="icon" type="image/x-icon" href="{{asset('assets/img/fav.png')}}">
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
+    <script src="{{ asset('lib/ckeditor/4.13.1/ckeditor.js') }}"></script>
     @include('layouts.modal')
 @stop
 

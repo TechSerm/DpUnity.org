@@ -101,17 +101,16 @@ class StoreController extends Controller
 
     public function addCart(Request $request)
     {
-        $productId = request()->id;
-        $product = Product::where(['id' => $productId])->first();
+        $productId = request()->product_id;
+        $product = Product::where(['id' => $productId])->firstOrFail();
         if (!$product) return;
-
-        //Session::flush();
 
         Cart::update($product->id, 1);
 
-
-
-        return redirect('/');
+        return response()->json([
+            'message' => "Product successfully added to your cart",
+            'url' => route('cart')
+        ]);
     }
 
     public function getCart()

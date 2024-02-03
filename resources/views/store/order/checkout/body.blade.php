@@ -22,7 +22,7 @@
         }
 
         .input-group .input-area:focus {
-            border: 1px solid royalblue;
+            border: 1px solid var(--theme-color);
             box-shadow: 1px 5px 7px -2px rgba(170, 170, 170, 0.74);
         }
 
@@ -32,9 +32,9 @@
             font-weight: bold;
             left: 13px;
             background: #ffffff;
-            top: -8px;
+            top: -11px;
             padding: 0 3px;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .input-group .is-invalid {
@@ -46,10 +46,10 @@
         }
 
         .input-group .input-area:focus+.label {
-            top: -8px;
+            top: -11px;
             padding: 0 3px;
-            font-size: 14px;
-            color: royalblue;
+            font-size: 15px;
+            color: var(--theme-color);
             font-weight: bold;
         }
 
@@ -84,8 +84,8 @@
             আপনার তথ্য
         </div> --}}
         <div class="details-bodyy">
-            <div style="text-align: center;margin-bottom: 15px;margin-top: -5px; font-weight: bold; color: #484646">
-                আপনার অর্ডার করা পণ্য আপনার কাছে পৌঁছানোর জন্য আপনি নিচের তথ্য গুলা পূরণ করেন !
+            <div style="text-align: center;margin-bottom: 15px;margin-top: -5px; font-weight: bold; color: #484646; padding: 15px;">
+                অর্ডারটি কনফার্ম করতে আপনার নাম, ঠিকানা, মোবাইল নাম্বার, লিখে <span>অর্ডার কনফার্ম </span> করুন বাটনে ক্লিক করুন !
             </div>
             <div class="input-group input-group-margin">
                 <input type="text" class="input-area @error('fullName') is-invalid @enderror"
@@ -95,7 +95,7 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-                <label for="inputField" class="label">নাম <font color="red">*</font></label>
+                <label for="inputField" class="label">আপনার নাম <font color="red">*</font></label>
             </div>
 
             <div class="input-group input-group-margin">
@@ -106,8 +106,7 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-                <label for="address" class="label">বাড়ির ঠিকানা <font color="red">*</font></label>
-                <small id="addressHelp" class="form-text text-muted">বাড়ির ঠিকানা হিসেবে আপনি আপনার বাড়ির নাম্বার / মসজিদ / মাদ্রাসা / কবরস্থান / দোকানের নাম যেকোনোটি ব্যাবহার করতে পারেন। ডেলিভারির সময় আমাদের ডেলিভারি ম্যান উক্ত ঠিকানায় গিয়ে আপনার সাথে যোগাযোগ করবে।</small>
+                <label for="address" class="label">আপনার ঠিকানা <font color="red">*</font></label>
             </div>
 
             <div class="input-group input-group-margin">
@@ -118,9 +117,12 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-                <label for="phone" class="label">মোবাইল নাম্বার <font color="red">*</font></label>
-                <small id="phoneHelp" class="form-text text-muted">মোবাইল নাম্বার টি অবশ্যই বাংলাদেশী মোবাইল নাম্বার হতে হবে। ডেলিভারির সময় এই নাম্বারটিতে যোগাযোগ করা হবে। </small>
+                <label for="phone" class="label">আপনার মোবাইল <font color="red">*</font></label>
+            </div>
 
+            <div class="confirmButtonArea">
+                <a href="" class="btn btn-lg btn-primary theme-bg mt-2" style="width: 100%" data-toggle="modal" data-target="#orderDetailsModal">অর্ডার
+                    করুন</a>
             </div>
         </div>
     </div>

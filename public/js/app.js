@@ -2476,7 +2476,80 @@ __webpack_require__.r(__webpack_exports__);
 
 window.Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 window.Helper = (__webpack_require__(/*! ./helper/helper.js */ "./resources/js/helper/helper.js").Helper);
+window.Product = (__webpack_require__(/*! ./app/product.js */ "./resources/js/app/product.js").Product);
 __webpack_require__(/*! ./helper/lib/jquery_sortable.js */ "./resources/js/helper/lib/jquery_sortable.js");
+
+/***/ }),
+
+/***/ "./resources/js/app/product.js":
+/*!*************************************!*\
+  !*** ./resources/js/app/product.js ***!
+  \*************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var Product = {
+  calculateProductPrice: function calculateProductPrice() {
+    var wholesalePrice = $("#wholesale_price").val();
+    var profit = $("#profit").val();
+    wholesalePrice = wholesalePrice ? parseInt(wholesalePrice) : 0;
+    profit = profit ? parseInt(profit) : 0;
+    var price = wholesalePrice + profit;
+    $("#price").val(price);
+  },
+  edit: (__webpack_require__(/*! ./product_edit.js */ "./resources/js/app/product_edit.js").Edit)
+};
+module.exports = {
+  Product: Product
+};
+
+/***/ }),
+
+/***/ "./resources/js/app/product_edit.js":
+/*!******************************************!*\
+  !*** ./resources/js/app/product_edit.js ***!
+  \******************************************/
+/***/ ((module) => {
+
+var Edit = {
+  contestDescriptionEditor: "",
+  setEditor: function setEditor(description) {
+    this.contestDescriptionEditor = CKEDITOR.replace('contestDescriptionEditor');
+    CKEDITOR.config.height = 100;
+    CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+    CKEDITOR.config.extraPlugins = 'autogrow,justify,image2,div';
+    CKEDITOR.config.codeSnippet_theme = 'pojoaque';
+    CKEDITOR.config.fontSize_defaultLabel = '12px';
+    CKEDITOR.config.disableObjectResizing = false;
+    CKEDITOR.config.autoGrow_minHeight = 100;
+    CKEDITOR.config.autoGrow_maxHeight = 300;
+    CKEDITOR.config.tabSpaces = 4;
+    var toolbarConstraintsEditor = [{
+      name: "paragraph",
+      items: ['Bold', 'Italic', 'Strike']
+    }, {
+      name: "paragraph",
+      items: ["NumberedList", "BulletedList"]
+    }, {
+      name: 'basicstyles',
+      groups: ['basicstyles', 'cleanup'],
+      items: ['CreateDiv', 'Link', 'Image', 'CoderojFileManager', 'Table', 'Mathjax']
+    }, {
+      name: "paragraph",
+      items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
+    }, {
+      name: 'tools',
+      items: ['CoderojPreview', 'Maximize']
+    }];
+    this.contestDescriptionEditor.config.toolbar = toolbarConstraintsEditor;
+    CKEDITOR.instances.contestDescriptionEditor.setData(atob(description));
+  },
+  getEditorData: function getEditorData() {
+    return CKEDITOR.instances.contestDescriptionEditor.getData();
+  }
+};
+module.exports = {
+  Edit: Edit
+};
 
 /***/ }),
 

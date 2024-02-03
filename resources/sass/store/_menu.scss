@@ -61,7 +61,6 @@
      /*=============== LAYOUT ===============*/
      /*=============== HEADER ===============*/
      .header {
-         position: fixed;
          top: 0;
          left: 0;
          width: 100%;
@@ -124,6 +123,9 @@
          display: none;
      }
      @media screen and (max-width: 767px) {
+        .header {
+            position: fixed;
+        }
          .nav__menu {
              padding-top: 2px;
              justify-content: center;
@@ -169,6 +171,7 @@
          }
      }
      @media screen and (min-width: 767px) {
+        
          .section {
              padding: 7rem 0 2rem;
          }

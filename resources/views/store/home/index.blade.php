@@ -140,22 +140,34 @@
         }
 
         .home-list-category-name {
-            border-bottom: 1px solid #d8d8da;
             margin: 15px 10px 15px 0px;
-            padding-bottom: 10px;
+            border-bottom: 1px solid #eeeeee;
+            padding-bottom: 5px;
             font-weight: 500;
             font-size: 20px;
         }
     </style>
     {{-- @include('store.home.feedback_form') --}}
 
-    <div class="home-listt" style="">
-        <div class="home-list-category-name" style=" color: #000000; margin-top: 30px">
-            ক্যাটেগরি
-        </div>
-        <div style="margin-right: -12px;">
+    <div class="store-card" style="margin-top: 30px">
+        <div class="body" style="padding-top: 0px">
+            <div class="home-list-category-name titleSpan mb-3">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> ক্যাটেগরি
+            </div>
+            
             @include('store.category.ui')
-        </div>
+        </div>    
+    </div>
+    <div class="store-card" style="margin-top: 30px;color: #ffffff; background: linear-gradient(141.11deg, rgb(73, 119, 238) 0%, rgb(240, 84, 84) 100%);">
+        <div class="body" style="padding-top: 0px">
+            <div class="home-list-category-name titleSpan mb-3">
+               Hot Deals
+            </div>
+            <div class="row no-gutters" style="" id="">
+
+                @include('store.product.single_product_page')
+            </div>
+        </div>    
     </div>
     {{-- <div class="home-list" style="background: #eaeffc"> --}}
     {{-- <div class="home-list-header" style="background: #3d579c; color: #ffffff">পণ্যের তালিকা</div> --}}

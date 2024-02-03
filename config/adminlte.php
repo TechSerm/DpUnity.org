@@ -286,6 +286,13 @@ return [
             ],
         ],
         [
+            'text'        => 'Attributes',
+            'url'         => '/admin/attributes',
+            'icon'        => 'fas fa-dice-d6',
+            'label_color' => 'success',
+            'can' => ''
+        ],
+        [
             'text'        => 'Settings',
             'url'         => '/admin/settings',
             'icon'        => 'fas fa-dice-d6',
