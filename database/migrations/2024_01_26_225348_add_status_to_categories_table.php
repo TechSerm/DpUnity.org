@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class AddStatusToCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('order_items', function (Blueprint $table) {
-            $table->string('unit_quantity')->nullable();
-            $table->string('unit')->nullable();
+        Schema::table('categories', function (Blueprint $table) {
+            $table->boolean('status')->default(false);
         });
     }
 
@@ -26,9 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('order_items', function (Blueprint $table) {
-            $table->dropColumn('unit_quantity');
-            $table->dropColumn('unit');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->dropColumn('status'); // Dropping the 'status' column if rolling back the migration
         });
     }
-};
+}

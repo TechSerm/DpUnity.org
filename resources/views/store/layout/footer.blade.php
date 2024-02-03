@@ -14,7 +14,7 @@
     <footer class="">
         <div class="footerBlock text-center">
             <div class="container">
-                Design and Developed By: <b>MyEcommerceBuilder</b>
+                Developed By: <a href="https://xotechz.com/ " style="color: black;text-decoration: none;"><b>Xotech</b></a>
             </div>
         </div>
 
