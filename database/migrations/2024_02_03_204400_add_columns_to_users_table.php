@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAdminsTable extends Migration
+class AddColumnsToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,11 @@ class CreateAdminsTable extends Migration
      */
     public function up()
     {
-        Schema::create('admins', function (Blueprint $table) {
-            $table->id(); // Serial column
-            $table->string('name')->nullable();
-            $table->string('email')->nullable();
-            $table->string('mobile')->nullable();
-            $table->string('designation')->nullable();
+        Schema::table('users', function (Blueprint $table) {
             $table->string('street')->nullable();
             $table->string('post_code')->nullable();
             $table->string('city')->nullable();
-            $table->string('type')->nullable();
-            $table->timestamps(); // Timestamps column (created_at and updated_at)
+            $table->string('image_id')->nullable();
         });
     }
 
@@ -34,6 +28,8 @@ class CreateAdminsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admins');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['street', 'post_code', 'city', 'image_id']);
+        });
     }
 }

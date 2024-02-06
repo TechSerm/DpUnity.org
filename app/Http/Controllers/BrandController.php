@@ -68,7 +68,7 @@ class BrandController extends Controller
             'image_id' => $imageId
         ]);
 
-        return back()->with('success', 'Brand create successfully!');
+        return back()->with('success', 'Brand created successfully!');
     }
 
     public function show($id)

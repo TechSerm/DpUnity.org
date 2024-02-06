@@ -301,7 +301,7 @@ return [
         ],
         [
             'text'        => 'Admin',
-            'url'         => '/admin/settings',
+            'url'         => '/admin/users',
             'icon'        => 'fas fa-user',
             'label_color' => 'success',
             'can' => ''
