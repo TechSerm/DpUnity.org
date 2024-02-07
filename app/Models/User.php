@@ -64,9 +64,14 @@ class User extends Authenticatable
         return $this->role_name == 'delivery_man';
     }
 
+    public function getImageAttribute()
+    {
+        return $this->imageSrv()->src();
+    }
+
     public function imageTable()
     {
-        return $this->belongsTo(Image::class,'image_id');
+        return $this->belongsTo(Image::class, 'image_id');
     }
 
     public function imageSrv()

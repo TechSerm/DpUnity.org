@@ -12,7 +12,6 @@ class BrandController extends Controller
 {
     public function index()
     {
-        // $this->authorize('brand.index');
         $brands = Brand::all();
         return view('brand.index', [
             'brands' => $brands

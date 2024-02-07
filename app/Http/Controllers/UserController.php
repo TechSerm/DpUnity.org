@@ -87,7 +87,6 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-
         $this->validate(request(), [
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'regex:/(01)[0-9]{9}/'],
