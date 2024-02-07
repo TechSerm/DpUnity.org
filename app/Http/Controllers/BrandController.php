@@ -105,7 +105,7 @@ class BrandController extends Controller
 
     private function getImageService($imgSrv)
     {
-        return $imgSrv->setHeight(312)->setWidth(600)->setText("");
+        return $imgSrv->setText("");
     }
 
     public function history($id)

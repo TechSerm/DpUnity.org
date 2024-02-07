@@ -26,8 +26,11 @@
                                 <th>Shipping Mobile Number</th>
 
                                 <th>Total Amount</th>
+
                                 <th>Status</th>
                                 <th>Payment Status</th>
+
+                                <th>Created at</th>
     
                                 <th style="width: 10%"></th>
                             </tr>
@@ -62,39 +65,27 @@
                 columns: [{
                         data: 'id'
                     },
-                    @if (!auth()->user()->isCashier())
-                    @if (auth()->user()->isAdmin())
                     {
                         data: 'name'
                     },
                     {
+                        data: 'address'
+                    },
+                    {
                         data: 'phone'
-                    },
-                    @endif
-                    {
-                        data: 'status'
-                    },
-                    {
-                        data: 'wholesale_total'
-                    },  
-                    @if (auth()->user()->isAdmin())
-                    {
-                        data: 'subtotal'
-                    },
-                    {
-                        data: 'delivery_fee'
                     },
                     {
                         data: 'total'
                     },
                     {
-                        data: 'products_profit'
+                        data: 'status'
                     },
-                    @endif
+                    {
+                        data: 'status'
+                    },
                     {
                         data: 'created_at'
                     },
-                    @endif
                     {
                         data: 'action'
                     },

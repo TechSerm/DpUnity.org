@@ -1,6 +1,7 @@
 @extends('store.layout.layout')
+@section('title', theme()->title() . " - " .  theme()->slogan())
 @section('content')
-
+    
     <style>
         .loader-area {
             display: none;
@@ -154,20 +155,22 @@
             <div class="home-list-category-name titleSpan mb-3">
                 <i class="fa fa-list-alt" aria-hidden="true"></i> ক্যাটেগরি
             </div>
-            
             @include('store.category.ui')
-        </div>    
+        </div>
     </div>
-    <div class="store-card" style="margin-top: 30px;color: #ffffff; background: linear-gradient(141.11deg, rgb(73, 119, 238) 0%, rgb(240, 84, 84) 100%);">
+    <div class="store-card " style="margin-top: 30px;">
         <div class="body" style="padding-top: 0px">
-            <div class="home-list-category-name titleSpan mb-3">
-               Hot Deals
+            <div class="home-list-category-name titleSpan mb-3" style="font-weight: bold; color: var(--theme-color)">
+                Hot Deals
+                <div class="pull-right" >
+                    <a href="{{ route('store.hot_deals') }}" style="color: var(--theme-color)">সকল হট ডিল</a> <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </div>
             </div>
-            <div class="row no-gutters" style="" id="">
 
-                @include('store.product.single_product_page')
+            <div class="row no-gutters" style="" id="">
+                @include('store.product.single_product_page', ['is_title_disable' => false, 'products' => $hotDealProducts])
             </div>
-        </div>    
+        </div>
     </div>
     {{-- <div class="home-list" style="background: #eaeffc"> --}}
     {{-- <div class="home-list-header" style="background: #3d579c; color: #ffffff">পণ্যের তালিকা</div> --}}

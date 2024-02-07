@@ -1,13 +1,23 @@
 @extends('layouts.app')
-@section('content_header')
-    <h1>Brand List</h1>
-@stop
+@section('title', 'Brands')
 @section('content')
 
     <div class="row">
 
         <div class="col-md-12">
-            <div class="card">
+            <div class="card mt-2">
+                <div class="card-header align-items-center">
+                    <div class="float-left" style="padding-top: 7px;">
+                        Brand List
+                    </div>
+                    <div class="float-right">
+                        <div class="align-self-end ml-auto">
+                            <button class="btn btn-primary " data-url="{{ route('brands.create') }}"
+                                data-modal-title="Create Brand" data-modal-size="650" data-toggle="modal"><i class="fa fa-plus"></i> Create
+                                Brand</button>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <style>
                         .table>tbody>tr>td,
@@ -16,13 +26,6 @@
                             text-align: center
                         }
                     </style>
-                    <div class="row">
-                        <div class="align-self-end ml-auto mb-4">
-                            <button class="btn btn-primary " data-url="{{ route('brands.create') }}"
-                                data-modal-title="Create Brand" data-modal-size="650" data-toggle="modal">Create
-                                Brand</button>
-                        </div>
-                    </div>
                     <table class="table table-bordered table-responsive-md" style="width: 100%" id="myTable">
                         <thead>
                             <tr>

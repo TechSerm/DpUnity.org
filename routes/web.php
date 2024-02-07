@@ -45,6 +45,8 @@ Route::middleware([])->group(function () {
     Route::get('/home-products', [StoreController::class, 'homeProducts'])->name('store.home.products');
     Route::get('/product/{product}', [StoreController::class, 'showProduct'])->name('store.product.show');
 
+    Route::get('/hot_deals', [StoreController::class, 'hotDeals'])->name('store.hot_deals');
+
     Route::get('/cart', \App\Http\Livewire\Cart\CartIndex::class)->name('cart');
 
     Route::get('/order/list', [StoreOrderController::class, 'orderList'])->name('store.order.list');
@@ -139,6 +141,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/reset_password', [ResetPasswordController::class, 'showResetForm'])->name('admin.account_settings');
         
         Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');
+        Route::post('/settings/update', [SettingsController::class, 'update'])->name('admin.settings.update');
 
         Route::get('/home_page_product', [HomePageProductController::class, 'index'])->name('admin.home_page_product.index');
     });

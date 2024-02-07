@@ -39,11 +39,16 @@ class Order extends Model
         return $this->hasMany(OrderItem::class)->with(['product']);
     }
 
+    public function addCookie()
+    {
+        OrderFacade::userOrder()->addOrderCookie($this);
+    }
+
     public function updateTotalCalculation()
     {
         return OrderFacade::updateTotalCalculation($this);
     }
-
+    
     public function getStatusColorAttribute()
     {
         return OrderStatusEnum::hasValue($this->status) ? OrderStatusEnum::fromValue($this->status)->color() : '#000000';

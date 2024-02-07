@@ -1,5 +1,5 @@
 @extends('store.layout.layout')
-
+@section('title', $category->name)
 @section('content')
 
     <a href="/categories" class="link"><i class="fa fa-list-alt" aria-hidden="true"></i> ক্যাটেগরি</a> / {{$category->name}}

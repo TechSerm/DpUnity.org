@@ -37,17 +37,14 @@ class NewOrderService
             'phone' =>  $shippingDetails->phone,
             'ip_address' =>  request()->ip(),
             'user_agent' =>  request()->server('HTTP_USER_AGENT'),
-            'status' => OrderStatusEnum::PENDING,
-            'device_token' => deviceInfo()->getDeviceToken(),
-            'app_version' => deviceInfo()->getAppVersion(),
-            'device_id' => $deviceTokenService->getCacheId() == "" ? null : $deviceTokenService->getCacheId()
+            'status' => OrderStatusEnum::PROCESSING,
+            
         ]);
 
         $this->createItems($order);
-        $this->createStatus($order);
         $order = $order->updateTotalCalculation();
         $order->addCookie();
-        $this->sendOrderNotification($order);
+        
 
         return response()->json([
             'message' => 'অর্ডার করার জন্য আপনাকে অভিনন্দন।',
@@ -99,14 +96,9 @@ class NewOrderService
                 'product_id' => $product ? $product->id : null,
 
                 'name' => $product->name,
-                'unit' => $product->unit,
-                'unit_quantity' => $product->quantity,
 
                 'quantity' => $item->cart_quantity,
                 'price' => $product->price,
-                'wholesale_price' => $product->wholesale_price,
-                'wholesale_price_update_time' => $product->wholesale_price_last_update,
-                'delivery_fee' => is_null($product->delivery_fee) ? config('bibisena.default_delivery_fee') : $product->delivery_fee
             ]);
         }
 

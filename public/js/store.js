@@ -3559,16 +3559,38 @@ var Cart = {
     var productId = $(btn).data("product_id");
     var csrf = $(btn).data("csrf");
     $(btn).prop("disabled", true);
-    $(btn).html('<i class="fa fa-spinner fa-spin"></i>' + $(btn).html());
-    $.post("/add_cart", {
+    $(btn).html('<i class="fa fa-spinner fa-spin"></i> ' + $(btn).html());
+    var quantity = parseInt($("#quantityVal").val());
+    var data = {
       product_id: productId,
       _token: csrf
-    }, function (response) {
+    };
+    if (quantity) {
+      data['quantity'] = quantity;
+    }
+    $.post("/add_cart", data, function (response) {
       Helper.url.load(response.url, function () {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
         window.livewire.rescan();
         Helper.toast.success(response.message);
       }, "loadBody");
+    });
+  },
+  addCartOrder: function addCartOrder(btn) {
+    var productId = $(btn).data("product_id");
+    var csrf = $(btn).data("csrf");
+    $(btn).prop("disabled", true);
+    var preHtml = $(btn).html();
+    $(btn).html('<i class="fa fa-spinner fa-spin"></i> ' + $(btn).html());
+    var quantity = parseInt($("#quantityVal").val());
+    $.post("/add_cart", {
+      product_id: productId,
+      quantity: quantity,
+      _token: csrf
+    }, function (response) {
+      Helper.toast.success(response.message);
+      $(btn).html(preHtml);
+      $(btn).prop("disabled", false);
     });
   }
 };

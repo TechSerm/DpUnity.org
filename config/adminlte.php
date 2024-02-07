@@ -269,13 +269,6 @@ return [
             'label_color' => 'success',
             'submenu' => [
                 [
-                    'text'    => 'Active Orders',
-                    'shift'   => 'ml-3',
-                    'url'         => '/admin/orders/active',
-                    'icon'        => 'fas fa-list',
-                    'can' => 'active_orders.index',
-                ],
-                [
                     'text'        => 'All Orders',
                     'url'         => '/admin/orders',
                     'icon'        => 'fas fa-list',

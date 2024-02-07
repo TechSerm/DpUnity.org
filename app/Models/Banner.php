@@ -2,36 +2,34 @@
 
 namespace App\Models;
 
+use App\Services\Image\ImageService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
-use App\Services\Image\ImageService;
 
-
-class Brand extends Model
+class Banner extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'image_id'
+        'uuid',
+        'title',
+        'image_id',
+        'serial',
     ];
-
 
     public function getImageAttribute()
     {
         return $this->imageSrv()->src();
     }
-
-    public function imageTable()
-    {
-        return $this->belongsTo(Image::class,'image_id');
-    }
-
+    
     public function imageSrv()
     {
         return new ImageService($this->imageTable);
     }
 
+    public function imageTable()
+    {
+        return $this->belongsTo(Image::class, 'image_id');
+    }
+    
 }

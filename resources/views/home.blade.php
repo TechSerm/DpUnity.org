@@ -37,30 +37,6 @@
                 <div class="col-md-2">
                     <input type="date" id="endDate" value="{{ $endDate->format('Y-m-d') }}" class="form-control mb-1">
                 </div>
-                <div class="col-md-2" style="{{ !auth()->user()->isAdmin() ? 'display: none' : ''}}">
-                    <select name="" class="form-control mb-1" id="vendorSelect">
-                        @if(!auth()->user()->isVendor())
-                        <option value="">All Vendor</option>
-                        @endif
-                        @foreach ($vendors as $vendor)
-                            @if (auth()->user()->isAdmin())
-                                <option value="{{$vendor->id}}" {{request()->vendor == $vendor->id ? 'selected' : ''}}>{{$vendor->name}}</option>
-                            @elseif (auth()->user()->isVendor() && auth()->user()->id == $vendor->id)
-                                <option value="{{$vendor->id}}" {{request()->vendor == $vendor->id ? 'selected' : ''}}>{{$vendor->name}}</option>
-                            @endif
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2" style="{{!auth()->user()->isAdmin() ? 'display: none' : ''}}">
-                    <select name="" class="form-control mb-1" id="orderTypeSelect">
-                        @if(auth()->user()->isAdmin())
-                        <option value="total" {{request()->order_type == 'total' ? 'selected' : ''}}>Total</option>
-                        <option value="subtotal" {{request()->order_type == 'subtotal' ? 'selected' : ''}}>Product Price</option>
-                        <option value="delivery_fee" {{request()->order_type == 'delivery_fee' ? 'selected' : ''}}>Delivery Fee</option>
-                        @endif
-                        <option value="wholesale_total" {{request()->order_type == 'wholesale_total' ? 'selected' : ''}}>Wholesale Price</option>
-                    </select>
-                </div>
                 <div class="col-md-3">
                     <button class="btn btn-primary" onclick="filterDashboardOrder()">Filter</button>
                 </div>
