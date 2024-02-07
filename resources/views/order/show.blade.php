@@ -50,12 +50,10 @@
                 
                 <div class="pb-1">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             @include('order.show.details', ['order', $order])
                         </div>
-                        <div class="col-md-6">
-                            @include('order.show.status_bar')
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -64,18 +62,6 @@
                     @include('order.show.order_items', ['order', $order])
                 </div>
             </div>
-            @if (auth()->user()->isAdmin() || auth()->user()->isVendor())
-            <div class="cardd">
-                <div class="card-bodyy">
-                    @include('order.show.vendors', ['order', $order])
-                </div>
-            </div>
-            @endif
-            {{-- <div class="cardd">
-                <div class="card-bodyt">
-                    @include('order.show.activity', ['order', $order])
-                </div>
-            </div> --}}
         </div>
     </div>
 @endsection

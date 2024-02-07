@@ -1,101 +1,128 @@
-<div class="orderDetails mb-3">
+<div class="card mb-3">
     <style>
         .infoTd {
             text-align: right !important;
-            background: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .infoTdRight {
+            text-align: left !important;
         }
     </style>
-    <div class="header" style="background: #2980b9">
+
+    <style>
+        .form-control-label {
+            margin-top: -2px;
+        }
+
+        fieldset {
+            background-color: #f9f9f9;
+            border: 1px solid #eeeeee;
+            padding: 5px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        legend {
+            background-color: gray;
+            color: white;
+            width: 180px;
+            font-size: 15px;
+            padding: 2px;
+            margin-left: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+
+    <div class="card-header">
         অর্ডার তথ্য
     </div>
-    <div class="body">
-        <table class="table table-bordered">
-            <tr>
-                <td class="infoTd" style="width: 150px;">অর্ডার নাম্বার </td>
-                <td style="font-weight: bold; font-size: 16px;">{{ $order->id }}</td>
-            </tr>
-            @can('order.info.order_date')
-                <tr>
-                    <td class="infoTd">অর্ডারটি করা হয়েছে</td>
-                    <td>{{ bnConvert()->date($order->created_at->format('d M Y, h:i a')) }}
-                        ({{ bnConvert()->date($order->created_at->diffForHumans()) }})</td>
-                </tr>
-            @endcan
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-7">
+                <fieldset>
+                    <legend>
+                        <div style="text-align: center">Order Info</div>
+                    </legend>
+                    <table class="table table-borderless">
+                        <tr>
+                            <td class="infoTd" style="width: 30%;">Order ID#: </td>
+                            <td style="font-weight: bold; font-size: 16px;text-align: left">{{ $order->id }}</td>
+                        </tr>
+                        <tr>
+                            <td class="infoTd">Order Created On:</td>
+                            <td class="infoTdRight">{{ $order->created_at->format('d M Y, h:i a') }}
+                                ({{ $order->created_at->diffForHumans() }})</td>
+                        </tr>
+                        <tr>
+                            <td class="infoTd">Status</td>
+                            <td class="infoTdRight">
+                                <span class="badge"
+                                    style="background: {{ $order->status_color }}; color: #ffffff">
+                                    {{ $order->status }}
+                                </span>
+                                @if ($order->isEditable())
+                                    <button class="btn btn-primary btn-sm ml-2"><i class="fa fa-edit"></i> Change
+                                        Status</button>
+                                    <button class="btn btn-danger btn-sm"
+                                        data-url="{{ route('orders.status.change', ['order' => $order->id, 'status' => 'canceled']) }}"
+                                        data-toggle="confirm" data-title="Are you sure?"
+                                        data-subtitle="Do you want to cancel this order?"
+                                        data-button-text="Yes, Cancel Order!" data-cancel-button-text="Close"><i
+                                            class="fa fa-times"></i> Cancel Order</button>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="infoTd">Payment Status:</td>
+                            <td class="infoTdRight">
+                                <span class="badge  badge-success">Paid</span> 
+                                <button class="btn btn-primary btn-sm ml-2"><i class="fa fa-edit"></i> Change Payment Status</button>
+                            </td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </div>
+            <div class="col-md-5">
 
-            <tr>
-                <td class="infoTd">অর্ডারটির বর্তমান অবস্থা</td>
-                <td><span class="badge"
-                        style="background: {{ $order->customer_status['color'] }}; color: #000000">{{ $order->customer_status['name'] }}</span>
-                </td>
-            </tr>
-            @can('order.info.total_profit')
-                <tr>
-                    <td class="infoTd">ক্যাশে জমা দিতে হবে</td>
-                    <td> <b>({{ bnConvert()->number($order->delivery_fee) }} টাকা + {{ bnConvert()->number($order->products_profit) }}  টাকা) = {{ bnConvert()->number($order->total_profit) }}</b> টাকা</td>
-                </tr>
-            @endcan
-            @can('order.info.wholesale_total')
-                <tr>
-                    <td class="infoTd">বিক্রেতাকে দিতে হবে</td>
-                    <td> <b>{{ bnConvert()->number($order->wholesale_total) }}</b> টাকা</td>
-                </tr>
-            @endcan
-        </table>
+                <fieldset>
+                    <legend>
+                        <div style="text-align: center">Shipping Address</div>
+                    </legend>
+                    <table class="table table-borderless">
+                        <tr>
+                            <td class="infoTd" style="width: 30%;">Name: </td>
+                            <td class="infoTdRight">{{ $order->name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="infoTd">Address:</td>
+                            <td class="infoTdRight">{{ $order->address }}</td>
+                        </tr>
+                        <tr>
+                            <td class="infoTd">Mobile Number</td>
+                            <td class="infoTdRight"> {{ $order->phone }}</td>
+                        </tr>
+                    </table>
+                    <div class="text-right mb-2">
+                        @if ($order->isEditable())
+                            <button data-toggle="modal" data-modal-size="md" data-modal-title="Update Customer Details"
+                                data-url="{{ route('orders.customer.update',request()->route()->parameters()) }}" type="button"
+                                class="btn btn-sm btn-success">Edit Customer Info</button>
+                        @endif
+                    </div>
+                </fieldset>
+            </div>
+        </div>
 
-        <div class="text-right mb-2">
+        <div class="text-right mt-2">
             @can('order.info.history')
                 <a class="btn btn-info" href="{{ route('invoice.print', ['order' => $order]) }}">Print Invoice</a>
                 <button class="btn btn-primary" data-modal-title="Order Log" data-toggle="modal" data-modal-size="lg"
                     data-url="{{ route('orders.show.history',request()->route()->parameters()) }}">Log History</button>
-            @endcan
-            @can('order.info.cancel_order')
-                @if ($order->isEditable())
-                    <button class="btn btn-danger"
-                        data-url="{{ route('orders.status.change', ['order' => $order->id, 'status' => 'canceled']) }}"
-                        data-toggle="confirm" data-title="আপনি কি নিশ্চিত?" data-subtitle="অর্ডারটি আপনি কি বাতিল করতে চান?"
-                        data-button-text="হ্যা, আমি বাতিল করতে চাই!" data-cancel-button-text="বন্ধ করুন">অর্ডারটি বাতিল
-                        করুন!</button>
-                @endif
             @endcan
         </div>
 
     </div>
 
 </div>
-
-@can('order.customer_area')
-    <div class="orderDetails mb-3">
-        <div class="header" style="background: #d35400">
-            পণ্য ডেলিভারি তথ্য
-        </div>
-        <div class="body">
-            <table class="table table-bordered">
-                <tr>
-                    <td class="infoTd" style="width: 150px;">নাম </td>
-                    <td>{{ $order->name }}</td>
-                </tr>
-                <tr>
-                    <td class="infoTd">বাড়ির ঠিকানা</td>
-                    <td>{{ $order->address }}</td>
-                </tr>
-                @can('order.customer_area.phone_number')
-                    <tr>
-                        <td class="infoTd">মোবাইল নাম্বার</td>
-                        <td>{{ $order->phone }}</td>
-                    </tr>
-                @endcan
-            </table>
-            @can('order.customer_area.edit_info')
-                <div class="text-right mb-2">
-                    @if ($order->isEditable())
-                        <button data-toggle="modal" data-modal-size="md" data-modal-title="Update Customer Details"
-                            data-url="{{ route('orders.customer.update',request()->route()->parameters()) }}" type="button"
-                            class="btn btn-success">Edit Customer Info</button>
-                    @endif
-                </div>
-            @endcan
-
-        </div>
-
-    </div>
-@endcan

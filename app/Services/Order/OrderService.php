@@ -24,16 +24,9 @@ class OrderService
     {
         $orderTotalCalculations = $order->items()->select([
             DB::raw("sum(total) as subtotal"),
-            DB::raw("sum(wholesale_price_total) as wholesale_total"),
-            DB::raw("sum(profit) as products_profit"),
-            DB::raw("max(delivery_fee) as delivery_fee"),
         ])->first();
 
-        $order->delivery_fee = is_null($orderTotalCalculations->delivery_fee) ? config('bibisena.default_delivery_fee') : $orderTotalCalculations->delivery_fee;
         $order->subtotal = $orderTotalCalculations->subtotal;
-        $order->wholesale_total = $orderTotalCalculations->wholesale_total;
-        $order->products_profit = $orderTotalCalculations->products_profit;
-        $order->total_profit = $orderTotalCalculations->products_profit + $order->delivery_fee;
         $order->total = $order->subtotal + $order->delivery_fee;
 
         $order->save();

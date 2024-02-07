@@ -31,15 +31,15 @@
             width: 120px;
         }
     </style>
+    
     <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <div class="orderDetails mb-3">
-                <div class="header" style="background: #2980b9">
+        <div class="col-md-5">
+            <div class="store-card mt-3" >
+                <div class="header" style="text-align: center; font-size: 18px;">
                     অর্ডার তথ্য
                 </div>
                 <div class="body">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered mb-1">
                         <tr>
                             <td class="infoTd" style="width: 150px;">অর্ডার নাম্বার </td>
                             <td style="font-weight: bold; font-size: 16px;">{{ $order->id }}</td>
@@ -51,20 +51,34 @@
                         </tr>
                         <tr>
                             <td>অর্ডারটির বর্তমান অবস্থা</td>
-                            <td><span class="badge" style="background: {{$order->customer_status['color']}}; color: #000000">{{$order->customer_status['name'] }}</span></td>
+                            <td><span class="badge"
+                                    style="background: {{ $order->customer_status['color'] }}; color: #000000">{{ $order->customer_status['name'] }}</span>
+                            </td>
                         </tr>
                     </table>
-
-                    <div class="totalMessageArea">
-                        অর্ডারটির কোনোকিছু পরিবর্তন করতে চাইলে আমাদের হটলাইনে যোগাযোগ করুন। আমাদের হটলাইন নাম্বার 
-                        <a class="btn btn-success mt-1" href="tel:01603169395"><i class="fa fa-phone" aria-hidden="true"></i> 01603169395</a>
-                    </div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td class="infoTd" style="width: 150px;">ক্রেতার নাম </td>
+                            <td style="">{{ $order->name }}</td>
+                        </tr>
+                        <tr>
+                            <td>ক্রেতার ঠিকানা</td>
+                            <td>{{ $order->address }}</td>
+                        </tr>
+                        <tr>
+                            <td>ক্রেতার মোবাইল</td>
+                            <td>{{ $order->phone }}</td>
+                        </tr>
+                    </table>
                 </div>
 
             </div>
+        </div>
+        <div class="col-md-7">
 
-            <div class="orderDetails  mb-3">
-                <div class="header" style="background: #DE8434">
+
+            <div class="store-card  mt-3">
+                <div class="header" style="text-align: center; font-size: 18px;">
                     অর্ডারকৃত পণ্য
                 </div>
                 <div class="body">
@@ -72,27 +86,30 @@
                 </div>
             </div>
 
-            <div class="orderDetails">
-                <div class="header">
-                    পণ্য ডেলিভারি তথ্য
-                </div>
+            <div class="store-card  mt-1">
                 <div class="body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td class="infoTd">নাম </td>
-                            <td>{{ $order->name }}</td>
+                    <table class="orderTotalTable">
+                        <tr class="orderSummeryTableTotalTr">
+                            <td class="tdTitle" colspan="2"><span>Subtotal:</span></td>
+                            <td>৳ <b>{{ bnConvert()->number($order->subtotal) }}</b></td>
                         </tr>
-                        <tr>
-                            <td>বাড়ির ঠিকানা</td>
-                            <td>{{ $order->address }}</td>
+                        <tr class="orderSummeryTableTotalTr">
+                            <td class="tdTitle" colspan="2"><span>Payment Method:</span></td>
+                            <td> <b>Cash On Delivery</b></td>
                         </tr>
-                        <tr>
-                            <td>মোবাইল নাম্বার</td>
-                            <td>{{ $order->phone }}</td>
+                        <tr class="orderSummeryTableTotalTr">
+                            <td class="tdTitle" colspan="2">Shipping Charge:</td>
+                            <td>৳ <b>{{ bnConvert()->number($order->delivery_fee) }}</b></td>
+                        </tr>
+            
+                        <tr class="orderSummeryTableTotalTr">
+                            <td class="tdTitle" colspan="2"><span class="badge" style="font-size: 14px">Grand Total:</span></td>
+                            <td>৳ <b>{{ bnConvert()->number($order->total) }}</b></td>
                         </tr>
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
 

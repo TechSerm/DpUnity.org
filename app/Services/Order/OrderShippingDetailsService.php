@@ -16,13 +16,23 @@ class OrderShippingDetailsService
             'fullName' => $orderDeatailsData->fullName,
             'address' => $orderDeatailsData->address,
             'phone' => $orderDeatailsData->phone,
+            'deliveryArea' => $orderDeatailsData->deliveryArea,
         ]), 2628000);
+
+        $data = Cookie::get($this->orderKey);
     }
 
     public function get($isArray = false)
     {
         $data = Cookie::get($this->orderKey);
+       // dd($data);
         return $data == null ? [] : json_decode($data, $isArray);
+    }
+
+    public function getValue($key)
+    {
+        $data = $this->get(true);
+        return $data[$key] ?? "";
     }
 
     public function isValidateFails()
@@ -36,17 +46,18 @@ class OrderShippingDetailsService
         return [
             'fullName' => 'required',
             'phone' => 'required|regex:/^[01]{2}[0-9]{9}+$/',
-            'address' => 'required'
+            'address' => 'required',
+            'deliveryArea' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'fullName.required' => 'The Name Address cannot be empty.',
+            'fullName.required' => 'আপনার নামটি অবশ্যই আপনাকে পূরণ করতে হবে।',
             'phone.required' => 'মোবাইল নম্বর টি অবশ্যই আপনাকে পূরণ করতে হবে।',
             'phone.regex' => 'মোবাইল নম্বর টি সঠিক নই । মোবাইল নম্বর টি অবশ্যই বাংলাদেশী ১১ ডিজিট এর সঠিক নম্বর হতে হবে।',
-            'address.required' => 'বাড়ির ঠিকানা টি অবশ্যই আপনাকে পূরণ করতে হবে।',
+            'address.required' => 'আপনার ঠিকানাটি অবশ্যই আপনাকে পূরণ করতে হবে।',
         ];
     }
 }

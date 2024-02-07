@@ -96,7 +96,6 @@
 
     @include('store.layout.navbar')
     @include('store.layout.theme_style')
-    {{-- @include('store.layout.new_navbar') --}}
 
     <div id="pageLoader" style="display: none">
         @include('store.layout.loader')

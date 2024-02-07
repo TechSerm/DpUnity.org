@@ -1,5 +1,25 @@
 <div>
     <style>
+        fieldset {
+            border: 1px solid #aaaaaa;
+            font-size: 14px;
+            border-radius: 5px;
+            border-radius: 5px;
+            padding: 10px 5px 15px 10px;
+            margin-top: -10px;
+        }
+
+        legend {
+            background-color: #ffffff;
+            color: #595858;
+            width: 90px;
+            font-size: 15px;
+            padding: 2px;
+            margin-left: 3px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
         .input-group-margin {
             position: relative;
             margin-bottom: 20px;
@@ -77,6 +97,24 @@
         .details-body {
             padding: 0px;
         }
+
+        .orderBtn {
+            width: 100%;
+            padding: 12px;
+            border-width: 0px;
+            color: #ffffff;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px 0px 10px 0px;
+            font-weight: bold;
+        }
+
+        .orderBtn:hover {
+            filter: brightness(90%);
+        }
+        .invalid-feedback{
+            margin-left: 10px;
+        }
     </style>
 
     <div class="checkout-detailss">
@@ -84,46 +122,17 @@
             আপনার তথ্য
         </div> --}}
         <div class="details-bodyy">
-            <div style="text-align: center;margin-bottom: 15px;margin-top: -5px; font-weight: bold; color: #484646; padding: 15px;">
-                অর্ডারটি কনফার্ম করতে আপনার নাম, ঠিকানা, মোবাইল নাম্বার, লিখে <span>অর্ডার কনফার্ম </span> করুন বাটনে ক্লিক করুন !
+            
+            <div class="" id="orderConfirmBody">
+                @include('store.order.checkout.body_livewire')
             </div>
-            <div class="input-group input-group-margin">
-                <input type="text" class="input-area @error('fullName') is-invalid @enderror"
-                    wire:model.debounce.500ms="fullName" required id="inputField" />
-                @error('fullName')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-                <label for="inputField" class="label">আপনার নাম <font color="red">*</font></label>
-            </div>
+            <span class="invalid-feedback" style="display: block" id="" role="alert">
+                <strong id="orderConfirmResponseMessage"></strong>
+            </span>
+            <button href="" class="orderBtn theme-bg mt-4" style="width: 100%"
+                data-token="{{ csrf_token() }}" id="orderConfirmBtn" data-url="{{ route('store.order') }}"
+                onclick="Store.order.create(this)" data-target="#orderDetailsModal">অর্ডার কনফার্ম করুন</button>
 
-            <div class="input-group input-group-margin">
-                <input type="text" class="input-area @error('address') is-invalid @enderror"
-                    wire:model.debounce.500ms="address" required id="address" />
-                @error('address')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-                <label for="address" class="label">আপনার ঠিকানা <font color="red">*</font></label>
-            </div>
-
-            <div class="input-group input-group-margin">
-                <input type="text" wire:model.debounce.500ms="phone"
-                    class="input-area @error('phone') is-invalid @enderror" id="phone" required />
-                @error('phone')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-                <label for="phone" class="label">আপনার মোবাইল <font color="red">*</font></label>
-            </div>
-
-            <div class="confirmButtonArea">
-                <a href="" class="btn btn-lg btn-primary theme-bg mt-2" style="width: 100%" data-toggle="modal" data-target="#orderDetailsModal">অর্ডার
-                    করুন</a>
-            </div>
         </div>
     </div>
 
