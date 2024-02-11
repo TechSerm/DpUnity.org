@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Services\Image\ImageService;
 
 class User extends Authenticatable
 {
@@ -17,15 +18,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'phone',
-        'role_name',
-        'device_token',
-        'color'
-    ];
+    protected $guarded = ['password'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -69,5 +62,20 @@ class User extends Authenticatable
     public function isDeliveryMan()
     {
         return $this->role_name == 'delivery_man';
+    }
+
+    public function getImageAttribute()
+    {
+        return $this->imageSrv()->src();
+    }
+
+    public function imageTable()
+    {
+        return $this->belongsTo(Image::class, 'image_id');
+    }
+
+    public function imageSrv()
+    {
+        return new ImageService($this->imageTable);
     }
 }

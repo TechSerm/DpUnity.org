@@ -25,6 +25,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CkEditorController;
 use App\Http\Controllers\SliderController;
 use Illuminate\Support\Facades\App;
@@ -151,8 +152,11 @@ Route::prefix('admin')->group(function () {
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
 
-        Route::get('/reset_password', [ResetPasswordController::class, 'showResetForm'])->name('admin.account_settings');
+        Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
         
+        Route::get('users/data', [UserController::class, 'getData'])->name('users.data');
+        Route::resource('users', UserController::class);
+
         Route::get('/settings', [SettingsController::class, 'index'])->name('admin.settings');
         Route::post('/settings/update', [SettingsController::class, 'update'])->name('admin.settings.update');
 

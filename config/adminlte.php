@@ -339,6 +339,13 @@ return [
                 ],
             ]
         ],
+        [
+            'text'        => 'Admin',
+            'url'         => '/admin/users',
+            'icon'        => 'fas fa-user',
+            'label_color' => 'success',
+            'can' => ''
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
