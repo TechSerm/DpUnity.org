@@ -6,7 +6,7 @@
 
 @if ($item && !isset($item->order_id))
 <div class="mb-3 row ">
-    <label for="product_id" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পণ্যের আইডি</label>
+    <label for="product_id" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Product Code</label>
     <div class="col-sm-{{ $inputWidth }}">
         {!! Form::text('product_id', $item->product ? $item->product_id : $item->id, ['class' => 'form-control ', 'id' => 'name', 'readonly'=> 'true']) !!}
     </div>
@@ -14,7 +14,7 @@
 @endif
 
 <div class="mb-3 row ">
-    <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পণ্যের নাম</label>
+    <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Product Name</label>
     <div class="col-sm-{{ $inputWidth }}">
         {!! Form::text('name', null, ['class' => 'form-control ', 'id' => 'name']) !!}
     </div>
@@ -29,7 +29,7 @@
 @endphp
 
 <div class="mb-3 row ">
-    <label for="image" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">পণ্যের ছবি</label>
+    <label for="image" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Product Image</label>
     <div class="col-sm-{{ $inputWidth }}">
         <img src="{{ $productImage }}" 
         height="180px" width="180px" class="img-thumbnail mt-2" alt="">

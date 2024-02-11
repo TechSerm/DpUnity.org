@@ -51,9 +51,7 @@
                         </tr>
                         <tr>
                             <td>অর্ডারটির বর্তমান অবস্থা</td>
-                            <td><span class="badge"
-                                    style="background: {{ $order->status_color }}; color: #000000">{{ $order->status }}</span>
-                            </td>
+                            <td>{!! $order->status->badge() !!}</td>
                         </tr>
                     </table>
                     <table class="table table-bordered">

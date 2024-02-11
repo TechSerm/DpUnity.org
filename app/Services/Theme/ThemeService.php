@@ -4,6 +4,7 @@ namespace App\Services\Theme;
 
 use App\Cart\Cart;
 use App\Enums\SettingEnum;
+use App\Models\Slider;
 use App\Services\Setting\SettingService;
 
 class ThemeService
@@ -105,5 +106,16 @@ class ThemeService
     public function totalCart()
     {
         return Cart::totalCart();
+    }
+
+    public function sliders()
+    {
+        $sliders = Slider::serialOrder()->with(['imageTable'])->get();
+        $sliderImage = [];
+        foreach ($sliders as $slider) {
+            array_push($sliderImage, $slider->image);
+        }
+
+        return $sliderImage;
     }
 }

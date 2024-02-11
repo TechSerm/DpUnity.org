@@ -270,11 +270,11 @@
     </div>
 
     <div class="store-card product-show">
-        <div class="header">
-            Desciptions
+        <div class="header" style="padding: 10px">
+            পন্যের বিবরণ
         </div>
-        <div class="body">
-            hello this is system
+        <div class="body"  style="padding-left: 15px">
+            {!! $product->description !!}
         </div>
     </div>
 

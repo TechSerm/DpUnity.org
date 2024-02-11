@@ -66,11 +66,6 @@ class NewOrderService
             ];
         }
 
-        $offerValidation = $this->offerValidation();
-        if (!empty($offerValidation)) {
-            return ['message' => $offerValidation];
-        }
-
         return [];
     }
 
@@ -98,90 +93,10 @@ class NewOrderService
                 'name' => $product->name,
 
                 'quantity' => $item->cart_quantity,
-                'price' => $product->price,
+                'price' => $product->sale_price,
             ]);
         }
 
         Cart::clear();
-    }
-
-    private function sendOrderNotification(Order $order)
-    {
-        $this->sendCustomerNotification($order);
-        $this->sendAdminNotification($order);
-    }
-
-    private function sendCustomerNotification(Order $order)
-    {
-        if (!deviceInfo()->hasDeviceToken()) return;
-
-        $body = "🔖 আপনার অর্ডার নম্বর : " . bnConvert()->number($order->id);
-        $body .= "\n🛒 পণ্যের মূল্য: ৳ " . bnConvert()->number($order->subtotal);
-        $body .= "\n🚑 ডেলিভারি ফী: ৳ " . bnConvert()->number($order->delivery_fee);
-        $body .= "\n💵 সর্বমোট: ৳ " . bnConvert()->number($order->total);
-        $body .= "\n📌 আমরা ২ থেকে ৩ ঘন্টার মধ্যে আপনার অর্ডারটি ডেলিভারি দেয়ার চেষ্টা করবো। ডেলিভারি এর সময় আপনাকে " . bnConvert()->number($order->total) . " টাকা পরিশোধ করতে হবে।";
-
-        PushNotificationFacade::sendNotification([deviceInfo()->getDeviceToken()], [
-            'title' => "বিবিসানায় অর্ডার করার জন্য আপনাকে অভিনন্দন 💐\n",
-            'body' => $body,
-            "url" => route('store.order.show', ['uuid' => $order->uuid]),
-        ]);
-    }
-
-    private function sendAdminNotification(Order $order)
-    {
-        $tokens = OrderFacade::getManagerDeviceToken();
-        if (empty($tokens)) return;
-
-        $body = "🔖 অর্ডার নম্বর : " . bnConvert()->number($order->id);
-        $body .= "\n🛒 পণ্যের মূল্য: ৳ " . bnConvert()->number($order->subtotal);
-        $body .= "\n🚑 ডেলিভারি ফী: ৳ " . bnConvert()->number($order->delivery_fee);
-        $body .= "\n💵 সর্বমোট: ৳ " . bnConvert()->number($order->total);
-        $body .= "\n⏰ সময় : " . bnConvert()->date($order->created_at->format('d M Y, H:i'));
-
-        PushNotificationFacade::sendNotification($tokens, [
-            'title' => "বিবিসেনায় নতুন একটি অর্ডার এসেছে। অর্ডারটি প্রসেসিং করুন।💐\n",
-            'body' => $body,
-            "url" => route('orders.show', ['order' => $order->id]),
-        ]);
-    }
-
-    private function offerValidation()
-    {
-        $itemsId = collect(Cart::items())->where('id', env('FREE_PRODUCT_ID'))->pluck('id');
-        $freeProduct = Product::whereIn('id', $itemsId)->first();
-        if (!$freeProduct) return "";
-        if (!deviceInfo()->isBibisenaApp()) {
-            return "আপনাকে ফ্রি অফারটি পেতে অবশ্যই বিবিসেনা মোবাইল এপ থেকে অর্ডার করতে হবে। এপটি ডাওনলোড করুনঃ <a href='https://app.bibisena.com/'>https://app.bibisena.com</a>";
-        }
-
-        $shippingDetails = OrderShippingDetails::get();
-        $mobileNumber = $shippingDetails->phone;
-        $productId = $freeProduct->id;
-
-        $ordersWithProduct = Order::whereHas('items', function ($query) use ($productId) {
-            $query->where('product_id', $productId);
-        })->where('is_cancelled', false)->where('phone', $mobileNumber);
-
-
-        if ($ordersWithProduct->count() > 0) {
-            return "আপনার মোবাইল নাম্বার থেকে ইতিমধ্যে একটি অর্ডার করা হয়েছে। আপনাকে ফ্রি অফারটি পেতে একটি নাম্বার থেকে একটি অর্ডার করতে পারবেন।";
-        }
-
-        $deviceTokenService = new DeviceTokenService();
-
-        $ordersWithProduct = Order::whereHas('items', function ($query) use ($productId) {
-            $query->where('product_id', $productId);
-        })->where('is_cancelled', false)->where('device_id', $deviceTokenService->getCacheId());
-
-
-        if ($ordersWithProduct->count() > 0) {
-            return "আপনার এপস থেকে ইতিমধ্যে একটি অর্ডার করা হয়েছে। আপনাকে ফ্রি অফারটি পেতে একটি এপস থেকে একটি অর্ডার করতে পারবেন।";
-        }
-
-        //check mobile device
-        //check mobile number
-        //check device already 
-        return "";
     }
 }

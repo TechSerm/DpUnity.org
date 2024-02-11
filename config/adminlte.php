@@ -270,11 +270,45 @@ return [
             'submenu' => [
                 [
                     'text'        => 'All Orders',
-                    'url'         => '/admin/orders',
-                    'icon'        => 'fas fa-list',
+                    'url'         => '/admin/orders?ref=all',
                     'label_color' => 'success',
                     'shift'   => 'ml-3',
-
+                ],
+                [
+                    'text'        => 'Processing',
+                    'url'         => '/admin/orders?ref=processing',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+                [
+                    'text'        => 'Confirmed',
+                    'url'         => '/admin/orders?ref=confirmed',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+                [
+                    'text'        => 'Shipped',
+                    'url'         => '/admin/orders?ref=shipped',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+                [
+                    'text'        => 'Delivered',
+                    'url'         => '/admin/orders?ref=delivered',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+                [
+                    'text'        => 'Completed',
+                    'url'         => '/admin/orders?ref=completed',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+                [
+                    'text'        => 'Canceled',
+                    'url'         => '/admin/orders?ref=canceled',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
                 ],
             ],
         ],
@@ -287,10 +321,23 @@ return [
         ],
         [
             'text'        => 'Settings',
-            'url'         => '/admin/settings',
-            'icon'        => 'fas fa-dice-d6',
+            'icon'        => 'fas fa-cog',
             'label_color' => 'success',
-            'can' => ''
+            'can' => '',
+            'submenu' => [
+                [
+                    'text'        => 'General',
+                    'url'         => '/admin/settings',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+                [
+                    'text'        => 'Sliders',
+                    'url'         => '/admin/sliders',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+            ]
         ],
         ['header' => 'account_settings'],
         [

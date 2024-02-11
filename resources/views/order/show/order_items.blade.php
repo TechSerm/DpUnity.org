@@ -65,22 +65,14 @@
                     @endphp
 
                     <tr>
-                        <td style="width: 30px">{{ $key + 1 }}</td>
+                        <td style="width: 30px">{{ bnConvert()->number($key + 1) }}</td>
                         <td style="width: 80px">
                             <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}"
                                 height="70px" width="70px" alt="">
                         </td>
                         <td style="text-align: left">
                             <div class="" style="font-size: 13px;font-weight: bold">
-                                @if ($item->product)
-                                    <a data-toggle="modal" data-modal-size="md"
-                                        data-modal-header="Product #{{ $item->product_id }}"
-                                        href="{{ route('products.show', ['product' => $item->product_id]) }}">
-                                @endif
                                 {{ $item->name }}
-                                @if ($item->product)
-                                    </a>
-                                @endif
                             </div>
                             <div style="font-size: 11px;font-weight: bold; color: #574b4b">
                                 <span style="color: #767575;">
@@ -111,7 +103,7 @@
                 @endforeach
                 @if (!auth()->user()->isVendor())
                     <tr>
-                        <td colspan="3" style="text-align: right; background-color: #f5f5f5">পণ্যের মূল্য:</td>
+                        <td colspan="3" style="text-align: right; background-color: #f5f5f5">Sub Total:</td>
                         <td colspan="{{ auth()->user()->can('order.items.profit_column')? 4: 3 }}"
                             style="background: #eeeeee">
                             <b>{{ bnConvert()->number($order->subtotal) }}</b>
@@ -119,7 +111,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style="text-align: right; background-color: #f5f5f5">ডেলিভারি ফী:</td>
+                        <td colspan="3" style="text-align: right; background-color: #f5f5f5">Delivery Fee:</td>
                         <td colspan="{{ auth()->user()->can('order.items.profit_column')? 4: 3 }}"
                             style="background: #eeeeee">
                             <b>{{ bnConvert()->number($order->delivery_fee) }}</b> টাকা
@@ -127,7 +119,7 @@
                     </tr>
                 @endif
                 <tr>
-                    <td colspan="3" style="text-align: right; background-color: #f5f5f5">সর্বমোট:</td>
+                    <td colspan="3" style="text-align: right; background-color: #f5f5f5">Total:</td>
                     <td colspan="{{ auth()->user()->can('order.items.profit_column')? 4: 3 }}"
                         style="background: #eeeeee">
                         <b>{{ bnConvert()->number($orderTotal) }}</b> টাকা

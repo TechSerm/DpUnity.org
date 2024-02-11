@@ -85,7 +85,7 @@
                                                 <span>{{$value->name}}</span>
                                                 <div class="float-right" style="width: 80px">
                                                     <button data-toggle="modal" data-modal-title="Update Attribute Value" data-modal-size="sm" data-url="{{route('attribute_values.edit', $value)}}" class="edit_item_btn btn btn-primary btn-sm mr-1"><i class="fas fa-edit"
-                                                            aria-hidden="true"></i></a>
+                                                            aria-hidden="true"></i></button>
                                                     <button data-toggle="delete" data-url="{{route('attribute_values.destroy', $value)}}" class="btn btn-danger btn-sm"><i class="fas fa-trash" aria-hidden="true"></i></button>
                                                 </div>
                                             </div>
@@ -95,7 +95,7 @@
                                 </td>
                                 <td style="width: 130px">
                                     <button data-toggle="modal" data-modal-title="Update Attribute" data-modal-size="sm" data-url="{{route('attributes.edit', $attribute)}}" class="edit_item_btn btn btn-primary btn-sm mr-1"><i class="fas fa-edit"
-                                        aria-hidden="true"></i></a>
+                                        aria-hidden="true"></i></button>
                                     <button data-toggle="delete" title="Delete Attribute" data-url="{{route('attributes.destroy', $attribute)}}" class="btn btn-danger btn-sm"><i class="fas fa-trash" aria-hidden="true"></i></button>
                                 </td>
                             </tr>

@@ -38,7 +38,7 @@ class Product extends Model
     {
         return $this->imageSrv()->src();
     }
-    
+
     public function imageSrv()
     {
         return new ImageService($this->imageTable);
@@ -47,6 +47,16 @@ class Product extends Model
     public function imageTable()
     {
         return $this->belongsTo(Image::class, 'image_id');
+    }
+
+    public function scopeActive()
+    {
+        return $this->where(['status' => 'publish']);
+    }
+
+    public function scopeHotDeals()
+    {
+        return $this->where(['has_hot_deals' => true]);
     }
 
     public function categories()

@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Slider;
 
-use App\Enums\OrderStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
-class OrderCustomerUpdateRequest extends FormRequest
+class SliderUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +24,8 @@ class OrderCustomerUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'phone' => 'required|regex:/^[01]{2}[0-9]{9}+$/',
-            'address' => 'required',
-            'delivery_fee' => 'required'
+            'title' => '',
+            'image' => 'image|mimes:jpg,png,jpeg,webp'
         ];
     }
 }

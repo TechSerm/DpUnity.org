@@ -25,6 +25,8 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
+use App\Http\Controllers\CkEditorController;
+use App\Http\Controllers\SliderController;
 use Illuminate\Support\Facades\App;
 
 /*
@@ -73,18 +75,27 @@ Route::get('/print/{order}', [InvoiceController::class, 'print'])->name('invoice
 Route::get('/product_name_suggestions', [ProductController::class, 'getSuggestionsProductName'])->name('product.name_suggestions');
 
 Route::prefix('admin')->group(function () {
-
+        
     Route::middleware(['auth','device_token_check','device_history', 'check_push_notification_click'])->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('admin.home');
+
+        
+        Route::post('/ckeditor_upload', [CkEditorController::class , 'upload'])->name('ckeditor.upload');
 
         Route::get('/products/data', [ProductController::class, 'getData'])->name('products.data');
         Route::get('/products/{product}/history', [ProductController::class, 'history'])->name('products.history');
         
         Route::get('/product_attributes/select2_data', [ProductAttribtueController::class, 'getSelect2Data'])->name('product_attributes.select2_data');
         
+        Route::prefix('/products/{product}/edit')->group(function () {
+            Route::post('/update_general_data', [ProductController::class, 'update'])->name('product.edit.update_general_data');
+            
+        });
+
         Route::prefix('/products/{product}/edit/stock_and_price')->group(function () {
             Route::get('/', [ProductController::class, 'stockAndPrice'])->name('product.edit.stock_and_price');
-            
+            Route::post('/update_hot_deals', [ProductController::class, 'updateHotDeals'])->name('product.edit.update_hot_deals');
+            Route::post('/update_status', [ProductController::class, 'updateStatus'])->name('product.edit.update_status');
             
             Route::resource('product_attributes', ProductAttribtueController::class);
             
@@ -93,6 +104,8 @@ Route::prefix('admin')->group(function () {
         
 
         Route::resource('products', ProductController::class);
+        Route::post('/orders/update_order', [SliderController::class, 'updateOrder'])->name('sliders.order_update');
+        Route::resource('sliders', SliderController::class);
 
         Route::get('/categories/select2_data', [CategoryController::class, 'getSelect2Data'])->name('categories.select2_data');
         Route::get('/categories/data', [CategoryController::class, 'getData'])->name('categories.data');

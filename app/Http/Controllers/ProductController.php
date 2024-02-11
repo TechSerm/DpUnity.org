@@ -54,7 +54,7 @@ class ProductController extends Controller
             $productQuery->whereIn('id', $cProducts);
         }
 
-        
+
         if (isset($request->product_id) && $request->product_id) {
             $productQuery->where(['id' => $request->product_id]);
         }
@@ -78,7 +78,7 @@ class ProductController extends Controller
         }
 
         if (!request()->get('order')) {
-            $productQuery = $productQuery->orderBy('updated_at', 'desc');
+            $productQuery = $productQuery->orderBy('id', 'desc');
         }
 
         return Datatables::of($productQuery)
@@ -89,18 +89,21 @@ class ProductController extends Controller
             })
             ->editColumn('has_hot_deals', function ($model) {
                 $checked = $model->has_hot_deals ? "checked" : "";
+                $url = route('product.edit.update_hot_deals', $model);
+
                 return "
                     <label class='switch'>
-                    <input type='checkbox' $checked>
+                    <input type='checkbox' data-url='$url' data-type='hot_deals' onchange='Product.updateToggle(this)' $checked>
                     <span class='slider round'></span>
                     </label>
                 ";
             })
             ->editColumn('status', function ($model) {
                 $checked = $model->status == "publish" ? "checked" : "";
+                $url = route('product.edit.update_status', $model);
                 return "
                     <label class='switch'>
-                    <input type='checkbox' $checked>
+                    <input type='checkbox' data-url='$url' data-type='status' onchange='Product.updateToggle(this)' $checked>
                     <span class='slider round'></span>
                     </label>
                 ";
@@ -196,23 +199,39 @@ class ProductController extends Controller
 
         $product->update([
             'name' => $request->name,
-            'quantity' => $request->quantity,
-            'unit' => $request->unit,
-            'wholesale_price' => $request->wholesale_price,
-            'market_sale_price' => $request->market_sale_price,
-            'profit' => $request->profit,
-            'price' => $request->price,
-            'status' => $request->status,
-            'delivery_fee' => $request->delivery_fee,
-            'image_id' => $imageId,
-            'vendor_id' => $request->vendor_id,
-            'temp_categories_id' => json_encode($request->categories)
+            'regular_price' => $request->regular_price,
+            'sale_price' => $request->sale_price,
+            'description' => $request->description,
         ]);
 
         $product->categories()->sync($request->categories);
 
         return response()->json([
             'message' => 'Product Successfully Updated'
+        ]);
+    }
+
+    public function updateHotDeals(Product $product, Request $request)
+    {
+        $isEnable = $request->hot_deals_enable == "true";
+        $product->update([
+            'has_hot_deals' =>  $isEnable ? true : false
+        ]);
+
+
+        return response()->json([
+            'message' => 'Successfully '. ($isEnable ? 'enable' : 'disable') .' hot deals'
+        ]);
+    }
+
+    public function updateStatus(Product $product, Request $request)
+    {
+        $product->update([
+            'status' => $request->status_enable == "true" ? "publish" : "private"
+        ]);
+
+        return response()->json([
+            'message' => 'Successfully updated status'
         ]);
     }
 

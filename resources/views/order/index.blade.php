@@ -61,7 +61,7 @@
                 "fnStateLoad": function(oSettings) {
                     return JSON.parse(Helper.storage.getItem('productDataTables'));
                 },
-                ajax: "{{ route('orders.data') }}",
+                ajax: "{{ route('orders.data', ['ref' => request()->ref]) }}",
                 columns: [{
                         data: 'id'
                     },
@@ -81,7 +81,7 @@
                         data: 'status'
                     },
                     {
-                        data: 'status'
+                        data: 'payment_status'
                     },
                     {
                         data: 'created_at'

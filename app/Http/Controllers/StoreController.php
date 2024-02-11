@@ -22,7 +22,7 @@ class StoreController extends Controller
     public function home()
     {
         $products = HomePageProductFacade::get();
-        $hotDealProducts = Product::where(['has_hot_deals' => true])->with('imageTable')->take(12)->get();
+        $hotDealProducts = Product::active()->where(['has_hot_deals' => true])->with('imageTable')->take(12)->get();
 
         return view('store.home.index', [
             'products' => $products,
@@ -33,7 +33,7 @@ class StoreController extends Controller
 
     public function hotDeals()
     {
-        $hotDealProducts = Product::where(['has_hot_deals' => true])->with('imageTable')->take(12)->get();
+        $hotDealProducts = Product::active()->where(['has_hot_deals' => true])->with('imageTable')->get();
 
         return view('store.hot_deals.index', [
             'hotDealProducts' => $hotDealProducts

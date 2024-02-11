@@ -2,23 +2,17 @@
 
 namespace App\Enums;
 
-use App\Enums\Data\OrderStatusEnumData;
-use App\Enums\Traits\OrderStatusEnumTrait;
 use BenSampo\Enum\Enum;
 
-final class OrderStatusEnum extends Enum
+final class OrderPaymentStatusEnum extends Enum
 {
 
-  const PROCESSING = "processing";
-  const CONFIRMED = "confirmed";
-  const SHIPPED = "shipped";
-  const DELIVERED = "delivered";
-  const COMPLETED = 'completed';
-  const CANCELED = "canceled";
+  const PAID = "paid";
+  const DUE = "due";
 
   public function color()
   {
-    return OrderStatusEnumData::getStatusData($this->key, 'color');
+    return $this->value === self::PAID ? "#16a085" : "#c0392b";
   }
 
   public function friendlyName()
