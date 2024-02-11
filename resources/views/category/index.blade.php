@@ -67,10 +67,6 @@
     <div class="row">
 
         <div class="col-md-12" style="margin-top: 10px;">
-=========
-    <div class="row">
-        <div class="col-md-12">
->>>>>>>>> Temporary merge branch 2
             <div class="card">
                 <div class="card-header align-items-center">
                     <div class="float-left" style="padding-top: 7px;">
