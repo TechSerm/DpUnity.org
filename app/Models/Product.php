@@ -5,11 +5,7 @@ namespace App\Models;
 use App\Cart\Cart;
 use App\Services\Image\ImageService;
 use App\Services\Search\SearchService;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Woo\Models\WooProduct;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
 
 class Product extends Model
 {
@@ -31,11 +27,6 @@ class Product extends Model
         'description',
     ];
 
-    public function getImageAttribute()
-    {
-        return $this->imageSrv()->src();
-    }
-
     public function getShortNameAttribute()
     {
         $maxLength = 30;
@@ -43,14 +34,29 @@ class Product extends Model
         return mb_strlen($text, 'UTF-8') > $maxLength ? mb_substr($text, 0, $maxLength, 'UTF-8') . '...' : $text;
     }
 
-    public function imageTable()
+    public function getImageAttribute()
     {
-        return $this->belongsTo(Image::class, 'image_id');
+        return $this->imageSrv()->src();
     }
 
     public function imageSrv()
     {
         return new ImageService($this->imageTable);
+    }
+
+    public function imageTable()
+    {
+        return $this->belongsTo(Image::class, 'image_id');
+    }
+
+    public function scopeActive()
+    {
+        return $this->where(['status' => 'publish']);
+    }
+
+    public function scopeHotDeals()
+    {
+        return $this->where(['has_hot_deals' => true]);
     }
 
     public function categories()

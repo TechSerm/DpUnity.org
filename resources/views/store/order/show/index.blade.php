@@ -1,5 +1,5 @@
 @extends('store.layout.layout')
-
+@section('title', "Order ". $order->id)
 @section('content')
     <style>
         .orderDetails {
@@ -51,9 +51,7 @@
                         </tr>
                         <tr>
                             <td>অর্ডারটির বর্তমান অবস্থা</td>
-                            <td><span class="badge"
-                                    style="background: {{ $order->customer_status['color'] }}; color: #000000">{{ $order->customer_status['name'] }}</span>
-                            </td>
+                            <td>{!! $order->status->badge() !!}</td>
                         </tr>
                     </table>
                     <table class="table table-bordered">

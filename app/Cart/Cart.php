@@ -13,22 +13,26 @@ class Cart
     public static $cartProductItems;
     public static function items()
     {
-        if(!empty(self::$cartProductItems))return self::$cartProductItems;
+        if (!empty(self::$cartProductItems)) return self::$cartProductItems;
         $cart = CartAction::get();
-        $products = Product::with('imageTable')->whereIn('id', array_keys($cart))->select(['id', 'name', 'image_id', 'price', 'unit', 'quantity','delivery_fee'])->get();
+        $products = Product::with('imageTable')->whereIn('id', array_keys($cart))->select(['id', 'name', 'image_id', 'sale_price',  'quantity'])->get();
 
         $response = [];
         foreach ($products as $product) {
-            if(!isset($cart[$product->id]))continue;
-            
+            if (!isset($cart[$product->id])) continue;
+
             $quantity = $cart[$product->id];
             $product->cart_quantity = $quantity;
-            $product->cart_total_price = $quantity * $product->price;
-            $product->delivery_fee = is_null($product->delivery_fee) ? config('bibisena.default_delivery_fee') : $product->delivery_fee;
+            $product->cart_total_price = $quantity * $product->sale_price;
             array_push($response, (object)$product);
-            
         }
         return self::$cartProductItems = $response;
+    }
+
+    public static function totalCart()
+    {
+        $cart = CartAction::get();
+        return count($cart);
     }
 
     public static function isEmpty()

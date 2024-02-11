@@ -30,7 +30,7 @@
         "jquery-viewer": "^1.0.1",
         "overlayscrollbars": "^2.0.0-beta.0",
         "select2": "^4.1.0-rc.0",
-        "sortablejs": "^1.15.0",
+        "sortablejs": "^1.15.2",
         "sweetalert2": "^11.4.26",
         "turbolinks": "^5.2.0",
         "urijs": "^1.19.11",

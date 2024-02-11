@@ -1,4 +1,5 @@
 @extends('store.layout.layout')
+@section('title', theme()->title() . ' - ' . theme()->slogan())
 @section('content')
 
     <style>
@@ -77,45 +78,46 @@
             max-height: 400px;
         }
     </style>
+    @php
+        $sliders = theme()->sliders();
+    @endphp
+    @if (!empty($sliders))
+        <div class="siteBanner mb-4">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @foreach ($sliders as $key => $slider)
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="{{ $key == 0 ? 'active' : '' }}">
+                        </li>
+                    @endforeach
+                </ol>
+                <div class="carousel-inner">
 
-    <div class="siteBanner mb-3">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://icms-image.slatic.net/images/ims-web/787ada0a-40c9-4164-9ff3-15ad11e2e7a3.jpg_1200x1200.jpg"
-                        class="d-block w-100" alt="...">
+                    @foreach ($sliders as $key => $slider)
+                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                            <img src="{{ $slider }}" class="d-block w-100" alt="...">
+                        </div>
+                    @endforeach
                 </div>
-                <div class="carousel-item">
-                    <img src="https://icms-image.slatic.net/images/ims-web/b1986946-079d-43f2-9317-ba524cb832a2.jpg"
-                        class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="https://icms-image.slatic.net/images/ims-web/95207be7-e752-4577-9971-75a7be72fcd2.jpg"
-                        class="d-block w-100" alt="...">
-                </div>
+                @if (count($sliders) > 1)
+                    <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators"
+                        data-slide="prev">
+                        <div style="background: #000000;border-radius: 3px; padding:  8px 2px 5px 2px;">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </div>
+
+                    </button>
+                    <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators"
+                        data-slide="next">
+                        <div style="background: #000000;border-radius: 3px; padding:  8px 2px 5px 2px;">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </div>
+                    </button>
+                @endif
             </div>
-
-            <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators" data-slide="prev">
-                <div style="background: #000000;border-radius: 3px; padding:  8px 2px 5px 2px;">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </div>
-
-            </button>
-            <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators" data-slide="next">
-                <div style="background: #000000;border-radius: 3px; padding:  8px 2px 5px 2px;">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </div>
-            </button>
         </div>
-    </div>
-
+    @endif
     <style>
         .home-list {
             margin: 15px -5px 0px -5px;
@@ -149,25 +151,31 @@
     </style>
     {{-- @include('store.home.feedback_form') --}}
 
-    <div class="store-card" style="margin-top: 30px">
+    <div class="store-card" style="margin-top: 10px">
         <div class="body" style="padding-top: 0px">
             <div class="home-list-category-name titleSpan mb-3">
                 <i class="fa fa-list-alt" aria-hidden="true"></i> ক্যাটেগরি
             </div>
-            
             @include('store.category.ui')
-        </div>    
+        </div>
     </div>
-    <div class="store-card" style="margin-top: 30px;color: #ffffff; background: linear-gradient(141.11deg, rgb(73, 119, 238) 0%, rgb(240, 84, 84) 100%);">
+    <div class="store-card " style="margin-top: 30px;">
         <div class="body" style="padding-top: 0px">
-            <div class="home-list-category-name titleSpan mb-3">
-               Hot Deals
+            <div class="home-list-category-name titleSpan mb-3" style="font-weight: bold; color: var(--theme-color)">
+                Hot Deals
+                <div class="pull-right">
+                    <a href="{{ route('store.hot_deals') }}" style="color: var(--theme-color)">সকল হট ডিল</a> <i
+                        class="fa fa-arrow-right" aria-hidden="true"></i>
+                </div>
             </div>
-            <div class="row no-gutters" style="" id="">
 
-                @include('store.product.single_product_page')
+            <div class="row no-gutters" style="" id="">
+                @include('store.product.single_product_page', [
+                    'is_title_disable' => false,
+                    'products' => $hotDealProducts,
+                ])
             </div>
-        </div>    
+        </div>
     </div>
     {{-- <div class="home-list" style="background: #eaeffc"> --}}
     {{-- <div class="home-list-header" style="background: #3d579c; color: #ffffff">পণ্যের তালিকা</div> --}}

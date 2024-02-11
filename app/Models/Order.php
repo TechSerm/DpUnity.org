@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderPaymentStatusEnum;
 use App\Enums\OrderStatusEnum;
 use App\Facades\Order\OrderFacade;
 use App\Services\Order\OrderActivityService;
@@ -32,11 +33,39 @@ class Order extends Model
         'total',
 
         'status',
+        'payment_status',
     ];
 
     public function items()
     {
         return $this->hasMany(OrderItem::class)->with(['product']);
+    }
+
+    public function getStatusAttribute($value)
+    {
+        $value = OrderStatusEnum::hasValue($value) ? $value : OrderStatusEnum::PROCESSING;
+        return OrderStatusEnum::fromValue($value);
+    }
+
+    public function getPaymentStatusAttribute($value)
+    {
+        $value = OrderPaymentStatusEnum::hasValue($value) ? $value : OrderPaymentStatusEnum::DUE;
+        return OrderPaymentStatusEnum::fromValue($value);
+    }
+
+    public function scopeProcessing()
+    {
+        return $this->where('status', OrderStatusEnum::PROCESSING);
+    }
+
+    public function isOrderStatusDisabled()
+    {
+        return $this->status == OrderStatusEnum::COMPLETED || $this->status == OrderStatusEnum::CANCELED;
+    }
+
+    public function addCookie()
+    {
+        OrderFacade::userOrder()->addOrderCookie($this);
     }
 
     public function updateTotalCalculation()

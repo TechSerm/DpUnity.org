@@ -33,7 +33,7 @@
             </a>
         </div>
         <div style="font-size: 13px;font-weight: bold; color: #767575; margin-top: 0px">৳
-            {{ convertBanglaNumber($item->price) }} </div>
+            {{ convertBanglaNumber($item->sale_price) }} </div>
         <div style="margin-top: 10px; font-size: 14px; font-weight: bold;">
             <span style="background: #f5f5f5; border: 1px solid #aaaaaa; padding: 3px 2px 5px 2px; border-radius: 5px">
                 <button style="padding: 0px 5px; font-size: 13px" wire:click="decrement"

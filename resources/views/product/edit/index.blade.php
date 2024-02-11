@@ -25,7 +25,8 @@
         }
     </style>
 
-<form action="">
+<form action="{{ route('product.edit.update_general_data', request()->route()->parameters()) }}" method="post" data-function="Product.update(form)">
+    @csrf
     <fieldset>
         <legend>
             <div style="text-align: center">Product Info</div>
@@ -52,13 +53,13 @@
         <div class="mb-3 row ">
             <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Brand</label>
             <div class="col-sm-{{ $inputWidth }}">
-                {!! Form::text('name', null, ['class' => 'form-control ', 'id' => 'name']) !!}
+                {!! Form::text('brand', null, ['class' => 'form-control ', 'id' => 'name']) !!}
             </div>
         </div>
         <div class="mb-3 row ">
             <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Description</label>
             <div class="col-sm-{{ $inputWidth }}">
-                <textarea id="contestDescriptionEditor" name="contestDescriptionEditor" placeholder="Contest Description"></textarea>
+                <textarea id="descriptionEditor" name="descriptionEditor" placeholder="Contest Description"></textarea>
             </div>
         </div>
     </fieldset>
@@ -85,7 +86,7 @@
         <div class="form-group row  mb-3">
             <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Total Stock:</label>
             <div class="col-sm-{{ $inputWidth }}">
-                {!! Form::text('name', null, ['class' => 'form-control ', 'id' => 'name']) !!}
+                {!! Form::text('stock', null, ['class' => 'form-control ', 'id' => 'name']) !!}
             </div>
         </div>
     </fieldset>
@@ -103,8 +104,11 @@
 
 @push('scripts')
 
+@php
+    $ckEditorUrl = route('ckeditor.upload', ['_token' => csrf_token() ]);
+@endphp
 <script type="text/javascript">
-    Product.edit.setEditor('ttt');
+    Product.edit.setEditor('{{ base64_encode($product->description) }}', '{{$ckEditorUrl}}');
 
     $('#categories').select2({
         placeholder: 'Select an Categories',

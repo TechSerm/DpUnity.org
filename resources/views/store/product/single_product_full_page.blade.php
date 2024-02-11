@@ -1,8 +1,8 @@
 @extends('store.layout.layout')
+@section('title', $product->name)
 @section('content')
 
     <style>
-
         .productOrderBtn {
             padding: 12px;
             border-width: 0px;
@@ -55,7 +55,8 @@
 
         .productLstImg:hover {
             cursor: pointer;
-            border: 2px solid #aaaaaa;
+            border-radius: 5px;
+            border: 2px solid var(--theme-color) !important;
         }
 
         .price {
@@ -70,8 +71,10 @@
             border-top: 1px solid #eff0f5;
         }
 
-
-
+        .thumbnail-active {
+            border-radius: 5px;
+            border: 2px solid var(--theme-color) !important;
+        }
 
         /*aiz megabox*/
         .aiz-megabox {
@@ -103,6 +106,12 @@
             border-color: #e74c3c;
             color: #e74c3c
         }
+
+        .inc-area {
+            border: 1px solid var(--theme-color);
+            padding: 4px 2px 6px 3px;
+            border-radius: 5px;
+        }
     </style>
 
     <div class="product-show">
@@ -133,12 +142,12 @@
             <div class="col-md-7">
                 <div class="store-card">
                     <div class="" style="padding: 10px;">
-                        <span class="title mb-2">{{ $product->name }}</span>
+                        <span class="title">{{ $product->name }}</span>
                     </div>
 
-                    <div class="price-area" style="padding: 10px;">
+                    <div class="" style="padding: 10px;">
 
-                        <div class="price-a" style="margin: -10px -10px 15px -10px; padding: 10px;">
+                        <div class="price-a" style="margin: -10px -10px 0px -10px; padding: 10px;">
                             <span class="price">৳ {{ bnConvert()->number($product->sale_price) }}</span>
                             @if ($product->regular_price > $product->sale_price)
                                 <span
@@ -197,16 +206,22 @@
                                 </div>
                             </div>
                         </div> --}}
-                        <div class="row no-gutters mb-3">
+                        <div class="row no-gutters mb-3 mt-3">
                             <div class="col-sm-2">
-                                <div class="text-secondary fs-14 fw-400 mt-2 ">
-                                    Quantity
+                                <div class="text-secondary fs-14 fw-400">
+                                    Quantity:
                                 </div>
                             </div>
                             <div class="col-sm-10">
-                                <div class="aiz-radio-inline">
-                                    - 1 +
-                                </div>
+                                <span class="inc-area">
+                                    <button style="padding: 0px 5px; font-size: 15px" onclick="btnDec()"
+                                        class="btn btn-sm btn-danger"><i class="fa fa-minus"></i></button>
+                                    <input type="text" value="1" id="quantityVal" hidden>
+                                    <span style="margin-left: 10px; margin-right: 10px; font-weight: bold; font-size: 16px;"
+                                        id="quantityArea">১</span>
+                                    <button style="padding: 0px 5px;font-size: 15px" onclick="btnInc()"
+                                        class="btn btn-sm btn-success"><i class="fa fa-plus"></i></button>
+                                </span>
                             </div>
                         </div>
 
@@ -223,12 +238,18 @@
                             </div>
                         </div> --}}
                         <button data-product_id="{{ $product->id }}" data-csrf="{{ csrf_token() }}"
-                            onclick="Store.cart.directOrder(this)" class="btn btn-sm productOrderBtn  theme-bg"><i class="fa fa-cart"></i>
-                            অর্ডার করুন 
+                            onclick="Store.cart.directOrder(this)" class="btn btn-sm productOrderBtn  theme-bg"><i
+                                class="fa fa-cart"></i>
+                            অর্ডার করুন
                         </button>
-                        <button class="btn btn-md productOrderBtn" style="background: #16a085">কার্ট-এ যোগ করুন</button><br />
-                        <a class="btn btn-md productOrderBtn mt-1" style="width: 400px;background: #2c3e50">ফোনে অর্ডার করুনঃ 01958452421</a><br />
-                        <button class="btn btn-md productOrderBtn mt-1 mb-2" style="width: 400px; background: #2980b9">ম্যাসেজের মাধ্যমে অর্ডার করতে
+                        <button data-product_id="{{ $product->id }}" data-csrf="{{ csrf_token() }}"
+                            onclick="Store.cart.addCartOrder(this)" class="btn btn-md productOrderBtn"
+                            style="background: #16a085">কার্ট-এ যোগ
+                            করুন</button><br />
+                        <a class="btn btn-md productOrderBtn mt-1" style="width: 400px;background: #2c3e50">ফোনে অর্ডার
+                            করুনঃ {{ theme()->mobile() }}</a><br />
+                        <button class="btn btn-md productOrderBtn mt-1 mb-2"
+                            style="width: 400px; background: #2980b9">ম্যাসেজের মাধ্যমে অর্ডার করতে
                             ক্লিক করুন</button>
                         <table class="table table-bordered" style="max-width: 400px;">
                             <tr>
@@ -249,11 +270,11 @@
     </div>
 
     <div class="store-card product-show">
-        <div class="header">
-            Desciptions
+        <div class="header" style="padding: 10px">
+            পন্যের বিবরণ
         </div>
-        <div class="body">
-            hello this is system
+        <div class="body"  style="padding-left: 15px">
+            {!! $product->description !!}
         </div>
     </div>
 
@@ -267,11 +288,42 @@
 
             // Handle thumbnail clicks
             $(".thumbnail").click(function() {
+                $(".thumbnail").removeClass("thumbnail-active");
                 // Get the clicked thumbnail's source
                 var newImageSrc = $(this).attr("src");
                 // Update the main product image with the clicked thumbnail
                 $("#productImage").attr("src", newImageSrc);
+                $(this).addClass("thumbnail-active");
             });
         });
+
+        function btnInc() {
+            let quantityVal = parseInt($("#quantityVal").val()) + 1;
+
+            $("#quantityArea").html(englishToBanglaNumber(quantityVal));
+            $("#quantityVal").val(quantityVal);
+        }
+
+        function btnDec() {
+            let quantityVal = parseInt($("#quantityVal").val()) - 1;
+
+            if (quantityVal <= 0) quantityVal = 1;
+
+            $("#quantityArea").html(englishToBanglaNumber(quantityVal));
+            $("#quantityVal").val(quantityVal);
+        }
+
+        function englishToBanglaNumber(englishNumber) {
+            const banglaNumbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+            // Convert each digit in the English number to the corresponding Bengali number
+            const banglaNumber = englishNumber
+                .toString()
+                .split('')
+                .map(digit => banglaNumbers[parseInt(digit)])
+                .join('');
+
+            return banglaNumber;
+        }
     </script>
 @endpush

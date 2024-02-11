@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\OrderStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class OrderCustomerUpdateRequest extends FormRequest
@@ -26,7 +27,8 @@ class OrderCustomerUpdateRequest extends FormRequest
         return [
             'name' => 'required',
             'phone' => 'required|regex:/^[01]{2}[0-9]{9}+$/',
-            'address' => 'required'
+            'address' => 'required',
+            'delivery_fee' => 'required'
         ];
     }
 }

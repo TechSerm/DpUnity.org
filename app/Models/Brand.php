@@ -12,8 +12,6 @@ use App\Services\Image\ImageService;
 class Brand extends Model
 {
     use HasFactory;
-    use LogsActivity;
-
 
     protected $fillable = [
         'name',
@@ -36,10 +34,4 @@ class Brand extends Model
         return new ImageService($this->imageTable);
     }
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly($this->fillable)
-        ->logOnlyDirty($this->fillable);
-    }
 }

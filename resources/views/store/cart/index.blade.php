@@ -1,4 +1,5 @@
 @extends('store.layout.layout')
+@section('title', "Cart")
 @section('content')
     <style>
         .continueShippingLinkColor{

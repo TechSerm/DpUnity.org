@@ -6,26 +6,26 @@ class OrderStatusEnumData
 {
     private static $orderStatusData = [
         'PROCESSING' => [
-            'color' => '#34495e',
+            'color' => '#2980b9',
         ],
         'CONFIRMED' => [
-            'color' => '#8e44ad',
+            'color' => '#2980b9',
         ],
         
         'SHIPPED' => [
-            'color' => '#8e44ad',
+            'color' => '#2980b9',
         ],
 
         'DELIVERED' => [
-            'color' => '#8e44ad',
+            'color' => '#27ae60',
         ],
 
         'COMPLETED' => [
-            'color' => '#8e44ad',
+            'color' => '#27ae60',
         ],
         
         'CANCELED' =>  [
-            'color' => '#c23616',
+            'color' => '#c0392b',
         ]
     ];
 

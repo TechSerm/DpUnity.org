@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderPaymentStatusEnum;
 use App\Enums\OrderStatusEnum;
 use App\Facades\Order\OrderFacade;
 use App\Facades\PushNotification\PushNotificationFacade;
@@ -65,19 +66,14 @@ class OrderController extends Controller
     public function getData(Request $request)
     {
         $orderQuery = Order::where([]);
-        if (auth()->user()->isVendor()) {
-            $orderQuery->leftJoin('order_vendors', 'orders.id', '=', 'order_vendors.order_id');
-            $orderQuery->where(['order_vendors.vendor_id' => auth()->user()->id]);
+
+        $status = $request->ref;
+
+        if(OrderStatusEnum::hasValue($status)) {
+            $orderQuery->where(['status' => $status]);
         }
 
-
-        if (auth()->user()->isVendor()) {
-            $orderQuery->select(DB::raw('orders.*, order_vendors.is_received, order_vendors.is_pack_complete as vendor_is_pack_complete, order_vendors.wholesale_total as vendor_wholesale_total'));
-        } else {
-            $orderQuery->select(DB::raw('orders.*'));
-        }
-
-
+        
         if (!request()->get('order')) {
             $orderQuery = $orderQuery->orderBy('id', 'desc');
         }
@@ -85,32 +81,20 @@ class OrderController extends Controller
         return Datatables::of($orderQuery)
             ->filter(function ($query) use ($request) {
             })
-            ->editColumn('name', function ($model) {
-                return '<span style="font-size: 12px; font-weight: bold; display:block;">' . $model->name . '</span>';
-            })
-            ->editColumn('address', function ($model) {
-                return '<span style="font-size: 12px; font-weight: bold; display:block;">' . $model->address . '</span>';
-            })
-            ->editColumn('phone', function ($model) {
-                return '<span class="badge">' . $model->phone . '</span>';
-            })
-            ->editColumn('id', function ($model) {
-                return bnConvert()->number($model->id);
-            })
-            ->editColumn('subtotal', function ($model) {
-                return $this->addPriceLabel($model->subtotal);
-            })
             
+
             ->editColumn('total', function ($model) {
                 return $this->addPriceLabel($model->total);
             })
 
             ->editColumn('created_at', function ($model) {
-                return "<span style='font-size: 12px'>" . $model->created_at->format('d M Y H:i:s') . " (" . $model->created_at->diffForHumans() . ")</span>";
+                return $model->created_at->format('d M Y H:i:s') . " (" . $model->created_at->diffForHumans() . ")</span>";
             })
             ->editColumn('status', function ($model) {
-                $statusColor = $model->status_color;
-                return "<span class = 'badge' style='background-color: $statusColor; color: #ffffff'>" . $model->status_bn_name . "</span>";
+                return $model->status->badge();
+            })
+            ->editColumn('payment_status', function ($model) {
+                return $model->payment_status->badge();
             })
 
             ->addColumn('action', function ($model) {
@@ -123,7 +107,7 @@ class OrderController extends Controller
 
     private function addPriceLabel($price)
     {
-        return '<span class="badge"><span style="font-size: 14px;">' . bnConvert()->number($price) . '</span><span style="color:#636e72;"> ৳ </span></span>';
+        return $price;
     }
 
     public function show(Order $order)
@@ -139,27 +123,28 @@ class OrderController extends Controller
 
     public function showUpdateCustomer(Order $order)
     {
-        if (!$order->isEditable()) {
-            return response()->json([
-                'message' => 'Invalid Action'
-            ], 401);
-        }
-
-        return view('order.show.update_customer', compact('order'));
+        $orderStatus = OrderStatusEnum::asSelectArray();
+        $orderPaymentStatus = OrderPaymentStatusEnum::asSelectArray();
+        return view('order.show.update_customer', compact('order','orderStatus', 'orderPaymentStatus'));
     }
 
     public function updateCustomer(OrderCustomerUpdateRequest $request, Order $order)
     {
-        if (!$order->isEditable()) {
-            return response()->json([
-                'message' => 'Invalid Action'
-            ], 401);
+        $fields = ['name', 'phone', 'address','delivery_fee'];
+        if(isset($request->status) && OrderStatusEnum::hasValue($request->status) && !$order->isOrderStatusDisabled()) {
+            array_push($fields, "status");
         }
 
-        $order->update($request->only('name', 'phone', 'address'));
+        if(isset($request->payment_status) && OrderPaymentStatusEnum::hasValue($request->payment_status)) {
+            array_push($fields, "payment_status");
+        }
+
+        $order->update($request->only($fields));
+
+        $order->updateTotalCalculation();
 
         return response()->json([
-            'message' => 'Customer Update Successfully'
+            'message' => 'Successfully Updated Order'
         ]);
     }
 

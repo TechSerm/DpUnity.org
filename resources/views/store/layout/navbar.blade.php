@@ -329,8 +329,8 @@
         font-weight: 600;
         font-size: 16px;
         padding: 5px 15px !important;
-        padding-left: 0px!important;
-        padding-right: 30px!important;
+        padding-left: 0px !important;
+        padding-right: 30px !important;
         /* border: 1px solid red; */
     }
 
@@ -339,18 +339,22 @@
         padding-top: 25px;
         height: 70px;
     }
+
+    .custom-nav-item {}
 </style>
 
 
 
 <div class="custom-menu">
 
-    <div class="utility-nav d-none d-md-block">
-        <div class="container text-center">
-            <p class="small" style="font-weight: bold">Welcome To TechSerm Ecommerce</p>
+    @if (theme()->headline() != '')
+        <div class="utility-nav d-none d-md-block">
+            <div class="container text-center">
+                <p class="small" style="font-weight: bold">{{ theme()->headline() }}</p>
 
+            </div>
         </div>
-    </div>
+    @endif
 
     <nav class="navbar navbar-expand-md navbar-light bg-light main-menu" style="box-shadow:none">
         <div class="container">
@@ -359,17 +363,17 @@
             </button>
 
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{theme()->logo()}}" height="60" alt="">
+                <img src="{{ theme()->logo() }}" height="60" alt="">
             </a>
 
             <ul class="navbar-nav ml-auto d-block d-md-none">
-                <li class="nav-item">
-                    <a class="btn btn-link" href="cart"><i class="bx bxs-cart icon-single"></i> <span
-                            class="badge badge-danger">3</span></a>
-                            <a class="btn btn-primary" href="#"><i class="bx bxs-user-circle mr-1"></i></a>
+                <li class="btn custom-nav-item nav-item">
+                    <a class="" href="{{ route('cart') }}" ><i class="bx bxs-cart icon-single"></i>
+                        <span class="badge badge-danger theme-bg" style="padding: 3px 6px 3px 6px">{{ theme()->totalCart() }}</span>
+                    </a>
                 </li>
-                <li class="nav-item">
-                    
+                <li class="btn custom-nav-item nav-item">
+                    <a class="" href="{{ route('login') }}"><i class="bx bxs-user mr-1"></i></a>
                 </li>
             </ul>
 
@@ -378,25 +382,26 @@
                     <input class="form-control" type="search" placeholder="Search for products..." aria-label="Search">
                     <button class="btn btn-success my-2 my-sm-0" type="submit"><i class="bx bx-search"></i></button>
                 </form>
+                <div style="">
+                    <ul class="navbar-nav">
+                        <li class="btn custom-nav-item nav-item">
+                            <a class="" href="tel:{{ theme()->mobile() }}">
+                                <span class="rightBtn">
+                                    <i class="bx bxs-phone mr-1"></i>{{ theme()->mobile() }}
+                                </span>
+                            </a>
+                        </li>
+                        <li class="btn custom-nav-item nav-item">
+                            <a class="" href="{{ route('cart') }}" ><i class="bx bxs-cart icon-single"></i>
+                                <span class="badge badge-danger theme-bg" style="padding: 3px 6px 3px 6px">{{ theme()->totalCart() }}</span>
+                            </a>
+                        </li>
+                        <li class="btn custom-nav-item nav-item">
+                            <a class="" data-turbolinks="{{ auth()->check() ? 'false' : 'true'}}" href="{{ route(auth()->check() ? 'admin.home' : 'login') }}"><i class="bx bxs-user mr-1"></i></a>
+                        </li>
 
-                <ul class="navbar-nav">
-                    <li class="nav-item ml-md-3">
-                        <a class="" href="#">
-                            <span class="rightBtn">
-                                <i class="bx bxs-user-circle mr-1"></i>01777564786
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-link" href="cart"><i class="bx bxs-cart icon-single"></i> 
-                            <span class="badge badge-danger">4</span>
-                        </a>
-                    </li>
-                    <li class="nav-item ml-md-3">
-                        <a class="btn btn-primary" href="#"><i class="bx bxs-user-circle mr-1"></i></a>
-                    </li>
-                    
-                </ul>
+                    </ul>
+                </div>
             </div>
 
         </div>
@@ -406,28 +411,21 @@
         <div class="container">
             <div class="collapse navbar-collapse" id="navbar" style=" text-align: left!important">
                 <ul class="navbar-nav  flex-wrap" style="">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Orders</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Categories</a>
-                    </li>
+                    @php
+                        $headers = theme()->header();
+                    @endphp
 
-                    @for ($i = 1; $i <= 5; $i++)
+                    @foreach ($headers as $header)
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{{ $header->url }}"> {{ $header->title }}</a>
                         </li>
-                    @endfor
-                    
+                    @endforeach
+
                 </ul>
             </div>
         </div>
     </nav>
-
-    <div class="search-bar d-block d-md-none">
+    <div class="search-bar d-block d-md-none" style="padding: 10px; 5px 0px 5px;">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -447,7 +445,7 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-10 pl-0">
-                        <a class="btn btn-primary" href="#"><i class="bx bxs-user-circle mr-1"></i> Log In</a>
+                        <a class="btn btn-primary" href="tel:{{ theme()->mobile() }}"><i class="bx bxs-user-circle mr-1"></i> {{ theme()->mobile() }}</a>
                     </div>
 
                     <div class="col-2 text-left">
@@ -461,67 +459,32 @@
 
         <ul class="list-unstyled components links">
 
-            <li class="active">
-                <a href="#"><i class="bx bx-home mr-3"></i> Home</a>
+            <li class="">
+                <a href="{{ route('home') }}"><i class="bx bx-home mr-3"></i> Home</a>
             </li>
             <li>
-                <a href="#"><i class="bx bx-carousel mr-3"></i> Products</a>
-            </li>
-            <li>
-                <a href="#"><i class="bx bx-book-open mr-3"></i> Schoolss</a>
-            </li>
-            <li>
-                <a href="#"><i class="bx bx-crown mr-3"></i> Publishers</a>
-            </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i
-                        class="bx bx-help-circle mr-3"></i>
-                    Support</a>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bx bx-carousel mr-3"></i>
+                        Categories</a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#">Delivery Information</a>
-                    </li>
-                    <li>
-                        <a href="#">Privacy Policy</a>
-                    </li>
-                    <li>
-                        <a href="#">Terms & Conditions</a>
-                    </li>
+            
+                    @foreach ($headers as $key => $header)
+                    @php
+                        if($key == 0)continue;
+                    @endphp
+                        <li class="">
+                            <a  href="{{ $header->url }}"> {{ $header->title }}</a>
+                        </li>
+                    @endforeach
                 </ul>
             </li>
-            <li>
-                <a href="#"><i class="bx bx-phone mr-3"></i> Contact</a>
-            </li>
         </ul>
 
-        <h6 class="text-uppercase mb-1">Categories</h6>
-        <ul class="list-unstyled components mb-3">
-            <li>
-                <a href="#">Category 1</a>
-            </li>
-            <li>
-                <a href="#">Category 1</a>
-            </li>
-            <li>
-                <a href="#">Category 1</a>
-            </li>
-            <li>
-                <a href="#">Category 1</a>
-            </li>
-            <li>
-                <a href="#">Category 1</a>
-            </li>
-            <li>
-                <a href="#">Category 1</a>
-            </li>
-        </ul>
-
-        <ul class="social-icons">
+        {{-- <ul class="social-icons">
             <li><a href="#" target="_blank" title=""><i class="bx bxl-facebook-square"></i></a></li>
             <li><a href="#" target="_blank" title=""><i class="bx bxl-twitter"></i></a></li>
             <li><a href="#" target="_blank" title=""><i class="bx bxl-linkedin"></i></a></li>
             <li><a href="#" target="_blank" title=""><i class="bx bxl-instagram"></i></a></li>
-        </ul>
+        </ul> --}}
 
     </nav>
 </div>

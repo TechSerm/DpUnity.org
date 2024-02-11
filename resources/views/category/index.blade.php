@@ -1,6 +1,5 @@
 @extends('layouts.app')
-@section('content_header')
-@stop
+@section('title', 'Categories')
 @section('content')
     <style>
         .switch {

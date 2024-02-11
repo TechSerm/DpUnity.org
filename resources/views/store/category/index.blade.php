@@ -1,5 +1,5 @@
 @extends('store.layout.layout')
-
+@section('title', "Categories")
 @section('content')
 <div class="home-listt" style="">
     <div class="home-list-headerr" style=" color: #000000; margin-top: 10px">

@@ -19,7 +19,7 @@
 @endif
 
 @foreach ($products as $product)
-    @if ($product->category_name != '')
+    @if ($product->category_name != '' && !isset($is_title_disable))
         <div class="col-md-12">
             <div class="home-list-category-name">
                 <span class="titleSpan">

@@ -20,5 +20,20 @@ final class OrderStatusEnum extends Enum
   {
     return OrderStatusEnumData::getStatusData($this->key, 'color');
   }
-  
+
+  public function friendlyName()
+  {
+    return self::getFriendlyName($this->key);
+  }
+
+  public function badge()
+  {
+    $color = $this->color();
+    $name = $this->friendlyName();
+    return "
+    <span class='badge' style='background: $color; color: #ffffff'>
+      $name
+    </span>
+    ";
+  }
 }
