@@ -17,11 +17,11 @@ const Cart = {
         }
 
         $.post("/add_cart", data, function(response) {
-            Helper.url.load(response.url, function(){
-                document.body.scrollTop = document.documentElement.scrollTop = 0;
-                window.livewire.rescan();
-                Helper.toast.success(response.message);
-            }, "loadBody");
+            
+            Helper.toast.success(response.message);
+            Turbolinks.visit(response.url, {
+                action: "replace"
+            });
             
         });
     },

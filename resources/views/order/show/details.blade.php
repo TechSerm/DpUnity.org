@@ -104,7 +104,7 @@
                 <button data-toggle="modal" data-modal-size="md" data-modal-title="Update Customer Details"
                                 data-url="{{ route('orders.customer.update',request()->route()->parameters()) }}" type="button"
                                 class="btn btn-primary">Edit</button>
-                <a class="btn btn-info" href="{{ route('invoice.print', ['order' => $order]) }}">Print Invoice</a>
+                <a class="btn btn-info" target="_blank" href="{{ route('invoice.print', ['order' => $order]) }}">Print Invoice</a>
         </div>
 
     </div>

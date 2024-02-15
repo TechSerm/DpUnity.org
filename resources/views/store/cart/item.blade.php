@@ -28,7 +28,7 @@
     </td>
     <td class="">
         <div class="" style="font-size: 15px;font-weight: bold">
-            <a class="orderShowProductLink" href="{{ route('store.product.show', ['product' => $item->id]) }}">
+            <a class="orderShowProductLink" href="{{ route('store.product.show', ['product' => $item->slug]) }}">
                 {{ $item->name }}
             </a>
         </div>

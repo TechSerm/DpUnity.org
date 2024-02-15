@@ -21,13 +21,6 @@
     }
 </style>
 
-@php
-    $isVendor = auth()
-        ->user()
-        ->isVendor();
-    $displayNone = $isVendor ? 'display: none' : '';
-
-@endphp
 
 <div class="mb-3 row ">
     <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Product Name</label>

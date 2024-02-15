@@ -32,17 +32,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $this->setStartEndDate();
-        $vendors = User::where(['role_name' => 'vendor'])->get();
-
-        if(auth()->user()->isVendor()){
-            request()->order_type = 'wholesale_total';
-            request()->vendor = auth()->user()->id;
-        }
-        
-        return view('home', array_merge(DashboardFacade::getDashboardData(), [
-            'vendors' => $vendors
-        ]));
+        return view('home', DashboardFacade::getDashboardData());
     }
 
     private function setStartEndDate()

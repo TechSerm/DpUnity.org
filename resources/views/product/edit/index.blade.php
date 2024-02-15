@@ -1,6 +1,14 @@
 @extends('product.edit.layout')
 @section('product_edit_header')
+<div class="float-left" style="padding-top: 7px;">
     General
+</div>
+<div class="float-right">
+    <a href="{{ route('store.product.show', ['product' => $product->slug]) }}" target="_blank" class="btn btn-secondary"> Preview Store</a>
+</div>
+@stop
+@section('meadia_content')
+    @include("product.edit.media.index")
 @stop
 @section('product_edit_content')
 
@@ -25,8 +33,8 @@
         }
     </style>
 
-<form action="{{ route('product.edit.update_general_data', request()->route()->parameters()) }}" method="post" data-function="Product.update(form)">
-    @csrf
+
+    
     <fieldset>
         <legend>
             <div style="text-align: center">Product Info</div>
@@ -51,9 +59,14 @@
             </div>
         </div>
         <div class="mb-3 row ">
-            <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Brand</label>
+            <label for="brand" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Brand</label>
             <div class="col-sm-{{ $inputWidth }}">
-                {!! Form::text('brand', null, ['class' => 'form-control ', 'id' => 'name']) !!}
+                <select class="form-control" id="brand" name="brand">
+                    <option value="">Select Brand</option>
+                    @foreach ($brands as $brand)
+                        <option value="{{ $brand->uiud }}" {{$brand->id == $product->brand_id ? 'selected' : ''}}>{{ $brand->name }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
         <div class="mb-3 row ">
@@ -67,7 +80,7 @@
 
     <fieldset>
         <legend>
-            <div style="text-align: center">Price and Stock</div>
+            <div style="text-align: center">Price</div>
         </legend>
         <div class="form-group row mb-3">
             <label for="regular_price" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Regular
@@ -82,13 +95,6 @@
                 {!! Form::number('sale_price',  $product->sale_price , ['class' => 'form-control ', 'id' => 'name']) !!}
             </div>
         </div>
-
-        <div class="form-group row  mb-3">
-            <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Total Stock:</label>
-            <div class="col-sm-{{ $inputWidth }}">
-                {!! Form::text('stock', null, ['class' => 'form-control ', 'id' => 'name']) !!}
-            </div>
-        </div>
     </fieldset>
 
 
@@ -98,7 +104,7 @@
             <button type="submit" class="btn btn-success">Update Product</button>
         </div>
     </div>
-</form>
+
 
 @stop
 

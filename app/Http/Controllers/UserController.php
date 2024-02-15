@@ -22,19 +22,13 @@ class UserController extends Controller
     {
         $userQuery = User::where([]);
 
-        if (!request()->get('order')) {
-            $userQuery = $userQuery->orderBy('updated_at', 'desc');
-        }
-
         return DataTables::of($userQuery)
             ->filter(function ($query) use ($request) {
             })
             ->addColumn('action', function ($model) {
                 $content = "<button data-url='" . route('users.edit', ['user' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update User <b>#" . $model->id . "</b>'
                 data-modal-size='650' data-toggle='modal'><i class='fa fa-edit'></i></button>";
-                $content .= "<button data-url='" . route('users.history', ['user' => $model->id]) . "' class='btn btn-primary btn-action btn-sm mr-1' data-modal-title='Update User <b>#" . $model->id . "</b>'
-                data-modal-size='1200' data-toggle='modal'><i class='fa fa-history'></i></button>";
-                $content .= "<button data-url='" . route('users.destroy', ['user' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadProductDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";
+                $content .= "<button data-url='" . route('users.destroy', ['user' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-toggle='delete'><i class='fa fa-trash'></i></button>";
                 return $content;
             })
             ->make(true);
@@ -66,7 +60,7 @@ class UserController extends Controller
         $user->image_id = $imageId;
 
         $user->password = bcrypt($request->password);
-
+        $user->type = "admin";
 
         $user->fill($request->all())->save();
 
@@ -75,7 +69,7 @@ class UserController extends Controller
 
     private function getImageService($imgSrv)
     {
-        return $imgSrv->setHeight(312)->setWidth(600)->setText("");
+        return $imgSrv->setText("");
     }
 
     public function edit($id)
@@ -119,5 +113,12 @@ class UserController extends Controller
     public function show()
     {
         abort(404);
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->imageSrv()->delete();
+        $user->delete();
     }
 }

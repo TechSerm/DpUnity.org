@@ -2,6 +2,7 @@
 
 namespace App\Services\HomePageProduct;
 
+use App\Enums\OrderStatusEnum;
 use App\Models\Category;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\HomePageProduct;
@@ -25,13 +26,12 @@ class HomePageProductService
         $topProducts = $this->getPopularProducts();
 
         foreach ($topProducts as $key => $product) {
-            if ($key == 0) $product->category_name = "জনপ্রিয় পণ্য";
+            if ($key == 0) $product->category_name = "Popular Products";
             $products[] = $product;
             $productsId[] = $product->id;
         }
 
         $categories = Category::with(['products' => function ($query) {
-            $query->where('has_stock', true);
             $query->where('status', 'publish');
             $query->orderBy('serial', 'asc');
         }, 'products.imageTable'])->get();
@@ -45,9 +45,9 @@ class HomePageProductService
             }
         }
 
-        $allProducts = Product::whereNotIn('id', $productsId)->where(['has_stock' => true, 'status' => 'publish'])->with(['imageTable'])->get();
+        $allProducts = Product::whereNotIn('id', $productsId)->active()->with(['imageTable'])->get();
         foreach ($allProducts as $key => $product) {
-            if ($key == 0) $product->category_name = 'ক্যাটাগরি বিহীন';
+            if ($key == 0) $product->category_name = 'Without Category';
             $products[] = $product;
         }
 
@@ -60,7 +60,7 @@ class HomePageProductService
     {
         $mxSerialNo = HomePageProduct::max('serial_no') + 1;
 
-        $products = Product::with(['imageTable'])->where(['status' => 'publish', 'has_stock' => true])->leftJoin('home_page_products', function ($join) {
+        $products = Product::with(['imageTable'])->active()->leftJoin('home_page_products', function ($join) {
             $join->on('products.id', '=', 'home_page_products.product_id');
         })->leftJoin($this->getOrderSaleQueryTable(), function ($join) {
             $join->on('products.id', '=', 'sale_count_table.product_id');
@@ -75,6 +75,6 @@ class HomePageProductService
 
     public function getOrderSaleQueryTable()
     {
-        return DB::raw("(select order_items.product_id, sum(quantity) as total_sale from order_items JOIN orders on orders.id = order_items.order_id WHERE orders.is_delivery_complete=true GROUP by order_items.product_id order by total_sale desc) sale_count_table");
+        return DB::raw("(select order_items.product_id, sum(quantity) as total_sale from order_items JOIN orders on orders.id = order_items.order_id WHERE orders.status='". OrderStatusEnum::COMPLETED ."' GROUP by order_items.product_id order by total_sale desc) sale_count_table");
     }
 }

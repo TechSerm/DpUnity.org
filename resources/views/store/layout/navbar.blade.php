@@ -373,7 +373,7 @@
                     </a>
                 </li>
                 <li class="btn custom-nav-item nav-item">
-                    <a class="" href="{{ route('login') }}"><i class="bx bxs-user mr-1"></i></a>
+                    <a class="" data-turbolinks="{{ auth()->check() ? 'false' : 'true'}}" href="{{ route(auth()->check() ? 'admin.home' : 'login') }}"><i class="bx bxs-user mr-1"></i></a>
                 </li>
             </ul>
 

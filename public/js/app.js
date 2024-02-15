@@ -2545,7 +2545,7 @@ var Edit = {
     });
     CKEDITOR.config.height = 100;
     CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
-    CKEDITOR.config.extraPlugins = 'autogrow,justify,image2,filebrowser,div';
+    CKEDITOR.config.extraPlugins = 'autogrow,justify,filebrowser,div';
     CKEDITOR.config.codeSnippet_theme = 'pojoaque';
     CKEDITOR.config.fontSize_defaultLabel = '12px';
     CKEDITOR.config.disableObjectResizing = false;
@@ -2706,7 +2706,7 @@ var Helper = {
      */
     $('body').on('submit', 'form', function (e) {
       //if form method is get then its not call submit function
-      if ($(this).attr('method').toLowerCase() === "get") {
+      if ($(this).attr('method').toLowerCase() === "get" || !$(':submit', this).attr('type') === "submit") {
         return;
       }
       e.preventDefault();
@@ -3227,6 +3227,10 @@ var FormBuild = {
       loadModalWithResponse: false
     };
     formSetting = $.extend({}, defaultFormSetting, formSetting);
+    var callbackName = form.data('callback');
+    if (typeof window[callbackName] === 'function') {
+      window[callbackName].called = false;
+    }
     Helper.form(form).submit({
       success: {
         resetForm: formSetting.resetForm,
@@ -3240,6 +3244,15 @@ var FormBuild = {
             var _currModal = Helper.currentModal();
             if (_currModal != null) _currModal.html(response);
           }
+          if (form.data('callback')) {
+            if (typeof window[callbackName] === 'function') {
+              if (!window[callbackName].called) {
+                window[callbackName](response);
+                window[callbackName].called = true;
+              }
+            }
+          }
+          ;
         }
       }
     });
@@ -3261,7 +3274,7 @@ var FormBuild = {
             data: Helper.config.setToken(),
             type: 'delete',
             success: function success(response) {
-              Helper.url.load(response.url !== null ? response.url : null);
+              if (btn.data('page-load')) Helper.url.load(response.url !== null ? response.url : null);
               var msg = response.message !== null ? response.message : "Successfully delete this record.";
               Swal.fire({
                 title: 'Deleted!',

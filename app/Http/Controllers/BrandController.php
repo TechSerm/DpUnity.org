@@ -38,8 +38,6 @@ class BrandController extends Controller
             ->addColumn('action', function ($model) {
                 $content = "<button data-url='" . route('brands.edit', ['brand' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update Brand <b>#" . $model->id . "</b>'
                 data-modal-size='650' data-toggle='modal'><i class='fa fa-edit'></i></button>";
-                $content .= "<button data-url='" . route('brands.history', ['brand' => $model->id]) . "' class='btn btn-primary btn-action btn-sm mr-1' data-modal-title='Update Brand <b>#" . $model->id . "</b>'
-                data-modal-size='1200' data-toggle='modal'><i class='fa fa-history'></i></button>";
                 $content .= "<button data-url='" . route('brands.destroy', ['brand' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadProductDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";
                 return $content;
             })

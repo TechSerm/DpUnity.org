@@ -16,7 +16,7 @@
     @else
         <div class="row">
             <div class="col-md-5">
-                <div class="store-card mt-4">
+                <div class="store-card mt-1">
                     <div class="header" style="text-align: center; font-size: 18px;">
                         কাস্টমার ইনফরমেশন
                     </div>

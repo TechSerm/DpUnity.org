@@ -56,8 +56,7 @@ const Helper = {
          */
         $('body').on('submit', 'form', function (e) {
             //if form method is get then its not call submit function
-            if ($(this).attr('method').toLowerCase() === "get") {
-
+            if ($(this).attr('method').toLowerCase() === "get" || !$(':submit', this).attr('type') === "submit") {
                 return;
             }
             e.preventDefault();

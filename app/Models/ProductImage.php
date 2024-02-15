@@ -2,34 +2,41 @@
 
 namespace App\Models;
 
+use App\Services\Image\ImageService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Services\Image\ImageService;
 
-
-class Brand extends Model
+class ProductImage extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'name',
-        'image_id'
+        'uuid',
+        'product_id',
+        'image_id',
     ];
 
+    public function getRouteKeyName(){
+        return "uuid";
+    }
 
     public function getImageAttribute()
     {
         return $this->imageSrv()->src();
     }
 
-    public function imageTable()
+    public function getUrlAttribute()
     {
-        return $this->belongsTo(Image::class,'image_id');
+        return $this->image;
     }
 
     public function imageSrv()
     {
         return new ImageService($this->imageTable);
+    }
+
+    public function imageTable()
+    {
+        return $this->belongsTo(Image::class, 'image_id');
     }
 
 }

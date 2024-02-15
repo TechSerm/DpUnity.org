@@ -19,12 +19,14 @@ class Product extends Model
         'status',
         'has_stock',
         'serial',
+        'slug',
 
         'regular_price',
         'sale_price',
         'total_stock',
         'has_hot_deals',
         'description',
+        'brand_id',
     ];
 
     public function getShortNameAttribute()
@@ -49,14 +51,24 @@ class Product extends Model
         return $this->belongsTo(Image::class, 'image_id');
     }
 
-    public function scopeActive()
+    public function images()
     {
-        return $this->where(['status' => 'publish']);
+        return $this->hasMany(ProductImage::class, 'product_id')->with('imageTable');
     }
 
-    public function scopeHotDeals()
+    public function scopeActive($query)
     {
-        return $this->where(['has_hot_deals' => true]);
+        return $query->where(['status' => 'publish']);
+    }
+
+    public function scopeHotDeals($query)
+    {
+        return $query->where(['has_hot_deals' => true]);
+    }
+
+    public function isActive()
+    {
+        return $this->status == 'publish';
     }
 
     public function categories()

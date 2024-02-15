@@ -13,12 +13,6 @@
 
 @section('content')
 
-    @php
-        $startDate = \Carbon\Carbon::create(request()->start_date);
-        $endDate = \Carbon\Carbon::create(request()->end_date);
-    @endphp
-
-
     <div class="card">
         <div class="card-header"><b>Product Snapshot</b></div>
         <div class="card-body">
@@ -27,29 +21,12 @@
     </div>
 
     <div class="card">
-        <div class="card-header"><b>Order Report</b></div>
-        <div class="card-header">
-            <div class="row">
-                <div class="col-md-2">
-                    <input type="date" id="startDate" value="{{ $startDate->format('Y-m-d') }}"
-                        class="form-control mb-1">
-                </div>
-                <div class="col-md-2">
-                    <input type="date" id="endDate" value="{{ $endDate->format('Y-m-d') }}" class="form-control mb-1">
-                </div>
-                <div class="col-md-3">
-                    <button class="btn btn-primary" onclick="filterDashboardOrder()">Filter</button>
-                </div>
-            </div>
-        </div>
-        <div class="card-header">
-            <b>{{ bnConvert()->date($startDate->format('d M, Y')) }}</b> -
-            <b>{{ bnConvert()->date($endDate->format('d M, Y')) }}</b>
-        </div>
+        <div class="card-header"><b>Order Snapshot</b></div>
         <div class="card-body">
             @include('dashboard.order_area')
         </div>
     </div>
+    
     <script>
         function filterDashboardOrder() {
             startDate = $("#startDate").val();

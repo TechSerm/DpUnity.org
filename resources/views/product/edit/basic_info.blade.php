@@ -46,7 +46,7 @@
         <div class="mb-3 row ">
             <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Brand</label>
             <div class="col-sm-{{ $inputWidth }}">
-                {!! Form::text('name', null, ['class' => 'form-control ', 'id' => 'name']) !!}
+                {!! Form::select('brand_id', $brands, null, ['class' => 'form-control ', 'id' => 'name']) !!}
             </div>
         </div>
         <div class="mb-3 row ">

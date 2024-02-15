@@ -2528,7 +2528,7 @@ var Helper = {
      */
     $('body').on('submit', 'form', function (e) {
       //if form method is get then its not call submit function
-      if ($(this).attr('method').toLowerCase() === "get") {
+      if ($(this).attr('method').toLowerCase() === "get" || !$(':submit', this).attr('type') === "submit") {
         return;
       }
       e.preventDefault();
@@ -3049,6 +3049,10 @@ var FormBuild = {
       loadModalWithResponse: false
     };
     formSetting = $.extend({}, defaultFormSetting, formSetting);
+    var callbackName = form.data('callback');
+    if (typeof window[callbackName] === 'function') {
+      window[callbackName].called = false;
+    }
     Helper.form(form).submit({
       success: {
         resetForm: formSetting.resetForm,
@@ -3062,6 +3066,15 @@ var FormBuild = {
             var _currModal = Helper.currentModal();
             if (_currModal != null) _currModal.html(response);
           }
+          if (form.data('callback')) {
+            if (typeof window[callbackName] === 'function') {
+              if (!window[callbackName].called) {
+                window[callbackName](response);
+                window[callbackName].called = true;
+              }
+            }
+          }
+          ;
         }
       }
     });
@@ -3083,7 +3096,7 @@ var FormBuild = {
             data: Helper.config.setToken(),
             type: 'delete',
             success: function success(response) {
-              Helper.url.load(response.url !== null ? response.url : null);
+              if (btn.data('page-load')) Helper.url.load(response.url !== null ? response.url : null);
               var msg = response.message !== null ? response.message : "Successfully delete this record.";
               Swal.fire({
                 title: 'Deleted!',
@@ -3569,11 +3582,10 @@ var Cart = {
       data['quantity'] = quantity;
     }
     $.post("/add_cart", data, function (response) {
-      Helper.url.load(response.url, function () {
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
-        window.livewire.rescan();
-        Helper.toast.success(response.message);
-      }, "loadBody");
+      Helper.toast.success(response.message);
+      Turbolinks.visit(response.url, {
+        action: "replace"
+      });
     });
   },
   addCartOrder: function addCartOrder(btn) {

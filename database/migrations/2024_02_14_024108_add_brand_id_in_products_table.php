@@ -13,15 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sliders', function (Blueprint $table) {
-            $table->id();
-            $table->uuid('uuid')->nullable();
-            
-            $table->string('title')->nullable();
-            $table->integer('image_id')->nullable();
-            $table->integer('serial')->default(1);
-
-            $table->timestamps();
+        Schema::table('products', function (Blueprint $table) {
+            $table->foreignId('brand_id')->nullable()->references('id')->on('brands')->onDelete('set null');
         });
     }
 
@@ -32,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sliders');
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('brand_id');
+        });
     }
 };

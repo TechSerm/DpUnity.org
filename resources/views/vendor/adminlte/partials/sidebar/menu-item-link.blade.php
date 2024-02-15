@@ -11,8 +11,15 @@
         <p>
             {{ $item['text'] }}
 
+        @php
+            if (theme()->isOrderMenu($item['text'])) {
+                $item['label'] = theme()->getLableCount($item['text']);
+                $item['label_color'] = "danger";
+            }
+        @endphp
+
             @isset($item['label'])
-                <span class="badge badge-{{ $item['label_color'] ?? 'primary' }} right">
+                <span class="badge badge-{{ $item['label_color'] ?? 'primary' }} ml-2">
                     {{ $item['label'] }}
                 </span>
             @endisset

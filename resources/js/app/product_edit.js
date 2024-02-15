@@ -9,7 +9,7 @@ let Edit = {
         });
         CKEDITOR.config.height = 100;
         CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
-        CKEDITOR.config.extraPlugins = 'autogrow,justify,image2,filebrowser,div';
+        CKEDITOR.config.extraPlugins = 'autogrow,justify,filebrowser,div';
         CKEDITOR.config.codeSnippet_theme = 'pojoaque';
         CKEDITOR.config.fontSize_defaultLabel = '12px';
         CKEDITOR.config.disableObjectResizing = false;

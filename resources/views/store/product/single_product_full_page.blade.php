@@ -12,6 +12,8 @@
             font-weight: bold;
         }
 
+
+
         .productOrderBtn:hover {
             color: #ffffff;
             opacity: 0.9;
@@ -112,6 +114,28 @@
             padding: 4px 2px 6px 3px;
             border-radius: 5px;
         }
+
+        .fullSizeButton {
+            width: 400px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .fullSizeButton {
+                width: 100%;
+            }
+
+            .description-body img {
+                width: 100% !important;
+            }
+        }
+
+        .product_code {
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid #fff;
+            display: inline-block;
+            line-height: 0;
+        }
     </style>
 
     <div class="product-show">
@@ -125,15 +149,17 @@
                     </span>
                     <div class="text-center mb-2 mt-2">
                         <div class="thumbnail-container">
-                            @for ($i = 1; $i <= 3; $i++)
-                                <img id="" style="height: 70px; width: 70px"
-                                    src="{{ asset('assets/img/product_loader.gif') }}" data-src="{{ $product->image }}"
-                                    class="lazy thumbnail productLstImg product-img-isShowPage" alt="">
-                            @endfor
                             <img id="" style="height: 70px; width: 70px"
-                                src="https://deencommerce.com/wp-content/uploads/2021/12/Jeans-Pant-Size-Dimensions.jpg"
-                                data-src="https://deencommerce.com/wp-content/uploads/2021/12/Jeans-Pant-Size-Dimensions.jpg"
-                                class="lazy thumbnail productLstImg product-img-isShowPage" alt="">
+                                src="{{ asset('assets/img/product_loader.gif') }}" data-src="{{ $product->image }}"
+                                class="lazy thumbnail thumbnail-active productLstImg product-img-isShowPage" alt="">
+                            @php
+                                $images = $product->images;
+                            @endphp
+                            @foreach ($images as $image)
+                                <img id="" style="height: 70px; width: 70px"
+                                    src="{{ asset('assets/img/product_loader.gif') }}" data-src="{{ $image->url }}"
+                                    class="lazy thumbnail productLstImg product-img-isShowPage" alt="">
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -155,6 +181,8 @@
                                         {{ bnConvert()->number($product->regular_price) }}</del></span>
                             @endif
                         </div>
+                        <p class="mt-1 text-sm text-white inline-block px-3 py-1 product_code theme-bg"
+                            style=""><span>প্রোডাক্ট কোড: {{ $product->id }}</span></p>
 
                         {{-- <div class="row no-gutters mb-3">
                             <div class="col-sm-2">
@@ -246,10 +274,10 @@
                             onclick="Store.cart.addCartOrder(this)" class="btn btn-md productOrderBtn"
                             style="background: #16a085">কার্ট-এ যোগ
                             করুন</button><br />
-                        <a class="btn btn-md productOrderBtn mt-1" style="width: 400px;background: #2c3e50">ফোনে অর্ডার
+                        <a class="btn btn-md productOrderBtn mt-1 fullSizeButton" style="background: #2c3e50">ফোনে অর্ডার
                             করুনঃ {{ theme()->mobile() }}</a><br />
-                        <button class="btn btn-md productOrderBtn mt-1 mb-2"
-                            style="width: 400px; background: #2980b9">ম্যাসেজের মাধ্যমে অর্ডার করতে
+                        <button class="btn btn-md productOrderBtn fullSizeButton mt-1 mb-2"
+                            style="background: #2980b9">ম্যাসেজের মাধ্যমে অর্ডার করতে
                             ক্লিক করুন</button>
                         <table class="table table-bordered" style="max-width: 400px;">
                             <tr>
@@ -273,7 +301,7 @@
         <div class="header" style="padding: 10px">
             পন্যের বিবরণ
         </div>
-        <div class="body"  style="padding-left: 15px">
+        <div class="body description-body" style="width: 100%;padding-left: 15px">
             {!! $product->description !!}
         </div>
     </div>

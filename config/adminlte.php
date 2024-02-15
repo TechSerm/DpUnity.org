@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Company Name',
+    'title' => '',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -313,6 +313,31 @@ return [
             ],
         ],
         [
+            'text'        => 'Reports',
+            'icon'        => 'fa fa-file',
+            'label_color' => 'success',
+            'submenu' => [
+                [
+                    'text'        => 'Overview',
+                    'url'         => '/admin/reports/overview',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+                [
+                    'text'        => 'Products',
+                    'url'         => '/admin/reports/products',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+                [
+                    'text'        => 'Orders',
+                    'url'         => '/admin/reports/orders',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+            ],
+        ],
+        [
             'text'        => 'Attributes',
             'url'         => '/admin/attributes',
             'icon'        => 'fas fa-dice-d6',
@@ -340,23 +365,23 @@ return [
             ]
         ],
         [
-            'text'        => 'Admin',
+            'text'        => 'Users',
             'url'         => '/admin/users',
             'icon'        => 'fas fa-user',
             'label_color' => 'success',
             'can' => ''
         ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => 'admin/account_settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url'  => 'admin/account_settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
+        // ['header' => 'account_settings'],
+        // [
+        //     'text' => 'profile',
+        //     'url'  => 'admin/account_settings',
+        //     'icon' => 'fas fa-fw fa-user',
+        // ],
+        // [
+        //     'text' => 'change_password',
+        //     'url'  => 'admin/account_settings',
+        //     'icon' => 'fas fa-fw fa-lock',
+        // ],
     ],
 
     /*

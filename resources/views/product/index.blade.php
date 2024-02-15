@@ -93,7 +93,7 @@
                             text-align: center
                         }
                     </style>
-                    <table class="table table-bordered table-responsive-md" style="width: 100%" id="myTable">
+                    <table class="table table-bordered table-responsive-md" style="width: 100%" id="productTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -119,7 +119,7 @@
         }
 
 
-        var productDatatable = $('#myTable').DataTable({
+        var productDatatable = $('#productTable').DataTable({
             processing: true,
             serverSide: true,
             bStateSave: true,
@@ -173,16 +173,15 @@
             let form = Helper.form(e);
             form.submit({
                 success: {
-                    'callback': function() {
-                        $('#myTable').DataTable().ajax.reload();
-                        Helper.currentModal().close();
+                    callback: function(response) {
+                        window.location.href = response.url;
                     }
                 }
             });
         }
 
         function reloadProductDatatable() {
-            $('#myTable').DataTable().ajax.reload(null, false);
+            $('#productTable').DataTable().ajax.reload(null, false);
         }
 
         function updateProduct(e) {
@@ -190,29 +189,18 @@
             form.submit({
                 success: {
                     'callback': function() {
-                        $('#myTable').DataTable().ajax.reload(null, false);
+                        $('#productTable').DataTable().ajax.reload(null, false);
                     }
                 }
             });
         }
 
 
-        $(document).on('keyup', '#wholesale_price, #profit', function(e) {
-            calculateProductPrice();
-        });
-
         $(document).on('keyup', '#image', function(e) {
             $("#image-preview").attr("src", $("#image").val());
         });
 
-        function calculateProductPrice() {
-            let wholesalePrice = $("#wholesale_price").val();
-            let profit = $("#profit").val();
-            wholesalePrice = wholesalePrice ? parseInt(wholesalePrice) : 0;
-            profit = profit ? parseInt(profit) : 0;
-            let price = wholesalePrice + profit;
-            $("#price").val(price);
-        }
+        
 
         $('#categories').select2({
 

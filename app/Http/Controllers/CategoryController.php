@@ -150,5 +150,9 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->imageSrv()->delete();
         $category->delete();
+
+        return response()->json([
+            'message' => 'Category Successfully deleted'
+        ]);
     }
 }

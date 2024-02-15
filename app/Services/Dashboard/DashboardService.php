@@ -2,6 +2,7 @@
 
 namespace App\Services\Dashboard;
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
@@ -11,23 +12,17 @@ class DashboardService
 {
     public function getDashboardData()
     {
-        $orderCalculationService = new OrderCalculationService();
-        $orderProfitCalculationService = new ProfitCalculationService();
-        
         return [
             'totalProduct' => $this->getTotalProduct(),
             'totalActiveProduct' => $this->getTotalPublishProduct(),
             'totalCategory' => $this->getTotalCategory(),
-            'order' => $orderCalculationService->getOrderData(),
-            'profit' => $orderProfitCalculationService->getOrderProfitData(),
+            'totalBrand' => $this->getTotalBrand(),
+            'totalHotDealProducts' => $this->getTotalHotDealProducts(),
         ];
     }
 
     private function getProductQuery(){
         $query = Product::where([]);
-        if(auth()->user()->isVendor()){
-            $query->where(['vendor_id' => auth()->user()->id]);
-        }
         return $query;
     }
 
@@ -38,11 +33,21 @@ class DashboardService
 
     public function getTotalPublishProduct()
     {
-        return $this->getProductQuery()->where(['status' => 'publish'])->count();
+        return $this->getProductQuery()->active()->count();
     }
 
     public function getTotalCategory()
     {
         return Category::count();
+    }
+
+    public function getTotalBrand()
+    {
+        return Brand::count();
+    }
+
+    public function getTotalHotDealProducts()
+    {
+        return $this->getProductQuery()->hotDeals()->count();
     }
 }

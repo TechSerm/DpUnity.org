@@ -48,7 +48,7 @@
         
     </style>
     
-    <div class="store-card mt-4">
+    <div class="store-card mt-2">
         <div class="header" style="text-align: center; font-size: 18px;">
             অর্ডার ইনফরমেশন
         </div>

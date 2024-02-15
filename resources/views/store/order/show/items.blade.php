@@ -87,8 +87,15 @@
             </td>
             <td class="">
                 <div class="" style="font-size: 15px;font-weight: bold">
+                    @if ($item->product)
                     <a class="orderShowProductLink"
-                        href="{{ route('store.product.show', ['product' => $item->product_id]) }}">{{ $item->name }}</a>
+                        href="{{ route('store.product.show', ['product' => $item->product->slug]) }}">
+                    @endif
+
+                        {{ $item->name }}
+                    @if ($item->product)
+                    </a>
+                    @endif
                 </div>
                 <div style="font-size: 13px;font-weight: bold; color: #767575; margin-top: 0px">৳
                     {{ convertBanglaNumber($item->price) }} </div>

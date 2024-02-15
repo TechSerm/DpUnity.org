@@ -27,13 +27,6 @@
 </div>
 
 <div class="mb-3 row ">
-    <label for="role_name" class="col-sm-{{$labelWidth}} col-form-label form-control-label">Type</label>
-    <div class="col-sm-{{$inputWidth}}">
-        {!! Form::text('role_name', null , ['class' => "form-control ", 'id' => 'role_name']) !!}
-    </div>
-</div>
-
-<div class="mb-3 row ">
     <label for="street" class="col-sm-{{$labelWidth}} col-form-label form-control-label">Street</label>
     <div class="col-sm-{{$inputWidth}}">
         {!! Form::text('street', null , ['class' => "form-control ", 'id' => 'street']) !!}
@@ -56,14 +49,14 @@
 <div class="mb-3 row required">
     <label for="password" class="col-sm-{{$labelWidth}} col-form-label form-control-label">Password</label>
     <div class="col-sm-{{$inputWidth}}">
-        {!! Form::password('password', null , ['class' => "form-control ", 'id' => 'password']) !!}
+        <input type="password" class="form-control" name="password" id="password">
     </div>
 </div>
 
 <div class="mb-3 row required">
     <label for="password_confirmation" class="col-sm-{{$labelWidth}} col-form-label form-control-label">Confirm Password</label>
     <div class="col-sm-{{$inputWidth}}">
-        {!! Form::password('password_confirmation', null , ['class' => "form-control ", 'id' => 'password_confirmation']) !!}
+        <input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
     </div>
 </div>
 

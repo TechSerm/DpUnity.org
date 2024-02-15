@@ -230,14 +230,12 @@
     <div class="invoice">
         <div class="invoice-header">
             <div style="float: left;">
-                <img src="{{ asset('assets/img/bibisena_logo.png') }}" alt="">
+                <img src="{{ theme()->logo() }}" alt="">
             </div>
             <div style="float: right; width: 55%;  color: #555555; font-size: 14px">
-                আপনার নিত্য প্রয়োজনীয় যেকোন পন্য যেমনঃ চাল, ডাল, তেল, গ্যাস সিলিন্ডার, সবজি, ফল ইত্যাদি পন্য বাজার
-                মূল্যে ঘরে বসে ৩০-৪৫ মিনিটের মধ্যে পেতে অর্ডার করুন বিবিসেনা অনলাইন শপে।
                 <div style="margin-top: 5px;text-align: center; padding-top: 10px;">
-                    <span class="infoBox">Bibisena.Com</span> <span class="infoBox"><i class="fa fa-phone"></i>
-                        {{ env('STORE_MOBILE_NUMBER') }}</span>
+                    <span class="infoBox">{{ theme()->title() }}</span> <span class="infoBox"><i class="fa fa-phone"></i>
+                        {{ theme()->mobile() }}</span>
                 </div>
             </div>
 
@@ -305,14 +303,19 @@
         </div>
 
     </div>
-    <div
-        style="text-align: center; margin-top: 15px; font-size: 14px; border-top: 1px solid #eeeeee;padding: 15px 10px 0px 10px;color: #555555">
-        বিবিসেনায় অর্ডার করার জন্য আপনাকে ধন্যবাদ । অর্ডারটি নিয়ে আপনার কোনো অভিযোগ থাকলে আপনি আমাদের হটলাইন নাম্বারে
-        যোগাযোগ করুণ। আমাদের হটলাইন নাম্বার {{ env('STORE_MOBILE_NUMBER') }}। আপনার পণ্যগুলো যদি খারাপ, মেয়াদ শেষ,
-        ওজণে কম অথবা কোনো পণ্য যদি অনুপস্থিত থাকে আমাদের জানান। আমরা আপনার পণ্য গুলো আবার পরিবর্তন করে দিব।
-    </div>
-    @include('invoice.vendor_area')
 
 </body>
 
 </html>
+<script>
+    // Function to open the print dialog and close the tab after a delay
+    function printAndClose() {
+        window.print();
+        setTimeout(function() {
+            window.close();
+        }, 1000); // Close after 1 second (adjust the delay as needed)
+    }
+
+    // Call the function when the page loads
+    window.onload = printAndClose;
+</script>

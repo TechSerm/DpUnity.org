@@ -22,7 +22,7 @@ class StoreController extends Controller
     public function home()
     {
         $products = HomePageProductFacade::get();
-        $hotDealProducts = Product::active()->where(['has_hot_deals' => true])->with('imageTable')->take(12)->get();
+        $hotDealProducts = Product::active()->hotDeals()->with('imageTable')->take(12)->get();
 
         return view('store.home.index', [
             'products' => $products,
@@ -33,7 +33,7 @@ class StoreController extends Controller
 
     public function hotDeals()
     {
-        $hotDealProducts = Product::active()->where(['has_hot_deals' => true])->with('imageTable')->get();
+        $hotDealProducts = Product::active()->hotDeals()->with('imageTable')->get();
 
         return view('store.hot_deals.index', [
             'hotDealProducts' => $hotDealProducts
@@ -83,9 +83,10 @@ class StoreController extends Controller
     }
 
 
-    public function showProduct($productId)
+    public function showProduct($product)
     {
-        $product = Product::findOrFail($productId);
+        $product = Product::where(['slug' => $product])->firstOrFail();
+        if(!$product->isActive() && !auth()->check()) abort(404);
         return view('store.product.single_product_full_page', ['product' => $product]);
     }
 }

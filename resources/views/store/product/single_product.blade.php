@@ -25,18 +25,17 @@
         }
 
         .productName .title:hover {
-            color: {{theme()->color()}};
+            color: var(--theme-color);
         }
 
         .product-order-btn:hover{
-            font-size: 16px
-            ;
-            color: {{theme()->textColor()}};
+            font-size: 16px;
+            color: var(--theme-font-color);
             
         }
 
         .product:hover {
-            border: 1px solid {{theme()->color()}};
+            border: 1px solid var(--theme-color);
         }
     </style>
 
@@ -44,7 +43,7 @@
     <div class="" style="text-align: center">
         <div class="card product product-div">
 
-            <a class="productName" href="{{ route('store.product.show', $product) }}">
+            <a class="productName" href="{{ route('store.product.show', ['product' => $product->slug]) }}">
                 <span class="ct-image-container">
                     <img id="productImage" src="{{ asset('assets/img/product_loader.gif') }}"
                         data-src="{{ $product->image }}"
@@ -53,7 +52,7 @@
             </a>
 
             <div class="body">
-                <a class="productName" href="{{ route('store.product.show', $product) }}">
+                <a class="productName" href="{{ route('store.product.show', ['product' => $product->slug]) }}">
                     <div class="title"><span class="">{{ $product->short_name }}</span></div>
                 </a>
                 <div class="price-area">

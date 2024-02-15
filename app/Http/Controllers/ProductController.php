@@ -3,20 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Facades\Vendor\Vendor;
-use App\Helpers\Constant;
 use App\Http\Requests\ProductRequest;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\User;
-use App\Models\WooQueue;
-use App\Services\File\FileService;
 use App\Services\Image\ImageService;
 use Illuminate\Http\Request;
 use App\Services\Product\ProductService;
 use App\Services\Search\SearchService;
-use App\Services\WooCommerce\WooCommerceService;
-use Carbon\Carbon;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -110,12 +106,10 @@ class ProductController extends Controller
             })
             ->addColumn('action', function ($model) {
                 $content = '';
-                if (request()->user()->can('products.edit')) {
-                    $content = "<a href='" . route('products.edit', ['product' => $model->id]) . "' class='btn btn-primary btn-action btn-sm mr-1''><i class='fa fa-edit'></i></a>";
-                }
-                if (request()->user()->can('products.delete')) {
-                    $content .= "<button data-url='" . route('products.destroy', ['product' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadProductDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";
-                }
+                $content .= "<a target='_blank' href='" . route('store.product.show', ['product' => $model->slug]) . "' class='btn btn-info btn-action btn-sm mr-1' title='View Store'><i class='fa fa-eye'></i></a>";
+                $content .= "<a href='" . route('products.edit', ['product' => $model->id]) . "' class='btn btn-primary btn-action btn-sm mr-1''><i class='fa fa-edit'></i></a>";
+                $content .= "<button data-url='" . route('products.destroy', ['product' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadProductDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";
+                
                 return $content;
             })
             ->make(true);
@@ -156,13 +150,15 @@ class ProductController extends Controller
             'status' => $request->status ? 'publish' : 'private',
             'has_hot_deals' => $request->has_hot_deals ? true : false,
             'image_id' => $imageId,
+            'slug' => $this->createSlug($request->name)
         ]);
 
         $product->categories()->sync($request->categories);
 
         return response()->json([
-            'message' => 'Product Successfully Created'
-        ]);;
+            'message' => 'Product Successfully Created',
+            'url' => route('products.edit', $product)
+        ]);
     }
 
 
@@ -177,19 +173,16 @@ class ProductController extends Controller
     {
         $this->authorize('products.edit');
         $product = Product::findOrFail($id);
-        $vendors = collect(Vendor::getList())->pluck('name', 'id')->toArray();
-
-        return view('product.edit', [
-            'product' => $product,
-            'units' => Constant::UNITS,
-            'vendors' => $vendors
-        ]);
+        $brands = Brand::all();
+        return view('product.edit', compact('product', 'brands'));
     }
 
     public function update(ProductRequest $request, $id)
     {
         $this->authorize('products.edit');
+
         $product = Product::findOrFail($id);
+
         $imageId = $product->image_id;
 
         if ($request->hasFile('image')) {
@@ -197,11 +190,16 @@ class ProductController extends Controller
             $imageId = $image ? $image->id : $imageId;
         }
 
+        $brand = Brand::where(['uuid' => $request->brand_id])->first();
+
         $product->update([
             'name' => $request->name,
             'regular_price' => $request->regular_price,
             'sale_price' => $request->sale_price,
             'description' => $request->description,
+            'image_id' => $imageId,
+            'brand_id' => $brand ? $brand->id : null,
+            'slug' => $this->createSlug($request->name, $product->id)
         ]);
 
         $product->categories()->sync($request->categories);
@@ -209,6 +207,32 @@ class ProductController extends Controller
         return response()->json([
             'message' => 'Product Successfully Updated'
         ]);
+    }
+
+    public function createSlug($productName, $productId = null)
+    {
+        $slug = Str::slug($productName);
+
+        if ($slug == "") $slug = "product_";
+
+        $productQuery = Product::where([]);
+        if ($productId != null) $productQuery = Product::where('id', '!=', $productId);
+
+        $count = $productQuery->whereRaw("slug RLIKE '^{$slug}(-[0-9]+)?$'")->count();
+
+        while (1) {
+            $tmpSlug = $count ? "{$slug}-{$count}" : $slug;
+            if ($productQuery->where('slug', '=', $tmpSlug)->exists()) {
+                $count++;
+                continue;
+            }
+
+            break;
+        }
+        // if other slugs exist that are the same, append the count to the slug
+        $slug = $count ? "{$slug}-{$count}" : $slug;
+
+        return $slug;
     }
 
     public function updateHotDeals(Product $product, Request $request)
@@ -220,7 +244,7 @@ class ProductController extends Controller
 
 
         return response()->json([
-            'message' => 'Successfully '. ($isEnable ? 'enable' : 'disable') .' hot deals'
+            'message' => 'Successfully ' . ($isEnable ? 'enable' : 'disable') . ' hot deals'
         ]);
     }
 

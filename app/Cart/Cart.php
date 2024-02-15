@@ -15,7 +15,7 @@ class Cart
     {
         if (!empty(self::$cartProductItems)) return self::$cartProductItems;
         $cart = CartAction::get();
-        $products = Product::with('imageTable')->whereIn('id', array_keys($cart))->select(['id', 'name', 'image_id', 'sale_price',  'quantity'])->get();
+        $products = Product::with('imageTable')->whereIn('id', array_keys($cart))->select(['id', 'name', 'image_id', 'sale_price',  'quantity', 'slug'])->get();
 
         $response = [];
         foreach ($products as $product) {

@@ -25,20 +25,25 @@
             font-weight: bold;
         }
     </style>
+    <form action="{{ route('product.edit.update_general_data', request()->route()->parameters()) }}" method="post"
+        data-function="Product.update(form)">
     <div class="row" style="">
-        <div class="col-md-3" style="margin-top: 10px;">
-            @include('product.edit.sidebar')
-        </div>
-        <div class="col-md-9" style="margin-top: 10px;">
-            <div class="card">
-                <div class="card-header">
-                    @yield('product_edit_header')
-                </div>
-                <div class="card-body">
-                    @yield('product_edit_content')
+        
+            @csrf
+            <div class="col-md-8" style="margin-top: 10px;">
+                <div class="card">
+                    <div class="card-header">
+                        @yield('product_edit_header')
+                    </div>
+                    <div class="card-body">
+                        @yield('product_edit_content')
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="col-md-4" style="margin-top: 10px;">
+                @yield('meadia_content')
+            </div>
+        
     </div>
-
+</form>
 @stop

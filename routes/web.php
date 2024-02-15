@@ -27,6 +27,8 @@ use App\Http\Controllers\StoreCategoryController;
 use App\Http\Controllers\StoreOrderController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CkEditorController;
+use App\Http\Controllers\ProductImageController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SliderController;
 use Illuminate\Support\Facades\App;
 
@@ -90,7 +92,7 @@ Route::prefix('admin')->group(function () {
         
         Route::prefix('/products/{product}/edit')->group(function () {
             Route::post('/update_general_data', [ProductController::class, 'update'])->name('product.edit.update_general_data');
-            
+            Route::resource('product_images', ProductImageController::class);
         });
 
         Route::prefix('/products/{product}/edit/stock_and_price')->group(function () {
@@ -125,7 +127,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/orders/{order}/change_order_status/{status}', [OrderController::class, 'changeOrderStatus'])->name('orders.status.change');
         Route::get('/orders/{order}/update_customer_details', [OrderController::class, 'showUpdateCustomer'])->name('orders.customer.update');
         Route::put('/orders/{order}/update_customer_details', [OrderController::class, 'updateCustomer']);
-        Route::prefix('orders/{order}')->middleware(['order_show_page_check'])->group(function () {
+        Route::prefix('orders/{order}')->group(function () {
             Route::put('/update_vendor', [OrderController::class, 'updateVendor']);
             Route::get('/product_select2_data', [OrderItemController::class, 'getProductSelect2Data'])->name('orders.order_items.product_select2_data');
             Route::get('/product_create_form', [OrderItemController::class, 'productCreateForm'])->name('orders.order_items.create_form');
@@ -138,6 +140,14 @@ Route::prefix('admin')->group(function () {
         Route::get('/orders/{order}/print', [OrderController::class, 'printOrder'])->name('orders.print');
         Route::resource('orders', OrderController::class);
 
+        Route::prefix('reports')->group(function () {
+            Route::get('overview', [ReportController::class, 'overview'])->name('reports.overview');
+            Route::get('products', [ReportController::class, 'product'])->name('reports.product');
+            Route::get('orders', [ReportController::class, 'orders'])->name('reports.orders');
+        });
+
+
+        /*
         Route::get('/product_price', [ProductController::class, 'productPrice'])->name('product_price.index');
         Route::post('/product_price', [ProductController::class, 'productPriceUpdate']);
 
@@ -152,6 +162,7 @@ Route::prefix('admin')->group(function () {
         Route::resource('push_notifications', PushNotificationController::class);
         Route::post('/push_notifications/test', [PushNotificationController::class, 'sendTestPushNotification'])->name('push_notifications.test');
 
+        */
         Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('admin.settings');
         
         Route::get('users/data', [UserController::class, 'getData'])->name('users.data');

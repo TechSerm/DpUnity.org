@@ -1,7 +1,7 @@
 const { Helper } = require("../helper");
 
 const FormBuild = {
-    submit: function(form) {
+    submit: function (form) {
         if (form.data('function') != null) {
             eval(form.data('function'));
             return;
@@ -24,11 +24,17 @@ const FormBuild = {
         };
 
         formSetting = $.extend({}, defaultFormSetting, formSetting);
+        
+        let callbackName = form.data('callback');
+                        
+        if (typeof window[callbackName] === 'function') {
+            window[callbackName].called = false;
+        }
 
         Helper.form(form).submit({
             success: {
                 resetForm: formSetting.resetForm,
-                callback: function(response) {
+                callback: function (response) {
                     if (formSetting.modalClose == true) {
                         let currModal = Helper.currentModal();
                         if (currModal != null) currModal.close();
@@ -41,11 +47,22 @@ const FormBuild = {
                         let currModal = Helper.currentModal();
                         if (currModal != null) currModal.html(response);
                     }
+
+                    if (form.data('callback')) {
+
+                        if (typeof window[callbackName] === 'function') {
+                            if (!window[callbackName].called) {
+                                window[callbackName](response);
+                                window[callbackName].called = true;
+                            } 
+                        }
+                    };
+
                 }
             }
         });
     },
-    delete: function(btn) {
+    delete: function (btn) {
         Swal.fire({
             title: 'Are you sure?',
             text: "You want be delete this record!",
@@ -55,14 +72,14 @@ const FormBuild = {
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'Yes, delete it!',
             showLoaderOnConfirm: true,
-            preConfirm: function() {
-                return new Promise(function(resolve) {
+            preConfirm: function () {
+                return new Promise(function (resolve) {
                     $.ajax({
                         url: btn.data('url'),
                         data: Helper.config.setToken(),
                         type: 'delete',
                         success: (response) => {
-                            Helper.url.load(response.url !== null ? response.url : null);
+                            if(btn.data('page-load'))Helper.url.load(response.url !== null ? response.url : null);
                             let msg = response.message !== null ? response.message : "Successfully delete this record.";
                             Swal.fire({
                                 title: 'Deleted!',
@@ -71,7 +88,7 @@ const FormBuild = {
                             });
                             if (btn.data('callback')) eval(btn.data('callback'));
                         }
-                    }).fail(function(error) {
+                    }).fail(function (error) {
                         Swal.fire({
                             title: "Oops!!!",
                             text: error.status + " - " + error.statusText,
@@ -83,7 +100,7 @@ const FormBuild = {
             allowOutsideClick: () => !Swal.isLoading()
         });
     },
-    confirm: function(btn) {
+    confirm: function (btn) {
         let title = btn.data('title') ? btn.data('title') : "Are you sure?";
         let subTitle = btn.data('subtitle') ? btn.data('subtitle') : "You want be confirm this request!";
         let btnText = btn.data('button-text') ? btn.data('button-text') : "Yes, confirm it!";
@@ -99,8 +116,8 @@ const FormBuild = {
             confirmButtonText: btnText,
             cancelButtonText: cancelBtnText,
             showLoaderOnConfirm: true,
-            preConfirm: function() {
-                return new Promise(function(resolve) {
+            preConfirm: function () {
+                return new Promise(function (resolve) {
                     $.ajax({
                         url: btn.data('url'),
                         data: Helper.config.setToken(),
@@ -113,7 +130,7 @@ const FormBuild = {
                                 icon: 'success',
                             });
                         }
-                    }).fail(function(error) {
+                    }).fail(function (error) {
                         let errorMessage = error.responseJSON && error.responseJSON.message ? error.responseJSON.message : error.status + " - " + error.statusText;
                         Swal.fire({
                             title: "Oops!!!",

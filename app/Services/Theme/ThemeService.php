@@ -3,9 +3,12 @@
 namespace App\Services\Theme;
 
 use App\Cart\Cart;
+use App\Enums\OrderStatusEnum;
 use App\Enums\SettingEnum;
+use App\Models\Order;
 use App\Models\Slider;
 use App\Services\Setting\SettingService;
+use Illuminate\Support\Facades\DB;
 
 class ThemeService
 {
@@ -21,6 +24,7 @@ class ThemeService
     private $logo;
     private $headline;
     private $favicon;
+    private $labelCount;
 
     public function __construct()
     {
@@ -117,5 +121,25 @@ class ThemeService
         }
 
         return $sliderImage;
+    }
+
+    public function isOrderMenu($menuText)
+    {
+        $menuList = OrderStatusEnum::asSelectArray();
+        array_push($menuList, "All Orders");
+        return in_array($menuText, $menuList);
+    }
+
+    public function getLableCount($menuText)
+    {
+        if (empty($this->labelCount)) {
+
+            $this->labelCount = Order::select('status', DB::raw('count(*) as count'))
+                ->groupBy('status')
+                ->pluck('count', 'status')->toArray();
+            $this->labelCount['all orders'] = array_sum($this->labelCount);
+        }
+
+        return $this->labelCount[strtolower($menuText)] ?? 0;
     }
 }
