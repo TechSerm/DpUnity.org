@@ -16,6 +16,7 @@ class SettingsController extends Controller
             'generalSettingOptions' => Setting::general()->get(),
             'logoSettingOptions' => Setting::logo()->get(),
             'socialSettingOptions' => Setting::socialLink()->get(),
+            'delivaryFeeSettingOptions' => Setting::deliveryFee()->get(),
         ]);
     }
 
@@ -40,6 +41,8 @@ class SettingsController extends Controller
 
         $this->createFile(SettingEnum::LOGO, $request, $settingOptions);
         $this->createFile(SettingEnum::FAVICON, $request, $settingOptions);
+
+        cacheService()->settingOptions()->update();
     }
 
     private function createFile($key, $request, $settingOptions) {

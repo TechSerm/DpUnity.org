@@ -1,4 +1,5 @@
 @extends('product.edit.layout')
+@section('title', $product->name . " - Edit")
 @section('product_edit_header')
 <div class="float-left" style="padding-top: 7px;">
     General
@@ -72,7 +73,9 @@
         <div class="mb-3 row ">
             <label for="name" class="col-sm-{{ $labelWidth }} col-form-label form-control-label">Description</label>
             <div class="col-sm-{{ $inputWidth }}">
-                <textarea id="descriptionEditor" name="descriptionEditor" placeholder="Contest Description"></textarea>
+                <textarea id="descriptionEditor" name="descriptionEditor" placeholder="Contest Description">
+                    {!! $product->description !!}
+                </textarea>
             </div>
         </div>
     </fieldset>
@@ -114,7 +117,7 @@
     $ckEditorUrl = route('ckeditor.upload', ['_token' => csrf_token() ]);
 @endphp
 <script type="text/javascript">
-    Product.edit.setEditor('{{ base64_encode($product->description) }}', '{{$ckEditorUrl}}');
+    Product.edit.setEditor('', '{{$ckEditorUrl}}');
 
     $('#categories').select2({
         placeholder: 'Select an Categories',

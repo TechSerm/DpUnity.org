@@ -40,6 +40,12 @@ class Setting extends Model
         return $query->whereIn("key", $groupSetting["logo"]);
     }
 
+    public function scopeDeliveryFee($query)
+    {
+        $groupSetting = $this->groupSetting();
+        return $query->whereIn("key", $groupSetting["delivery_fee"]);
+    }
+
     public function scopeSocialLink($query)
     {
         $groupSetting = $this->groupSetting();
@@ -60,7 +66,20 @@ class Setting extends Model
             return asset('assets/img/default_logo.png');
         }
 
+        if (SettingEnum::THEME_COLOR == $this->key) {
+            if (!$this->isValidHexColor($value))
+                return "#000000";
+        }
+
+        if ((SettingEnum::INSIDE_DHAKA == $this->key) && $value == "") return 60;
+        if ((SettingEnum::OUTSIDE_DHAKA == $this->key) && $value == "") return 130;
+
         return $value;
+    }
+
+    private function isValidHexColor($colorCode)
+    {
+        return preg_match('/^#[a-fA-F0-9]{6}$/', $colorCode) === 1;
     }
 
     public function getImageAttribute()
@@ -98,6 +117,9 @@ class Setting extends Model
             ],
             "logo" => [
                 SettingEnum::LOGO, SettingEnum::FAVICON,
+            ],
+            "delivery_fee" => [
+                SettingEnum::INSIDE_DHAKA, SettingEnum::OUTSIDE_DHAKA
             ],
             "social_link" => [
                 SettingEnum::FACEBOOK, SettingEnum::TWITTER, SettingEnum::INSTAGRAM,

@@ -36,7 +36,7 @@ let Edit = {
             items: ['CoderojPreview', 'Maximize']
         }];
         this.descriptionEditor.config.toolbar = toolbarConstraintsEditor;
-        CKEDITOR.instances.descriptionEditor.setData(atob(description));
+       // CKEDITOR.instances.descriptionEditor.setData(description);
     },
 
     getEditorData: function() {

@@ -13,12 +13,10 @@ class HomePageProductService
 {
     public function get()
     {
-       // return 
-        return $this->getProductWithQuery();
-        //;
+        return cacheService()->homePageProduct()->get()->forPage(request()->page, 12);
     }
 
-    public function getProductWithQuery()
+    public function getProductCollection()
     {
         $products = [];
         $productsId = [];
@@ -53,7 +51,7 @@ class HomePageProductService
 
         $products = collect($products);
 
-        return $products->forPage(request()->page, 12);
+        return $products;
     }
 
     public function getPopularProducts()

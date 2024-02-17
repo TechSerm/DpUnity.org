@@ -274,7 +274,7 @@
                             onclick="Store.cart.addCartOrder(this)" class="btn btn-md productOrderBtn"
                             style="background: #16a085">কার্ট-এ যোগ
                             করুন</button><br />
-                        <a class="btn btn-md productOrderBtn mt-1 fullSizeButton" style="background: #2c3e50">ফোনে অর্ডার
+                        <a href="tel:{{ theme()->mobile() }}" class="btn btn-md productOrderBtn mt-1 fullSizeButton" style="background: #2c3e50">ফোনে অর্ডার
                             করুনঃ {{ theme()->mobile() }}</a><br />
                         <button class="btn btn-md productOrderBtn fullSizeButton mt-1 mb-2"
                             style="background: #2980b9">ম্যাসেজের মাধ্যমে অর্ডার করতে

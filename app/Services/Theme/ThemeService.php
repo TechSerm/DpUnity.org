@@ -64,7 +64,7 @@ class ThemeService
 
     public function color()
     {
-        return $this->color == "" ? "#000000" : $this->color;
+        return $this->color;
     }
 
     public function textColor()

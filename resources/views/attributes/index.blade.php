@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Attributes')
 @section('content')
 <style>
     .attributeTable li {

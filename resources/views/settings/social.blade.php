@@ -4,7 +4,7 @@
         <label class="col-sm-2 col-form-label col-form-label-sm"><b>{{ $settingOption->title }}:
             </b></label>
         <div class="col-sm-8">
-            <input type="text" class="form-control form-control-sm" placeholder="Facebook" name="{{ $settingOption->key }}"
+            <input type="text" class="form-control form-control-sm" placeholder="Enter {{ $settingOption->title }}" name="{{ $settingOption->key }}"
                 value="{{ $settingOption->value }}">
         </div>
     </div>

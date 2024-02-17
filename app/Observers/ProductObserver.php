@@ -14,7 +14,7 @@ class ProductObserver
      */
     public function created(Product $product)
     {
-        //
+        cacheService()->homePageProduct()->update();
     }
 
     /**
@@ -25,7 +25,7 @@ class ProductObserver
      */
     public function updated(Product $product)
     {
-        //
+        cacheService()->homePageProduct()->update();
     }
 
     public function deleting(Product $product)
@@ -41,7 +41,7 @@ class ProductObserver
      */
     public function deleted(Product $product)
     {
-       
+        cacheService()->homePageProduct()->update();
     }
 
     /**

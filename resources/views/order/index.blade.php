@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Order List')
 @section('content_header')
     <h1>Orders List</h1>
 @stop

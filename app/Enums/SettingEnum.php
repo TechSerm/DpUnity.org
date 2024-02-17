@@ -26,4 +26,6 @@ final class SettingEnum extends Enum
     const INSTAGRAM = "INSTAGRAM";
     const LINKEDIN = "LINKEDIN";
     const YOUTUBE = "YOUTUBE";
+    const INSIDE_DHAKA = "INSIDE_DHAKA";
+    const OUTSIDE_DHAKA = "OUTSIDE_DHAKA";
 }

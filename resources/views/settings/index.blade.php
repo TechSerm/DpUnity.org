@@ -1,9 +1,7 @@
 @extends('layouts.app')
-
-
-
+@section('title', 'Settings')
 @section('content')
-   
+
     <div class="card mt-2">
         <div class="card-header">
             Settings
@@ -20,6 +18,8 @@
                             <a class="nav-link" id="LogoFavicon-tab" data-toggle="pill" href="#LogoFavicon" role="tab"
                                 aria-controls="LogoFavicon" aria-selected="false">Logo &
                                 Favicons</a>
+                            <a class="nav-link" id="LogoFavicon-tab" data-toggle="pill" href="#DeliveryFee" role="tab"
+                                aria-controls="LogoFavicon" aria-selected="false">Delivery Fee</a>
                             <a class="nav-link" id="SocialLinks-tab" data-toggle="pill" href="#SocialLinks" role="tab"
                                 aria-controls="SocialLinks" aria-selected="false">Social
                                 Links</a>
@@ -30,7 +30,7 @@
                         <div class="tab-content" id="tabContent">
                             @include('settings.webinfo')
                             @include('settings.logo')
-                            @include('settings.shop')
+                            @include('settings.delivery_fee')
                             @include('settings.seo')
                             @include('settings.social')
                         </div>

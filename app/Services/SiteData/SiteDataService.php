@@ -2,6 +2,9 @@
 
 namespace App\Services\SiteData;
 
+use App\Enums\SettingEnum;
+use App\Services\Setting\SettingService;
+
 class SiteDataService
 {
     private static $instance;
@@ -17,11 +20,13 @@ class SiteDataService
 
     public static function insideDhakaDeliveryFee()
     {
-        return 80;
+        $settingService = new SettingService();
+        return $settingService->getData(SettingEnum::INSIDE_DHAKA);
     }
 
     public static function outsideDhakaDeliveryFee()
     {
-        return 130;
+        $settingService = new SettingService();
+        return $settingService->getData(SettingEnum::OUTSIDE_DHAKA);
     }
 }

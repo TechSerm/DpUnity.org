@@ -47,7 +47,7 @@
                 <span class="ct-image-container">
                     <img id="productImage" src="{{ asset('assets/img/product_loader.gif') }}"
                         data-src="{{ $product->image }}"
-                        class="lazy {{ $isShowPage ? 'product-img-isShowPage' : 'product-img' }}" alt="">
+                        class="lazy product-img" alt="">
                 </span>
             </a>
 
