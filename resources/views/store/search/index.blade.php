@@ -1,4 +1,5 @@
 @extends('store.layout.layout')
+@section('title', "Search Product")
 @section('content')
     <div class="row no-gutters" style="margin: 15px -15px 0px -5px;" id="searchResultProductList">
         @include('store.product.single_product_page', ['products' => $products])

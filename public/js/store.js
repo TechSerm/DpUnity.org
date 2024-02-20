@@ -3809,6 +3809,7 @@ var Search = {
   },
   setSearchQuery: function setSearchQuery() {
     this.searchQuery = $("#search").val();
+    console.log(this.searchQuery);
   },
   goSearchPage: function goSearchPage() {
     this.pageNo = 2;

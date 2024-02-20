@@ -35,6 +35,7 @@ const Search = {
 
     setSearchQuery: function() {
         this.searchQuery = $("#search").val();
+        console.log(this.searchQuery)
     },
 
     goSearchPage: function() {

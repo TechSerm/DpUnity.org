@@ -65,7 +65,7 @@
                     @endphp
 
                     <tr>
-                        <td style="width: 30px">{{ bnConvert()->number($key + 1) }}</td>
+                        <td style="width: 30px">{{ $key + 1 }}</td>
                         <td style="width: 80px">
                             <img src="{{ $item->product ? $item->product->image : asset('images/default.png') }}"
                                 height="70px" width="70px" alt="">
@@ -94,11 +94,11 @@
                                 </div>
                             @endcan
                         </td>
-                        <td style="width: 100px"><b>{{ bnConvert()->number($price) }}</b> ৳</td>
+                        <td style="width: 100px"><b>{{ $price }}</b> ৳</td>
                         <td style="width: 100px">
-                            <span class="mb-1"><b> {{ bnConvert()->floatNumber($item->quantity) }} </b></span>
+                            <span class="mb-1"><b> {{ (int)$item->quantity }} </b></span>
                         </td>
-                        <td style="width: 100px"><b>{{ bnConvert()->number($total) }}</b> ৳</td>
+                        <td style="width: 100px"><b>{{ $total }}</b> ৳</td>
                     </tr>
                 @endforeach
                 @if (!auth()->user()->isVendor())
@@ -106,15 +106,14 @@
                         <td colspan="3" style="text-align: right; background-color: #f5f5f5">Sub Total:</td>
                         <td colspan="{{ auth()->user()->can('order.items.profit_column')? 4: 3 }}"
                             style="background: #eeeeee">
-                            <b>{{ bnConvert()->number($order->subtotal) }}</b>
-                            টাকা
+                            <b>{{ $order->subtotal }}</b> ৳
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3" style="text-align: right; background-color: #f5f5f5">Delivery Fee:</td>
                         <td colspan="{{ auth()->user()->can('order.items.profit_column')? 4: 3 }}"
                             style="background: #eeeeee">
-                            <b>{{ bnConvert()->number($order->delivery_fee) }}</b> টাকা
+                            <b>{{ $order->delivery_fee }}</b> ৳
                         </td>
                     </tr>
                 @endif
@@ -122,7 +121,7 @@
                     <td colspan="3" style="text-align: right; background-color: #f5f5f5">Total:</td>
                     <td colspan="{{ auth()->user()->can('order.items.profit_column')? 4: 3 }}"
                         style="background: #eeeeee">
-                        <b>{{ bnConvert()->number($orderTotal) }}</b> টাকা
+                        <b>{{ $orderTotal }}</b> ৳
                     </td>
                 </tr>
 
@@ -186,24 +185,6 @@
                                 ->parameters(),
                             ['order_item' => $item->uuid],
                         );
-                        $price = auth()
-                            ->user()
-                            ->isVendor()
-                            ? $item->wholesale_price
-                            : $item->price;
-                        $total = auth()
-                            ->user()
-                            ->isVendor()
-                            ? $item->wholesale_price_total
-                            : $item->total;
-                        if (
-                            auth()
-                                ->user()
-                                ->isVendor() &&
-                            $item->vendor_id != auth()->user()->id
-                        ) {
-                            continue;
-                        }
                     @endphp
                     <tr class="cartTr">
                         <style>
@@ -236,23 +217,14 @@
                             </div>
                             <div style="font-size: 11px;font-weight: bold; color: #767575">
                                 ৳
-                                {{ convertBanglaNumber($price) }}
-                                / {{ bnConvert()->number($item->unit_quantity, false) }}
-                                {{ bnConvert()->unit($item->unit) }} <br />
-                                <span style="color: #767575; border-top: 1px solid #aaaaaa">
-                                    {{ bnConvert()->number($item->unit_quantity, false) }}
-                                    {{ bnConvert()->unit($item->unit) }} ×
-                                    {{ bnConvert()->floatNumber($item->quantity) }} =
-                                    {{ bnConvert()->number($item->unit_quantity * $item->quantity, false) }}
-                                    {{ bnConvert()->unit($item->unit) }}
-                                </span>
+                                {{ $price }}
 
                             </div>
                             <div style="margin-top: 3px; font-size: 12px;">
                                 <span
                                     style="background: #f5f5f5; border: 1px solid #aaaaaa; padding: 2px 0px 2px 0px; border-radius: 5px; ">
-                                    <span style="margin-left: 2px; margin-right: 5px;">পরিমান:
-                                        <b>{{ bnConvert()->floatNumber($item->quantity) }}</b></span>
+                                    <span style="margin-left: 2px; margin-right: 5px;">Quantity:
+                                        <b>{{ (int)$item->quantity }}</b></span>
                                 </span>
                                 @can('order.items.edit')
                                     @if ($order->isEditable())
@@ -270,7 +242,7 @@
                         </td>
                         <td class="align-middle" style="text-align: center; width: 20px;">
                             <span class="badge badge-info" style="min-width: 40px">৳
-                                {{ bnConvert()->number($total) }}</span>
+                                {{ $total }}</span>
                         </td>
                     </tr>
                 @endforeach
@@ -280,18 +252,18 @@
                 <table class="orderTotalTable">
                     @if (!auth()->user()->isVendor())
                         <tr class="orderSummeryTableTotalTr">
-                            <td colspan="2"><span>পণ্যের মূল্য:</span>
+                            <td colspan="2"><span>SubTotal:</span>
                             </td>
-                            <td>৳ <b>{{ bnConvert()->number($order->subtotal) }}</b></td>
+                            <td>৳ <b>{{ $order->subtotal }}</b></td>
                         </tr>
                         <tr class="orderSummeryTableTotalTr">
-                            <td colspan="2">ডেলিভারি ফী:</td>
-                            <td>৳ <b>{{ bnConvert()->number($order->delivery_fee) }}</b></td>
+                            <td colspan="2">Delivery Fee:</td>
+                            <td>৳ <b>{{ $order->delivery_fee }}</b></td>
                         </tr>
                     @endif
                     <tr class="orderSummeryTableTotalTr">
-                        <td colspan="2"><span class="badge" style="font-size: 14px">সর্বমোট:</span></td>
-                        <td>৳ <b>{{ bnConvert()->number($orderTotal) }}</b></td>
+                        <td colspan="2"><span class="badge" style="font-size: 14px">Total:</span></td>
+                        <td>৳ <b>{{ $orderTotal }}</b></td>
                     </tr>
                 </table>
             </div>

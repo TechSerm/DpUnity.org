@@ -10,7 +10,7 @@ class HeaderService
     {
         $headers = [];
 
-        $categories = Category::where([])->get();
+        $categories = Category::active()->where([])->get();
 
         array_push($headers, (object)[
             'title' => 'Home',

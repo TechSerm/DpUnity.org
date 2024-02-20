@@ -4,7 +4,7 @@ const Auth = {
     
     login: function(e) {
         let form = Helper.form(e);
-
+        
         form.submit({
             success: {
                 resetForm: false,

@@ -26,7 +26,7 @@ class StoreController extends Controller
 
         return view('store.home.index', [
             'products' => $products,
-            'categories' => Category::with('products')->get(),
+            'categories' => Category::active()->with('products')->get(),
             'hotDealProducts' => $hotDealProducts
         ]);
     }

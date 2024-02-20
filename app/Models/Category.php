@@ -11,7 +11,13 @@ class Category extends Model
     protected $fillable = [
         'name',
         'image_id',
+        'is_active'
     ];
+
+    public function scopeActive($query)
+    {
+        return $query->where(['is_active' => true]);
+    }
 
     public function getImageAttribute()
     {

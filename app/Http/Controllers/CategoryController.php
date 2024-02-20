@@ -26,7 +26,7 @@ class CategoryController extends Controller
         $productQuery = Category::where([]);
 
         if (!request()->get('order')) {
-            $productQuery = $productQuery->orderBy('updated_at', 'desc');
+            $productQuery = $productQuery->orderBy('id', 'desc');
         }
 
         return Datatables::of($productQuery)
@@ -36,11 +36,13 @@ class CategoryController extends Controller
                 return "<img src='" . $model->image . "' height='50px' width='50px' class='img-fluid img-thumbnail'>";
             })
             ->addColumn('status', function ($model) {
+                $checked = $model->is_active ? "checked" : "";
+                $url = route('categories.edit.update_status', $model);
                 return "
-                <label class='switch'>
-                <input type='checkbox' checked>
-                <span class='slider round'></span>
-                </label>
+                    <label class='switch'>
+                    <input type='checkbox' data-url='$url' data-type='status' onchange='Product.updateToggle(this)' $checked>
+                    <span class='slider round'></span>
+                    </label>
                 ";
             })
             ->addColumn('action', function ($model) {
@@ -136,6 +138,17 @@ class CategoryController extends Controller
         return $imgSrv->setHeight(600)->setWidth(600)->setText("");
     }
 
+    public function updateStatus(Category $category, Request $request)
+    {
+        $isActive = $request->status_enable == "true";
+        $category->update([
+            'is_active' =>  $isActive ? true : false
+        ]);
+
+        return response()->json([
+            'message' => 'Successfully ' . ($isActive ? 'enable' : 'disable') . ' category'
+        ]);
+    }
 
     public function history($id)
     {

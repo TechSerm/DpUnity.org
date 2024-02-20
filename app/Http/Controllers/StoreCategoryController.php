@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class StoreCategoryController extends Controller
 {
     public function index(){
-        $categories = Category::with('imageTable', 'products')->get();
+        $categories = Category::active()->with('imageTable', 'products')->get();
 
         return view('store.category.index', [
             'categories' => $categories
@@ -17,7 +17,7 @@ class StoreCategoryController extends Controller
 
     public function show(){
 
-        $category = Category::findOrFail(request()->category);
+        $category = Category::active()->findOrFail(request()->category);
 
         return view('store.category.show', [
             'products' => $category->products()->with('imageTable')->where(['status' => 'publish'])->orderBy('has_stock', 'desc')->orderBy('serial')->get(),

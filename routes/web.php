@@ -112,6 +112,7 @@ Route::prefix('admin')->group(function () {
 
         Route::get('/categories/select2_data', [CategoryController::class, 'getSelect2Data'])->name('categories.select2_data');
         Route::get('/categories/data', [CategoryController::class, 'getData'])->name('categories.data');
+        Route::post('/categories/{category}/update_status', [CategoryController::class, 'updateStatus'])->name('categories.edit.update_status');
         Route::get('/categories/{category}/history', [CategoryController::class, 'history'])->name('categories.history');
         Route::resource('categories', CategoryController::class);
 
