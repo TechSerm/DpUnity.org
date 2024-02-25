@@ -92,6 +92,20 @@ class SearchService
         return $products->sortByDesc('search_match');
     }
 
+    public static function getSimilarProduct($productName, $products)
+    {
+        $percentProducts = [];
+        foreach ($products as $product) {
+            $percent = self::percentageMatch($productName, $product->name);
+            $product->percent = $percent;
+            array_push($percentProducts, $product);
+        }
+
+        $percentProducts = collect($percentProducts)->sortByDesc('percent');
+
+        return $percentProducts;
+    }
+
     public static function percentageMatch($str1, $str2)
     {
         $similarity = self::jaccardSimilarity($str1, $str2);

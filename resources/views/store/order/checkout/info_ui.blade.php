@@ -44,16 +44,10 @@
         </legend>
         <div style="margin-top: -10px; font-size: 16px;">
             <div>
-                <input type="radio" wire:model.debounce.500ms="deliveryArea" id="inside_dhaka" name="deliveryArea" value="inside_dhaka">
-                <label for="inside_dhaka" style="margin-top: -4px;"> ঢাকার ভিতরে (<b>{{ bnConvert()->number(siteData()->insideDhakaDeliveryFee()) }} ৳</b>)
-                    <span> </span>
-                </label>
-            </div>
-            <div>
-                <input type="radio" wire:model.debounce.500ms="deliveryArea" id="outside_dhaka" name="deliveryArea" value="outside_dhaka">
-                <label for="outside_dhaka"> ঢাকার বাহিরে (<b>{{ bnConvert()->number(siteData()->outSideDhakaDeliveryFee()) }} ৳</b>)
-                    <span> </span>
-                </label>
+                <select wire:model.debounce.500ms="deliveryArea" id="deliveryArea" class="form-control" name="deliveryArea">
+                    <option value="inside_dhaka">ঢাকার ভিতরে (<b>{{ bnConvert()->number(siteData()->insideDhakaDeliveryFee()) }} ৳</b>)</option>
+                    <option value="outside_dhaka">ঢাকার বাহিরে (<b>{{ bnConvert()->number(siteData()->outSideDhakaDeliveryFee()) }} ৳</b>)</option>
+                </select>
             </div>
         </div>
     </fieldset>

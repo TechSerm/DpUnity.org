@@ -3808,7 +3808,7 @@ var Search = {
     $("#searchResultProductList").html("");
   },
   setSearchQuery: function setSearchQuery() {
-    this.searchQuery = $("#search").val();
+    this.searchQuery = $("#search").val() == "" ? $("#searchMobile").val() : $("#search").val();
     console.log(this.searchQuery);
   },
   goSearchPage: function goSearchPage() {

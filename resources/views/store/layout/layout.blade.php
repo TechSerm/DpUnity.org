@@ -18,8 +18,10 @@
 
     <title>@yield('title')</title>
     @livewireScripts
+   
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"
         data-turbolinks-eval="false"></script>
+   
     <script src="{{ mix('js/store.js') }}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.js"></script>
@@ -27,7 +29,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="/vendor/fontawesome-free/css/all.min.css">
 
     <script>
         window.livewire.rescan();
@@ -56,7 +58,7 @@
         }
 
         $(document).on('turbolinks:visit', function() {
-            $("#loadBody").append($("#pageLoader").html());
+            //$("#loadBody").append($("#pageLoader").html());
         });
 
         $(document).on('turbolinks:load', function() {

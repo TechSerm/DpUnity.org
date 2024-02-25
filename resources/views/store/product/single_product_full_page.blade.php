@@ -4,15 +4,12 @@
 
     <style>
         .productOrderBtn {
-            padding: 12px;
+            padding: 10px 20px;
             border-width: 0px;
             color: #ffffff;
             border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 17px;
         }
-
-
 
         .productOrderBtn:hover {
             color: #ffffff;
@@ -35,7 +32,6 @@
 
         .productName {
             color: #000000;
-
         }
 
         .productName:hover {
@@ -43,7 +39,7 @@
             text-decoration: none;
         }
 
-        .product-show .title {
+        .product-show-full .title {
             font-size: 22px;
             font-weight: bold;
 
@@ -116,7 +112,7 @@
         }
 
         .fullSizeButton {
-            width: 400px;
+            width: 70%;
         }
 
         @media only screen and (max-width: 768px) {
@@ -138,27 +134,26 @@
         }
     </style>
 
-    <div class="product-show">
+    <div class="product-show-full">
 
         <div class="row">
             <div class="col-md-5">
                 <div class="store-card text-center ">
                     <span class="ct-image-container">
-                        <img id="productImage" style="width: 330px;" src="{{ asset('assets/img/product_loader.gif') }}"
-                            data-src="{{ $product->image }}" class="lazy product-img-isShowPage" alt="">
+                        <img id="productImage" style="width: 330px;" src="{{ $product->image }}" class=" " alt="">
                     </span>
                     <div class="text-center mb-2 mt-2">
                         <div class="thumbnail-container">
                             <img id="" style="height: 70px; width: 70px"
-                                src="{{ asset('assets/img/product_loader.gif') }}" data-src="{{ $product->image }}"
-                                class="lazy thumbnail thumbnail-active productLstImg product-img-isShowPage" alt="">
+                                src="{{ $product->image }}"
+                                class="thumbnail thumbnail-active productLstImg" alt="">
                             @php
                                 $images = $product->images;
                             @endphp
                             @foreach ($images as $image)
                                 <img id="" style="height: 70px; width: 70px"
-                                    src="{{ asset('assets/img/product_loader.gif') }}" data-src="{{ $image->url }}"
-                                    class="lazy thumbnail productLstImg product-img-isShowPage" alt="">
+                                    src="{{ $image->url }}"
+                                    class="thumbnail productLstImg " alt="">
                             @endforeach
                         </div>
                     </div>
@@ -279,7 +274,7 @@
                         <button class="btn btn-md productOrderBtn fullSizeButton mt-1 mb-2"
                             style="background: #2980b9">ম্যাসেজের মাধ্যমে অর্ডার করতে
                             ক্লিক করুন</button>
-                        <table class="table table-bordered" style="max-width: 400px;">
+                        <table class="table table-bordered fullSizeButton" style="font-size: 15px;">
                             <tr>
                                 <td>ঢাকার ভিতরে ডেলিভারি</td>
                                 <td><b>{{ bnConvert()->number(siteData()->inSideDhakaDeliveryFee()) }} ৳</td>
@@ -299,12 +294,24 @@
 
     <div class="store-card product-show">
         <div class="header" style="padding: 10px">
-            পন্যের বিবরণ
+            Product Descriptions
         </div>
         <div class="body description-body" style="width: 100%;padding-left: 15px">
             {!! $product->description !!}
         </div>
     </div>
+
+    <div class="store-card product-show">
+        <div class="header" style="padding: 10px">
+            Related Products
+        </div>
+        <div class="body" style="width: 100%;padding-left: 15px">
+            <div class="row  no-gutters">
+                @include('store.product.single_product_page', ['products' => $relatedProducts])
+            </div>
+        </div>
+    </div>
+    
 
 @stop
 

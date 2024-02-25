@@ -34,7 +34,7 @@ const Search = {
     },
 
     setSearchQuery: function() {
-        this.searchQuery = $("#search").val();
+        this.searchQuery = $("#search").val() == "" ? $("#searchMobile").val() : $("#search").val();
         console.log(this.searchQuery)
     },
 

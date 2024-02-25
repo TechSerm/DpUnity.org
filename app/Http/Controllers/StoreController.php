@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\SurveyResponse;
 use App\Services\DeviceToken\DeviceTokenService;
+use App\Services\Search\SearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -86,7 +87,15 @@ class StoreController extends Controller
     public function showProduct($product)
     {
         $product = Product::where(['slug' => $product])->firstOrFail();
-        if(!$product->isActive() && !auth()->check()) abort(404);
-        return view('store.product.single_product_full_page', ['product' => $product]);
+        if (!$product->isActive() && !auth()->check()) abort(404);
+
+        $relatedProducts = Product::active()->where('id', '!=', $product->id)->with('imageTable')->get();
+
+        $relatedProducts = SearchService::getSimilarProduct($product->name, $relatedProducts)->take(12);
+
+        return view('store.product.single_product_full_page', [
+            'product' => $product,
+            'relatedProducts' => $relatedProducts
+        ]);
     }
 }

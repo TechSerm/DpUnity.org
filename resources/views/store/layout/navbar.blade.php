@@ -32,6 +32,11 @@
             display: none;
         }
 
+        .navlink-desktop {
+            display: none;
+        }
+
+
         .cnav .leftSide {
             width: 30%;
         }
@@ -368,19 +373,24 @@
 
             <ul class="navbar-nav ml-auto d-block d-md-none">
                 <li class="btn custom-nav-item nav-item">
-                    <a class="" href="{{ route('cart') }}" ><i class="bx bxs-cart icon-single"></i>
-                        <span class="badge badge-danger theme-bg" style="padding: 3px 6px 3px 6px">{{ theme()->totalCart() }}</span>
+                    <a class="" href="{{ route('cart') }}"><i class="bx bxs-cart icon-single"></i>
+                        <span class="badge badge-danger theme-bg"
+                            style="padding: 3px 6px 3px 6px">{{ theme()->totalCart() }}</span>
                     </a>
                 </li>
                 <li class="btn custom-nav-item nav-item">
-                    <a class="" data-turbolinks="{{ auth()->check() ? 'false' : 'true'}}" href="{{ route(auth()->check() ? 'admin.home' : 'login') }}"><i class="bx bxs-user mr-1"></i></a>
+                    <a class="" data-turbolinks="{{ auth()->check() ? 'false' : 'true' }}"
+                        href="{{ route(auth()->check() ? 'admin.home' : 'login') }}"><i
+                            class="bx bxs-user mr-1"></i></a>
                 </li>
             </ul>
 
             <div class="collapse navbar-collapse">
                 <div class="form-inline my-2 my-lg-0 mx-auto">
-                    <input class="form-control" type="search" autocomplete="off" id="search" value="{{ request()->q }}" placeholder="Search for products..." aria-label="Search">
-                    <button id="searchBtn" class="btn btn-success my-2 my-sm-0" onclick="Store.search.searchProduct()" type="submit"><i class="bx bx-search"></i></button>
+                    <input class="form-control" type="search" autocomplete="off" id="search"
+                        value="{{ request()->q }}" placeholder="Search for products..." aria-label="Search">
+                    <button id="searchBtn" class="btn btn-success my-2 my-sm-0" onclick="Store.search.searchProduct()"
+                        type="submit"><i class="bx bx-search"></i></button>
                 </div>
                 <div style="">
                     <ul class="navbar-nav">
@@ -392,12 +402,15 @@
                             </a>
                         </li>
                         <li class="btn custom-nav-item nav-item">
-                            <a class="" href="{{ route('cart') }}" ><i class="bx bxs-cart icon-single"></i>
-                                <span class="badge badge-danger theme-bg" style="padding: 3px 6px 3px 6px">{{ theme()->totalCart() }}</span>
+                            <a class="" href="{{ route('cart') }}"><i class="bx bxs-cart icon-single"></i>
+                                <span class="badge badge-danger theme-bg"
+                                    style="padding: 3px 6px 3px 6px">{{ theme()->totalCart() }}</span>
                             </a>
                         </li>
                         <li class="btn custom-nav-item nav-item">
-                            <a class="" data-turbolinks="{{ auth()->check() ? 'false' : 'true'}}" href="{{ route(auth()->check() ? 'admin.home' : 'login') }}"><i class="bx bxs-user mr-1"></i></a>
+                            <a class="" data-turbolinks="{{ auth()->check() ? 'false' : 'true' }}"
+                                href="{{ route(auth()->check() ? 'admin.home' : 'login') }}"><i
+                                    class="bx bxs-user mr-1"></i></a>
                         </li>
 
                     </ul>
@@ -406,34 +419,36 @@
 
         </div>
     </nav>
+    <div class="navlink-desktop">
+        <nav class="navbar navbar-expand-md navlink-desktop theme-bg sub-menu" style="">
+            <div class="container">
+                <div class="collapse navbar-collapse" id="navbar" style=" text-align: left!important">
+                    <ul class="navbar-nav  flex-wrap" style="">
+                        @php
+                            $headers = theme()->header();
+                        @endphp
 
-    <nav class="navbar navbar-expand-md  theme-bg sub-menu" style="">
-        <div class="container">
-            <div class="collapse navbar-collapse" id="navbar" style=" text-align: left!important">
-                <ul class="navbar-nav  flex-wrap" style="">
-                    @php
-                        $headers = theme()->header();
-                    @endphp
+                        @foreach ($headers as $header)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ $header->url }}"> {{ $header->title }}</a>
+                            </li>
+                        @endforeach
 
-                    @foreach ($headers as $header)
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ $header->url }}"> {{ $header->title }}</a>
-                        </li>
-                    @endforeach
-
-                </ul>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </div>
     <div class="search-bar d-block d-md-none" style="padding: 10px; 5px 0px 5px;">
         <div class="container">
             <div class="row">
-                <div class="col-12">
-                    <form class="form-inline mb-3 mx-auto">
-                        <input class="form-control" type="search" placeholder="Search for products..."
-                            aria-label="Search">
-                        <button class="btn btn-success" type="submit"><i class="bx bx-search"></i></button>
-                    </form>
+                <div class="col-12 form">
+                    <div class="form-inline">
+                        <input class="form-control" type="search" autocomplete="off" id="searchMobile"
+                            value="{{ request()->q }}" placeholder="Search for products..." aria-label="Search">
+                        <button class="btn theme-bg" type="submit" onclick="Store.search.searchProduct()"><i
+                                class="bx bx-search"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -445,9 +460,11 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-10 pl-0">
-                        <a class="btn btn-primary" href="tel:{{ theme()->mobile() }}"><i class="bx bxs-user-circle mr-1"></i> {{ theme()->mobile() }}</a>
+                        <a class="btn btn-success" href="tel:{{ theme()->mobile() }}"><i class="bx bxs-phone mr-2"></i>
+                            Hot Line</a>
+                        <a class="btn btn-primary" href="{{ route('home') }}"><i class="bx bx-home mr-1"></i>
+                            Home</a>
                     </div>
-
                     <div class="col-2 text-left">
                         <button type="button" id="sidebarCollapseX" class="btn btn-link">
                             <i class="bx bx-x icon-single"></i>
@@ -462,17 +479,20 @@
             <li class="">
                 <a href="{{ route('home') }}"><i class="bx bx-home mr-3"></i> Home</a>
             </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="bx bx-carousel mr-3"></i>
-                        Categories</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-            
+
+            <li style="">
+                <a href="{{ route('store.categories') }}"><i class="bx bx-carousel mr-3"></i>
+                    Categories</a>
+                <ul class="list-unstyled" style="padding-left: 35px" id="pageSubmenu">
+
                     @foreach ($headers as $key => $header)
-                    @php
-                        if($key == 0)continue;
-                    @endphp
-                        <li class="">
-                            <a  href="{{ $header->url }}"> {{ $header->title }}</a>
+                        @php
+                            if ($key == 0) {
+                                continue;
+                            }
+                        @endphp
+                        <li class="" style="border-top: 1px solid #eeeeee">
+                            <a href="{{ $header->url }}"> {{ $header->title }}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -516,7 +536,5 @@
             searchResultUrl: "{{ route('search') }}",
             searchQuery: "{{ request()->q }}"
         });
-
-
     </script>
 @endpush
