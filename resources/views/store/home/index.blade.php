@@ -161,9 +161,9 @@
     </div>
     <div class="store-card " style="margin-top: 30px;">
         <div class="body" style="padding-top: 0px">
-            <div class="home-list-category-name titleSpan mb-3" style="font-weight: bold; color: var(--theme-color)">
-                Hot Deals
-                <div class="pull-right">
+            <div class="home-list-category-name titleSpan mb-3 clearfix" style="font-weight: bold; color: var(--theme-color); ">
+                <div class="pull-left" style="float: left">Hot Deals</div>
+                <div class="pull-right" style="float: right; ">
                     <a href="{{ route('store.hot_deals') }}" style="color: var(--theme-color)">সকল হট ডিল</a> <i
                         class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>

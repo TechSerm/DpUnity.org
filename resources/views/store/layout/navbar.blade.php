@@ -389,7 +389,7 @@
                 <div class="form-inline my-2 my-lg-0 mx-auto">
                     <input class="form-control" type="search" autocomplete="off" id="search"
                         value="{{ request()->q }}" placeholder="Search for products..." aria-label="Search">
-                    <button id="searchBtn" class="btn btn-success my-2 my-sm-0" onclick="Store.search.searchProduct()"
+                    <button id="searchBtn" class="btn theme-bg my-2 my-sm-0" onclick="Store.search.searchProduct()"
                         type="submit"><i class="bx bx-search"></i></button>
                 </div>
                 <div style="">
