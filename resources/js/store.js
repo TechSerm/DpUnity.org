@@ -8,10 +8,10 @@ window.$ = window.jQuery = require('jquery')
 
 // require('jquery-viewer');
 // require('viewerjs/dist/viewer.css');
-
+/**
 var Turbolinks = require("turbolinks")
-Turbolinks.start()
-
+//Turbolinks.start()
+ */
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the

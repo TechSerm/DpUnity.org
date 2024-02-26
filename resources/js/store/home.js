@@ -11,6 +11,7 @@ const Home = {
         Store.home.pageStop = false;
     },
     loadMoreHomeProduct: function() {
+        return;
         if (!this.isHomePage()) return;
         if (Store.home.pageLoading === true || Store.home.pageStop === true) return;
         Store.home.pageLoading = true;
@@ -54,15 +55,10 @@ const Home = {
         let heightWeightIsShowPage = Math.min(500, 350 + (divWidth - 350));
         $(".product-img-isShowPage").height(heightWeightIsShowPage).width(heightWeightIsShowPage);
 
-        //console.log(divWidth);
-        // console.log("height: " + ($(".product-div").height() - divWidth));
-        //console.log(heightWeightIsShowPage);
-        // $(".product-card-height-isShowPage").height(500 + diff);
-
     }
 }
 
-$(document.body).on('touchmove', Home.onPageScroll); // for mobile
-$(window).on('scroll', Home.onPageScroll);
+//$(document.body).on('touchmove', Home.onPageScroll); // for mobile
+//$(window).on('scroll', Home.onPageScroll);
 
 module.exports = { Home };

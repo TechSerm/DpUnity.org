@@ -19,9 +19,10 @@ const Cart = {
         $.post("/add_cart", data, function(response) {
             
             Helper.toast.success(response.message);
-            Turbolinks.visit(response.url, {
-                action: "replace"
-            });
+            //Turbolinks.visit(response.url, {
+           //     action: "replace"
+           // });
+           window.location.href = response.url;
             
         });
     },

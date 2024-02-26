@@ -18,9 +18,9 @@
 
     <title>@yield('title')</title>
     @livewireScripts
-   
+   {{-- 
     <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"
-        data-turbolinks-eval="false"></script>
+        data-turbolinks-eval="false"></script> --}}
    
     <script src="{{ mix('js/store.js') }}"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

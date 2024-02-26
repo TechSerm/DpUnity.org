@@ -7,9 +7,10 @@ const Order = {
         $.post(url, {
             '_token': token
         }, function(response) {
-            Turbolinks.visit(response.url, {
-                action: "replace"
-            });
+            window.location.href = response.url;
+            // Turbolinks.visit(response.url, {
+            //     action: "replace"
+            // });
         }).fail(function(error) {
             let response = JSON.parse(error.responseText);
             $("#orderConfirmBody").html(response.body);

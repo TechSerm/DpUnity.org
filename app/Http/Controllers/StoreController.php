@@ -22,7 +22,11 @@ class StoreController extends Controller
 {
     public function home()
     {
-        $products = HomePageProductFacade::get();
+        //$products = HomePageProductFacade::get();
+        $products = Product::active()->with('imageTable')->orderBy('id', 'desc')->paginate(24);
+        if($products->first()) {
+            $products->first()->category_name = "Products";
+        }
         $hotDealProducts = Product::active()->hotDeals()->with('imageTable')->take(12)->get();
 
         return view('store.home.index', [

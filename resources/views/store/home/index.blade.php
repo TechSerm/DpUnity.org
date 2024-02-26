@@ -77,6 +77,16 @@
             border-radius: 10px;
             max-height: 400px;
         }
+        .custom-pagination{
+            font-size: 18px;
+            box-shadow: 0 0 20px 0 rgba(183,190,199,.15);
+            margin-right: 10px;
+        }
+
+        .custom-pagination .page-item.active .page-link {
+            background: var(--theme-color)!important;
+            border:  1px solid var(--theme-color)!important;
+        }
     </style>
     @php
         $sliders = theme()->sliders();
@@ -184,6 +194,9 @@
 
             @include('store.product.single_product_page')
         </div>
+            <div class="custom-pagination" style="float: right">
+                {{ $products->links() }}
+            </div>
         <div class="loader-area" id="loader-area">
             <img src="{{ asset('assets/img/loader.gif') }}" height="70px" width="70px" alt="">
         </div>
