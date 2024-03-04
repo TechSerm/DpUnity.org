@@ -368,7 +368,7 @@
             </button>
 
             <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{ theme()->logo() }}" height="60" alt="">
+                <img src="{{ theme()->logo() }}" width="150" height="60" alt="">
             </a>
 
             <ul class="navbar-nav ml-auto d-block d-md-none">

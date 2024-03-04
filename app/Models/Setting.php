@@ -98,7 +98,7 @@ class Setting extends Model
 
     public function isTextArea()
     {
-        return $this->key == SettingEnum::SHORT_DESCRIPTION;
+        return in_array($this->key, [SettingEnum::SHORT_DESCRIPTION, SettingEnum::CUSTOM_HEAD_CODE, SettingEnum::CUSTOM_BODY_CODE,  SettingEnum::CUSTOM_FOOTER_CODE]);
     }
 
     public function imageTable()
@@ -114,6 +114,7 @@ class Setting extends Model
                 SettingEnum::HEADLINE, SettingEnum::MOBILE_NUMBER, SettingEnum::EMAIL_ADDRESS,
                 SettingEnum::COPYRIGHT, SettingEnum::STREET, SettingEnum::CITY, SettingEnum::STATE,
                 SettingEnum::POSTER_CODE, SettingEnum::SHORT_DESCRIPTION,  SettingEnum::MESSANGER_LINK,
+                SettingEnum::CUSTOM_HEAD_CODE, SettingEnum::CUSTOM_BODY_CODE,  SettingEnum::CUSTOM_FOOTER_CODE,
             ],
             "logo" => [
                 SettingEnum::LOGO, SettingEnum::FAVICON,

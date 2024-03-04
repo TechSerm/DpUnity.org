@@ -28,6 +28,9 @@ class ThemeService
     private $address;
     private $email;
     private $description;
+    private $customHeadCode;
+    private $customBodyCode;
+    private $customFooterCode;
 
     public function __construct()
     {
@@ -57,8 +60,11 @@ class ThemeService
         $this->headline = $settingService->getData(SettingEnum::HEADLINE);
         $this->email = $settingService->getData(SettingEnum::EMAIL_ADDRESS);
         $this->description = $settingService->getData(SettingEnum::SHORT_DESCRIPTION);
+        $this->customHeadCode = $settingService->getData(SettingEnum::CUSTOM_HEAD_CODE);
+        $this->customBodyCode = $settingService->getData(SettingEnum::CUSTOM_BODY_CODE);
+        $this->customFooterCode = $settingService->getData(SettingEnum::CUSTOM_FOOTER_CODE);
         $this->address = $settingService->getData(SettingEnum::STREET) . ", " . $settingService->getData(SettingEnum::CITY) . ", " . $settingService->getData(SettingEnum::STREET);
-        
+
         $this->textColor = (new ThemeColor())->get($this->color());
         $this->header = (new HeaderService())->get();
     }
@@ -128,8 +134,24 @@ class ThemeService
         return $this->email;
     }
 
-    public function address() {
+    public function address()
+    {
         return $this->address;
+    }
+
+    public function customHeadCode()
+    {
+        return $this->customHeadCode;
+    }
+
+    public function customBodyCode()
+    {
+        return $this->customBodyCode;
+    }
+
+    public function customFooterCode()
+    {
+        return $this->customFooterCode;
     }
 
     public function sliders()

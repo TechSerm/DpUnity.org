@@ -28,4 +28,7 @@ final class SettingEnum extends Enum
     const YOUTUBE = "YOUTUBE";
     const INSIDE_DHAKA = "INSIDE_DHAKA";
     const OUTSIDE_DHAKA = "OUTSIDE_DHAKA";
+    const CUSTOM_HEAD_CODE = "CUSTOM_HEAD_CODE";
+    const CUSTOM_BODY_CODE = "CUSTOM_BODY_CODE";
+    const CUSTOM_FOOTER_CODE = "CUSTOM_FOOTER_CODE";
 }

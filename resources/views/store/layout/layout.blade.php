@@ -91,11 +91,13 @@
         });
     </script>
 
+    {!! theme()->customHeadCode() !!}
+
     @livewireStyles
 </head>
 
 <body>
-
+    {!! theme()->customBodyCode() !!}
     @include('store.layout.navbar')
     @include('store.layout.theme_style')
 

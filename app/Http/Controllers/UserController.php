@@ -60,7 +60,7 @@ class UserController extends Controller
         $user->image_id = $imageId;
 
         $user->password = bcrypt($request->password);
-        $user->type = "admin";
+        $user->role_name = "admin";
 
         $user->fill($request->all())->save();
 
