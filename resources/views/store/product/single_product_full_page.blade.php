@@ -132,6 +132,21 @@
             display: inline-block;
             line-height: 0;
         }
+
+        .offerLabel {
+            position: absolute;
+            height: 70px;
+            width: 70px;
+            padding-top: 15px;
+            border-radius: 100%;
+            text-align: center;
+            margin-top: -5px;
+            margin-left: -5px;
+            font-size: 16px;
+            z-index: 999999;
+            background: var(--theme-color);
+            color: var(--theme-font-color);
+        }
     </style>
 
     <div class="product-show-full">
@@ -139,20 +154,26 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="store-card text-center ">
+                    @if ($product->regular_price > $product->sale_price && $product->regular_price != 0)
+                        <div class="offerLabel img-tumbnil">
+                            @php
+                                $percent = ceil(($product->sale_price * 100) / $product->regular_price);
+                            @endphp
+                            {{ $percent }}%
+                        </div>
+                    @endif
                     <span class="ct-image-container">
                         <img id="productImage" style="width: 330px;" src="{{ $product->image }}" class=" " alt="">
                     </span>
                     <div class="text-center mb-2 mt-2">
                         <div class="thumbnail-container">
-                            <img id="" style="height: 70px; width: 70px"
-                                src="{{ $product->image }}"
+                            <img id="" style="height: 70px; width: 70px" src="{{ $product->image }}"
                                 class="thumbnail thumbnail-active productLstImg" alt="">
                             @php
                                 $images = $product->images;
                             @endphp
                             @foreach ($images as $image)
-                                <img id="" style="height: 70px; width: 70px"
-                                    src="{{ $image->url }}"
+                                <img id="" style="height: 70px; width: 70px" src="{{ $image->url }}"
                                     class="thumbnail productLstImg " alt="">
                             @endforeach
                         </div>
@@ -176,8 +197,8 @@
                                         {{ bnConvert()->number($product->regular_price) }}</del></span>
                             @endif
                         </div>
-                        <p class="mt-1 text-sm text-white inline-block px-3 py-1 product_code theme-bg"
-                            style=""><span>প্রোডাক্ট কোড: {{ $product->id }}</span></p>
+                        <p class="mt-1 text-sm text-white inline-block px-3 py-1 product_code theme-bg" style="">
+                            <span>প্রোডাক্ট কোড: {{ $product->id }}</span></p>
 
                         {{-- <div class="row no-gutters mb-3">
                             <div class="col-sm-2">
@@ -269,7 +290,8 @@
                             onclick="Store.cart.addCartOrder(this)" class="btn btn-md productOrderBtn"
                             style="background: #16a085">কার্ট-এ যোগ
                             করুন</button><br />
-                        <a href="tel:{{ theme()->mobile() }}" class="btn btn-md productOrderBtn mt-1 fullSizeButton" style="background: #2c3e50">ফোনে অর্ডার
+                        <a href="tel:{{ theme()->mobile() }}" class="btn btn-md productOrderBtn mt-1 fullSizeButton"
+                            style="background: #2c3e50">ফোনে অর্ডার
                             করুনঃ {{ theme()->mobile() }}</a><br />
                         <button class="btn btn-md productOrderBtn fullSizeButton mt-1 mb-2"
                             style="background: #2980b9">ম্যাসেজের মাধ্যমে অর্ডার করতে
@@ -311,7 +333,7 @@
             </div>
         </div>
     </div>
-    
+
 
 @stop
 

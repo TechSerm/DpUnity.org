@@ -250,20 +250,20 @@
         </div>
 
         <div class="invoice-details" style="float: right;">
-            <div style="font-size: 30px;">অর্ডার নাম্বারঃ {{ bnConvert()->number($order->id) }}</div>
+            <div style="font-size: 30px;">Order No: {{ $order->id }}</div>
             <div style="font-size: 14px;">
-                অর্ডারটি করা হয়েছেঃ {{ bnConvert()->date($order->created_at->format('d M Y, h:i a')) }}
+                Order Create: {{ $order->created_at->format('d M Y, h:i a') }}
             </div>
         </div>
         <div style="clear: both;"></div>
         <table class="invoice-table">
             <thead>
                 <tr>
-                    <th style="width: 15px;">ক্রমিক</th>
-                    <th>পণ্যের বিবরন</th>
-                    <th style="width: 55px;">পরিমান</th>
-                    <th style="width: 70px;">দর</th>
-                    <th style="width: 80px;">টাকা</th>
+                    <th style="width: 15px;">#</th>
+                    <th>Product Name</th>
+                    <th style="width: 55px;">Quantity</th>
+                    <th style="width: 70px;">Unit Price</th>
+                    <th style="width: 80px;">Subtotal</th>
                 </tr>
             </thead>
             <tbody>
@@ -272,29 +272,27 @@
                 @endphp
                 @foreach ($items as $key => $item)
                     <tr>
-                        <td> {{ bnConvert()->number($key + 1) }} </td>
-                        <td style="text-align: left">{{ $item->name }} -
-                            {{ bnConvert()->floatNumber($item->unit_quantity, false) }}
-                            {{ bnConvert()->unit($item->unit) }} </td>
-                        <td>{{ bnConvert()->floatNumber($item->quantity) }}</td>
-                        <td>৳ {{ bnConvert()->number($item->price) }}</td>
-                        <td>৳ {{ bnConvert()->number($item->total) }}</td>
+                        <td> {{ $key + 1 }} </td>
+                        <td style="text-align: left">{{ $item->name }}
+                        <td>{{ (int)$item->quantity }}</td>
+                        <td>৳ {{ $item->price }}</td>
+                        <td>৳ {{ $item->total }}</td>
                     </tr>
                 @endforeach
 
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4" class="total-td">পণ্যের মূল্যঃ</td>
-                    <td colspan="1">{{ bnConvert()->number($order->subtotal) }} টাকা</td>
+                    <td colspan="4" class="total-td">Sub Total:	</td>
+                    <td colspan="1">{{ $order->subtotal }} টাকা</td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="total-td">ডেলিভারি ফিঃ</td>
-                    <td colspan="1">{{ bnConvert()->number($order->delivery_fee) }} টাকা</td>
+                    <td colspan="4" class="total-td">Delivery Fee:</td>
+                    <td colspan="1">{{ $order->delivery_fee }} টাকা</td>
                 </tr>
                 <tr style="font-weight: bold;">
-                    <td colspan="4" class="total-td">সর্বমোট মূল্যঃ</td>
-                    <td colspan="1">{{ bnConvert()->number($order->total) }} টাকা</td>
+                    <td colspan="4" class="total-td">Total:	</td>
+                    <td colspan="1">{{ $order->total }} টাকা</td>
                 </tr>
             </tfoot>
         </table>

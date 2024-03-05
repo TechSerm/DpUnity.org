@@ -28,26 +28,49 @@
             color: var(--theme-color);
         }
 
-        .product-order-btn:hover{
+        .product-order-btn:hover {
             font-size: 16px;
             color: var(--theme-font-color);
-            
+
         }
 
         .product:hover {
             border: 1px solid var(--theme-color);
         }
+
+        .offerLabel {
+            position: absolute;
+            height: 45px;
+            width: 45px;
+            padding-top: 12px;
+            border-radius: 100%;
+            text-align: center;
+            margin-top: -5px;
+            margin-left: -5px;
+            font-size: 16px;
+            z-index: 999999;
+            background: var(--theme-color);
+            color: var(--theme-font-color);
+        }
     </style>
 
 
     <div class="" style="text-align: center">
+        @if ($product->regular_price > $product->sale_price && $product->regular_price != 0)
+            <div class="offerLabel img-tumbnil">
+                @php
+                    $percent = ceil(($product->sale_price * 100) / $product->regular_price);
+                @endphp
+                {{ $percent }}%
+            </div>
+        @endif
+
         <div class="card product product-div">
 
             <a class="productName" href="{{ route('store.product.show', ['product' => $product->slug]) }}">
                 <span class="ct-image-container">
                     <img id="productImage" src="{{ asset('assets/img/product_loader.gif') }}"
-                        data-src="{{ $product->image }}"
-                        class="lazy product-img" alt="">
+                        data-src="{{ $product->image }}" class="lazy product-img" alt="">
                 </span>
             </a>
 
@@ -56,16 +79,18 @@
                     <div class="title"><span class="">{{ $product->short_name }}</span></div>
                 </a>
                 <div class="price-area">
-                    ৳ <span class="price">{{ bnConvert()->number($product->sale_price) }}</span>
+                    ৳ <span class="price">{{ $product->sale_price }}</span>
 
                     @if ($product->regular_price > $product->sale_price)
                         <span
                             style="color: #5E5E5E; font-weight: bold; font-size: 11px; margin-left: 3px; vertical-align: middle;"><del>৳
-                                {{ bnConvert()->number($product->regular_price) }}</del></span>
+                                {{ $product->regular_price }}</del></span>
                     @endif
                 </div>
                 <div class="button-area">
-                    <button data-product_id="{{$product->id}}" data-csrf="{{csrf_token()}}" onclick="Store.cart.directOrder(this)" class="btn btn-sm product-order-btn add-bag  theme-bg"><i class="fa fa-cart"></i> অর্ডার করুন </button>
+                    <button data-product_id="{{ $product->id }}" data-csrf="{{ csrf_token() }}"
+                        onclick="Store.cart.directOrder(this)" class="btn btn-sm product-order-btn add-bag  theme-bg"><i
+                            class="fa fa-cart"></i> অর্ডার করুন </button>
                 </div>
             </div>
         </div>
