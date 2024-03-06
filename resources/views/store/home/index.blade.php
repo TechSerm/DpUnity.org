@@ -164,7 +164,7 @@
     <div class="store-card" style="margin-top: 10px">
         <div class="body" style="padding-top: 0px">
             <div class="home-list-category-name titleSpan mb-3">
-                <i class="fa fa-list-alt" aria-hidden="true"></i> ক্যাটেগরি
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Categories
             </div>
             @include('store.category.ui')
         </div>

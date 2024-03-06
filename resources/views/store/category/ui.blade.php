@@ -1,10 +1,11 @@
 <style>
     .category {
         border-radius: 5px;
-        padding: 10px 15px;
+        padding: 5px 10px;
         border: 1px solid #eeeeee;
         display: inline-block;
-        margin: 0px 12px 12px 0px;
+        margin: 0px 5px 5px 0px;
+        font-size: 14px;
         
     }
     .category:hover{
@@ -31,7 +32,7 @@
 
         <div class="category theme-bg">
             <a href="{{ route('store.categories.show', $category) }}">
-                {{ $category->name }} ({{ bnConvert()->number($totalProducts) }})
+                {{ $category->name }} ({{ $totalProducts }})
             </a>
         </div>
     @endforeach
