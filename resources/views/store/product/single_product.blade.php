@@ -59,7 +59,7 @@
         @if ($product->regular_price > $product->sale_price && $product->regular_price != 0)
             <div class="offerLabel img-tumbnil">
                 @php
-                    $percent = ceil(($product->sale_price * 100) / $product->regular_price);
+                    $percent = ceil((($product->regular_price-$product->sale_price) * 100) / $product->regular_price);
                 @endphp
                 {{ $percent }}%
             </div>
