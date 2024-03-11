@@ -63,7 +63,7 @@
         margin-bottom: 20px;
     }
 
-    .social-links i{
+    .social-links i {
         font-size: 30px;
         margin-right: 5px;
         color: var(--theme-color);
@@ -163,7 +163,14 @@
         </div>
         <div class="footerBlock text-center theme-bg">
             <div class="container">
-                Developed By: <a href="https://xotechz.com/ " style="text-decoration: none;"><b>Xotech</b></a>
+                @php
+                    $currentUrl = env("FOOTER_URL") != "" ? env("FOOTER_URL") : url()->current();
+                    $parsedUrl = parse_url($currentUrl);
+                    $footerUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'].(isset($parsedUrl['port']) && $parsedUrl['port'] != "" ? ":".$parsedUrl['port'] : "");
+                    $footerText = $parsedUrl['host'];
+                @endphp
+                Developed By: <a href="{{ $footerUrl }}"
+                    style="text-decoration: none;"><b>{{ $footerText }}</b></a>
             </div>
         </div>
 
