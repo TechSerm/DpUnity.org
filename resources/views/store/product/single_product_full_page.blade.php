@@ -190,11 +190,11 @@
                     <div class="" style="padding: 10px;">
 
                         <div class="price-a" style="margin: -10px -10px 0px -10px; padding: 10px;">
-                            <span class="price">৳ {{ bnConvert()->number($product->sale_price) }}</span>
+                            <span class="price">৳ {{ $product->sale_price }}</span>
                             @if ($product->regular_price > $product->sale_price)
                                 <span
                                     style="color: #5E5E5E; font-weight: bold; font-size: 18px; margin-left: 5px; vertical-align: middle;"><del>৳
-                                        {{ bnConvert()->number($product->regular_price) }}</del></span>
+                                        {{ $product->regular_price }}</del></span>
                             @endif
                         </div>
                         <p class="mt-1 text-sm text-white inline-block px-3 py-1 product_code theme-bg" style="">

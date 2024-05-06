@@ -387,10 +387,12 @@
 
             <div class="collapse navbar-collapse">
                 <div class="form-inline my-2 my-lg-0 mx-auto">
-                    <input class="form-control" type="search" autocomplete="off" id="search"
-                        value="{{ request()->q }}" placeholder="Search for products..." aria-label="Search">
-                    <button id="searchBtn" class="btn theme-bg my-2 my-sm-0" onclick="Store.search.searchProduct()"
-                        type="submit"><i class="bx bx-search"></i></button>
+                    <form action="{{ route('search') }}">
+                        <input class="form-control" type="search" name="q" autocomplete="off" id="search"
+                            value="{{ request()->q }}" placeholder="Search for products..." aria-label="Search">
+                        <button id="searchBtn" class="btn theme-bg my-2 my-sm-0" onclick="" type="submit"><i
+                                class="bx bx-search"></i></button>
+                    </form>
                 </div>
                 <div style="">
                     <ul class="navbar-nav">
@@ -444,10 +446,10 @@
             <div class="row">
                 <div class="col-12 form">
                     <div class="form-inline">
-                        <input class="form-control" type="search" autocomplete="off" id="searchMobile"
-                            value="{{ request()->q }}" placeholder="Search for products..." aria-label="Search">
-                        <button class="btn theme-bg" type="submit" onclick="Store.search.searchProduct()"><i
-                                class="bx bx-search"></i></button>
+                            <input class="form-control" type="search" name="q" autocomplete="off" id="searchMobile"
+                                value="{{ request()->q }}" placeholder="Search for products..." aria-label="Search">
+                            <button class="btn theme-bg" type="submit" onclick="Store.search.searchProduct()"><i
+                                    class="bx bx-search"></i></button>
                     </div>
                 </div>
             </div>
@@ -460,7 +462,8 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-10 pl-0">
-                        <a class="btn btn-success" href="tel:{{ theme()->mobile() }}"><i class="bx bxs-phone mr-2"></i>
+                        <a class="btn btn-success" href="tel:{{ theme()->mobile() }}"><i
+                                class="bx bxs-phone mr-2"></i>
                             Hot Line</a>
                         <a class="btn btn-primary" href="{{ route('home') }}"><i class="bx bx-home mr-1"></i>
                             Home</a>
@@ -531,10 +534,10 @@
             });
         });
 
-        Store.search.init({
-            searchUrl: "{{ route('search.products') }}",
-            searchResultUrl: "{{ route('search') }}",
-            searchQuery: "{{ request()->q }}"
-        });
+        // Store.search.init({
+        //     searchUrl: "{{ route('search.products') }}",
+        //     searchResultUrl: "{{ route('search') }}",
+        //     searchQuery: "{{ request()->q }}"
+        // });
     </script>
 @endpush

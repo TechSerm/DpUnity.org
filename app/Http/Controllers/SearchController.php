@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Services\Search\SearchService;
 use Illuminate\Http\Request;
+use Illuminate\Container\Container;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 class SearchController extends Controller
 {
@@ -30,9 +34,25 @@ class SearchController extends Controller
     private function getProduct()
     {
         $searchQuery = request()->q;
-        if($searchQuery == "")return [];
+        if ($searchQuery == "") return [];
         $products = SearchService::getSearchSortableProduct($searchQuery)->where('status', 'publish');
         $this->totalProducts = $products->count();
-        return $products->forPage(request()->page, 6);
+
+        Collection::macro('paginate', function ($perPage, $total = null, $page = null, $pageName = 'page') {
+            $page = $page ?: LengthAwarePaginator::resolveCurrentPage($pageName);
+
+            return new LengthAwarePaginator(
+                $total ? $this : $this->forPage($page, $perPage)->values(),
+                $total ?: $this->count(),
+                $perPage,
+                $page,
+                [
+                    'path' => LengthAwarePaginator::resolveCurrentPath(),
+                    'pageName' => $pageName,
+                ]
+            );
+        });
+
+        return $products->paginate(12);
     }
 }
