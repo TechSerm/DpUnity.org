@@ -17,8 +17,9 @@ const Search = {
         return window.location.href.indexOf("search") !== -1;
     },
 
-    getSearchPageQueryUrl: function() {
-        let pageUrl = new URL(this.searchResultUrl);
+    getSearchPageQueryUrl: function(pageNo = null) {
+        let ur = window.location.protocol + "//" +window.location.host + "/search";
+        let pageUrl = new URL(ur);
         pageUrl.searchParams.set('q', this.searchQuery ? this.searchQuery : '');
         return pageUrl;
     },
@@ -34,15 +35,13 @@ const Search = {
     },
 
     setSearchQuery: function() {
-        this.searchQuery = $("#search").val() == "" ? $("#searchMobile").val() : $("#search").val();
-        console.log(this.searchQuery)
+        this.searchQuery = $("#searchMobile").val();
     },
 
     goSearchPage: function() {
-        this.pageNo = 2;
-        Turbolinks.visit(this.getSearchPageQueryUrl(), {
-            action: "replace"
-        });
+        //this.pageNo = 2;
+        let pageUrl = this.getSearchPageQueryUrl();
+        window.location.replace(pageUrl);
     },
 
     delay: function(callback, ms) {
