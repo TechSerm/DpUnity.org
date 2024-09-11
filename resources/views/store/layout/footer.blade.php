@@ -76,8 +76,8 @@
         
         <div class="footerBlock text-center">
             <div class="container" >
-                স্বত্ব © 2024 <a href="">d</a> - সর্ব স্বত্ব সংরক্ষিত<br/>
-                কারিগরি সহায়তায়: <b><a href="https://bibisena.com">বিবিসেনা অনলাইন শপ</a></b>
+                স্বত্ব © 2024 <a href="">দৌলতপুর প্রবাসী সামাজিক সংগঠন</a> - সর্ব স্বত্ব সংরক্ষিত<br/>
+                {{-- কারিগরি সহায়তায়: <b><a href="https://bibisena.com">বিবিসেনা অনলাইন শপ</a></b> --}}
             </div>
         </div>
 
