@@ -45,7 +45,7 @@ class UserController extends Controller
         return DataTables::of($userQuery)
             ->filter(function ($query) use ($request) {})
             ->addColumn('action', function ($model) {
-                $content = "<button data-url='" . route('users.edit', ['user' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update User <b>#" . $model->id . "</b>'
+                $content = "<button data-url='" . route('admin.users.edit', ['user' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update User <b>#" . $model->id . "</b>'
                 data-modal-size='650' data-toggle='modal'><i class='fa fa-edit'></i></button>";
                 return $content;
             })
