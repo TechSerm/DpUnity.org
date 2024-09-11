@@ -67,7 +67,7 @@ class Member extends Model
             'cover_10.jpg',
             'cover_11.jpg',
         ];
-        $position = ($this->id % count($photos)) + 1;
+        $position = ($this->id % count($photos));
         return asset('assets/img/' . $photos[$position]);
     }
 }
