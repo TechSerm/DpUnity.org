@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="col-xl-4 col-md-4 d-flex justify-content-center">
                                     <div class="image-default">
-                                        <img class="img-thumbnail rounded-circle" style="" src="{{ $member->image->src() }}"
+                                        <img class="img-thumbnail rounded-circle" style="max-height: 130px;" src="{{ $member->image->src() }}"
                                             alt="...">
                                     </div>
                                     <div class="infos">
