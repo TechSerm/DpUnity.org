@@ -2,27 +2,30 @@
 
 namespace App\Services\Theme;
 
-use App\Models\Category;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class HeaderService
 {
     public function get()
     {
-        $headers = [];
-
-        $categories = Category::active()->where([])->get();
-
-        array_push($headers, (object)[
-            'title' => 'Home',
-            'url' => route('home')
-        ]);
-
-        foreach ($categories as $category) {
-            array_push($headers, (object)[
-                'title' => $category->name,
-                'url' => route('store.categories.show', $category)
-            ]);
-        }
+        $headers = (Object)[
+            (Object)[
+                'title' => 'হোম', 
+                'url' => route('home.index')
+            ],
+            (Object)[
+                'title' => 'আমাদের সম্পর্কে', 
+                'url' => route('home.index')
+            ],
+            (Object)[
+                'title' => 'সদস্য নিবন্ধন', 
+                'url' => route('members.create')
+            ],
+            (Object)[
+                'title' => 'সদস্যের তালিকা', 
+                'url' => route('members.index')
+            ],
+        ];
 
         return $headers;
     }

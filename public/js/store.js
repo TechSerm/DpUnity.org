@@ -3535,7 +3535,18 @@ var Auth = {
       success: {
         resetForm: false,
         callback: function callback(response) {
-          window.location.href = "/admin";
+          window.location.href = '/profile';
+        }
+      }
+    });
+  },
+  register: function register(e) {
+    var form = Helper.form(e);
+    form.submit({
+      success: {
+        resetForm: false,
+        callback: function callback(response) {
+          window.location.href = '/profile';
         }
       }
     });

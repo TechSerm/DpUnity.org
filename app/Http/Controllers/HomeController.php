@@ -2,17 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Facades\Dashboard\DashboardFacade;
-use App\Models\User;
-use App\Service\Dashboard\DashboardService;
-use App\Services\File\FileService;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Str;
-
 class HomeController extends Controller
 {
     /**
@@ -32,25 +21,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home', DashboardFacade::getDashboardData());
+        return view('home', []);
     }
 
-    private function setStartEndDate()
+    public function profile()
     {
-        $startOfDate = auth()->user()->isCashier() ? Carbon::now()->today() : Carbon::now()->startOfMonth();
-        request()->start_date = request()->start_date ?? $startOfDate;
-        request()->end_date = request()->end_date ?? Carbon::now();
+        return view('profile.index');
     }
 
-    public function log()
+    public function memberForm() {
+        return view('member.form');
+    }
+
+    public function members()
     {
-        Log::info([
-            'time' => Carbon::now()->format('M d Y H:i:s'),
-            'ip' => request()->ip(),
-            'agent' => request()->header('User-Agent'),
-            'page' =>   request()->page ? base64_decode(request()->page) : '',
-            'lat' => request()->lat ?? '',
-            'lon' => request()->lon ?? ''
-        ]);
+        return view('member.list');
     }
 }

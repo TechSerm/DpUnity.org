@@ -102,7 +102,6 @@ class ImageService
     public function delete()
     {
         if ($this->image) {
-            File::delete(public_path($this->getImagePath()));
             $this->image->delete();
         }
     }

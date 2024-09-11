@@ -3,10 +3,8 @@
 namespace App\Models;
 
 use App\Enums\SettingEnum;
-use App\Services\Image\ImageService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class Setting extends Model
 {
@@ -38,12 +36,6 @@ class Setting extends Model
     {
         $groupSetting = $this->groupSetting();
         return $query->whereIn("key", $groupSetting["logo"]);
-    }
-
-    public function scopeDeliveryFee($query)
-    {
-        $groupSetting = $this->groupSetting();
-        return $query->whereIn("key", $groupSetting["delivery_fee"]);
     }
 
     public function scopeSocialLink($query)
@@ -118,9 +110,6 @@ class Setting extends Model
             ],
             "logo" => [
                 SettingEnum::LOGO, SettingEnum::FAVICON,
-            ],
-            "delivery_fee" => [
-                SettingEnum::INSIDE_DHAKA, SettingEnum::OUTSIDE_DHAKA
             ],
             "social_link" => [
                 SettingEnum::FACEBOOK, SettingEnum::TWITTER, SettingEnum::INSTAGRAM,

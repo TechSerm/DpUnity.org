@@ -235,7 +235,6 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-
         [
             'text'        => 'Dashboard',
             'url'         => '/admin',
@@ -243,106 +242,10 @@ return [
             'label_color' => 'success',
         ],
         [
-            'text'        => 'Products',
-            'url'         => '/admin/products',
-            'icon'        => 'fas fa-egg',
+            'text'        => 'Members',
+            'url'         => '/admin/members',
+            'icon'        => 'fas fa-users',
             'label_color' => 'success',
-            'can' => '',
-        ],
-        [
-            'text'        => 'Categories',
-            'url'         => '/admin/categories',
-            'icon'        => 'fas fa-dice-d6',
-            'label_color' => 'success',
-            'can' => 'categories.index'
-        ],
-        [
-            'text'        => 'Brand',
-            'url'         => '/admin/brands',
-            'icon'        => 'fas fa-dice-d6',
-            'label_color' => 'success',
-            'can' => ''
-        ],
-        [
-            'text'        => 'Orders',
-            'icon'        => 'fas fa-list',
-            'label_color' => 'success',
-            'submenu' => [
-                [
-                    'text'        => 'All Orders',
-                    'url'         => '/admin/orders?ref=all',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-                ],
-                [
-                    'text'        => 'Processing',
-                    'url'         => '/admin/orders?ref=processing',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-                ],
-                [
-                    'text'        => 'Confirmed',
-                    'url'         => '/admin/orders?ref=confirmed',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-                ],
-                [
-                    'text'        => 'Shipped',
-                    'url'         => '/admin/orders?ref=shipped',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-                ],
-                [
-                    'text'        => 'Delivered',
-                    'url'         => '/admin/orders?ref=delivered',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-                ],
-                [
-                    'text'        => 'Completed',
-                    'url'         => '/admin/orders?ref=completed',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-                ],
-                [
-                    'text'        => 'Canceled',
-                    'url'         => '/admin/orders?ref=canceled',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-                ],
-            ],
-        ],
-        [
-            'text'        => 'Reports',
-            'icon'        => 'fa fa-file',
-            'label_color' => 'success',
-            'submenu' => [
-                [
-                    'text'        => 'Overview',
-                    'url'         => '/admin/reports/overview',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-                ],
-                [
-                    'text'        => 'Products',
-                    'url'         => '/admin/reports/products',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-                ],
-                [
-                    'text'        => 'Orders',
-                    'url'         => '/admin/reports/orders',
-                    'label_color' => 'success',
-                    'shift'   => 'ml-3',
-                ],
-            ],
-        ],
-        [
-            'text'        => 'Attributes',
-            'url'         => '/admin/attributes',
-            'icon'        => 'fas fa-dice-d6',
-            'label_color' => 'success',
-            'can' => ''
         ],
         [
             'text'        => 'Settings',
@@ -366,11 +269,25 @@ return [
         ],
         [
             'text'        => 'Users',
-            'url'         => '/admin/users',
             'icon'        => 'fas fa-user',
             'label_color' => 'success',
-            'can' => ''
+            'can' => '',
+            'submenu' => [
+                [
+                    'text'        => 'Admin',
+                    'url'         => '/admin/users',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+                [
+                    'text'        => 'Normal Users',
+                    'url'         => '/admin/normal_users',
+                    'label_color' => 'success',
+                    'shift'   => 'ml-3',
+                ],
+            ]
         ],
+
         // ['header' => 'account_settings'],
         // [
         //     'text' => 'profile',

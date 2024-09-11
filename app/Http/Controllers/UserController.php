@@ -12,23 +12,41 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
         return view('users.index', [
-            'users' => $users
+            'dataRoute' => route('admin.admin_users.data')
         ]);
     }
 
-    public function getData(Request $request)
+    public function normalUser()
     {
-        $userQuery = User::where([]);
+        return view('users.index', [
+            'dataRoute' => route('admin.normal_users.data')
+        ]);
+    }
+
+    public function getAdminData(Request $request)
+    {
+        $userQuery = User::where(['role_name' => 'admin']);
 
         return DataTables::of($userQuery)
-            ->filter(function ($query) use ($request) {
+            ->filter(function ($query) use ($request) {})
+            ->addColumn('action', function ($model) {
+                $content = "<button data-url='" . route('admin.users.edit', ['user' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update User <b>#" . $model->id . "</b>'
+                data-modal-size='650' data-toggle='modal'><i class='fa fa-edit'></i></button>";
+                return $content;
             })
+            ->make(true);
+    }
+
+    public function getNormalUserData(Request $request)
+    {
+        $userQuery = User::where(['role_name' => 'user']);
+
+        return DataTables::of($userQuery)
+            ->filter(function ($query) use ($request) {})
             ->addColumn('action', function ($model) {
                 $content = "<button data-url='" . route('users.edit', ['user' => $model->id]) . "' class='btn btn-success btn-action btn-sm mr-1' data-modal-title='Update User <b>#" . $model->id . "</b>'
                 data-modal-size='650' data-toggle='modal'><i class='fa fa-edit'></i></button>";
-                $content .= "<button data-url='" . route('users.destroy', ['user' => $model->id]) . "' class='btn btn-danger btn-action btn-sm' data-toggle='delete'><i class='fa fa-trash'></i></button>";
                 return $content;
             })
             ->make(true);
@@ -86,24 +104,15 @@ class UserController extends Controller
             'phone' => ['required', 'regex:/(01)[0-9]{9}/'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
             'password' => ['nullable', 'string', 'confirmed'],
+            'role_name' => ['required']
         ]);
-
-
-        $imageId = $user->image_id;
-
-        if ($request->hasFile('image')) {
-            $imgSrv = $this->getImageService($user->imageSrv());
-            $image = $imgSrv->createAndReplace('image');
-            $imageId = $image ? $image->id : $imageId;
-        }
-
-        $user->image_id = $imageId;
 
         if ($request->password) {
             $user->password = bcrypt($request->password);
         }
 
-        $user->fill($request->all())->save();
+
+        $user->fill($request->except(['password', 'password_confirmation']))->save();
 
         return response()->json([
             'message' => 'User Successfully Updated'

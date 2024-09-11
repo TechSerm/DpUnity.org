@@ -2,20 +2,10 @@
 return [
     //dashboard
     'dashboard.profit' => ['admin'],
-    'dashboard.profit.all_status' => ['admin', 'vendor'],
-    'dashboard.profit.cashier' => ['admin', 'cashier'],
+    'dashboard.profit.all_status' => ['admin'],
+    'dashboard.profit.cashier' => ['admin'],
 
-    //products
-    'products.index' => ['admin', 'vendor', 'cashier', 'delivery_man'],
-    'products.create' => ['admin'],
-    'products.edit' => ['admin', 'vendor'],
-    'products.show' => ['admin', 'vendor'],
-    'products.history' => ['admin'],
-    'products.delete' => ['admin'],
-    'products.serial' => ['admin'],
-
-
-    'products_price.index' => ['admin', 'vendor', 'delivery_man'],
+    'products_price.index' => ['admin'],
     'products_price.show_vendor' => ['admin', 'delivery_man'],
 
     //categories

@@ -13,6 +13,15 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role_name',
+        'phone',
+        'remember_token',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -67,6 +76,11 @@ class User extends Authenticatable
     public function getImageAttribute()
     {
         return $this->imageSrv()->src();
+    }
+
+    public function member()
+    {
+        return Member::where('user_id', $this->id)->first();
     }
 
     public function imageTable()

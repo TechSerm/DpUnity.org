@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->string('extension')->nullable();
+            $table->string('title')->nullable();
             $table->timestamps();
         });
     }

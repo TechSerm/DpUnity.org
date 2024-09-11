@@ -73,12 +73,6 @@
                     <div class="float-left" style="padding-top: 7px;">
                         User List
                     </div>
-                    <div class="float-right">
-                        <button class="btn btn-primary " data-url="{{ route('users.create') }}"
-                            data-modal-title="Create Product" data-modal-size="650" data-toggle="modal">
-                            <i class="fa fa-plus"></i> Create User
-                        </button>
-                    </div>
                 </div>
 
                 <div class="card-body">
@@ -93,7 +87,7 @@
                         <thead>
                             <tr>
                                 <th  style="width: 25%"">Name</th>
-                                <th>Type</th>
+                                <th>Role</th>
                                 <th>Email</th>
                                 <th>Mobile</th>
                                 <th>Action</th>
@@ -125,7 +119,7 @@
                 "fnStateLoad": function(oSettings) {
                     return JSON.parse(Helper.storage.getItem('categoryDataTables'));
                 },
-                ajax: "{{ route('users.data') }}",
+                ajax: "{{ $dataRoute }}",
                 columns: [
                     {data: 'name'},
                     {data: 'role_name'},

@@ -16,7 +16,6 @@ class SettingsController extends Controller
             'generalSettingOptions' => Setting::general()->get(),
             'logoSettingOptions' => Setting::logo()->get(),
             'socialSettingOptions' => Setting::socialLink()->get(),
-            'delivaryFeeSettingOptions' => Setting::deliveryFee()->get(),
         ]);
     }
 

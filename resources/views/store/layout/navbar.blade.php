@@ -148,6 +148,7 @@
     .main-menu {
         position: relative;
         z-index: 3;
+        background: #ffffff;
     }
 
     .sub-menu {
@@ -290,7 +291,7 @@
     }
 
     .utility-nav {
-        background: #e4e4e4;
+        background: #ffffff;
         padding: 0.5rem 1rem;
     }
 
@@ -346,6 +347,102 @@
     }
 
     .custom-nav-item {}
+
+    .navbar-logo {
+        max-height: 60px;
+        width: 100%;
+        height: auto;
+    }
+
+    @media (max-width: 1200px) {
+
+        /* For large desktops */
+        .navbar-logo {
+            max-height: 50px;
+        }
+    }
+
+    @media (max-width: 992px) {
+
+        /* For tablets and small desktops */
+        .navbar-logo {
+            max-height: 40px;
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        /* For tablets and small devices */
+        .navbar-logo {
+            max-height: 35px;
+        }
+
+        .main-menu {
+            padding: 0px;
+        }
+
+    }
+
+    @media (max-width: 576px) {
+
+        /* For small mobile devices */
+        .navbar-logo {
+            max-height: 30px;
+        }
+    }
+
+    @media (max-width: 400px) {
+
+        /* For extra small mobile devices */
+        .navbar-logo {
+            max-height: 25px;
+        }
+    }
+
+    .top-right-icons {
+        top: 10px;
+        text-align: right;
+        padding-right: 15px;
+
+    }
+
+    .top-right-icons a {
+        color: #333;
+        font-size: 16px;
+    }
+
+    .btn-nav {
+
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    /* Button hover effect */
+    .btn-nav:hover {
+        background-color: #0056b3;
+        color: #fff;
+    }
+
+    /* Styles for tablets and small desktops (max-width: 992px) */
+    @media (max-width: 992px) {
+        .btn-nav {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+    }
+
+    /* Styles for tablets and small devices (max-width: 768px) */
+    @media (max-width: 768px) {
+        .btn-nav {
+            padding: 8px;
+            font-size: 13px;
+        }
+    }
 </style>
 
 
@@ -356,63 +453,86 @@
         <div class="utility-nav d-none d-md-block">
             <div class="container text-center">
                 <p class="small" style="font-weight: bold">{{ theme()->headline() }}</p>
-
             </div>
         </div>
     @endif
 
-    <nav class="navbar navbar-expand-md navbar-light bg-light main-menu" style="box-shadow:none">
+    {{-- <div class="utility-nav">
         <div class="container">
+            <div class="top-right-icons">
+                <a href="#" class="text-dark mr-3"><i class="fas fa-phone"></i></a> <!-- Phone Icon -->
+                <a href="#" class="text-dark mr-3"><i class="fas fa-envelope"></i></a> <!-- Email Icon -->
+                <a href="#" class="text-dark"><i class="fas fa-shopping-cart"></i></a> <!-- Cart Icon -->
+            </div>
+        </div>
+    </div> --}}
+
+    <nav class="navbar navbar-expand-md main-menu" style="box-shadow:none;">
+
+        <div class="container">
+
             <button type="button" id="sidebarCollapse" class="btn btn-link d-block d-md-none">
                 <i class="bx bx-menu icon-single"></i>
             </button>
 
-            <a class="navbar-brand" href="{{ route('home') }}">
-                <img src="{{ theme()->logo() }}" width="150" height="60" alt="">
+            <a class="navbar-brand" href="{{ route('home.index') }}">
+                <img src="{{ theme()->logo() }}" class="navbar-logo" alt="">
             </a>
 
-            <ul class="navbar-nav ml-auto d-block d-md-none">
-                <li class="btn custom-nav-item nav-item">
-                    <a class="" href="{{ route('cart') }}"><i class="bx bxs-cart icon-single"></i>
-                        <span class="badge badge-danger theme-bg"
-                            style="padding: 3px 6px 3px 6px">{{ theme()->totalCart() }}</span>
-                    </a>
-                </li>
-                <li class="btn custom-nav-item nav-item">
-                    <a class="" data-turbolinks="{{ auth()->check() ? 'false' : 'true' }}"
-                        href="{{ route(auth()->check() ? 'admin.home' : 'login') }}"><i
-                            class="bx bxs-user mr-1"></i></a>
-                </li>
+            <ul class="navbar-nav ml-auto d-block d-md-none mr-2">
+
+                <a href="">
+                    <li class="btn btn-danger btn-nav btn-sm custom-nav-item nav-item" style="">
+                        @if (auth()->check())
+                            <form method="POST" class="btn btn-danger btn-nav" style="padding: 5px"
+                                action="{{ route('logout') }}">
+                                @csrf
+                                <a href="" class="btn-danger btn-nav" style=""
+                                    onclick="event.preventDefault(); this.closest('form').submit();">
+                                    <i class="fas fa-sign-out-alt"></i> সাইন আউট
+                                </a>
+                            </form>
+                        @endif
+                    </li>
+                </a>
+                <a data-turbolinks="{{ auth()->check() ? 'false' : 'true' }}"
+                    href="{{ route(auth()->check() ? 'profile.index' : 'login') }}">
+                    <li class="btn btn-primary btn-nav custom-nav-item nav-item">
+                        <i class="bx bxs-user mr-1"></i>
+                        {{ auth()->check() ? 'প্রোফাইল' : 'লগ ইন' }}
+                    </li>
+                </a>
             </ul>
 
             <div class="collapse navbar-collapse">
                 <div class="form-inline my-2 my-lg-0 mx-auto">
-                    <form action="{{ route('search') }}">
-                        <input class="form-control" type="search" name="q" autocomplete="off" id="search"
-                            value="{{ request()->q }}" placeholder="Search for products..." aria-label="Search">
-                        <button id="searchBtn" class="btn theme-bg my-2 my-sm-0" onclick="" type="submit"><i
-                                class="bx bx-search"></i></button>
-                    </form>
+
                 </div>
                 <div style="">
                     <ul class="navbar-nav">
-                        <li class="btn custom-nav-item nav-item">
+                        {{-- <li class="btn custom-nav-item nav-item">
                             <a class="" href="tel:{{ theme()->mobile() }}">
                                 <span class="rightBtn">
                                     <i class="bx bxs-phone mr-1"></i>{{ theme()->mobile() }}
                                 </span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="btn custom-nav-item nav-item">
-                            <a class="" href="{{ route('cart') }}"><i class="bx bxs-cart icon-single"></i>
-                                <span class="badge badge-danger theme-bg"
-                                    style="padding: 3px 6px 3px 6px">{{ theme()->totalCart() }}</span>
-                            </a>
-                        </li>
-                        <li class="btn custom-nav-item nav-item">
-                            <a class="" data-turbolinks="{{ auth()->check() ? 'false' : 'true' }}"
-                                href="{{ route(auth()->check() ? 'admin.home' : 'login') }}"><i
-                                    class="bx bxs-user mr-1"></i></a>
+                            @if (auth()->check())
+                                <form method="POST" class="btn btn-danger btn-nav" style="padding: 0px"
+                                    action="{{ route('logout') }}">
+                                    @csrf
+                                    <a href="" class="btn-danger btn-nav" style=""
+                                        onclick="event.preventDefault(); this.closest('form').submit();">
+                                        <i class="fas fa-sign-out-alt"></i> সাইন আউট
+                                    </a>
+                                </form>
+                            @endif
+
+                            <a class="btn btn-primary btn-nav"
+                                data-turbolinks="{{ auth()->check() ? 'false' : 'true' }}"
+                                href="{{ route(auth()->check() ? 'profile.index' : 'login') }}"><i
+                                    class="bx bxs-user mr-1"></i> {{ auth()->check() ? 'প্রোফাইল' : 'লগ ইন' }} </a>
                         </li>
 
                     </ul>
@@ -441,20 +561,6 @@
             </div>
         </nav>
     </div>
-    <div class="search-bar d-block d-md-none" style="padding: 10px; 5px 0px 5px;">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 form">
-                    <div class="form-inline">
-                            <input class="form-control" type="search" name="q" autocomplete="off" id="searchMobile"
-                                value="{{ request()->q }}" placeholder="Search for products..." aria-label="Search">
-                            <button class="btn theme-bg" type="submit" onclick="Store.search.searchProduct()"><i
-                                    class="bx bx-search"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Sidebar -->
     <nav id="sidebar">
@@ -462,10 +568,9 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-10 pl-0">
-                        <a class="btn btn-success" href="tel:{{ theme()->mobile() }}"><i
-                                class="bx bxs-phone mr-2"></i>
+                        <a class="btn btn-success" href="tel:{{ theme()->mobile() }}"><i class="bx bxs-phone mr-2"></i>
                             Hot Line</a>
-                        <a class="btn btn-primary" href="{{ route('home') }}"><i class="bx bx-home mr-1"></i>
+                        <a class="btn btn-primary" href="{{ route('home.index') }}"><i class="bx bx-home mr-1"></i>
                             Home</a>
                     </div>
                     <div class="col-2 text-left">
@@ -480,12 +585,11 @@
         <ul class="list-unstyled components links">
 
             <li class="">
-                <a href="{{ route('home') }}"><i class="bx bx-home mr-3"></i> Home</a>
+                <a href="{{ route('home.index') }}"><i class="bx bx-home mr-3"></i> Home</a>
             </li>
 
             <li style="">
-                <a href="{{ route('store.categories') }}"><i class="bx bx-carousel mr-3"></i>
-                    Categories</a>
+
                 <ul class="list-unstyled" style="padding-left: 35px" id="pageSubmenu">
 
                     @foreach ($headers as $key => $header)
@@ -501,13 +605,6 @@
                 </ul>
             </li>
         </ul>
-
-        {{-- <ul class="social-icons">
-            <li><a href="#" target="_blank" title=""><i class="bx bxl-facebook-square"></i></a></li>
-            <li><a href="#" target="_blank" title=""><i class="bx bxl-twitter"></i></a></li>
-            <li><a href="#" target="_blank" title=""><i class="bx bxl-linkedin"></i></a></li>
-            <li><a href="#" target="_blank" title=""><i class="bx bxl-instagram"></i></a></li>
-        </ul> --}}
 
     </nav>
 </div>
@@ -533,11 +630,5 @@
                 $(".overlay").removeClass("visible");
             });
         });
-
-        // Store.search.init({
-        //     searchUrl: "{{ route('search.products') }}",
-        //     searchResultUrl: "{{ route('search') }}",
-        //     searchQuery: "{{ request()->q }}"
-        // });
     </script>
 @endpush
