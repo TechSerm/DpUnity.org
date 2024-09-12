@@ -1,5 +1,5 @@
 @extends('store.layout.layout')
-@section('title', theme()->title() . ' - ' . theme()->slogan())
+@section('title', 'সদস্য গণের তালিকা' . ' - ' . theme()->title())
 @section('content')
 <style>
     .member-card{

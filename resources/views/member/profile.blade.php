@@ -1,5 +1,5 @@
 @extends('store.layout.layout')
-@section('title', theme()->title() . ' - ' . theme()->slogan())
+@section('title', $member->name . ' - ' . theme()->title())
 @section('content')
 
     <style>
