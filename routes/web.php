@@ -39,7 +39,8 @@ Route::middleware([])->group(function () {
     Route::get('/profile',  [HomeController::class, 'profile'])->name('profile.index')->middleware('auth');
     Route::get('/members/create',  [HomeController::class, 'memberForm'])->name('members.create');
     Route::post('/members/store',  [MemberController::class, 'store'])->name('members.store');
-    Route::get('/members',  [MemberController::class, 'viewList'])->name('members.index');
+    Route::get('/members',  [MemberController::class, 'category'])->name('members.index');
+    Route::get('/members/{category}',  [MemberController::class, 'viewList'])->name('members.category');
     Route::get('/members/profile/{member}',  [MemberController::class, 'viewProfile'])->name('members.profile');
 
 });

@@ -130,7 +130,7 @@
         <div class="jumbotron jumbotron-fluid"></div>
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-11">
+                <div class="col-xl-12">
                     <div class="widget head-profile has-shadow">
                         <div class="widget-body pb-0">
                             <div class="row d-flex align-items-center">
@@ -149,6 +149,7 @@
                                         </h2>
                                         <div class="location">{{ $member->permanent_address }}</div>
                                         <div class="location">{{ $member->present_address }}</div>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -164,18 +165,13 @@
                                                     <td class="td1">আইডি </td>
                                                     <td><b style="font-size: 16px">{{ bnConvert()->number($member->organization_id) }}</b></td>
                                                 </tr>
-                                                
+                                                <tr>
+                                                    <td class="td1">ক্যাটেগরি </td>
+                                                    <td><b style="font-size: 16px">{{ $member->category->toBangla() }}</b></td>
+                                                </tr>
                                                 <tr>
                                                     <td class="td1">পিতার নাম</td>
                                                     <td>{{ $member->father_name }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td1">মাতার নাম</td>
-                                                    <td>{{ $member->mother_name }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td1">জন্ম তারিখ</td>
-                                                    <td>{{ $member->date_of_birth->format('d M Y') }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="td1">জাতীয়তা</td>

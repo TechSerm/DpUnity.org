@@ -9,7 +9,7 @@
     <div class="store-card">
         <div class="header text-center">
             <h4 style="font-weight: bold">
-                সদস্য গণের তালিকা
+                {{ $category->toBangla() }}দের তালিকা
             </h4>
         </div>
         <div class="body">

@@ -5,7 +5,7 @@
     <div class="store-card">
         <div class="body" style="padding: 0px;">
             <img class="img-thumbnail"
-                src="{{ asset('assets/img/banner_dp.jpg') }}"
+                src="{{ asset('assets/img/banner_dp_1.jpg') }}"
                 alt="">
         </div>
     </div>

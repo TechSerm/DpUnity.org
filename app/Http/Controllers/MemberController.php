@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CategoryEnum;
 use App\Http\Requests\MemberRequest;
 use App\Http\Requests\MemberUpdateRequest;
 use App\Models\Member;
@@ -61,6 +62,7 @@ class MemberController extends Controller
         }
 
         Member::create([
+            'category' => $request->input('category'),
             'name' => $request->input('name'),
             'father_name' => $request->input('father_name'),
             'mother_name' => $request->input('mother_name'),
@@ -106,6 +108,7 @@ class MemberController extends Controller
         }
 
         $member->update([
+            'category' => $request->input('category'),
             'name' => $request->input('name'),
             'father_name' => $request->input('father_name'),
             'mother_name' => $request->input('mother_name'),
@@ -137,16 +140,28 @@ class MemberController extends Controller
             'message' => 'Member Successfully Deleted'
         ]);
     }
-    
-    public function viewList()
+
+    public function category()
     {
-        $members = Member::where(['is_approved' => true])->orderBy('organization_id')->get();
-        return view('member.list', compact('members'));
+        return view('member.category');
+    }
+
+    public function viewList($category)
+    {
+        if(!CategoryEnum::hasValue($category)) {
+            abort(404);
+        }
+
+        $category = CategoryEnum::fromValue($category);
+
+        $members = Member::where(['is_approved' => true, 'category' => $category])->orderBy('organization_id')->get();
+
+        return view('member.list', compact('members', 'category'));
     }
 
     public function viewProfile($memberOrganizationId)
     {
-        $member = Member::where(['organization_id' => $memberOrganizationId ,'is_approved' => true])->firstOrFail();
+        $member = Member::where(['organization_id' => $memberOrganizationId, 'is_approved' => true])->firstOrFail();
 
         return view('member.profile', compact('member'));
     }

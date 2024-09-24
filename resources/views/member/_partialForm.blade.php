@@ -14,7 +14,7 @@
 <div class="row">
 
     @if ($member && $member->organization_id != '')
-        <div class="col-md-12 mb-3">
+        <div class="col-md-6 mb-3">
             {!! Form::label('organization_id', 'আইডি') !!}
             {!! Form::text('organization_id', null, [
                 'class' => 'form-control',
@@ -24,6 +24,20 @@
             ]) !!}
         </div>
     @endif
+    <div class="col-md-6 mb-3">
+        {!! Form::label('category', 'ক্যাটেগরি') !!}
+        {!! Form::select(
+            'category',
+            [
+                '' => '-- ক্যাটেগরি নির্বাচন করুন --',
+                'soddosho' => 'সদস্য',
+                'shohojoddha' => 'সহযোদ্ধা',
+                'shuvokankkhi' => 'শুভাকাঙ্ক্ষী',
+            ],
+            null,
+            ['class' => 'form-control d-block w-100', 'required', $isReadOnly],
+        ) !!}
+    </div>
     <div class="col-md-12 mb-3">
         {!! Form::label('name', 'নাম') !!}
         {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'নাম', 'required', $isReadOnly]) !!}

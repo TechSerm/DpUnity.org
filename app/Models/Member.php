@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CategoryEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,7 +27,8 @@ class Member extends Model
         'image_id',
         'signature_id',
         'user_id',
-        'is_approved'
+        'is_approved',
+        'category'
     ];
 
     protected $hidden = [
@@ -36,6 +38,12 @@ class Member extends Model
     protected $dates = [
         'date_of_birth',
     ];
+
+
+    public function getCategoryAttribute($value)
+    {
+        return CategoryEnum::hasValue($value) ? CategoryEnum::fromValue($value) : CategoryEnum::fromValue(CategoryEnum::SODDOSHO);
+    }
 
     public function image()
     {

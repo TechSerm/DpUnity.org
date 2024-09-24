@@ -19,6 +19,7 @@ class MemberUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'category' => 'required',
             'name' => 'required|string|max:255',
             'father_name' => 'required|string|max:255',
             'mother_name' => 'required|string|max:255',
@@ -41,6 +42,7 @@ class MemberUpdateRequest extends FormRequest
     public function attributes()
     {
         return [
+            'category' => 'ক্যাটেগরি',
             'name' => 'পূর্ণ নাম',
             'father_name' => 'পিতার নাম',
             'mother_name' => 'মাতার নাম',
