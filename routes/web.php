@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\App;
 
 Route::middleware([])->group(function () {
     Route::get('/',  [HomeController::class, 'index'])->name('home.index');
+    Route::get('/about_us',  [HomeController::class, 'aboutUs'])->name('about_us');
     Route::get('/profile',  [HomeController::class, 'profile'])->name('profile.index')->middleware('auth');
     Route::get('/members/create',  [HomeController::class, 'memberForm'])->name('members.create');
     Route::post('/members/store',  [MemberController::class, 'store'])->name('members.store');

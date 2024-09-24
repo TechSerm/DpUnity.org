@@ -29,12 +29,18 @@ class HomeController extends Controller
         return view('profile.index');
     }
 
-    public function memberForm() {
+    public function memberForm()
+    {
         return view('member.form');
     }
 
     public function members()
     {
         return view('member.list');
+    }
+
+    public function aboutUs()
+    {
+        return view('about_us');
     }
 }

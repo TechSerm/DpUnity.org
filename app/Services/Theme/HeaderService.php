@@ -15,7 +15,7 @@ class HeaderService
             ],
             (Object)[
                 'title' => 'আমাদের সম্পর্কে', 
-                'url' => route('home.index')
+                'url' => route('about_us')
             ],
             (Object)[
                 'title' => 'সদস্য নিবন্ধন', 
