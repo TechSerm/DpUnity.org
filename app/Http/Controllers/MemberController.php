@@ -143,12 +143,22 @@ class MemberController extends Controller
 
     public function category()
     {
-        return view('member.category');
+        $totalSoddosho = Member::where(['is_approved' => true, 'category' => CategoryEnum::SODDOSHO])->count();
+        $totalDataSoddosho = Member::where(['is_approved' => true, 'category' => CategoryEnum::DATA_SODDOSHO])->count();
+        $totalShohojoddha = Member::where(['is_approved' => true, 'category' => CategoryEnum::SHOHOJODDHA])->count();
+        $totalShuvokankkhi = Member::where(['is_approved' => true, 'category' => CategoryEnum::SHUVOKANKKHI])->count();
+
+        return view('member.category', [
+            'totalSoddosho' => $totalSoddosho,
+            'totalDataSoddosho' => $totalDataSoddosho,
+            'totalShohojoddha' => $totalShohojoddha,
+            'totalShuvokankkhi' => $totalShuvokankkhi,
+        ]);
     }
 
     public function viewList($category)
     {
-        if(!CategoryEnum::hasValue($category)) {
+        if (!CategoryEnum::hasValue($category)) {
             abort(404);
         }
 

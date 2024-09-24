@@ -7,6 +7,7 @@ use BenSampo\Enum\Enum;
 final class CategoryEnum extends Enum
 {
     const SODDOSHO = "soddosho";
+    const DATA_SODDOSHO = "data_soddosho";
     const SHOHOJODDHA = "shohojoddha";
     const SHUVOKANKKHI = "shuvokankkhi";
 
@@ -15,6 +16,8 @@ final class CategoryEnum extends Enum
         switch ($this->value) {
             case self::SODDOSHO:
                 return "সদস্য";
+            case self::DATA_SODDOSHO:
+                return "দাতা সদস্য";
             case self::SHOHOJODDHA:
                 return "সহযোদ্ধা";
             case self::SHUVOKANKKHI:
@@ -28,6 +31,7 @@ final class CategoryEnum extends Enum
     {
         return [
             self::SODDOSHO => "সদস্য",
+            self::DATA_SODDOSHO => "দাতা সদস্য",
             self::SHOHOJODDHA => "সহযোদ্ধা",
             self::SHUVOKANKKHI => "শুভাকাঙ্ক্ষী",
         ];
