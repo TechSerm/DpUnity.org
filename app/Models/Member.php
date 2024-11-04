@@ -39,6 +39,10 @@ class Member extends Model
         'date_of_birth',
     ];
 
+    public function scopeApproved($query)
+    {
+        return $query->where('is_approved', true);
+    }
 
     public function getCategoryAttribute($value)
     {

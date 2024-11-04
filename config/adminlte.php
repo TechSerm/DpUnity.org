@@ -248,6 +248,12 @@ return [
             'label_color' => 'success',
         ],
         [
+            'text'        => 'জমা',
+            'url'         => '/admin/transaction/diposite',
+            'icon'        => 'fa fa-dollar',
+            'label_color' => 'success',
+        ],
+        [
             'text'        => 'Settings',
             'icon'        => 'fas fa-cog',
             'label_color' => 'success',

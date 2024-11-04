@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
+
 class HomeController extends Controller
 {
     /**
@@ -26,7 +28,12 @@ class HomeController extends Controller
 
     public function profile()
     {
-        return view('profile.index');
+        $transactions = null;
+        if(auth()->user()->member()) {
+            $transactions = Transaction::diposite()->where('member_id', auth()->user()->member()->id)->get();
+        }
+        
+        return view('profile.index', compact('transactions'));
     }
 
     public function memberForm()
@@ -42,5 +49,11 @@ class HomeController extends Controller
     public function aboutUs()
     {
         return view('about_us');
+    }
+
+    public function diposite()
+    {
+        $transactions = Transaction::diposite()->with('member')->get();
+        return view('diposite.index', compact('transactions'));
     }
 }

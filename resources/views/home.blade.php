@@ -25,11 +25,37 @@
         </div>
     </div>
 
-    <div class="store-card">
-        <div class="body text-center">
-            <h1>ওয়েবসাইট এর কাজ চলমান </h1>
+    <div class="row">
+        <div class="col-md-6 col-12">
+            <div class="store-card">
+                
+                <div class="body">
+                    <img class="img-thumbnail" src="{{ asset('assets/img/uae_inauguration.jpeg') }}" style="width: 100%" alt="">
+                </div>
+                <div class="header text-center" style="margin-top: -10px">
+                    সংযুক্ত আরব আমিরাতের বানিয়াছ সিটিতে উদ্বোধনী  অনুষ্ঠান
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="store-card">
+                
+                <div class="body">
+                    <img class="img-thumbnail" src="{{ asset('assets/img/france_inauguration.jpeg') }}" style="width: 100%" alt="">
+                </div>
+                <div class="header text-center" style="margin-top: -10px">
+                    ফ্রান্সের প্যারিসে উদ্বোধনী অনুষ্ঠান
+                </div>
+            </div>
         </div>
     </div>
+    
+    <div class="store-card">
+        <div class="body text-center">
+            <h4>ওয়েবসাইট এর কাজ চলমান </h4>
+        </div>
+    </div>
+
 
 @stop
 

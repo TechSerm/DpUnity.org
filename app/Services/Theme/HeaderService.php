@@ -25,6 +25,10 @@ class HeaderService
                 'title' => 'সদস্যের তালিকা', 
                 'url' => route('members.index')
             ],
+            (Object)[
+                'title' => 'জমার তালিকা', 
+                'url' => route('diposite')
+            ],
         ];
 
         return $headers;

@@ -38,6 +38,46 @@
 
                 </div>
                 <div class="col-md-8">
+                    @if (auth()->user()->member())
+                        
+                    
+                    <div class="card mb-2">
+                        <div class="card-body text-center bg-success" style="color: #ffffff">
+                            <h3>আপনার মোট জমা হয়েছেঃ<h3><h1><b>{{ bnConvert()->number($transactions->sum('amount')) }} টাকা</b></h1>
+                        </div>
+                    </div>
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <h4>আপনার জমার তালিকা</h4>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">জমার নাম্বার</th>
+                                        <th scope="col">পরিমাণ</th>
+                                        <th scope="col">সময়</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($transactions as $transaction)
+                                    <tr>
+                                        <td>
+                                            {{ $transaction->id }}
+                                        </td>
+                                        <td>
+                                            {{ $transaction->amount }}
+                                        </td>
+                                        <td>
+                                            {{ $transaction->created_at }}
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
                     <div class="card mb-3">
                         <div class="card-body">
                             <div class="row">
