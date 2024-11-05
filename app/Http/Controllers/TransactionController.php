@@ -60,7 +60,7 @@ class TransactionController extends Controller
             })
             
             ->addColumn('action', function ($model) {
-                $content = "";
+                $content = "<button data-url='" . route('admin.transaction.delete', ['transaction' => $model->uuid]) . "' class='btn btn-danger btn-action btn-sm' data-callback='reloadTransactionDatatable()' data-toggle='delete'><i class='fa fa-trash'></i></button>";
                 return $content;
             })
 
@@ -113,9 +113,12 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function delete(Transaction $transaction)
+    public function delete($transactionUuid)
     {
-        $transaction->delete();
+        $transaction = Transaction::where(['uuid' => $transactionUuid])->firstOrFail();
+        if($transaction) {
+            $transaction->delete();
+        }
         return response()->json([
             'message' => "Successfully delete transaction"
         ]);

@@ -159,7 +159,9 @@
             });
         });
 
-
+        function reloadTransactionDatatable() {
+            $('#dipositeTable').DataTable().ajax.reload(null, false);
+        }
 
         function createDiposite(e) {
             let form = Helper.form(e);

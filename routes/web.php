@@ -75,6 +75,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/withdraw', [TransactionController::class, 'withdraw'])->name('withdraw.index');
             Route::get('/withdraw/create', [TransactionController::class, 'withdrawCreate'])->name('withdraw.create');
             Route::post('/withdraw/store', [TransactionController::class, 'withdrawStore'])->name('withdraw.store');
+            Route::delete('/{transaction}/delete', [TransactionController::class, 'delete'])->name('delete');
         });
 
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
