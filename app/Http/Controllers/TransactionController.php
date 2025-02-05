@@ -53,8 +53,7 @@ class TransactionController extends Controller
                     return $model->member->name . " (".$model->member->id.")";
                 }
                 return $model->name;
-            })
-            
+            })         
             ->editColumn('created_at', function ($model) {
                 return $model->created_at->format('j M Y, g:i A') . " (" . $model->created_at->diffForHumans() . ")";
             })

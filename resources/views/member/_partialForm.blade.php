@@ -1,231 +1,219 @@
-@php
-    $isReadOnly = $member ? 'disabled' : '';
-@endphp
-<style>
-    input[type="checkbox"] {
-        width: 15px;
-        height: 15px;
-        transform: scale(1.5);
-        /* Scale the checkbox */
-        -webkit-transform: scale(1.5);
-        /* For Safari */
-        margin: 5px;
-    }
-</style>
+<div class="bg-white shadow-md rounded-lg p-8 space-y-6">
+    <div class="grid md:grid-cols-2 gap-6">
+        @if ($member && $member->organization_id != '')
+            <div class="mb-4">
+                <label for="organization_id" class="block text-sm font-medium text-gray-700 mb-2">আইডি</label>
+                <input 
+                    type="text" 
+                    name="organization_id" 
+                    id="organization_id" 
+                    value="{{ $member->organization_id ?? '' }}"
+                    placeholder="আইডি" 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                    {{ $member ? 'disabled' : '' }}
+                >
+            </div>
+        @endif
 
-<div class="row">
-
-    @if ($member && $member->organization_id != '')
-        <div class="col-md-6 mb-3">
-            {!! Form::label('organization_id', 'আইডি') !!}
-            {!! Form::text('organization_id', null, [
-                'class' => 'form-control',
-                'placeholder' => 'আইডি',
-                'required',
-                $isReadOnly,
-            ]) !!}
+        <div class="mb-4">
+            <label for="category" class="block text-sm font-medium text-gray-700 mb-2">ক্যাটেগরি</label>
+            <select 
+                name="category" 
+                id="category" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >
+                <option value="">-- ক্যাটেগরি নির্বাচন করুন --</option>
+                <option value="soddosho" {{ old('category', $member?->category) == 'soddosho' ? 'selected' : '' }}>সদস্য</option>
+                <option value="data_soddosho" {{ old('category', $member?->category) == 'data_soddosho' ? 'selected' : '' }}>দাতা সদস্য</option>
+                <option value="shohojoddha" {{ old('category', $member?->category) == 'shohojoddha' ? 'selected' : '' }}>সহযোদ্ধা</option>
+                <option value="shuvokankkhi" {{ old('category', $member?->category) == 'shuvokankkhi' ? 'selected' : '' }}>শুভাকাঙ্ক্ষী</option>
+            </select>
         </div>
-    @endif
-    <div class="col-md-6 mb-3">
-        {!! Form::label('category', 'ক্যাটেগরি') !!}
-        {!! Form::select(
-            'category',
-            [
-                '' => '-- ক্যাটেগরি নির্বাচন করুন --',
-                'soddosho' => 'সদস্য',
-                'data_soddosho' => 'দাতা সদস্য',
-                'shohojoddha' => 'সহযোদ্ধা',
-                'shuvokankkhi' => 'শুভাকাঙ্ক্ষী',
-            ],
-            null,
-            ['class' => 'form-control d-block w-100', 'required', $isReadOnly],
-        ) !!}
-    </div>
-    <div class="col-md-12 mb-3">
-        {!! Form::label('name', 'নাম') !!}
-        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'নাম', 'required', $isReadOnly]) !!}
     </div>
 
-    <div class="col-md-6 mb-3">
-        {!! Form::label('father_name', 'পিতার নাম') !!}
-        {!! Form::text('father_name', null, [
-            'class' => 'form-control',
-            'placeholder' => 'পিতার নাম',
-            'required',
-            $isReadOnly,
-        ]) !!}
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">নাম</label>
+            <input 
+                type="text" 
+                name="name" 
+                id="name" 
+                value="{{ old('name', $member?->name) }}"
+                placeholder="নাম" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >
+        </div>
+
+        <div class="mb-4">
+            <label for="father_name" class="block text-sm font-medium text-gray-700 mb-2">পিতার নাম</label>
+            <input 
+                type="text" 
+                name="father_name" 
+                id="father_name" 
+                value="{{ old('father_name', $member?->father_name) }}"
+                placeholder="পিতার নাম" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >
+        </div>
     </div>
 
-    <div class="col-md-6 mb-3">
-        {!! Form::label('mother_name', 'মাতার নাম') !!}
-        {!! Form::text('mother_name', null, [
-            'class' => 'form-control',
-            'placeholder' => 'মাতার নাম',
-            'required',
-            $isReadOnly,
-        ]) !!}
-    </div>
-</div>
+    <div class="grid md:grid-cols-3 gap-6">
+        <div class="mb-4">
+            <label for="date_of_birth" class="block text-sm font-medium text-gray-700 mb-2">জন্ম তারিখ</label>
+            <input 
+                type="date" 
+                name="date_of_birth" 
+                id="date_of_birth" 
+                value="{{ old('date_of_birth', $member?->date_of_birth?->format('Y-m-d')) }}"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >
+        </div>
 
-<div class="row">
-    <div class="col-md-4 mb-3">
-        {!! Form::label('date_of_birth', 'জন্ম তারিখ') !!}
-        {!! Form::date('date_of_birth', $member ? $member->date_of_birth->format('Y-m-d') : null, [
-            'class' => 'form-control',
-            'required',
-            $isReadOnly,
-        ]) !!}
-    </div>
+        <div class="mb-4">
+            <label for="nationality" class="block text-sm font-medium text-gray-700 mb-2">জাতীয়তা</label>
+            <select 
+                name="nationality" 
+                id="nationality" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >
+                <option value="">-- জাতীয়তা নির্বাচন করুন --</option>
+                <option value="Bangladeshi" {{ old('nationality', $member?->nationality) == 'Bangladeshi' ? 'selected' : '' }}>বাংলাদেশী</option>
+                <option value="Indian" {{ old('nationality', $member?->nationality) == 'Indian' ? 'selected' : '' }}>ভারতীয়</option>
+                <option value="Other" {{ old('nationality', $member?->nationality) == 'Other' ? 'selected' : '' }}>অন্যান্য</option>
+            </select>
+        </div>
 
-    <div class="col-md-4 mb-3">
-        {!! Form::label('nationality', 'জাতীয়তা') !!}
-        {!! Form::select(
-            'nationality',
-            [
-                '' => '-- জাতীয়তা নির্বাচন করুন --',
-                'Bangladeshi' => 'বাংলাদেশী',
-                'Indian' => 'ভারতীয়',
-                'Pakistani' => 'পাকিস্তানি',
-                'Nepalese' => 'নেপালী',
-                'Sri Lankan' => 'শ্রীলঙ্কান',
-                'Other' => 'অন্যান্য',
-            ],
-            null,
-            ['class' => 'form-control', 'required', $isReadOnly],
-        ) !!}
-    </div>
-
-    <div class="col-md-4 mb-3">
-        {!! Form::label('religion', 'ধর্ম') !!}
-        {!! Form::select(
-            'religion',
-            [
-                '' => '-- ধর্ম নির্বাচন করুন --',
-                'Islam' => 'ইসলাম',
-                'Hinduism' => 'হিন্দু ধর্ম',
-                'Christianity' => 'খ্রিস্টধর্ম',
-                'Buddhism' => 'বৌদ্ধধর্ম',
-                'Other' => 'অন্যান্য',
-            ],
-            null,
-            ['class' => 'form-control d-block w-100', 'required', $isReadOnly],
-        ) !!}
+        <div class="mb-4">
+            <label for="religion" class="block text-sm font-medium text-gray-700 mb-2">ধর্ম</label>
+            <select 
+                name="religion" 
+                id="religion" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >
+                <option value="">-- ধর্ম নির্বাচন করুন --</option>
+                <option value="Islam" {{ old('religion', $member?->religion) == 'Islam' ? 'selected' : '' }}>ইসলাম</option>
+                <option value="Hinduism" {{ old('religion', $member?->religion) == 'Hinduism' ? 'selected' : '' }}>হিন্দু ধর্ম</option>
+                <option value="Other" {{ old('religion', $member?->religion) == 'Other' ? 'selected' : '' }}>অন্যান্য</option>
+            </select>
+        </div>
     </div>
 
-    <div class="col-md-6 mb-3">
-        {!! Form::label('present_address', 'বর্তমান ঠিকানা') !!}
-        {!! Form::textarea('present_address', null, [
-            'class' => 'form-control',
-            'required',
-            'cols' => 30,
-            'rows' => 2,
-            $isReadOnly,
-        ]) !!}
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="mb-4">
+            <label for="present_address" class="block text-sm font-medium text-gray-700 mb-2">বর্তমান ঠিকানা</label>
+            <textarea 
+                name="present_address" 
+                id="present_address" 
+                rows="3"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >{{ old('present_address', $member?->present_address) }}</textarea>
+        </div>
+
+        <div class="mb-4">
+            <label for="permanent_address" class="block text-sm font-medium text-gray-700 mb-2">স্থায়ী ঠিকানা</label>
+            <textarea 
+                name="permanent_address" 
+                id="permanent_address" 
+                rows="3"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >{{ old('permanent_address', $member?->permanent_address) }}</textarea>
+        </div>
     </div>
 
-    <div class="col-md-6 mb-3">
-        {!! Form::label('permanent_address', 'স্থায়ী ঠিকানা') !!}
-        {!! Form::textarea('permanent_address', null, [
-            'class' => 'form-control',
-            'required',
-            'cols' => 30,
-            'rows' => 2,
-            $isReadOnly,
-        ]) !!}
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="mb-4">
+            <label for="mobile" class="block text-sm font-medium text-gray-700 mb-2">মোবাইল নম্বর</label>
+            <input 
+                type="tel" 
+                name="mobile" 
+                id="mobile" 
+                value="{{ old('mobile', $member?->mobile) }}"
+                placeholder="মোবাইল নম্বর" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >
+        </div>
+
+        <div class="mb-4">
+            <label for="blood_group" class="block text-sm font-medium text-gray-700 mb-2">রক্তের গ্রুপ</label>
+            <select 
+                name="blood_group" 
+                id="blood_group" 
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+            >
+                <option value="">রক্তের গ্রুপ নির্বাচন করুন</option>
+                <option value="A+" {{ old('blood_group', $member?->blood_group) == 'A+' ? 'selected' : '' }}>A+</option>
+                <option value="A-" {{ old('blood_group', $member?->blood_group) == 'A-' ? 'selected' : '' }}>A-</option>
+                <option value="B+" {{ old('blood_group', $member?->blood_group) == 'B+' ? 'selected' : '' }}>B+</option>
+                <option value="B-" {{ old('blood_group', $member?->blood_group) == 'B-' ? 'selected' : '' }}>B-</option>
+                <option value="AB+" {{ old('blood_group', $member?->blood_group) == 'AB+' ? 'selected' : '' }}>AB+</option>
+                <option value="AB-" {{ old('blood_group', $member?->blood_group) == 'AB-' ? 'selected' : '' }}>AB-</option>
+                <option value="O+" {{ old('blood_group', $member?->blood_group) == 'O+' ? 'selected' : '' }}>O+</option>
+                <option value="O-" {{ old('blood_group', $member?->blood_group) == 'O-' ? 'selected' : '' }}>O-</option>
+            </select>
+        </div>
     </div>
 
-    <div class="col-md-6 mb-3">
-        {!! Form::label('occupation', 'পেশা') !!}
-        {!! Form::text('occupation', null, [
-            'class' => 'form-control',
-            'placeholder' => 'উদাহরণ: প্রবাসী',
-            'required',
-            $isReadOnly,
-        ]) !!}
+    <div class="grid md:grid-cols-2 gap-6">
+        <div class="mb-4">
+            <label for="image" class="block text-sm font-medium text-gray-700 mb-2">ছবি</label>
+            <input 
+                type="file" 
+                name="image" 
+                id="image" 
+                accept="image/*"
+                onchange="previewFile(event, 'image_preview')"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >
+            <img 
+                src="{{ $member && $member->image ? $member->image->src() : asset('images/default.png') }}" 
+                id="image_preview" 
+                class="mt-4 w-32 h-32 object-cover rounded-lg shadow-md"
+                alt="Profile Preview"
+            >
+        </div>
+
+        <div class="mb-4">
+            <label for="signature" class="block text-sm font-medium text-gray-700 mb-2">স্বাক্ষর</label>
+            <input 
+                type="file" 
+                name="signature" 
+                id="signature" 
+                accept="image/*"
+                onchange="previewFile(event, 'signature_preview')"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition duration-300"
+                {{ $member ? 'disabled' : 'required' }}
+            >
+            <img 
+                src="{{ $member && $member->signature ? $member->signature->src() : asset('images/default.png') }}" 
+                id="signature_preview" 
+                class="mt-4 w-32 h-16 object-cover rounded-lg shadow-md"
+                alt="Signature Preview"
+            >
+        </div>
     </div>
 
-    <div class="col-md-6 mb-3">
-        {!! Form::label('nid', 'জাতীয় পরিচয়পত্র (এনআইডি)') !!}
-        {!! Form::text('nid', null, [
-            'class' => 'form-control',
-            'placeholder' => 'জাতীয় পরিচয়পত্র নম্বর',
-            $isReadOnly,
-        ]) !!}
-    </div>
-
-    <div class="col-md-6 mb-3">
-        {!! Form::label('mobile', 'মোবাইল নম্বর') !!}
-        {!! Form::tel('mobile', null, ['class' => 'form-control', 'placeholder' => '', 'required', $isReadOnly]) !!}
-    </div>
-
-    <div class="col-md-6 mb-3">
-        {!! Form::label('blood_group', 'রক্তের গ্রুপ') !!}
-        {!! Form::select(
-            'blood_group',
-            [
-                '' => 'রক্তের গ্রুপ নির্বাচন করুন',
-                'A+' => 'A+',
-                'A-' => 'A-',
-                'B+' => 'B+',
-                'B-' => 'B-',
-                'AB+' => 'AB+',
-                'AB-' => 'AB-',
-                'O+' => 'O+',
-                'O-' => 'O-',
-            ],
-            null,
-            ['class' => 'form-control d-block w-100', $isReadOnly],
-        ) !!}
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6 mb-3">
-        {!! Form::label('image', 'ছবি') !!}
-        {!! Form::file('image', [
-            'class' => 'form-control',
-            'required',
-            'onchange' => "previewFile(event, 'image_preview')",
-            $isReadOnly,
-        ]) !!}
-        @php
-            $image = asset('images/default.png');
-            if ($member && $member->image) {
-                $image = $member->image->src();
-            }
-        @endphp
-        <img src="{{ $image }}" id="image_preview" class="img-thumbnail mt-2" width="100px" alt="">
-    </div>
-    @php
-        $signature = asset('images/default.png');
-        if ($member && $member->signature) {
-            $signature = $member->signature->src();
-        }
-    @endphp
-    <div class="col-md-6 mb-3">
-        {!! Form::label('signature', 'স্বাক্ষর') !!}
-        {!! Form::file('signature', [
-            'class' => 'form-control',
-            'required',
-            'onchange' => "previewFile(event, 'thumbnail_preview')",
-            $isReadOnly,
-        ]) !!}
-        <img src="{{ $signature }}" id="thumbnail_preview" class="img-thumbnail mt-2" width="100px" alt="">
-    </div>
-    <div class="col-md-12">
-        <input type="checkbox" {{ $isReadOnly != '' ? 'checked' : '' }} required {{ $isReadOnly }}>
-        আমি এই মর্মে অঙ্গীকার করতেছি যে, 'দৌলতপুর প্রবাসী ফাউন্ডেশনে’র যাবতীয় গঠনতন্ত্র মেনে চলবো। এখানে আমার দান
-        শুধুমাত্র মানবকল্যাণের জন্য থাকবে, বিনিময়ে আমার কিছু চাওয়ার নাই।
-
-        ফাউন্ডেশনের কার্যক্রম পরিপন্থী কোন কাজ আমার দ্বারা হবে না। আমার দ্বারা কোনো ক্ষতি হলে, ফাউন্ডেশন আমার
-        সদস্য/সহযোদ্ধা /শুভাকাঙ্ক্ষী পদ স্থগিত বা বাতিল করার ক্ষমতা রাখে।
-
-        আমি ফাউন্ডেশনের সকল নিয়ম-কানুন সুস্থজ্ঞানে জেনে বুঝে সদস্য হতে আগ্রহ প্রকাশে নিম্নে স্বাক্ষর করলাম।
+    <div class="flex justify-end space-x-4 mt-6">
+        <button 
+            type="reset" 
+            class="px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition duration-300"
+        >
+            বাতিল
+        </button>
+        <button 
+            type="submit" 
+            class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition duration-300"
+        >
+            সংরক্ষণ
+        </button>
     </div>
 </div>
-
-
-<hr class="mb-4">
-@if (!$member)
-    {!! Form::submit('জমা দিন', ['class' => 'btn btn-primary btn-lg btn-block']) !!}
-@endif

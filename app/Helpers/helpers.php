@@ -1,7 +1,7 @@
 <?php
 
+use App\Helpers\BanglaFormatter;
 use App\Services\SiteData\SiteDataService;
-use App\Helpers\BnConvert;
 use App\Helpers\CacheService\CacheServiceHelper;
 use App\Helpers\CacheService\SettingOptionHelper;
 use App\Helpers\DeviceInfo;
@@ -12,10 +12,10 @@ use App\Services\Theme\ThemeService;
  *
  * @return string
  */
-if (!function_exists('bnConvert')) {
-    function bnConvert()
+if (!function_exists('banglaFormatter')) {
+    function banglaFormatter()
     {
-        return new BnConvert();
+        return new BanglaFormatter();
     }
 }
 

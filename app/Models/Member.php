@@ -39,6 +39,10 @@ class Member extends Model
         'date_of_birth',
     ];
 
+    protected $casts = [
+        'date_of_birth' => 'date',
+    ];
+
     public function scopeApproved($query)
     {
         return $query->where('is_approved', true);
@@ -64,6 +68,11 @@ class Member extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? $this->image->url : asset('assets/img/default-avatar.png');
+    }
+
     public function getCoverPhotoAttribute()
     {
         $photos = [
@@ -81,5 +90,31 @@ class Member extends Model
         ];
         $position = ($this->id % count($photos));
         return asset('assets/img/' . $photos[$position]);
+    }
+
+    public function getCategoryWiseTotalAttribute()
+    {
+        return collect(CategoryEnum::getValues())->mapWithKeys(function($category) {
+            $total = $this->donations()
+                ->whereHas('member', function($query) use ($category) {
+                    $query->where('category', $category);
+                })
+                ->sum('amount');
+        
+            return [$category => [
+                'total' => $total,
+                'bangla_name' => CategoryEnum::fromValue($category)->toBangla(),
+                'count' => $this->donations()
+                    ->whereHas('member', function($query) use ($category) {
+                        $query->where('category', $category);
+                    })
+                    ->count()
+            ]];
+        });
+    }
+
+    public function getCategoryBanglaAttribute()
+    {
+        return CategoryEnum::fromValue($this->category)->toBangla();
     }
 }

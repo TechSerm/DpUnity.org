@@ -32,4 +32,9 @@ class Image extends Model
     {
         return $this->service()->src();
     }
+
+    public function getUrlAttribute()
+    {
+        return $this->src();
+    }
 }

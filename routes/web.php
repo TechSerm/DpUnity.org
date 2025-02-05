@@ -19,6 +19,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CkEditorController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductImageController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TransactionController;
@@ -36,56 +37,44 @@ use Illuminate\Support\Facades\App;
 |
 */
 
+// Public Routes
 Route::middleware([])->group(function () {
-    Route::get('/',  [HomeController::class, 'index'])->name('home.index');
-    Route::get('/about_us',  [HomeController::class, 'aboutUs'])->name('about_us');
-    Route::get('/diposite',  [HomeController::class, 'diposite'])->name('diposite')->middleware('auth');
-    Route::get('/profile',  [HomeController::class, 'profile'])->name('profile.index')->middleware('auth');
-    Route::get('/members/create',  [HomeController::class, 'memberForm'])->name('members.create');
-    Route::post('/members/store',  [MemberController::class, 'store'])->name('members.store');
-    Route::get('/members',  [MemberController::class, 'category'])->name('members.index');
-    Route::get('/members/{category}',  [MemberController::class, 'viewList'])->name('members.category');
-    Route::get('/members/profile/{member}',  [MemberController::class, 'viewProfile'])->name('members.profile');
+    // Home and Static Pages
+    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    Route::get('/a', [HomeController::class, 'index'])->name('home');
+    Route::get('/about_us', [HomeController::class, 'aboutUs'])->name('about_us');
+    Route::get('/news', [HomeController::class, 'newsList'])->name('news.index');
+    Route::get('/news/{news}', [HomeController::class, 'showNews'])->name('news.show');
+
+    // Image Handling
+    Route::get('/_images/{filename}', [ImageController::class, 'resize'])->name('image');
 });
 
+// Authentication Required Routes
+Route::middleware(['auth'])->group(function () {
+    // Profile and Deposit
+    Route::get('/diposite', [HomeController::class, 'diposite'])->name('diposite');
+    Route::get('/profile', [HomeController::class, 'profile'])->name('profile.index');
+
+    // Members Management
+    Route::prefix('members')->name('members.')->group(function () {
+        Route::get('/create', [HomeController::class, 'memberForm'])->name('create');
+        Route::post('/store', [MemberController::class, 'store'])->name('store');
+        Route::get('/', [MemberController::class, 'category'])->name('index');
+        Route::get('/{category}', [MemberController::class, 'viewList'])->name('category');
+        Route::get('/profile/{member}', [MemberController::class, 'viewProfile'])->name('profile');
+    });
+
+    // Projects Management
+    Route::resource('projects', ProjectController::class)->only(['index', 'show']);
+    Route::prefix('projects/{project}')->name('projects.')->group(function () {
+        Route::get('donations', [ProjectController::class, 'showDonations'])->name('donations');
+        Route::get('expenses', [ProjectController::class, 'showExpenses'])->name('expenses');
+        Route::get('details', [ProjectController::class, 'showDetails'])->name('details');
+        Route::get('reports', [ProjectController::class, 'showReports'])->name('reports');
+        Route::get('expenses/{expense}', [ProjectController::class, 'showExpenseDetails'])->name('expense_details');
+    });
+});
+
+// Laravel's built-in authentication routes
 Auth::routes();
-
-Route::get('/_images/{filename}', [ImageController::class, 'resize'])->name('image');
-//Route::get('/_export/{table_name}', [ExportController::class, 'exportCsv']);
-
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::middleware(['auth', 'check_admin'])->group(function () {
-        Route::get('/', [AdminHomeController::class, 'index'])->name('home.index');
-
-        Route::post('/ckeditor_upload', [CkEditorController::class, 'upload'])->name('ckeditor.upload');
-        Route::get('/settings', [ResetPasswordController::class, 'showResetForm'])->name('settings');
-
-        Route::get('admin_users/data', [UserController::class, 'getAdminData'])->name('admin_users.data');
-        Route::get('normal_users/data', [UserController::class, 'getNormalUserData'])->name('normal_users.data');
-        Route::get('normal_users', [UserController::class, 'normalUser'])->name('normal_users');
-        Route::resource('users', UserController::class);
-        Route::get('members/data', [MemberController::class, 'MemberData'])->name('members.data');
-        Route::resource('members', MemberController::class);
-        Route::prefix('transaction')->name('transaction.')->group(function () {
-            Route::get('/', [TransactionController::class, 'index'])->name('index');
-            Route::get('/diposite', [TransactionController::class, 'diposite'])->name('diposite.index');
-            Route::get('/diposite/data', [TransactionController::class, 'dipositeData'])->name('diposite.data');
-            Route::get('/diposite/create', [TransactionController::class, 'dipositeCreate'])->name('diposite.create');
-            Route::post('/diposite/store', [TransactionController::class, 'dipositeStore'])->name('diposite.store');
-            Route::get('/withdraw', [TransactionController::class, 'withdraw'])->name('withdraw.index');
-            Route::get('/withdraw/create', [TransactionController::class, 'withdrawCreate'])->name('withdraw.create');
-            Route::post('/withdraw/store', [TransactionController::class, 'withdrawStore'])->name('withdraw.store');
-            Route::delete('/{transaction}/delete', [TransactionController::class, 'delete'])->name('delete');
-        });
-
-        Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
-        Route::post('/settings/update', [SettingsController::class, 'update'])->name('settings.update');
-    });
-
-
-    Route::post('/upload', [HomeController::class, 'upload'])->name('upload');
-
-    Route::middleware(['cors'])->group(function () {
-        Route::get('/log', [HomeController::class, 'log'])->name('log');
-    });
-});
