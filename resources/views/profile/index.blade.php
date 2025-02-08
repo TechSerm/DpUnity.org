@@ -64,7 +64,7 @@
                     সাম্প্রতিক জমা
                 </h2>
 
-                @if($transactions->count() > 0)
+                {{-- @if($transactions->count() > 0)
                     <div class="space-y-4">
                         @foreach($transactions as $transaction)
                             <div class="bg-gray-50 rounded-lg p-4 flex justify-between items-center hover:bg-gray-100 transition duration-300">
@@ -86,7 +86,7 @@
                     <div class="text-center text-gray-500 py-8">
                         কোনো লেনদেন পাওয়া যায়নি
                     </div>
-                @endif
+                @endif --}}
             </div>
         </div>
     </div>
