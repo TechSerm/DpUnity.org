@@ -53,7 +53,7 @@
                         আপনার মোট জমা
                     </h3>
                     <h1 class="text-3xl font-bold text-green-700">
-                        {{ banglaFormatter()->number($transactions->sum('amount')) }} টাকা
+                        {{-- {{ banglaFormatter()->number($transactions->sum('amount')) }} টাকা --}}
                     </h1>
                 </div>
             </div>
