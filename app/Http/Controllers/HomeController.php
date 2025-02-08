@@ -133,4 +133,9 @@ class HomeController extends Controller
         $transactions = Transaction::diposite()->with('member')->get();
         return view('diposite.index', compact('transactions'));
     }
+
+    public function logout() {
+        auth()->logout();
+        return redirect('/');
+    }
 }

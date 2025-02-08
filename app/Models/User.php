@@ -8,8 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Services\Image\ImageService;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -48,10 +50,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function isVendor()
-    {
-        return $this->role_name == 'vendor';
-    }
 
     public function isAdmin()
     {
@@ -63,15 +61,7 @@ class User extends Authenticatable
         return $this->role_name == 'super_admin';
     }
 
-    public function isCashier()
-    {
-        return $this->role_name == 'cashier';
-    }
-
-    public function isDeliveryMan()
-    {
-        return $this->role_name == 'delivery_man';
-    }
+    
 
     public function getImageAttribute()
     {
@@ -91,5 +81,10 @@ class User extends Authenticatable
     public function imageSrv()
     {
         return new ImageService($this->imageTable);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isAdmin();
     }
 }

@@ -1,5 +1,5 @@
 @extends('store.layout.layout')
-@section('title', 'সদস্য নিবন্ধন ফরম' . ' - ' . theme()->title())
+@section('title', 'সদস্য নিবন্ধন ফরম' . ' - ' . metaData()->getWebsiteTitle())
 @section('content')
 
     <div class="store-card">

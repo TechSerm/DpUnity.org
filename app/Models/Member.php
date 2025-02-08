@@ -91,30 +91,4 @@ class Member extends Model
         $position = ($this->id % count($photos));
         return asset('assets/img/' . $photos[$position]);
     }
-
-    public function getCategoryWiseTotalAttribute()
-    {
-        return collect(CategoryEnum::getValues())->mapWithKeys(function($category) {
-            $total = $this->donations()
-                ->whereHas('member', function($query) use ($category) {
-                    $query->where('category', $category);
-                })
-                ->sum('amount');
-        
-            return [$category => [
-                'total' => $total,
-                'bangla_name' => CategoryEnum::fromValue($category)->toBangla(),
-                'count' => $this->donations()
-                    ->whereHas('member', function($query) use ($category) {
-                        $query->where('category', $category);
-                    })
-                    ->count()
-            ]];
-        });
-    }
-
-    public function getCategoryBanglaAttribute()
-    {
-        return CategoryEnum::fromValue($this->category)->toBangla();
-    }
 }

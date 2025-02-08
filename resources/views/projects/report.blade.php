@@ -20,16 +20,16 @@
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Total Donations Card -->
                     <div
-                        class="bg-gradient-to-br from-green-50 to-green-100 border border-green-100 p-6 rounded-xl shadow-sm flex items-center gap-6 hover:shadow-xl transition-shadow duration-300">
+                        class="bg-gradient-to-br from-green-50 to-green-100 border border-green-100 p-6 pr-0 rounded-xl shadow-sm flex items-center gap-6 hover:shadow-xl transition-shadow duration-300">
                         <div class="bg-green-200 p-4 rounded-full flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-700" fill="none"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-6 md:w-6 lg:h-7 lg:w-7  text-green-700" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                         <div>
-                            <p class="font-bold text-green-900 text-2xl mb-2">
+                            <p class="font-bold text-green-900 text-xl lg:text-2xl mb-2">
                                 ৳ {{ banglaFormatter()->number($project->donations->sum('amount')) }}
                             </p>
                             <h3 class="text-sm text-green-700 font-semibold">মোট জমা</h3>
@@ -38,16 +38,16 @@
 
                     <!-- Total Expenses Card -->
                     <div
-                        class="bg-gradient-to-br from-red-50 to-red-100 border border-red-100 p-6 rounded-xl shadow-sm flex items-center gap-6 hover:shadow-xl transition-shadow duration-300">
+                        class="bg-gradient-to-br from-red-50 to-red-100 border border-red-100 p-6 pr-0 rounded-xl shadow-sm flex items-center gap-6 hover:shadow-xl transition-shadow duration-300">
                         <div class="bg-red-200 p-4 rounded-full flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-700" fill="none"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-6 md:w-6 lg:h-7 lg:w-7  text-red-700" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
                         </div>
                         <div>
-                            <p class="font-bold text-red-900 text-2xl mb-2">
+                            <p class="font-bold text-red-900 text-xl lg:text-2xl mb-2">
                                 ৳ {{ banglaFormatter()->number($project->expenses->sum('amount')) }}
                             </p>
                             <h3 class="text-sm text-red-700 font-semibold">মোট ব্যয়</h3>
@@ -56,16 +56,16 @@
 
                     <!-- Current Balance Card -->
                     <div
-                        class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-100 p-6 rounded-xl shadow-sm flex items-center gap-6 hover:shadow-xl transition-shadow duration-300">
+                        class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-100 p-6 pr-0 rounded-xl shadow-sm flex items-center gap-6 hover:shadow-xl transition-shadow duration-300">
                         <div class="bg-blue-200 p-4 rounded-full flex-shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-700" fill="none"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-6 md:w-6 lg:h-7 lg:w-7 text-blue-700" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                             </svg>
                         </div>
                         <div>
-                            <p class="font-bold text-blue-900 text-2xl mb-2">
+                            <p class="font-bold text-blue-900 text-xl lg:text-2xl mb-2">
                                 ৳
                                 {{ banglaFormatter()->number($project->donations->sum('amount') - $project->expenses->sum('amount')) }}
                             </p>

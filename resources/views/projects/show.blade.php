@@ -1,5 +1,5 @@
 @extends('projects.layout')
-@section('title', theme()->title() . ' - ' . theme()->slogan())
+@section('title', metaData()->getWebsiteTitle() . ' - ' . metaData()->getSlogan())
 @section('tab-content')
 
 <template x-if="activeTab === 'overview'">

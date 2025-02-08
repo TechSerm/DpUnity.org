@@ -41,10 +41,16 @@ use Illuminate\Support\Facades\App;
 Route::middleware([])->group(function () {
     // Home and Static Pages
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
-    Route::get('/a', [HomeController::class, 'index'])->name('home');
     Route::get('/about_us', [HomeController::class, 'aboutUs'])->name('about_us');
     Route::get('/news', [HomeController::class, 'newsList'])->name('news.index');
     Route::get('/news/{news}', [HomeController::class, 'showNews'])->name('news.show');
+
+    // Members Management
+    Route::prefix('members')->name('members.')->group(function () {
+        Route::get('/', [MemberController::class, 'category'])->name('index');
+        Route::get('/{category}', [MemberController::class, 'viewList'])->name('category');
+        Route::get('/profile/{member}', [MemberController::class, 'viewProfile'])->name('profile');
+    });
 
     // Image Handling
     Route::get('/_images/{filename}', [ImageController::class, 'resize'])->name('image');
@@ -55,14 +61,14 @@ Route::middleware(['auth'])->group(function () {
     // Profile and Deposit
     Route::get('/diposite', [HomeController::class, 'diposite'])->name('diposite');
     Route::get('/profile', [HomeController::class, 'profile'])->name('profile.index');
+    
+    // Logout Route
+    Route::get('/logout', [HomeController::class, 'logout'])->name('logout');
 
     // Members Management
     Route::prefix('members')->name('members.')->group(function () {
         Route::get('/create', [HomeController::class, 'memberForm'])->name('create');
         Route::post('/store', [MemberController::class, 'store'])->name('store');
-        Route::get('/', [MemberController::class, 'category'])->name('index');
-        Route::get('/{category}', [MemberController::class, 'viewList'])->name('category');
-        Route::get('/profile/{member}', [MemberController::class, 'viewProfile'])->name('profile');
     });
 
     // Projects Management

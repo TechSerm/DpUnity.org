@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\UploadDirectoryEnum;
 use App\Filament\Resources\ProjectExpenseResource\Pages;
 use App\Models\Project;
 use App\Models\ExpenseCategory;
@@ -73,7 +74,10 @@ class ProjectExpenseResource extends Resource
                             ->label('সংযুক্তি') // Attachments
                             ->multiple()
                             ->reorderable()
-                            ->directory('uploads/project-expenses')
+                            ->imageEditor()
+                            ->maxFiles(10)
+                            ->panelLayout('grid')
+                            ->directory(UploadDirectoryEnum::PROJECT_EXPENCES)
                             ->visibility('private')
                             ->previewable()
                             ->acceptedFileTypes([
@@ -83,9 +87,6 @@ class ProjectExpenseResource extends Resource
                                 'image/gif',
                                 'image/bmp',
                             ])
-                            ->imageEditor()
-                            ->maxFiles(10)
-                            ->panelLayout('grid')
                             ->deleteUploadedFileUsing(function ($file) {
                                 $file = "public/".$file;
                                 if (Storage::exists($file)) {

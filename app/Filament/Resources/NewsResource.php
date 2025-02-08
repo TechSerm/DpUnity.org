@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\UploadDirectoryEnum;
 use App\Filament\Resources\NewsResource\Pages;
 use App\Filament\Resources\NewsResource\RelationManagers;
 use App\Models\News;
@@ -42,6 +43,7 @@ class NewsResource extends Resource
 
                                 Forms\Components\RichEditor::make('content')
                                     ->nullable()
+                                    ->fileAttachmentsDirectory(UploadDirectoryEnum::NEWS_CONTENT)
                                     ->columnSpanFull(),
                             ])->columns(2),
 
@@ -50,7 +52,7 @@ class NewsResource extends Resource
                                 Forms\Components\FileUpload::make('thumbnail')
                                     ->image()
                                     ->imageEditor()
-                                    ->directory('news-thumbnails')
+                                    ->directory(UploadDirectoryEnum::NEWS_THUMBNAILS)
                                     ->visibility('public'),
                             ]),
                     ])->columnSpan(2),

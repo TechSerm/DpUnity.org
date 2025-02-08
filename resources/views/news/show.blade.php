@@ -1,5 +1,5 @@
 @extends('store.layout.layout')
-@section('title', theme()->title() . ' - ' . theme()->slogan())
+@section('title', metaData()->getWebsiteTitle() . ' - ' . metaData()->getSlogan())
 @section('content')
 <div class="w-full">
     <div class="max-w-full mx-auto grid grid-cols-1 lg:grid-cols-8 gap-8">
@@ -70,7 +70,7 @@
         <!-- Recent News (Right Column) -->
         <div class="lg:col-span-2">
             <div class="bg-white rounded-xl border border-gray-50 shadow-md p-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent News</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">সামঞ্জস্য সংবাদ সমূহ</h2>
                 <div class="space-y-6">
                     @foreach($recentNews as $recent)
                         <a href="{{ route('news.show', $recent->slug) }}" class="block group">

@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="turbolinks-cache-control" content="no-cache">
-    <link rel="icon" type="image/x-icon" href="{{ theme()->favicon() }}">
-    <title> @yield('title') - {{ theme()->title() }} </title>
+    <link rel="icon" type="image/x-icon" href="{{ metaData()->getFavicon() }}">
+    <title> @yield('title') - {{ metaData()->getWebsiteTitle() }} </title>
     {{-- <link rel="stylesheet" href="{{ mix('css/store.css') }}"> --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.cdnfonts.com/css/solaimanlipi" rel="stylesheet">
@@ -34,20 +34,15 @@
     <link rel="stylesheet" href="/vendor/fontawesome-free/css/all.min.css">
 
 
-    {!! theme()->customHeadCode() !!}
 
 </head>
 
 <body>
-    {!! theme()->customBodyCode() !!}
+
     @include('store.layout.navbar')
-    @include('store.layout.theme_style')
-    <div id="pageLoader" style="display: none">
-        @include('store.layout.loader')
-    </div>
     @yield('fullContant')
     <div class="container mx-auto 
-        mt-[100px] p-6
+        mt-[90px]  min-h-screen p-4
     " id="loadBody">
         @yield('content')
     </div>

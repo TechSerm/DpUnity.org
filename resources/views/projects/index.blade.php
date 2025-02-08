@@ -1,5 +1,5 @@
 @extends('store.layout.layout')
-@section('title', theme()->title() . ' - ' . theme()->slogan())
+@section('title', metaData()->getWebsiteTitle() . ' - ' . metaData()->getSlogan())
 @section('content')
 
     <div class="text-center mb-12">

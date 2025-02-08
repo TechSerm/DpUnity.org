@@ -50,7 +50,7 @@ class ThemeService
     {
         $settingService = new SettingService();
 
-        $this->color = $settingService->getData(SettingEnum::THEME_COLOR);
+        //$this->color = $settingService->getData(SettingEnum::THEME_COLOR);
         $this->slogan =  $settingService->getData(SettingEnum::SLOGAN);
         $this->messangerLink = $settingService->getData(SettingEnum::MESSANGER_LINK);
         $this->mobile = $settingService->getData(SettingEnum::MOBILE_NUMBER);
@@ -60,10 +60,10 @@ class ThemeService
         $this->headline = $settingService->getData(SettingEnum::HEADLINE);
         $this->email = $settingService->getData(SettingEnum::EMAIL_ADDRESS);
         $this->description = $settingService->getData(SettingEnum::SHORT_DESCRIPTION);
-        $this->customHeadCode = $settingService->getData(SettingEnum::CUSTOM_HEAD_CODE);
-        $this->customBodyCode = $settingService->getData(SettingEnum::CUSTOM_BODY_CODE);
-        $this->customFooterCode = $settingService->getData(SettingEnum::CUSTOM_FOOTER_CODE);
-        $this->address = $settingService->getData(SettingEnum::STREET) . ", " . $settingService->getData(SettingEnum::CITY) . ", " . $settingService->getData(SettingEnum::STREET);
+       // $this->customHeadCode = $settingService->getData(SettingEnum::CUSTOM_HEAD_CODE);
+       // $this->customBodyCode = $settingService->getData(SettingEnum::CUSTOM_BODY_CODE);
+       // $this->customFooterCode = $settingService->getData(SettingEnum::CUSTOM_FOOTER_CODE);
+        //$this->address = $settingService->getData(SettingEnum::STREET) . ", " . $settingService->getData(SettingEnum::CITY) . ", " . $settingService->getData(SettingEnum::STREET);
 
         $this->textColor = (new ThemeColor())->get($this->color());
         $this->header = (new HeaderService())->get();

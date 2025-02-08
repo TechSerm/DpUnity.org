@@ -8,7 +8,7 @@ class SettingService
 {
     public function getData($key)
     {
-        $option = cacheService()->settingOptions()->get();
+        $option = [];
         return $option[$key] ?? "";
     }
 }

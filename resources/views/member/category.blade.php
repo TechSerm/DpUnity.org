@@ -1,9 +1,12 @@
 @extends('store.layout.layout')
-@section('title', 'সদস্য গণের তালিকা' . ' - ' . theme()->title())
+@section('title', 'সদস্য গণের তালিকা' . ' - ' . metaData()->getWebsiteTitle())
 @section('content')
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">সদস্য কাটাগরি</h1>
-
+    <div class="mx-auto">
+        <div class="text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-green-800 mb-8">
+                সদস্য কাটাগরি
+            </h2>
+        </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Foundation Management Members -->
             <div class="bg-gradient-to-br from-green-50 to-green-100 border border-green-100 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
