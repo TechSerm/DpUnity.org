@@ -52,6 +52,7 @@ class ProjectDonation extends Model
             if (empty($model->uuid)) {
                 $model->uuid = Str::uuid();
                 $model->user_id = auth()->user()->id;
+                $model->when = now();
             }
         });
     }

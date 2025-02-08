@@ -55,7 +55,8 @@ class ProjectResource extends Resource
 
                         Forms\Components\DatePicker::make('end_date')
                             ->label('End Date')
-                            ->after('start_date'),
+                            ->after('start_date')
+                            ->required(),
                     ])
             ]);
     }
